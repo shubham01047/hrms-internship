@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="container mt-5 pt-4">
+    <div class="container">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid repudiandae tenetur est! Assumenda facilis
             fuga minima consequatur optio fugiat impedit, fugit, veniam saepe delectus error voluptatibus libero illo
             mollitia! Velit?
