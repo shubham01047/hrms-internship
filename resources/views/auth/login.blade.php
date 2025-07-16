@@ -48,7 +48,7 @@
         <hr class="mt-4 mb-4">
         <div class="flex items-center justify-center mt-4">
             <x-primary-button class="ms-3">
-            <a href="{{ route('auth.google') }}">GOOGLE LOGIN</a>
+            <a href="{{ route('google.auth') }}">GOOGLE LOGIN</a>
             </x-primary-button>
         </div>
     </form>
