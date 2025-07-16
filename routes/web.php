@@ -4,6 +4,7 @@ use App\Http\Controllers\GoogleController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HrmsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,5 +28,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-
