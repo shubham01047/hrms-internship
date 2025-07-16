@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HrmsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,3 +19,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+Route::get('/hrms' , [HrmsController::class , 'index'])->name('index.index');
+Route::get('/login' , [HrmsController::class , 'login'])->name('login.login');
+Route::get('/register' , [HrmsController::class , 'register'])->name('login.register'); 
