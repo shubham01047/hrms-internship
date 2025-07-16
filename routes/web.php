@@ -1,20 +1,24 @@
 <?php
 
+use App\Http\Controllers\GoogleController;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::controller(SocialiteController::class)->group(function(){
-    Route::get('auth/google','googlelogin')->name('auth.google');
-    Route::get('auth/google-callback','googleAuthentication')->name('auth.google-callback');   
-});
+
+Route::get('/auth/google/redirect',[GoogleController::class,'index'])->name('google.auth');
+Route::get('/auth/google/callback',[GoogleController::class,'verify']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,3 +27,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
