@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 
-class RolePermissionConrtoller extends Controller
+class PermissionConrtoller extends Controller
 {
     /**
      * Display Permissions Page.

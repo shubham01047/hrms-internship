@@ -21,6 +21,10 @@
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Permissions') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
+                        class="text-red-700 hover:text-red-800 font-semibold">
+                        {{ __('Roles') }}
+                    </x-nav-link>
                 </div>
             </div>
 
