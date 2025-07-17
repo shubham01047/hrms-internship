@@ -1,7 +1,7 @@
 <aside class="w-64 bg-white border-r border-red-200 shadow-md min-h-screen block">
     <!-- Sidebar Header -->
     <div class="p-4 text-center font-bold text-2xl text-white bg-red-600">
-        HRMS
+        {{$company->system_title}}
     </div>
 
     <!-- Navigation Menu -->
