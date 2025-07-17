@@ -3,80 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $company->system_title ?? 'HRMS' }} - Login</title>
-
-    <!-- Bootstrap & Icons -->
+    <title>HRMS - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            margin: 0;
+            background: #fdf6f0; /* Cream */
+            font-family: 'Segoe UI', sans-serif;
         }
         .login-wrapper {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 380px;
             overflow: hidden;
             animation: fadeIn 0.8s ease-in-out;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
         }
         .login-header {
-            background: {{ $company->default_color ?? '#b31217' }};
+            background: #b31217;
             color: #fff;
             text-align: center;
             padding: 1.5rem;
         }
         .login-header img {
             width: 60px;
-            margin-bottom: 8px;
-        }
-        .login-header h3 {
-            margin: 0;
-            font-weight: 600;
+            margin-bottom: 10px;
         }
         .login-body {
             padding: 2rem;
         }
-        .form-control {
-            border-radius: 8px;
-            padding: 0.75rem;
-        }
         .form-control:focus {
             box-shadow: 0 0 5px #b31217;
-            border-color: #6e8efb;
+            border-color: #e52d27;
         }
         .toggle-password {
             cursor: pointer;
             font-size: 18px;
-            color: #666;
+            color: #888;
             display: none;
             position: absolute;
             right: 15px;
-            top: 55%;
-            transform: translateY(-50%);
+            top: 52%;
+            transform: translateY(5%);
         }
         .btn-primary {
-            background: {{ $company->default_color ?? '#b31217' }};
+            background: #b31217;
             border: none;
-            font-weight: 500;
-            padding: 0.75rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
         }
         .btn-primary:hover {
             background: #8f0d12;
@@ -90,9 +71,6 @@
             gap: 10px;
             font-weight: 500;
             color: #444;
-            border-radius: 8px;
-            padding: 0.75rem;
-            transition: all 0.3s ease;
         }
         .btn-google img {
             width: 20px;
@@ -105,15 +83,14 @@
             text-align: center;
             margin-top: 10px;
         }
-        .links a {
-            color: {{ $company->default_color ?? '#b31217' }};
-            font-weight: 500;
+        a {
+            color: #b31217;
         }
-        .links a:hover {
+        a:hover {
             text-decoration: underline;
         }
-
-        /* Remove browser's default password eye */
+        
+        
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
             display: none !important;
@@ -124,21 +101,15 @@
             pointer-events: none;
             position: absolute;
         }
-
-        @media (max-width: 450px) {
-            .login-wrapper {
-                margin: 0 15px;
-            }
-        }
     </style>
 </head>
 <body>
 
 <div class="login-wrapper">
     <div class="login-header">
-        <img src="{{ asset($company->company_logo ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') }}" alt="Company Logo">
-        <h3>{{ $company->system_title ?? 'HRMS Portal' }}</h3>
-        <p>{{ $company->company_description ?? 'Secure Employee Login' }}</p>
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="HRMS Logo">
+        <h3>HRMS Portal</h3>
+        <p>Secure Employee Login</p>
     </div>
     <div class="login-body">
         <form method="POST" action="#">
@@ -171,7 +142,7 @@
                 </button>
             </div>
             <div class="links">
-                Don’t have an account? <a href="{{ url('/register') }}">Register</a>
+                Don’t have an account? <a href="{{ route('login.register') }}">Register</a>
             </div>
         </form>
     </div>
