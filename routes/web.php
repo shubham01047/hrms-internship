@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrmsController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\RolePermissionConrtoller;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Roles and Permissions Route
+    Route::get('/permissions', [RolePermissionConrtoller::class, 'index'])->name('permissions.index');
+    Route::get('/permissions/create', [RolePermissionConrtoller::class, 'create'])->name('permissions.create');
+    Route::post('/permissions', [RolePermissionConrtoller::class, 'store'])->name('permissions.store');
+    Route::get('/permissions/{id}/edit', [RolePermissionConrtoller::class, 'edit'])->name('permissions.edit');
+    Route::post('/permissions/{id}', [RolePermissionConrtoller::class, 'update'])->name('permissions.update');
+    Route::delete('/permissions', [RolePermissionConrtoller::class, 'destroy'])->name('permissions.destroy');
+
+    
 });
 
 require __DIR__.'/auth.php';
