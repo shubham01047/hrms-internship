@@ -39,6 +39,8 @@
             <main class="p-4">
                 {{ $slot }}
             </main>
+
+              @include('components.footer')
         </div>
     </div>
 </body>
