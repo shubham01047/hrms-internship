@@ -13,7 +13,7 @@ class CompanySeeder extends Seeder
             'name' => 'My HR Company',
             'description' => 'Human Resource Management System',
             'system_title' => 'HRMS',
-            'logo' => 'logos/default-logo.png',
+            'logo' => 'images/logo.png',
         ]);
     }
 }
