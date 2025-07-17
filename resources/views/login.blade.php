@@ -36,7 +36,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .login-header {
-            background: {{ $company->default_color ?? '#b31217' }};
+            background: {{ $company->default_color ?? '#6e8efb' }};
             color: #fff;
             text-align: center;
             padding: 1.5rem;
@@ -57,7 +57,7 @@
             padding: 0.75rem;
         }
         .form-control:focus {
-            box-shadow: 0 0 5px #b31217;
+            box-shadow: 0 0 8px rgba(110, 142, 251, 0.5);
             border-color: #6e8efb;
         }
         .toggle-password {
@@ -71,7 +71,7 @@
             transform: translateY(-50%);
         }
         .btn-primary {
-            background: {{ $company->default_color ?? '#b31217' }};
+            background: {{ $company->default_color ?? '#6e8efb' }};
             border: none;
             font-weight: 500;
             padding: 0.75rem;
@@ -79,7 +79,7 @@
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
-            background: #8f0d12;
+            background: #5a75e5;
         }
         .btn-google {
             background: #fff;
@@ -106,14 +106,14 @@
             margin-top: 10px;
         }
         .links a {
-            color: {{ $company->default_color ?? '#b31217' }};
+            color: {{ $company->default_color ?? '#6e8efb' }};
             font-weight: 500;
         }
         .links a:hover {
             text-decoration: underline;
         }
 
-        /* Remove browser's default password eye */
+        
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
             display: none !important;
