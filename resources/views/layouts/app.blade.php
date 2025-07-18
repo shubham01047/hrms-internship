@@ -17,13 +17,34 @@
 </head>
 
 
-<body class="font-sans antialiased bg-gray-100">
-    <div class="min-h-screen flex">
-        <!-- Sidebar -->
+<body 
+    x-data="{ 
+        sidebarOpen: window.innerWidth >= 768 
+    }" 
+    x-init="$watch('sidebarOpen', value => {
+        if (window.innerWidth >= 768) sidebarOpen = true;
+    })"
+    class="relative min-h-screen flex"
+>
+    
+    <!-- Sidebar Component -->
+    <div x-show="sidebarOpen" x-transition class="z-40">
         <x-sidebar />
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen">
+        <!-- Toggle Button (can be in navbar too) -->
+            <button @click="sidebarOpen = !sidebarOpen" class="md:hidden px-4 py-2 focus:outline-none sticky top-0">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+</button>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col ml-0 md:ml-64">
             <!-- Top Navigation -->
             @include('layouts.navigation')
 
