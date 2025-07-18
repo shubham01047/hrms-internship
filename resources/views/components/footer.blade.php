@@ -1,4 +1,4 @@
-<footer class="bg-red-600 text-white py-6 shadow-inner">
+<footer class="bg-red-600  text-white py-6 shadow-inner">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
 
         <!-- About -->
