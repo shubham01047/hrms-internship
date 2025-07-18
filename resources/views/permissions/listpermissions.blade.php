@@ -46,26 +46,26 @@
     </div>
     <x-slot name="script">
         <script type="text/javascript">
-                // deletePermission function here
-                function deletePermission(id) {
-                    console.log("Calling delete for ID:", id);
-                    if (confirm("Are you sure u want to delete?")) {
-                        $.ajax({
-                            url: '{{ route("permissions.destroy") }}',
-                            type: 'DELETE',
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                window.location.href = '{{ route("permissions.index") }}'
-                            }
-                        });
-                    }
+            // deletePermission function here
+            function deletePermission(id) {
+                console.log("Calling delete for ID:", id);
+                if (confirm('Are you sure u want to delete "{{ $permission->name }}"?')) {
+                    $.ajax({
+                        url: '{{ route('permissions.destroy') }}',
+                        type: 'DELETE',
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            window.location.href = '{{ route('permissions.index') }}'
+                        }
+                    });
                 }
+            }
         </script>
     </x-slot>
 </x-app-layout>
