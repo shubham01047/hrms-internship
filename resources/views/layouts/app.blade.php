@@ -16,6 +16,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+<body class="font-sans antialiased bg-gray-100">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
 
 <body 
     x-data="{ 
@@ -66,6 +69,9 @@
         </div>
     </div>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+@isset($script)
+    {{ $script }}
+@endisset
 
 </html>

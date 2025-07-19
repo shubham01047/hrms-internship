@@ -8,13 +8,14 @@ use App\Http\Controllers\HrmsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/auth/google/redirect',[GoogleController::class,'index'])->name('google.auth');
-Route::get('/auth/google/callback',[GoogleController::class,'verify']);
+Route::get('/auth/google/redirect', [GoogleController::class, 'index'])->name('google.auth');
+Route::get('/auth/google/callback', [GoogleController::class, 'verify']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -41,9 +42,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    //Users Route
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    // Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    // Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // Route::get('/hrms' , [HrmsController::class , 'index'])->name('index.index');
 // Route::get('/login' , [HrmsController::class , 'login'])->name('login.login');
@@ -52,4 +64,3 @@ require __DIR__.'/auth.php';
 // routes/web.php
 Route::get('/admin/company', [CompanyController::class, 'edit'])->name('company.edit');
 Route::put('/admin/company', [CompanyController::class, 'update'])->name('company.update');
-

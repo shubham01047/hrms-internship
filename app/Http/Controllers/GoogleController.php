@@ -14,7 +14,6 @@ class GoogleController extends Controller
     public function index()
     {
         return Socialite::driver('google')
-            ->setScopes(['openid', 'profile', 'email'])
             ->with(['prompt' => 'select_account'])
             ->redirect();
     }
