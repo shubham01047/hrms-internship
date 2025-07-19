@@ -17,14 +17,24 @@
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
+                    @can('view permissions')
+                        <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Permissions') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
+                    @endcan
+                    @can('view roles')
+                        <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Roles') }}
                     </x-nav-link>
+                    @endcan
+                    @can('view users')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                        class="text-red-700 hover:text-red-800 font-semibold">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
