@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-black leading-tight">
-                Create Roles
+                Edit Users
             </h2>
-            <a href="{{ route('roles.index') }}" class="danger-button">Back</a>
+            <a href="{{ route('users.index') }}" class="bg-green-700">Back</a>
         </div>
     </x-slot>
 
@@ -13,35 +13,37 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{-- {{ __("You're logged in!") }} --}}
-                    <form action="{{ route('roles.store') }}" method="POST">
+                    <form action="{{ route('users.update', $users->id) }}" method="POST">
                         @csrf
                         <div>
-                            <label for="name" class="lable">Name</label>
-                            <input type="text" name="name" class="input-field">
+                            name:
+                            <input type="text" name="name" value="{{ old('name', $users->name) }}">
                             @error('name')
                                 <span>{{ $message }}</span>
                             @enderror
-                            <button class="success-button ml-10">Submit</button>
+
+                            email:
+                            <input type="text" name="email" value="{{ old('email', $users->email) }}">
+                            @error('email')
+                                <span>{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="grid grid-cols-3 mt-3 mb-4">
-                            @if ($permissions->isNotEmpty())
-                                @foreach ($permissions as $permission)
+                            @if ($roles->isNotEmpty())
+                                @foreach ($roles as $role)
                                     <div class="mt-3">
-                                        <input type="checkbox" name="permission[]" value="{{ $permission->name }}"
-                                            id="permission-{{ $permission->id }}">
-                                        <label for="permission-{{ $permission->id }}">{{ $permission->name }}</label>
+                                        <input {{ $hasRoles->contains($role->id) ? 'checked' : '' }} type="checkbox"
+                                            name="role[]" value="{{ $role->name }}" id="role-{{ $role->id }}">
+                                        <label for="role-{{ $role->id }}">{{ $role->name }}</label>
                                     </div>
                                 @endforeach
                             @endif
-                            
                         </div>
-
                         <button class="bg-slate-700">Submit</button>
-                        <a href="{{ route('roles.index') }}"
+                        <a href="{{ route('users.index') }}"
                             class="bg-gray-500">
                             Cancel
                         </a>
-
                     </form>
                 </div>
             </div>
