@@ -8,10 +8,6 @@
             @can('create roles')
             <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
         @endcan
-
-            <a href="{{ route('roles.create') }}" class="success-button">Create</a>
-
-            <a href="{{ route('roles.create') }}" class="success-button">Create</a>
         </div>
     </x-slot>
 
