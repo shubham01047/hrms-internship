@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Edit Roles
             </h2>
-            <a href="{{ route('roles.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('roles.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -16,8 +16,8 @@
                     <form action="{{ route('roles.update', $role->id) }}" method="POST">
                         @csrf
                         <div>
-                            name:
-                            <input type="text" name="name" value="{{ old('name', $role->name) }}">
+                            <label for="name" class="lable">Name:</label>
+                            <input type="text" name="name" value="{{ old('name', $role->name) }}" class="input-field">
                             @error('name')
                                 <span>{{ $message }}</span>
                             @enderror
@@ -35,9 +35,9 @@
                                 @endforeach
                             @endif
                         </div>
-                        <button class="bg-slate-700">Submit</button>
+                        <button class="success-button px-3">Submit</button>
                         <a href="{{ route('roles.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button px-3">
                             Cancel
                         </a>
                     </form>

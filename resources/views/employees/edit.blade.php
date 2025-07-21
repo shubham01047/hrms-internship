@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Edit Employees
             </h2>
-            <a href="{{ route('employees.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('employees.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -16,26 +16,26 @@
                     <form action="{{ route('employees.update', $employee->id) }}" method="POST">
                         @csrf
                         <div>
-                            <label for="">First Name:</label>
+                            <label for="f-name">First Name:</label>
                             <input type="text" name="first_name"
-                                value="{{ old('first_name', $employee->first_name) }}">
+                                value="{{ old('first_name', $employee->first_name) }}" class="input-field m-5">
                             @error('first_name')
                                 <span>{{ $message }}</span>
                             @enderror
-                            <label for="">Last Name:</label>
-                            <input type="text" name="last_name" value="{{ old('last_name', $employee->last_name) }}">
+                            <br><label for="l-name">Last Name:</label>
+                            <input type="text" name="last_name" value="{{ old('last_name', $employee->last_name) }}" class="input-field m-5 ">
                             @error('last_name')
                                 <span>{{ $message }}</span>
                             @enderror
-                            <label for="">E-mail:</label>
-                            <input type="text" name="email" value="{{ old('email', $employee->email) }}">
+                            <br><label for="email">E-mail:</label>
+                            <input type="text" name="email" value="{{ old('email', $employee->email) }}" class="input-field my-5 mx-12">
                             @error('email')
                                 <span>{{ $message }}</span>
                             @enderror
                         </div>
-                        <button class="bg-slate-700">Update</button>
+                        <button class="success-button">Update</button>
                         <a href="{{ route('employees.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button">
                             Cancel
                         </a>
                     </form>

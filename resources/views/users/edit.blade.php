@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Edit Users
             </h2>
-            <a href="{{ route('users.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('users.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -16,14 +16,14 @@
                     <form action="{{ route('users.update', $users->id) }}" method="POST">
                         @csrf
                         <div>
-                            name:
-                            <input type="text" name="name" value="{{ old('name', $users->name) }}">
+                            <label for="name" class="lable">Name:</label>
+                            <input type="text" name="name" value="{{ old('name', $users->name) }}" class="input-field">
                             @error('name')
                                 <span>{{ $message }}</span>
                             @enderror
 
-                            email:
-                            <input type="text" name="email" value="{{ old('email', $users->email) }}">
+                            <label for="email" class="lable mt-2">Email:</label>
+                            <input type="text" name="email" value="{{ old('email', $users->email) }}" class="input-field">
                             @error('email')
                                 <span>{{ $message }}</span>
                             @enderror
@@ -39,9 +39,9 @@
                                 @endforeach
                             @endif
                         </div>
-                        <button class="bg-slate-700">Submit</button>
+                        <button class="success-button px-3 ">Submit</button>
                         <a href="{{ route('users.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button px-3">
                             Cancel
                         </a>
                     </form>
