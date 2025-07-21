@@ -4,13 +4,14 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Roles') }}
             </h2>
-<<<<<<< HEAD
+
             @can('create roles')
             <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
         @endcan
-=======
+
             <a href="{{ route('roles.create') }}" class="success-button">Create</a>
->>>>>>> 392a132ac2a0fedd4b0d7541b32f8f24ce025784
+
+            <a href="{{ route('roles.create') }}" class="success-button">Create</a>
         </div>
     </x-slot>
 
