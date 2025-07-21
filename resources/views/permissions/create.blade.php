@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Create Permissions
             </h2>
-            <a href="{{ route('permissions.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('permissions.index') }}" class="danger-button">Back</a>
         </div>
     </x-slot>
 
@@ -15,12 +15,12 @@
                     {{-- {{ __("You're logged in!") }} --}}
                     <form action="{{ route('permissions.store') }}" method="POST">
                         @csrf
-                        name:
-                        <input type="text" name="name" >
+                        <label for="name" class="lable">Name</label>
+                        <input type="text" name="name" class="input-field">
                         @error('name')
                             <span>{{ $message }}</span>   
                         @enderror
-                        <button class="bg-slate-700">Submit</button>
+                        <button class="success-button ml-10">Create</button>
                     </form>
                 </div>
             </div>
