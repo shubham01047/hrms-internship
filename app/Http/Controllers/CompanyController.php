@@ -11,7 +11,7 @@ class CompanyController extends Controller
     public function edit()
     {
         $company = Company::first();
-        return view('admin.company.edit', compact('company'));
+        return view('dashboard.admin.company.edit', compact('company'));
     }
 
    public function update(Request $request)
