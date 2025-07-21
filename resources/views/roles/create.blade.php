@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Create Roles
             </h2>
-            <a href="{{ route('roles.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('roles.index') }}" class="danger-button">Back</a>
         </div>
     </x-slot>
 
@@ -16,11 +16,12 @@
                     <form action="{{ route('roles.store') }}" method="POST">
                         @csrf
                         <div>
-                            name:
-                            <input type="text" name="name">
+                            <label for="name" class="lable">Name</label>
+                            <input type="text" name="name" class="input-field">
                             @error('name')
                                 <span>{{ $message }}</span>
                             @enderror
+                            <button class="success-button ml-10">Submit</button>
                         </div>
                         <div class="grid grid-cols-3 mt-3 mb-4">
                             @if ($permissions->isNotEmpty())
@@ -32,12 +33,17 @@
                                     </div>
                                 @endforeach
                             @endif
+                            
                         </div>
+<<<<<<< HEAD
                         <button class="bg-slate-700">Submit</button>
                         <a href="{{ route('roles.index') }}"
                             class="bg-gray-500">
                             Cancel
                         </a>
+=======
+                        
+>>>>>>> 392a132ac2a0fedd4b0d7541b32f8f24ce025784
                     </form>
                 </div>
             </div>
