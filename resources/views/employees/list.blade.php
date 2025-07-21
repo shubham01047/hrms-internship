@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-black leading-tight">
-                {{ __('Permissions') }}
+                {{ __('Employees') }}
             </h2>
-            @can('create permissions')
-            <a href="{{ route('permissions.create') }}" class="success-button">Create</a>
-       @endcan
+            @can('create employee')
+                <a href="{{ route('employees.create') }}" class="bg-green-700">Create</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -14,29 +14,32 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
             <div class="p-6 text-black">
+
                 <table>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
                             <th>Created</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($permissions->isNotEmpty())
-                            @foreach ($permissions as $index => $permission)
+                        @if ($employees->isNotEmpty())
+                            @foreach ($employees as $index => $employee)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ ucwords($permission->name) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
+                                    <td>{{ $employee->first_name . ' ' . $employee->last_name }}</td>
+                                    <td>{{ $employee->email }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($employee->created_at)->format('d M, Y') }}</td>
                                     <td>
-                                        @can('edit permissions')
-                                            <a href="{{ route('permissions.edit', $permission->id) }}">Edit</a>
+                                        @can('edit employee')
+                                            <a href="{{ route('employees.edit', $employee->id) }}">Edit</a>
                                         @endcan
-                                        @can('delete permissions')
+                                        @can('delete employee')
                                             <a href="javascript:void(0);"
-                                                onclick="deletePermission({{ $permission->id }})">Delete</a>
+                                                onclick="deleteEmployee({{ $employee->id }})">Delete</a>
                                         @endcan
                                     </td>
                                 </tr>
@@ -45,7 +48,7 @@
                     </tbody>
                 </table>
                 <div class="my-3">
-                    {{ $permissions->links() }}
+                    {{ $employees->links() }}
                 </div>
             </div>
         </div>
@@ -53,11 +56,11 @@
     <x-slot name="script">
         <script type="text/javascript">
             // deletePermission function here
-            function deletePermission(id) {
+            function deleteEmployee(id) {
                 console.log("Calling delete for ID:", id);
-                if (confirm('Are you sure u want to delete "{{ $permission->name }}"?')) {
+                if (confirm('Are you sure u want to delete "{{ $employee->first_name }}"?')) {
                     $.ajax({
-                        url: '{{ route('permissions.destroy') }}',
+                        url: '{{ route('employees.destroy') }}',
                         type: 'DELETE',
                         data: {
                             id: id
@@ -67,7 +70,7 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            window.location.href = '{{ route('permissions.index') }}'
+                            window.location.href = '{{ route('employees.index') }}'
                         }
                     });
                 }

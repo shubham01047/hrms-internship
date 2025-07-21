@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-         <div class="flex justify-between">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Edit Permissions
             </h2>
@@ -13,14 +13,18 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{-- {{ __("You're logged in!") }} --}}
-                    <form action="{{ route('permissions.update',$permission->id) }}" method="POST">
+                    <form action="{{ route('permissions.update', $permission->id) }}" method="POST">
                         @csrf
                         name:
-                        <input type="text" name="name" value="{{ old('name',$permission->name) }}">
+                        <input type="text" name="name" value="{{ old('name', $permission->name) }}">
                         @error('name')
-                            <span>{{ $message }}</span>   
+                            <span>{{ $message }}</span>
                         @enderror
                         <button class="bg-slate-700">Update</button>
+                        <a href="{{ route('permissions.index') }}"
+                            class="bg-gray-500">
+                            Cancel
+                        </a>
                     </form>
                 </div>
             </div>

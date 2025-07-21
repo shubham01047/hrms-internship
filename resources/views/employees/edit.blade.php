@@ -1,0 +1,47 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-black leading-tight">
+                Edit Employees
+            </h2>
+            <a href="{{ route('employees.index') }}" class="bg-green-700">Back</a>
+        </div>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {{-- {{ __("You're logged in!") }} --}}
+                    <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+                        @csrf
+                        <div>
+                            <label for="">First Name:</label>
+                            <input type="text" name="first_name"
+                                value="{{ old('first_name', $employee->first_name) }}">
+                            @error('first_name')
+                                <span>{{ $message }}</span>
+                            @enderror
+                            <label for="">Last Name:</label>
+                            <input type="text" name="last_name" value="{{ old('last_name', $employee->last_name) }}">
+                            @error('last_name')
+                                <span>{{ $message }}</span>
+                            @enderror
+                            <label for="">E-mail:</label>
+                            <input type="text" name="email" value="{{ old('email', $employee->email) }}">
+                            @error('email')
+                                <span>{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button class="bg-slate-700">Update</button>
+                        <a href="{{ route('employees.index') }}"
+                            class="bg-gray-500">
+                            Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</x-app-layout>
