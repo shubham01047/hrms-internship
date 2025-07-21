@@ -15,8 +15,8 @@
                     {{-- {{ __("You're logged in!") }} --}}
                     <form action="{{ route('permissions.store') }}" method="POST">
                         @csrf
-                        name:
-                        <input type="text" name="name" >
+                        <label for="name" class="lable">Name</label>
+                        <input type="text" name="name" class="input-field">
                         @error('name')
                             <span>{{ $message }}</span>   
                         @enderror
