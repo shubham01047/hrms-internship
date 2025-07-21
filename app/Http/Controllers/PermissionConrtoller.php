@@ -15,8 +15,8 @@ class PermissionConrtoller extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view permissions', only: ['index']),
             new Middleware('permission:edit permissions', only: ['edit']),
-            new Middleware('permission:view permissions', only: ['create']),
-            new Middleware('permission:view permissions', only: ['destroy']),
+            new Middleware('permission:create permissions', only: ['create']),
+            new Middleware('permission:delete permissions', only: ['destroy']),
         ];
     }
     /**
@@ -47,7 +47,9 @@ class PermissionConrtoller extends Controller implements HasMiddleware
             'name' => 'required|unique:permissions|min:4'
         ]);
         if ($validator->passes()) {
-            Permission::create(['name' => $request->name]);
+            Permission::create([
+                'name' => strtolower($request->name)
+            ]);
             return redirect()->route('permissions.index')->with('success', 'Permission added sucessfully');
         } else {
             return redirect()->route('permissions.create')->withInput()->withErrors($validator);
@@ -75,8 +77,7 @@ class PermissionConrtoller extends Controller implements HasMiddleware
             'name' => 'required|min:4|unique:permissions,name,' . $id . ',id'
         ]);
         if ($validator->passes()) {
-
-            $permission->name = $request->name;
+            $permission->name = strtolower($request->name);
             $permission->save();
             return redirect()->route('permissions.index')->with('success', 'Permission updated sucessfully');
         } else {

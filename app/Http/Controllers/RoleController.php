@@ -16,8 +16,8 @@ class RoleController extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view roles', only: ['index']),
             new Middleware('permission:edit roles', only: ['edit']),
-            new Middleware('permission:view roles', only: ['create']),
-            new Middleware('permission:view roles', only: ['destroy']),
+            new Middleware('permission:create roles', only: ['create']),
+            new Middleware('permission:delete roles', only: ['destroy']),
         ];
     }
     /**

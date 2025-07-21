@@ -77,12 +77,12 @@ class UserController extends Controller implements HasMiddleware
     {
         $users = User::findOrFail($id);
 
-        $validate = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,' . $id . ',id'
         ]);
-        if ($validate->fails()) {
-            return redirect()->route('users.edit', $id)->withInput()->withErrors($validate);
+        if ($validator->fails()) {
+            return redirect()->route('users.edit', $id)->withInput()->withErrors($validator);
         }
         $users->name = $request->name;
         $users->email = $request->email;

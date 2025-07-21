@@ -1,14 +1,17 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\GoogleController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrmsController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CaseInsensitivePermission;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +23,7 @@ Route::get('/auth/google/callback', [GoogleController::class, 'verify']);
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -45,6 +49,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    //Employee Route
+    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::post('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/employees', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
     //Users Route
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

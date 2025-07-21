@@ -25,15 +25,17 @@
                     </thead>
                     <tbody>
                         @if ($users->isNotEmpty())
-                            @foreach ($users as $user)
+                            @foreach ($users as $index => $user)
                                 <tr>
-                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</td>
                                     <td>
-                                        <a href="{{ route('users.edit', $user->id) }}">Edit</a>
+                                        @can('edit users')
+                                            <a href="{{ route('users.edit', $user->id) }}">Edit</a>
+                                        @endcan
                                         {{-- <a href="javascript:void(0);"
                                             onclick="deleteRole({{ $user->id }})">Delete</a> --}}
                                     </td>
@@ -51,7 +53,6 @@
     <x-slot name="script">
         <script type="text/javascript">
             // deletePermission function here
-            
         </script>
     </x-slot>
 </x-app-layout>

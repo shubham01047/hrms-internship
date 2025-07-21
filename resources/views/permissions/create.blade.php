@@ -21,6 +21,10 @@
                             <span>{{ $message }}</span>   
                         @enderror
                         <button class="success-button ml-10">Create</button>
+                        <a href="{{ route('permissions.index') }}"
+                            class="bg-gray-500">
+                            Cancel
+                        </a>
                     </form>
                 </div>
             </div>
