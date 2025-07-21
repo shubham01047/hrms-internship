@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Create Roles
             </h2>
-            <a href="{{ route('roles.index') }}" class="danger-button">Back</a>
+            <a href="{{ route('roles.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -38,7 +38,7 @@
 
                         <button class="bg-slate-700">Submit</button>
                         <a href="{{ route('roles.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button">
                             Cancel
                         </a>
 

@@ -5,8 +5,8 @@
                 {{ __('Permissions') }}
             </h2>
             @can('create permissions')
-            <a href="{{ route('permissions.create') }}" class="success-button">Create</a>
-       @endcan
+                <a href="{{ route('permissions.create') }}" class="success-button">Create</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -14,33 +14,41 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
             <div class="p-6 text-black">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Created</th>
-                            <th>Action</th>
+                <table
+                    class="min-w-full border border-gray-600 rounded-lg shadow-md overflow-hidden text-sm text-left text-gray-900">
+                    <thead class="bg-red-600 text-white uppercase text-xs tracking-wider">
+                        <tr class="border-b border-gray-800">
+                            <th class="px-6 py-3">#</th>
+                            <th class="px-6 py-3">Name</th>
+                            <th class="px-6 py-3">Created</th>
+                            <th class="px-6 py-3">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-700 bg-white">
                         @if ($permissions->isNotEmpty())
                             @foreach ($permissions as $index => $permission)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ ucwords($permission->name) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
-                                    <td>
+                                <tr class="hover:bg-gray-100 transition">
+                                    <td class="px-6 py-4">{{ $index + 1 }}</td>
+                                    <td class="px-6 py-4">{{ ucwords($permission->name) }}</td>
+                                    <td class="px-6 py-4">
+                                        {{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
+                                    <td class="px-6 py-4 space-x-2">
                                         @can('edit permissions')
-                                            <a href="{{ route('permissions.edit', $permission->id) }}">Edit</a>
+                                            <a href="{{ route('permissions.edit', $permission->id) }}"
+                                                class="text-blue-600 hover:underline font-medium">Edit</a>
                                         @endcan
                                         @can('delete permissions')
-                                            <a href="javascript:void(0);"
-                                                onclick="deletePermission({{ $permission->id }})">Delete</a>
+                                            <a href="javascript:void(0);" onclick="deletePermission({{ $permission->id }})"
+                                                class="danger-button">Delete</a>
                                         @endcan
                                     </td>
                                 </tr>
                             @endforeach
+                        @else
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">No permissions found.
+                                </td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>
