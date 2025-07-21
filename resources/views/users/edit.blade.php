@@ -34,13 +34,16 @@
                                     <div class="mt-3">
                                         <input {{ $hasRoles->contains($role->id) ? 'checked' : '' }} type="checkbox"
                                             name="role[]" value="{{ $role->name }}" id="role-{{ $role->id }}">
-
                                         <label for="role-{{ $role->id }}">{{ $role->name }}</label>
                                     </div>
                                 @endforeach
                             @endif
                         </div>
                         <button class="bg-slate-700">Submit</button>
+                        <a href="{{ route('users.index') }}"
+                            class="bg-gray-500">
+                            Cancel
+                        </a>
                     </form>
                 </div>
             </div>

@@ -36,6 +36,10 @@
                             @endif
                         </div>
                         <button class="bg-slate-700">Submit</button>
+                        <a href="{{ route('roles.index') }}"
+                            class="bg-gray-500">
+                            Cancel
+                        </a>
                     </form>
                 </div>
             </div>

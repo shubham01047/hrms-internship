@@ -4,7 +4,9 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Roles') }}
             </h2>
+            @can('create roles')
             <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
+        @endcan
         </div>
     </x-slot>
 
@@ -24,16 +26,20 @@
                     </thead>
                     <tbody>
                         @if ($roles->isNotEmpty())
-                            @foreach ($roles as $role)
+                            @foreach ($roles as $index => $role)
                                 <tr>
-                                    <td>{{ $role->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $role->name }}</td>
                                     <td>{{ $role->permissions->pluck('name')->implode(', ') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
                                     <td>
-                                        <a href="{{ route('roles.edit', $role->id) }}">Edit</a>
-                                        <a href="javascript:void(0);"
-                                            onclick="deleteRole({{ $role->id }})">Delete</a>
+                                        @can('edit roles')
+                                            <a href="{{ route('roles.edit', $role->id) }}">Edit</a>
+                                        @endcan
+                                        @can('delete roles')
+                                            <a href="javascript:void(0);"
+                                                onclick="deleteRole({{ $role->id }})">Delete</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
