@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Roles') }}
             </h2>
-            <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
+            <a href="{{ route('roles.create') }}" class="success-button">Create</a>
         </div>
     </x-slot>
 
