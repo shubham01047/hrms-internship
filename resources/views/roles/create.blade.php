@@ -35,15 +35,13 @@
                             @endif
                             
                         </div>
-<<<<<<< HEAD
+
                         <button class="bg-slate-700">Submit</button>
                         <a href="{{ route('roles.index') }}"
                             class="bg-gray-500">
                             Cancel
                         </a>
-=======
-                        
->>>>>>> 392a132ac2a0fedd4b0d7541b32f8f24ce025784
+
                     </form>
                 </div>
             </div>

@@ -11,7 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\CaseInsensitivePermission;
+// use App\Http\Middleware\CaseInsensitivePermission;
 
 Route::get('/', function () {
     return view('welcome');
