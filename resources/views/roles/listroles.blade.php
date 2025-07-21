@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Roles') }}
             </h2>
-            <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
+            <a href="{{ route('roles.create') }}" class="success-button">Create</a>
         </div>
     </x-slot>
 
@@ -30,11 +30,11 @@
                                     <td>{{ $role->name }}</td>
                                     <td>{{ $role->permissions->pluck('name')->implode(', ') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
-                                    {{-- <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}">Edit</a>
+                                    <td>
+                                        <a href="{{ route('roles.edit', $role->id) }}">Edit</a>
                                         <a href="javascript:void(0);"
-                                            onclick="deletePermission({{ $permission->id }})">Delete</a>
-                                    </td> --}}
+                                            onclick="deleteRole({{ $role->id }})">Delete</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         @endif
@@ -49,11 +49,11 @@
     <x-slot name="script">
         <script type="text/javascript">
             // deletePermission function here
-            function deletePermission(id) {
+            function deleteRole(id) {
                 console.log("Calling delete for ID:", id);
-                if (confirm("Are you sure u want to delete?")) {
+                if (confirm('Are you sure u want to delete "{{ $role->name }}"?')) {
                     $.ajax({
-                        url: '{{ route('permissions.destroy') }}',
+                        url: '{{ route('roles.destroy') }}',
                         type: 'DELETE',
                         data: {
                             id: id
@@ -63,7 +63,7 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            window.location.href = '{{ route('permissions.index') }}'
+                            window.location.href = '{{ route('roles.index') }}'
                         }
                     });
                 }

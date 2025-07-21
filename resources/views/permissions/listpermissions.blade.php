@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Permissions') }}
             </h2>
-            <a href="{{ route('permissions.create') }}" class="bg-green-700">Create</a>
+            <a href="{{ route('permissions.create') }}" class="success-button">Create</a>
         </div>
     </x-slot>
 
@@ -46,26 +46,26 @@
     </div>
     <x-slot name="script">
         <script type="text/javascript">
-                // deletePermission function here
-                function deletePermission(id) {
-                    console.log("Calling delete for ID:", id);
-                    if (confirm("Are you sure u want to delete?")) {
-                        $.ajax({
-                            url: '{{ route("permissions.destroy") }}',
-                            type: 'DELETE',
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                window.location.href = '{{ route("permissions.index") }}'
-                            }
-                        });
-                    }
+            // deletePermission function here
+            function deletePermission(id) {
+                console.log("Calling delete for ID:", id);
+                if (confirm('Are you sure u want to delete "{{ $permission->name }}"?')) {
+                    $.ajax({
+                        url: '{{ route('permissions.destroy') }}',
+                        type: 'DELETE',
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            window.location.href = '{{ route('permissions.index') }}'
+                        }
+                    });
                 }
+            }
         </script>
     </x-slot>
 </x-app-layout>
