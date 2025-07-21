@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Edit Permissions
             </h2>
-            <a href="{{ route('permissions.index') }}" class="danger-button">Back</a>
+            <a href="{{ route('permissions.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -15,14 +15,14 @@
                     {{-- {{ __("You're logged in!") }} --}}
                     <form action="{{ route('permissions.update', $permission->id) }}" method="POST">
                         @csrf
-                        name:
-                        <input type="text" name="name" value="{{ old('name', $permission->name) }}">
+                        <label for="name" class="lable">Name:</label>
+                        <input type="text" name="name" value="{{ old('name', $permission->name) }}" class="input-field">
                         @error('name')
                             <span>{{ $message }}</span>
                         @enderror
-                        <button class="bg-slate-700">Update</button>
+                        <button class="success-button ml-5">Update</button>
                         <a href="{{ route('permissions.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button">
                             Cancel
                         </a>
                     </form>
