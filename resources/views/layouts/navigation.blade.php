@@ -13,7 +13,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                    @php
+                        $role = strtolower(Auth::user()->roles->pluck('name')->first()) ; 
+                        $routeName = ($role === 'Human Resource') ? 'hr.dashboard' : strtolower($role) . '.dashboard';
+                    @endphp
+                    <x-nav-link href="route($routeName) " :active="request()->routeIs('dashboard')"
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -103,7 +107,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-300 font-semibold">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                class="text-white hover:text-gray-300 font-semibold">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
