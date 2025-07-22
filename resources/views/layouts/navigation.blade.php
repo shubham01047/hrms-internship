@@ -17,14 +17,30 @@
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Permissions') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Roles') }}
-                    </x-nav-link>
+                    @can('view permissions')
+                        <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Permissions') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view roles')
+                        <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Roles') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view employee')
+                        <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')"
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Employees') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view users')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -34,7 +50,8 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:text-red-900 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div>{{ Auth::user()->name }} ({{ Auth::user()->roles->pluck('name')->implode(', ') }})
+                            </div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +86,7 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-red-600 hover:text-red-800 hover:bg-red-100 focus:outline-none focus:bg-red-100 focus:text-red-800 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-md text-white-600 hover:text-red-800 hover:bg-red-100 focus:outline-none focus:bg-red-100 focus:text-red-800 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -78,6 +95,7 @@
                             stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
+
             </div>
         </div>
     </div>
@@ -85,22 +103,55 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-red-700 hover:text-red-800">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-300 font-semibold">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @can('view permissions')
+                <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Permissions') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view roles')
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Roles') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view employee')
+                <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Employees') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view users')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+            @endcan
+
+
         </div>
+
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-red-200">
             <div class="px-4">
-                <div class="font-medium text-base text-red-700">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-red-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-white-700">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-white-500">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')" class="text-red-600 hover:text-red-800">
+                <x-responsive-nav-link :href="route('profile.edit')" class="text-white-600 hover:text-red-800">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -108,9 +159,10 @@
 
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();"
-                        class="text-red-600 hover:text-red-800">
+                        class="text-white-600 hover:text-red-800">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
+
                 </form>
             </div>
         </div>

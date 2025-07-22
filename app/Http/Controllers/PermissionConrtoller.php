@@ -5,15 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PermissionConrtoller extends Controller
+class PermissionConrtoller extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view permissions', only: ['index']),
+            new Middleware('permission:edit permissions', only: ['edit']),
+            new Middleware('permission:create permissions', only: ['create']),
+            new Middleware('permission:delete permissions', only: ['destroy']),
+        ];
+    }
     /**
      * Display Permissions Page.
      */
     public function index()
     {
-        $permissions = Permission::orderBy('created_at', 'DESC')->paginate(10);
+        $permissions = Permission::orderBy('created_at', 'DESC')->paginate(5);
         return view('permissions.listpermissions', [
             'permissions' => $permissions
         ]);
@@ -36,7 +47,9 @@ class PermissionConrtoller extends Controller
             'name' => 'required|unique:permissions|min:4'
         ]);
         if ($validator->passes()) {
-            Permission::create(['name' => $request->name]);
+            Permission::create([
+                'name' => strtolower($request->name)
+            ]);
             return redirect()->route('permissions.index')->with('success', 'Permission added sucessfully');
         } else {
             return redirect()->route('permissions.create')->withInput()->withErrors($validator);
@@ -64,8 +77,7 @@ class PermissionConrtoller extends Controller
             'name' => 'required|min:4|unique:permissions,name,' . $id . ',id'
         ]);
         if ($validator->passes()) {
-
-            $permission->name = $request->name;
+            $permission->name = strtolower($request->name);
             $permission->save();
             return redirect()->route('permissions.index')->with('success', 'Permission updated sucessfully');
         } else {

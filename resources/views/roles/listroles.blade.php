@@ -4,7 +4,10 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 {{ __('Roles') }}
             </h2>
-            <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a>
+
+            @can('create roles')
+                <a href="{{ route('roles.create') }}" class="success-button">Create</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -12,34 +15,62 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
             <div class="p-6 text-black">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Permissions</th>
-                            <th>Created</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($roles->isNotEmpty())
-                            @foreach ($roles as $role)
+                <div class="overflow-x-auto">
+                    <table
+                        class="min-w-full border border-gray-600 rounded-lg shadow-md text-sm text-left text-gray-900">
+                        <thead class="bg-red-600 text-white uppercase text-xs tracking-wider">
+                            <tr class="border-b border-gray-800">
+                                <th class="px-6 py-3">#</th>
+                                <th class="px-6 py-3">Name</th>
+                                <th class="px-6 py-3">Permissions</th>
+                                <th class="px-6 py-3">Created</th>
+                                <th class="px-6 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-300 bg-white">
+                            @if ($roles->isNotEmpty())
+                                @foreach ($roles as $index => $role)
+                                    <tr class="hover:bg-gray-100 transition">
+                                        <td class="px-6 py-4">{{ $index + 1 }}</td>
+                                        <td class="px-6 py-4 font-medium">{{ $role->name }}</td>
+                                        <td class="px-6 py-4 text-gray-700">
+                                            {{ $role->permissions->pluck('name')->implode(', ') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex space-x-2">
+                                                @can('edit roles')
+                                                    <a href="{{ route('roles.edit', $role->id) }}"
+                                                        class="inline b-5 px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
+                                                        
+                                                        <x-pencil/>
+                                                        Edit
+                                                    </a>
+                                                @endcan
+                                                @can('delete roles')
+                                                    <a href="javascript:void(0);" onclick="deleteRole({{ $role->id }})"
+                                                        class="inline-block px-3 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition ">
+
+                                                        <x-trashcan />
+                                                        Delete
+                                                    </a>
+                                                @endcan
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>{{ $role->permissions->pluck('name')->implode(', ') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
-                                    {{-- <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}">Edit</a>
-                                        <a href="javascript:void(0);"
-                                            onclick="deletePermission({{ $permission->id }})">Delete</a>
-                                    </td> --}}
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">No roles found.</td>
                                 </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+
                 <div class="my-3">
                     {{ $roles->links() }}
                 </div>
@@ -49,11 +80,11 @@
     <x-slot name="script">
         <script type="text/javascript">
             // deletePermission function here
-            function deletePermission(id) {
+            function deleteRole(id) {
                 console.log("Calling delete for ID:", id);
-                if (confirm("Are you sure u want to delete?")) {
+                if (confirm('Are you sure u want to delete "{{ $role->name }}"?')) {
                     $.ajax({
-                        url: '{{ route('permissions.destroy') }}',
+                        url: '{{ route('roles.destroy') }}',
                         type: 'DELETE',
                         data: {
                             id: id
@@ -63,7 +94,7 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            window.location.href = '{{ route('permissions.index') }}'
+                            window.location.href = '{{ route('roles.index') }}'
                         }
                     });
                 }
