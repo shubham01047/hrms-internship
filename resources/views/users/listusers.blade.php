@@ -42,7 +42,7 @@
                                 @can('edit users')
                                     <a href="{{ route('users.edit', $user->id) }}"
                                        class="inline-block px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
-                                        Edit
+                                        <x-pencil/>Edit
                                     </a>
                                 @endcan
                                 {{-- 
@@ -50,7 +50,7 @@
                                     <a href="javascript:void(0);"
                                        onclick="deleteUser({{ $user->id }})"
                                        class="inline-block px-3 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition">
-                                        Delete
+                                        <x-trashcan/>Delete
                                     </a>
                                 @endcan
                                 --}}

@@ -32,14 +32,14 @@
                                     <td class="px-6 py-4">{{ ucwords($permission->name) }}</td>
                                     <td class="px-6 py-4">
                                         {{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
-                                    <td class="px-6 py-4 space-x-2">
+                                    <td class="flex px-6 py-4 space-x-2">
                                         @can('edit permissions')
                                             <a href="{{ route('permissions.edit', $permission->id) }}"
-                                                class="text-blue-600 hover:underline font-medium">Edit</a>
+                                                class="inline b-5 px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition"><x-pencil/>Edit</a>
                                         @endcan
                                         @can('delete permissions')
                                             <a href="javascript:void(0);" onclick="deletePermission({{ $permission->id }})"
-                                                class="danger-button">Delete</a>
+                                                class="inline-block px-3 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"><x-trashcan />Delete</a>
                                         @endcan
                                     </td>
                                 </tr>
@@ -53,8 +53,8 @@
                     </tbody>
                 </table>
                 <div class="my-3">
-                    {{ $permissions->links() }}
-                </div>
+    {{ $permissions->links() }}
+</div>
             </div>
         </div>
     </div>

@@ -19,27 +19,27 @@
                     </x-nav-link>
                     @can('view permissions')
                         <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Permissions') }}
-                    </x-nav-link>
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Permissions') }}
+                        </x-nav-link>
                     @endcan
                     @can('view roles')
                         <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Roles') }}
-                    </x-nav-link>
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Roles') }}
+                        </x-nav-link>
                     @endcan
                     @can('view employee')
                         <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Employees') }}
-                    </x-nav-link>
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Employees') }}
+                        </x-nav-link>
                     @endcan
                     @can('view users')
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
-                        class="text-red-700 hover:text-red-800 font-semibold">
-                        {{ __('Users') }}
-                    </x-nav-link>
+                            class="text-red-700 hover:text-red-800 font-semibold">
+                            {{ __('Users') }}
+                        </x-nav-link>
                     @endcan
                 </div>
             </div>
@@ -50,7 +50,8 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:text-red-900 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }} ({{ Auth::user()->roles->pluck('name')->implode(', ') }})</div>
+                            <div>{{ Auth::user()->name }} ({{ Auth::user()->roles->pluck('name')->implode(', ') }})
+                            </div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +95,7 @@
                             stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                
+
             </div>
         </div>
     </div>
@@ -102,12 +103,42 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white-700 hover:text-red-800">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-300 font-semibold">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @can('view permissions')
+                <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Permissions') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view roles')
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Roles') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view employee')
+                <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Employees') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('view users')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                    class="text-white hover:text-gray-300 font-semibold">
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+            @endcan
+
+
         </div>
 
-        
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-red-200">
@@ -121,6 +152,7 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -130,6 +162,7 @@
                         class="text-white-600 hover:text-red-800">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
+
                 </form>
             </div>
         </div>
