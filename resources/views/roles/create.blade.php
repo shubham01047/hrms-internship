@@ -36,7 +36,7 @@
                             
                         </div>
 
-                        <button class="bg-slate-700">Submit</button>
+                        <button class="success-button">Submit</button>
                         <a href="{{ route('roles.index') }}"
                             class="danger-button">
                             Cancel
