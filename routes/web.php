@@ -65,6 +65,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
     // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    //Redirection of Admin, HR, Manager and Employee
+    Route::view('/admin/dashboard', 'admin_dashboard')->name('admin.dashboard');
+    Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
+    Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
+    Route::view('/employee/dashboard', 'employee_dashboard')->name('employee.dashboard');
 });
 
 require __DIR__ . '/auth.php';
