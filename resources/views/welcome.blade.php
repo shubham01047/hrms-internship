@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome | {{$company->system_title}}</title>
+    <title>Welcome | {{ $company->system_title }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-white text-red-800 min-h-screen flex flex-col justify-between">
@@ -44,27 +44,32 @@
         </header>
 
         <!-- Welcome Content -->
-        
         <main class="flex-1 flex flex-col items-center justify-center text-center px-4 py-12">
-            
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-up text-red-700">
-                Welcome to {{$company->name}}
+                Welcome to {{ $company->name }}
             </h1>
             <p class="text-lg text-red-600 max-w-2xl mb-8 animate-fade-in-up delay-200">
-                {{$company->description}}
+                {{ $company->description }}
             </p>
 
             <div class="flex flex-col md:flex-row gap-6 animate-fade-in-up delay-300">
-                <a href="{{ route('login') }}"
-                   class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
-                    Log In
-                </a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}"
-                       class="bg-white text-red-600 border border-red-600 hover:bg-red-50 px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
-                        Register
+                @auth
+                    <a href="{{ url('/dashboard') }}"
+                       class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
+                        Go to Dashboard
                     </a>
-                @endif
+                @else
+                    <a href="{{ route('login') }}"
+                       class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
+                        Log In
+                    </a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}"
+                           class="bg-white text-red-600 border border-red-600 hover:bg-red-50 px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
+                            Register
+                        </a>
+                    @endif
+                @endauth
             </div>
         </main>
 
