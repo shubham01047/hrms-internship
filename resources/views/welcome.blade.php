@@ -27,7 +27,6 @@
                             Dashboard
                         </a>
                     @else
-                      
                         <a href="{{ route('login') }}"
                            class="px-4 py-2 text-sm border border-red-400 text-red-700 rounded hover:bg-red-100 transition">
                             Log in
@@ -45,7 +44,9 @@
         </header>
 
         <!-- Welcome Content -->
+        
         <main class="flex-1 flex flex-col items-center justify-center text-center px-4 py-12">
+            
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-up text-red-700">
                 Welcome to {{$company->name}}
             </h1>
