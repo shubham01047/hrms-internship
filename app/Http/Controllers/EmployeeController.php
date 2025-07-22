@@ -25,7 +25,7 @@ class EmployeeController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $employees = Employee::latest()->paginate(10);
+        $employees = Employee::latest()->paginate(20);
         return view('employees.list', [
             'employees' => $employees
         ]);
