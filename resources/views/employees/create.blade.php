@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-black leading-tight">
                 Create Employee
             </h2>
-            <a href="{{ route('employees.index') }}" class="bg-green-700">Back</a>
+            <a href="{{ route('employees.index') }}" class="back-button">Back</a>
         </div>
     </x-slot>
 
@@ -14,26 +14,26 @@
                 <div class="p-6 text-gray-900">
                     <form action="{{ route('employees.store') }}" method="POST">
                         @csrf
-                        <div>
-                            <label for="">First Name:</label>
-                            <input type="text" name="first_name" value="{{ old('first_name') }}">
+                        <div class="my-5">
+                            <label for="f-name" class="lable">First Name:</label>
+                            <input type="text" name="first_name" value="{{ old('first_name') }}" class="input-field">
                             @error('first_name')
                                 <span>{{ $message }}</span>
                             @enderror
-                            <label for="">Last Name:</label>
-                            <input type="text" name="last_name" value="{{ old('last_name') }}">
+                            <label for="l-name" class="lable">Last Name:</label>
+                            <input type="text" name="last_name" value="{{ old('last_name') }}" class="input-field">
                             @error('last_name')
                                 <span>{{ $message }}</span>
                             @enderror
-                            <label for="">E-mail:</label>
-                            <input type="text" name="email" value="{{ old('email') }}">
+                            <label for="email" class="lable">E-mail:</label>
+                            <input type="text" name="email" value="{{ old('email') }}" class="input-field">
                             @error('email')
                                 <span>{{ $message }}</span>
                             @enderror
                         </div>
-                        <button class="bg-slate-700">Submit</button>
+                        <button class="success-button">Submit</button>
                         <a href="{{ route('employees.index') }}"
-                            class="bg-gray-500">
+                            class="danger-button">
                             Cancel
                         </a>
                     </form>
