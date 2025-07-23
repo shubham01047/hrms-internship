@@ -37,7 +37,7 @@
                                         <td class="px-6 py-4">{{ $employee->email }}</td>
                                         <td class="px-6 py-4">
                                             {{ \Carbon\Carbon::parse($employee->created_at)->format('d M, Y') }}</td>
-                                        <td class="flex space-x-2 px-6 py-4 space-x-2">
+                                        <td class="flex space-x-2 px-6 py-4">
                                             @can('edit employee')
                                                 <a href="{{ route('employees.edit', $employee->id) }}"
                                                     class="inline  px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition"><x-pencil/>Edit</a>
