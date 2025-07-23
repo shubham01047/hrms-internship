@@ -11,7 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-// use App\Http\Middleware\CaseInsensitivePermission;
+use App\Http\Controllers\LeaveController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,10 +24,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -75,9 +71,20 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-// Route::get('/hrms' , [HrmsController::class , 'index'])->name('index.index');
-// Route::get('/login' , [HrmsController::class , 'login'])->name('login.login');
-// Route::get('/register' , [HrmsController::class , 'register'])->name('login.register'); 
+//Leaves and leaves type routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/leaves', [LeaveController::class, 'index'])->name('leaves.index');
+    Route::get('/leaves/apply', [LeaveController::class, 'create'])->name('leaves.create');
+    Route::post('/leaves', [LeaveController::class, 'store'])->name('leaves.store');
+
+    Route::get('/leaves/manage', [LeaveController::class, 'manage'])->name('leaves.manage');
+    Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
+    Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
+});
+
+// Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])
+//     ->middleware(['auth', 'role:hr|manager']) // optional role middleware
+//     ->name('leaves.approve');
 
 // routes/web.php
 Route::get('/admin/company', [CompanyController::class, 'edit'])->name('company.edit');
