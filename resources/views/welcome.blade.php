@@ -22,7 +22,12 @@
             @if (Route::has('login'))
                 <nav class="flex justify-end space-x-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}"
+                        @php
+                            $role = strtolower(Auth::user()->roles->pluck('name')->first() ?? '');
+                            $role = str_replace(' ', '_', $role); // handle spaces
+                            $dashboardRoute = $role . '.dashboard';
+                        @endphp
+                        <a href="{{ route($dashboardRoute) }}"
                            class="px-4 py-2 text-sm border border-red-400 text-red-700 rounded hover:bg-red-100 transition">
                             Dashboard
                         </a>
@@ -54,7 +59,7 @@
 
             <div class="flex flex-col md:flex-row gap-6 animate-fade-in-up delay-300">
                 @auth
-                    <a href="{{ url('/dashboard') }}"
+                    <a href="{{ route($dashboardRoute) }}"
                        class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:scale-105 duration-300">
                         Go to Dashboard
                     </a>
