@@ -1,407 +1,330 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+  <x-slot name="header">
+      <h2 class="font-semibold text-xl text-black leading-tight">
+          {{ __('Dashboard') }}
+      </h2>
+  </x-slot>
 
-    {{-- Custom styles for this page --}}
-    <style>
-        /* Poppins font is assumed to be loaded by x-app-layout or globally */
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        /* Custom gradient for the header */
-        .header-gradient {
-            background: linear-gradient(135deg, #ff2626, #ff6969); /* Dark blue to light blue */
-        }
+  <div class="py-12">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
+              <div class="p-6 text-black">
 
-        /* Fade-in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
-            opacity: 0; /* Start invisible */
-        }
-        /* Staggered delays for sections */
-        .animate-delay-100 { animation-delay: 0.1s; }
-        .animate-delay-200 { animation-delay: 0.2s; }
-        .animate-delay-300 { animation-delay: 0.3s; }
-        .animate-delay-400 { animation-delay: 0.4s; }
-        .animate-delay-500 { animation-delay: 0.5s; }
-        .animate-delay-600 { animation-delay: 0.6s; }
-        .animate-delay-700 { animation-delay: 0.7s; }
-        .animate-delay-800 { animation-delay: 0.8s; }
-        .animate-delay-900 { animation-delay: 0.9s; }
-        .animate-delay-1000 { animation-delay: 1.0s; }
-    </style>
+                  {{-- employee code --}}
 
-    <div class="py-12 bg-gray-100 min-h-screen"> {{-- Set overall background to gray-100 and ensure min-height --}}
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8"> {{-- Consistent vertical spacing between sections --}}
 
-            <!-- First Row: Header with Gradient and Real-time Clock -->
-            <div class="header-gradient text-white p-6 rounded-xl shadow-lg flex flex-col sm:flex-row justify-between items-center animate-fade-in">
-                <h2 class="text-2xl font-bold">Employee Dashboard</h2>
-                <div id="clock" class="text-xl font-semibold mt-2 sm:mt-0"></div>
-            </div>
+  <main class="p-6 space-y-8 bg-gray-100 min-h-screen">
 
-            <!-- Second Row: Punch In/Out + Attendance Summary -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Punch In / Punch Out Section (Existing) -->
-                <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 animate-fade-in animate-delay-100">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div>
-                            <h2 class="text-lg font-semibold text-gray-800">Work Status</h2>
-                            <p class="text-gray-500">Track your work hours easily</p>
-                            <div class="mt-4 text-gray-700 font-medium">
-                                Total Working Time:
-                                <span id="workTime" class="font-bold text-blue-600 text-lg">00:00:00</span>
-                            </div>
-                        </div>
-                        <div>
-                           <button id="punchButton"
-                                    class="w-full md:w-80 px-10 py-8 text-3xl font-extrabold text-white rounded-full shadow-xl active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4">
-                                    Punch In
-                                </button>
-                        </div>
-                    </div>
-                </div>
+  <!-- Header with Real-time Clock -->
+  <div class="bg-gradient-to-r from-[#ff2626] to-[#ff6969] text-white p-6 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center"> {{-- Added flex-col sm:flex-row for responsiveness --}}
+      <h2 class="text-2xl font-bold mb-2 sm:mb-0">Employee Dashboard</h2>
+      <div id="clock" class="text-3xl font-extrabold text-white tracking-wide"></div>
+  </div>
 
-                <!-- Attendance Summary Card (New) -->
-                <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-200">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Attendance Summary</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <i class="bi bi-person-check-fill text-blue-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Today's Status</h3>
-                            <p class="text-xl font-bold text-blue-600">Present</p>
-                        </div>
-                        <div class="p-3 bg-green-50 rounded-lg border border-green-100">
-                            <i class="bi bi-clock-fill text-green-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Total Hours Worked</h3>
-                            <p class="text-xl font-bold text-green-600">8h 15m</p>
-                        </div>
-                        <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                            <i class="bi bi-arrow-right-circle-fill text-yellow-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Last Punch Time</h3>
-                            <p class="text-xl font-bold text-yellow-600">05:30 PM</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Profile Card -->
+  <div class="bg-white shadow-lg rounded-xl p-6 flex items-center gap-4 animate-fade-in animate-delay-50">
+      <img src="/placeholder.svg?height=64&width=64" alt="Employee Profile" class="w-16 h-16 rounded-full object-cover border-2 border-red-400 shadow-md">
+      <div>
+          <p class="text-gray-600 text-sm">Hi,</p>
+          <h3 class="text-xl font-bold text-gray-800">Deepan Gain</h3>
+          <p class="text-gray-600 text-sm">Software Engineer</p>
+      </div>
+  </div>
 
-            <!-- Manage Breaks (Existing - now a full-width section) -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 animate-fade-in animate-delay-300">
-                <h2 class="text-lg font-semibold mb-4 text-gray-800">Manage Breaks</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Morning Tea Break -->
-                    <button data-break="Morning Tea" class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-3 rounded-lg shadow-md font-semibold break-btn hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200">
-                        Start Morning Tea Break
-                    </button>
-                    <!-- Lunch Break -->
-                    <button data-break="Lunch" class="bg-gradient-to-r from-pink-400 to-pink-600 text-white px-4 py-3 rounded-lg shadow-md font-semibold break-btn hover:from-pink-500 hover:to-pink-700 transition-all duration-200">
-                        Start Lunch Break
-                    </button>
-                    <!-- Evening Tea Break -->
-                    <button data-break="Evening Tea" class="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-4 py-3 rounded-lg shadow-md font-semibold break-btn hover:from-purple-500 hover:to-purple-700 transition-all duration-200">
-                        Start Evening Tea Break
-                    </button>
-                    <!-- Custom Break -->
-                    <button data-break="Custom" class="bg-gradient-to-r from-gray-500 to-gray-700 text-white px-4 py-3 rounded-lg shadow-md font-semibold break-btn hover:from-gray-600 hover:to-gray-800 transition-all duration-200">
-                        Start Custom Break
-                    </button>
-                </div>
-                <!-- Break Status & Timer -->
-                <div id="breakStatus" class="mt-6 text-gray-800 font-semibold text-lg">
-                    No break active
-                </div>
-                <div id="breakTimer" class="text-2xl text-blue-600 font-bold mt-2">00:00:00</div>
-            </div>
+  <!-- Quick Info Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in animate-delay-150"> {{-- Responsive grid --}}
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/></svg>
+          <h3 class="text-gray-600 text-lg font-semibold">Total Tasks</h3>
+          <p class="text-4xl font-extrabold text-red-600">12</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+          <h3 class="text-gray-600 text-lg font-semibold">Pending Tasks</h3>
+          <p class="text-4xl font-extrabold text-yellow-600">3</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <h3 class="text-gray-600 text-lg font-semibold">Completed Tasks</h3>
+          <p class="text-4xl font-extrabold text-green-600">9</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/></svg>
+          <h3 class="text-gray-600 text-lg font-semibold">Projects</h3>
+          <p class="text-4xl font-extrabold text-pink-600">4</p>
+      </div>
+  </div>
 
-            <!-- Third Row: Leave Overview + Quick Actions -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Leave Overview Card (New) -->
-                <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-400">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Leave Overview</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                        <div class="p-3 bg-purple-50 rounded-lg border border-purple-100">
-                            <i class="bi bi-calendar-minus-fill text-purple-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Remaining Leaves</h3>
-                            <p class="text-xl font-bold text-purple-600">12</p>
-                        </div>
-                        <div class="p-3 bg-red-50 rounded-lg border border-red-100">
-                            <i class="bi bi-hourglass-split text-red-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Pending Requests</h3>
-                            <p class="text-xl font-bold text-red-600">2</p>
-                        </div>
-                        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <i class="bi bi-calendar-event-fill text-blue-600 text-3xl mb-2"></i>
-                            <h3 class="font-semibold text-gray-700">Upcoming Holidays</h3>
-                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
-                                <li>July 25: Company Picnic</li>
-                                <li>Aug 15: Independence Day</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+  <!-- Punch In / Punch Out Section -->
+  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-200">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div>
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Work Status</h2>
+              <p class="text-gray-600 text-lg">Track your work hours easily</p>
+              <div class="mt-6 text-gray-700 font-medium text-xl">
+                  Total Working Time:
+                  <span id="workTime" class="font-extrabold text-red-600 text-3xl ml-2">00:00:00</span>
+              </div>
+          </div>
+          <div>
+             <button id="punchButton"
+                  class="w-80 px-10 py-8 text-3xl font-extrabold text-white bg-green-600 rounded-full shadow-2xl hover:bg-green-700 hover:shadow-red-500/50 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-400">
+                  Punch In
+              </button>
+          </div>
+      </div>
+  </div>
 
-                <!-- Quick Actions (New) -->
-                <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-500">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <a href="#" class="flex items-center justify-center p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-200 hover:scale-105">
-                            <i class="bi bi-calendar-plus-fill text-2xl mr-2"></i>
-                            Apply for Leave
-                        </a>
-                        <a href="#" class="flex items-center justify-center p-4 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:from-green-600 hover:to-green-800 transition-all duration-200 hover:scale-105">
-                            <i class="bi bi-file-earmark-text-fill text-2xl mr-2"></i>
-                            View Payslip
-                        </a>
-                        <a href="#" class="flex items-center justify-center p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold shadow-md hover:from-purple-600 hover:to-purple-800 transition-all duration-200 hover:scale-105">
-                            <i class="bi bi-person-circle text-2xl mr-2"></i>
-                            Update Profile
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <!-- Manage Breaks -->
+  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-300">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Breaks</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> {{-- Responsive grid --}}
+          <!-- Morning Tea Break -->
+          <button data-break="Morning Tea" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-yellow-500 hover:bg-yellow-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
+              Start Morning Tea Break
+          </button>
 
-            <!-- Fourth Row: Upcoming Events / Holidays + Announcements -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Upcoming Events / Holidays (New) -->
-                <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-600">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Upcoming Events</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex-shrink-0 text-center">
-                                <div class="text-xl font-bold text-blue-600">25</div>
-                                <div class="text-xs text-gray-500">JUL</div>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800">Annual Company Picnic</h3>
-                                <p class="text-sm text-gray-600">Central Park, 10:00 AM - 4:00 PM</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex-shrink-0 text-center">
-                                <div class="text-xl font-bold text-green-600">01</div>
-                                <div class="text-xs text-gray-500">AUG</div>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800">Team Building Workshop</h3>
-                                <p class="text-sm text-gray-600">Conference Room A, 09:00 AM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <!-- Lunch Break -->
+          <button data-break="Lunch" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-pink-500 hover:bg-pink-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
+              Start Lunch Break
+          </button>
 
-                <!-- Announcements (New) -->
-                <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-700">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Company Announcements</h2>
-                    <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-start gap-3">
-                            <i class="bi bi-megaphone-fill text-blue-500 text-xl flex-shrink-0 mt-1"></i>
-                            <div>
-                                <p class="font-semibold">New HR Policy Update</p>
-                                <p class="text-sm">Please review the updated HR policy document in the shared drive by end of week.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="bi bi-gift-fill text-green-500 text-xl flex-shrink-0 mt-1"></i>
-                            <div>
-                                <p class="font-semibold">Employee of the Month!</p>
-                                <p class="text-sm">Congratulations to Jane Doe for being recognized as Employee of the Month!</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+          <!-- Evening Tea Break -->
+          <button data-break="Evening Tea" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-purple-500 hover:bg-purple-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
+              Start Evening Tea Break
+          </button>
 
-            <!-- Statistics Cards (Existing - below the main grid rows) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in animate-delay-800">
-                <div class="bg-white p-6 shadow-lg rounded-xl text-center hover:shadow-xl transition-all duration-200 hover:scale-105">
-                    <div class="text-blue-600 mb-3">
-                        <i class="bi bi-list-task text-4xl"></i> {{-- Icon for Tasks --}}
-                    </div>
-                    <h3 class="text-gray-600 text-lg font-semibold mb-2">Tasks</h3>
-                    <p class="text-3xl font-bold text-blue-600">12</p>
-                </div>
-                <div class="bg-white p-6 shadow-lg rounded-xl text-center hover:shadow-xl transition-all duration-200 hover:scale-105">
-                    <div class="text-purple-600 mb-3">
-                        <i class="bi bi-folder text-4xl"></i> {{-- Icon for Projects --}}
-                    </div>
-                    <h3 class="text-gray-600 text-lg font-semibold mb-2">Projects</h3>
-                    <p class="text-3xl font-bold text-purple-600">4</p>
-                </div>
-                <div class="bg-white p-6 shadow-lg rounded-xl text-center hover:shadow-xl transition-all duration-200 hover:scale-105">
-                    <div class="text-yellow-600 mb-3">
-                        <i class="bi bi-hourglass-split text-4xl"></i> {{-- Icon for Pending Tasks --}}
-                    </div>
-                    <h3 class="text-gray-600 text-lg font-semibold mb-2">Pending Tasks</h3>
-                    <p class="text-3xl font-bold text-yellow-600">3</p>
-                </div>
-                <div class="bg-white p-6 shadow-lg rounded-xl text-center hover:shadow-xl transition-all duration-200 hover:scale-105">
-                    <div class="text-green-600 mb-3">
-                        <i class="bi bi-check-circle text-4xl"></i> {{-- Icon for Completed --}}
-                    </div>
-                    <h3 class="text-gray-600 text-lg font-semibold mb-2">Completed</h3>
-                    <p class="text-3xl font-bold text-green-600">9</p>
-                </div>
-            </div>
+          <!-- Custom Break -->
+          <button data-break="Custom" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-gray-500 hover:bg-gray-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
+              Start Custom Break
+          </button>
+      </div>
 
-            <!-- Recent Activities / Notifications (Existing - now a full-width section) -->
-            <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-900">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Activities</h2>
-                <ul class="space-y-3">
-                    <li class="flex items-center gap-3 text-gray-700">
-                        <i class="bi bi-bell-fill text-blue-500 text-xl"></i>
-                        <span>You punched in at 09:00 AM.</span>
-                        <span class="ml-auto text-sm text-gray-500">Just now</span>
-                    </li>
-                    <li class="flex items-center gap-3 text-gray-700">
-                        <i class="bi bi-check-circle-fill text-green-500 text-xl"></i>
-                        <span>Task "Update HRMS UI" marked as complete.</span>
-                        <span class="ml-auto text-sm text-gray-500">1 hour ago</span>
-                    </li>
-                    <li class="flex items-center gap-3 text-gray-700">
-                        <i class="bi bi-calendar-event-fill text-purple-500 text-xl"></i>
-                        <span>New company event: Annual Picnic on July 25th.</span>
-                        <span class="ml-auto text-sm text-gray-500">Yesterday</span>
-                    </li>
-                </ul>
-            </div>
+      <!-- Break Status & Timer -->
+      <div id="breakStatus" class="mt-8 text-gray-800 font-semibold text-xl">
+          No break active
+      </div>
+      <div id="breakTimer" class="text-3xl text-red-600 font-extrabold mt-2">00:00:00</div>
+  </div>
 
-            <!-- Current Tasks Table (Existing - below all other sections) -->
-            <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 overflow-x-auto animate-fade-in animate-delay-1000">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                    <h2 class="text-lg font-semibold text-gray-800">Current Tasks</h2>
-                    <button class="text-blue-600 hover:underline font-medium text-sm">View All</button>
-                </div>
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="p-3 text-sm font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200">Task</th>
-                            <th class="p-3 text-sm font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200">Deadline</th>
-                            <th class="p-3 text-sm font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200">Status</th>
-                            <th class="p-3 text-sm font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150">
-                            <td class="p-3 text-gray-700">Update HRMS UI</td>
-                            <td class="p-3 text-gray-700">20 July 2025</td>
-                            <td class="p-3 text-green-600 font-medium">In Progress</td>
-                            <td class="p-3">
-                                <button class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-3 py-1 rounded-md text-sm hover:from-blue-600 hover:to-blue-800 transition-all duration-200">Complete</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150">
-                            <td class="p-3 text-gray-700">Fix Punch In Bug</td>
-                            <td class="p-3 text-gray-700">18 July 2025</td>
-                            <td class="p-3 text-yellow-600 font-medium">Pending</td>
-                            <td class="p-3">
-                                <button class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-3 py-1 rounded-md text-sm hover:from-blue-600 hover:to-blue-800 transition-all duration-200">Complete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+  <!-- Leave Balance Section -->
+  <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 animate-fade-in animate-delay-400">
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">Leave Balance</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6"> {{-- Responsive grid --}}
+          <!-- Sick Leaves -->
+          <div class="bg-blue-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              <h3 class="text-lg font-semibold">Sick Leaves</h3>
+              <p class="text-3xl font-extrabold">05</p>
+          </div>
+          <!-- Casual Leaves -->
+          <div class="bg-orange-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+              <h3 class="text-lg font-semibold">Casual Leaves</h3>
+              <p class="text-3xl font-extrabold">08</p>
+          </div>
+          <!-- Annual Leaves -->
+          <div class="bg-teal-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <h3 class="text-lg font-semibold">Annual Leaves</h3>
+              <p class="text-3xl font-extrabold">15</p>
+          </div>
+      </div>
+      <div class="text-center">
+          <button class="px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#ff2626] to-[#ff6969] rounded-full shadow-lg hover:from-[#ff6969] hover:to-[#ff2626] active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-400">
+              Apply Leave
+          </button>
+      </div>
+  </div>
 
-        </div>
-    </div>
+  <!-- Holidays or Events Section -->
+  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-500">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">Upcoming Holidays & Events</h2>
+      <ul class="space-y-4">
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              <div>
+                  <p class="font-semibold text-gray-800">Independence Day</p>
+                  <p class="text-sm text-gray-600">August 15, 2025</p>
+              </div>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              <div>
+                  <p class="font-semibold text-gray-800">Company Annual Picnic</p>
+                  <p class="text-sm text-gray-600">September 10, 2025</p>
+              </div>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              <div>
+                  <p class="font-semibold text-gray-800">Diwali Holiday</p>
+                  <p class="text-sm text-gray-600">October 31, 2025</p>
+              </div>
+          </li>
+      </ul>
+  </div>
 
-    <!-- JavaScript -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const punchButton = document.getElementById("punchButton");
-            const breakButtons = document.querySelectorAll(".break-btn");
-            const breakStatus = document.getElementById("breakStatus");
-            const workTimeEl = document.getElementById("workTime");
-            const breakTimerEl = document.getElementById("breakTimer");
-            let isPunchedIn = false;
-            let workSeconds = 0;
-            let workTimer;
-            let breakTimer, breakSeconds = 0;
+  <!-- Notifications Section -->
+  <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-fade-in animate-delay-600">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
+      <ul class="space-y-3">
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="text-gray-700">Your leave request for July 25th was approved.</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+              <span class="text-gray-700">New task "Employee Onboarding Flow" assigned to you.</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.36 14H13.64a2 2 0 0 1-.97 3.5c-.93.47-2.09.47-3.02 0a2 2 0 0 1-.97-3.5Z"/></svg>
+              <span class="text-gray-700">Reminder: Your performance review is scheduled for next week.</span>
+          </li>
+      </ul>
+  </div>
 
-            // Punch In / Out Logic
-            const punchInClasses =
-                "w-full md:w-80 px-10 py-8 text-3xl font-extrabold text-white bg-gradient-to-r from-green-500 to-green-700 rounded-full shadow-xl hover:from-green-600 hover:to-green-800 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-400";
-            const punchOutClasses =
-                "w-full md:w-80 px-10 py-8 text-3xl font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 rounded-full shadow-xl hover:from-red-600 hover:to-red-800 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-400";
+  <!-- Current Tasks Table -->
+  <div class="bg-white p-8 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-700">
+      <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Current Tasks</h2>
+          <button class="text-red-600 hover:text-red-800 font-semibold transition-colors duration-200">View All</button>
+      </div>
+      <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+              <thead class="bg-gray-100 rounded-lg">
+                  <tr>
+                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider rounded-tl-lg">Task</th>
+                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">Deadline</th>
+                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider rounded-tr-lg">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                      <td class="p-4 text-gray-800">Update HRMS UI</td>
+                      <td class="p-4 text-gray-600">20 July 2025</td>
+                      <td class="p-4 text-green-600 font-medium">In Progress</td>
+                      <td class="p-4">
+                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
+                      </td>
+                  </tr>
+                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                      <td class="p-4 text-gray-800">Fix Punch In Bug</td>
+                      <td class="p-4 text-gray-600">18 July 2025</td>
+                      <td class="p-4 text-yellow-600 font-medium">Pending</td>
+                      <td class="p-4">
+                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
+                      </td>
+                  </tr>
+                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                      <td class="p-4 text-gray-800">Prepare Q3 Report</td>
+                      <td class="p-4 text-gray-600">25 July 2025</td>
+                      <td class="p-4 text-blue-600 font-medium">Assigned</td>
+                      <td class="p-4">
+                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
 
-            if (punchButton) {
-                punchButton.addEventListener("click", () => {
-                    isPunchedIn = !isPunchedIn;
-                    punchButton.textContent = isPunchedIn ? "Punch Out" : "Punch In";
+</main>
 
-                    // Toggle full class strings for gradients
-                    if (isPunchedIn) {
-                        punchButton.className = punchOutClasses;
-                        startWorkTimer();
-                    } else {
-                        punchButton.className = punchInClasses;
-                        stopWorkTimer();
-                    }
-                });
-                // Set initial class for punch button
-                punchButton.className = punchInClasses;
-            }
+<!-- JavaScript -->
+<script>
+  const punchButton = document.getElementById('punchButton');
+  const breakButtons = document.querySelectorAll('.break-btn');
+  const breakStatus = document.getElementById('breakStatus');
+  const workTimeEl = document.getElementById('workTime');
+  const breakTimerEl = document.getElementById('breakTimer');
+  let isPunchedIn = false;
+  let workSeconds = 0;
+  let workTimer;
+  let breakTimer, breakSeconds = 0;
 
-            function startWorkTimer() {
-                workTimer = setInterval(() => {
-                    workSeconds++;
-                    if (workTimeEl) workTimeEl.textContent = formatTime(workSeconds);
-                }, 1000);
-            }
-            function stopWorkTimer() {
-                clearInterval(workTimer);
-            }
-            function formatTime(sec) {
-                const h = Math.floor(sec / 3600);
-                const m = Math.floor((sec % 3600) / 60);
-                const s = sec % 60;
-                return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
-            }
-            // Break Timer Functions
-            function startBreakTimer() {
-                clearInterval(breakTimer);
-                breakSeconds = 0;
-                breakTimer = setInterval(() => {
-                    breakSeconds++;
-                    if (breakTimerEl) breakTimerEl.textContent = formatTime(breakSeconds);
-                }, 1000);
-            }
-            function stopBreakTimer() {
-                clearInterval(breakTimer);
-            }
-            // Break Buttons Logic
-            breakButtons.forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    const breakName = btn.dataset.break;
-                    if (btn.textContent.startsWith("Start")) {
-                        btn.textContent = `End ${breakName} Break`;
-                        if (breakStatus) breakStatus.textContent = `${breakName} started at ${new Date().toLocaleTimeString()}`;
-                        startBreakTimer();
-                        btn.classList.add("opacity-80");
-                    } else {
-                        btn.textContent = `Start ${breakName} Break`;
-                        if (breakStatus) breakStatus.textContent = `${breakName} ended at ${new Date().toLocaleTimeString()}`;
-                        stopBreakTimer();
-                        if (breakTimerEl) breakTimerEl.textContent = "00:00:00";
-                        btn.classList.remove("opacity-80");
-                    }
-                });
-            });
-            // Real-Time Clock
-            function updateClock() {
-                const clockElement = document.getElementById("clock");
-                if (clockElement) {
-                    clockElement.textContent = new Date().toLocaleTimeString();
-                }
-            }
-            setInterval(updateClock, 1000);
-            updateClock();
-        });
-    </script>
+  // Punch In / Out Logic
+  punchButton.addEventListener('click', () => {
+      isPunchedIn = !isPunchedIn;
+      punchButton.textContent = isPunchedIn ? 'Punch Out' : 'Punch In';
+      // Update classes for Punch In/Out button
+      if (isPunchedIn) { // User just punched IN, button should now be RED (Punch Out state)
+          punchButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
+          punchButton.classList.add('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
+      } else { // User just punched OUT, button should now be GREEN (Punch In state)
+          punchButton.classList.remove('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
+          punchButton.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
+      }
+
+      if (isPunchedIn) {
+          startWorkTimer();
+      } else {
+          stopWorkTimer();
+      }
+  });
+
+  function startWorkTimer() {
+      workTimer = setInterval(() => {
+          workSeconds++;
+          workTimeEl.textContent = formatTime(workSeconds);
+      }, 1000);
+  }
+
+  function stopWorkTimer() {
+      clearInterval(workTimer);
+  }
+
+  function formatTime(sec) {
+      let h = Math.floor(sec / 3600);
+      let m = Math.floor((sec % 3600) / 60);
+      let s = sec % 60;
+      return [h, m, s].map(v => String(v).padStart(2, '0')).join(':');
+  }
+
+  // Break Timer Functions
+  function startBreakTimer() {
+      clearInterval(breakTimer);
+      breakSeconds = 0;
+      breakTimer = setInterval(() => {
+          breakSeconds++;
+          breakTimerEl.textContent = formatTime(breakSeconds);
+      }, 1000);
+  }
+
+  function stopBreakTimer() {
+      clearInterval(breakTimer);
+  }
+
+  // Break Buttons Logic
+  breakButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+          const breakName = btn.dataset.break;
+          if (btn.textContent.startsWith('Start')) {
+              btn.textContent = `End ${breakName} Break`;
+              breakStatus.textContent = `${breakName} started at ${new Date().toLocaleTimeString()}`;
+              startBreakTimer();
+              btn.classList.add('opacity-80');
+          } else {
+              btn.textContent = `Start ${breakName} Break`;
+              breakStatus.textContent = `${breakName} ended at ${new Date().toLocaleTimeString()}`;
+              stopBreakTimer();
+              breakTimerEl.textContent = '00:00:00';
+              btn.classList.remove('opacity-80');
+          }
+      });
+  });
+
+  // Real-Time Clock
+  function updateClock() {
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+
+              </div>
+          </div>
+      </div>
+  </div>
 </x-app-layout>
