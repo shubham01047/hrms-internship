@@ -27,8 +27,20 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        // 👇 Add dynamic redirect logic here
+        $roles = Auth::user()->roles->pluck('name');
+        //dd(Auth::user()->roles->pluck('name')->toArray());
+        if ($roles->contains('Admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($roles->contains('Human Resource')) {
+            return redirect()->route('hr.dashboard');
+        } elseif ($roles->contains('Manager')) {
+            return redirect()->route('manager.dashboard');
+        } elseif ($roles->contains('Employee')) {
+            return redirect()->route('employee.dashboard');
+        }
+        return redirect('/'); // fallback redirect
+        // return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
