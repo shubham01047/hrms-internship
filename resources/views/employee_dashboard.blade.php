@@ -65,6 +65,7 @@
                   Total Working Time:
                   <span id="workTime" class="font-extrabold text-red-600 text-3xl ml-2">00:00:00</span>
               </div>
+              <div id="geolocationStatus" class="mt-2 text-sm text-gray-500"></div> {{-- Added for geolocation status --}}
           </div>
           <div>
              <button id="punchButton"
@@ -239,10 +240,54 @@
   const breakStatus = document.getElementById('breakStatus');
   const workTimeEl = document.getElementById('workTime');
   const breakTimerEl = document.getElementById('breakTimer');
+  const geolocationStatusEl = document.getElementById('geolocationStatus'); // New element for status
   let isPunchedIn = false;
   let workSeconds = 0;
   let workTimer;
   let breakTimer, breakSeconds = 0;
+
+  // Geolocation function
+  function getGeolocation() {
+      if (navigator.geolocation) {
+          geolocationStatusEl.textContent = 'Getting location...';
+          navigator.geolocation.getCurrentPosition(
+              (position) => {
+                  const latitude = position.coords.latitude;
+                  const longitude = position.coords.longitude;
+                  geolocationStatusEl.textContent = `Location: Lat ${latitude.toFixed(4)}, Lon ${longitude.toFixed(4)}`;
+                  console.log('Geolocation captured:', { latitude, longitude });
+                  // Here you would typically send this data to your server
+              },
+              (error) => {
+                  let errorMessage = 'Geolocation error: ';
+                  switch(error.code) {
+                      case error.PERMISSION_DENIED:
+                          errorMessage += 'User denied the request for Geolocation.';
+                          break;
+                      case error.POSITION_UNAVAILABLE:
+                          errorMessage += 'Location information is unavailable.';
+                          break;
+                      case error.TIMEOUT:
+                          errorMessage += 'The request to get user location timed out.';
+                          break;
+                      case error.UNKNOWN_ERROR:
+                          errorMessage += 'An unknown error occurred.';
+                          break;
+                  }
+                  geolocationStatusEl.textContent = errorMessage;
+                  console.error(errorMessage);
+              },
+              {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0
+              }
+          );
+      } else {
+          geolocationStatusEl.textContent = 'Geolocation is not supported by this browser.';
+          console.error('Geolocation is not supported by this browser.');
+      }
+  }
 
   // Punch In / Out Logic
   punchButton.addEventListener('click', () => {
@@ -252,9 +297,11 @@
       if (isPunchedIn) { // User just punched IN, button should now be RED (Punch Out state)
           punchButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
           punchButton.classList.add('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
+          getGeolocation(); // Capture geolocation on punch in
       } else { // User just punched OUT, button should now be GREEN (Punch In state)
           punchButton.classList.remove('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
           punchButton.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
+          geolocationStatusEl.textContent = ''; // Clear status on punch out
       }
 
       if (isPunchedIn) {
