@@ -17,7 +17,7 @@
                         $role = strtolower(Auth::user()->roles->pluck('name')->first()) ; 
                         $routeName = ($role === 'Human Resource') ? 'hr.dashboard' : strtolower($role) . '.dashboard';
                     @endphp
-                    <x-nav-link href="route($routeName) " :active="request()->routeIs('dashboard')"
+                    <x-nav-link href="{{route($routeName)}}" :active="request()->routeIs('dashboard')"
                         class="text-red-700 hover:text-red-800 font-semibold">
                         {{ __('Dashboard') }}
                     </x-nav-link>
