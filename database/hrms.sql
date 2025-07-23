@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2025 at 10:44 AM
+-- Generation Time: Jul 23, 2025 at 09:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,7 +73,9 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:14:{i:0;a:4:{s:1:\"a\";i:3;s:1:\"b\";s:15:\"create employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:1;a:4:{s:1:\"a\";i:7;s:1:\"b\";s:15:\"delete employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:2;a:4:{s:1:\"a\";i:8;s:1:\"b\";s:13:\"view employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:3;a:4:{s:1:\"a\";i:9;s:1:\"b\";s:10:\"view roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:4;a:4:{s:1:\"a\";i:10;s:1:\"b\";s:12:\"create roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:5;a:4:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"delete roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:6;a:4:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"edit roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:7;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:13:\"edit employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:8;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:10:\"view users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:9;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:10:\"edit users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:10;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:16:\"view permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:11;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:18:\"create permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:12;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:16:\"edit permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:18:\"delete permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}}s:5:\"roles\";a:2:{i:0;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:5:\"Admin\";s:1:\"c\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:8:\"Employee\";s:1:\"c\";s:3:\"web\";}}}', 1753180544);
+('laravel-cache-shivambandekar44@gmail.com|127.0.0.1', 'i:1;', 1753255424),
+('laravel-cache-shivambandekar44@gmail.com|127.0.0.1:timer', 'i:1753255424;', 1753255424),
+('laravel-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:17:{i:0;a:4:{s:1:\"a\";i:3;s:1:\"b\";s:15:\"create employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:1;a:4:{s:1:\"a\";i:7;s:1:\"b\";s:15:\"delete employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:2;a:4:{s:1:\"a\";i:8;s:1:\"b\";s:13:\"view employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:3;a:4:{s:1:\"a\";i:9;s:1:\"b\";s:10:\"view roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:4;a:4:{s:1:\"a\";i:10;s:1:\"b\";s:12:\"create roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:5;a:4:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"delete roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:6;a:4:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"edit roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:7;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:13:\"edit employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:8;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:10:\"view users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:9;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:10:\"edit users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:10;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:16:\"view permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:11;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:18:\"create permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:12;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:16:\"edit permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:18:\"delete permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:14;a:4:{s:1:\"a\";i:23;s:1:\"b\";s:11:\"apply leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:15;a:4:{s:1:\"a\";i:24;s:1:\"b\";s:15:\"view all leaves\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:16;a:4:{s:1:\"a\";i:25;s:1:\"b\";s:13:\"approve leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}}s:5:\"roles\";a:2:{i:0;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:5:\"Admin\";s:1:\"c\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:8:\"Employee\";s:1:\"c\";s:3:\"web\";}}}', 1753341872);
 
 -- --------------------------------------------------------
 
@@ -107,11 +109,8 @@ CREATE TABLE `companies` (
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` 
-(`id`, `name`, `description`, `system_title`, `logo`, `created_at`, `updated_at`) 
-VALUES 
+INSERT INTO `companies` (`id`, `name`, `description`, `system_title`, `logo`, `created_at`, `updated_at`) VALUES
 (1, 'Demerg Company', 'Human Resource Management System', 'HRMS', 'images/logo.png', '2025-07-18 00:33:03', '2025-07-20 23:13:39');
-
 
 -- --------------------------------------------------------
 
@@ -259,6 +258,13 @@ CREATE TABLE `leaves` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `leaves`
+--
+
+INSERT INTO `leaves` (`id`, `user_id`, `leave_type_id`, `start_date`, `end_date`, `reason`, `status`, `applied_on`, `approved_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 6, 1, '2025-07-25', '2025-07-31', 'seedhzdsthadghjadghadghj', 'Approved', '2025-07-23 07:27:07', 6, '2025-07-23 07:27:07', '2025-07-23 07:29:06', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -273,6 +279,19 @@ CREATE TABLE `leave_types` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `leave_types`
+--
+
+INSERT INTO `leave_types` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Sick Leave', 'Leave for illness', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(2, 'Casual Leave', 'Personal short leave', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(3, 'Annual Leave', 'Earned paid leave', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(4, 'Bereavement Leave', 'For family loss/funeral', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(5, 'Unpaid Leave', 'Without salary', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(6, 'Marriage Leave', 'For personal wedding', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
+(7, 'Study Leave', 'For exams or education', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -407,7 +426,10 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (16, 'view permissions', 'web', '2025-07-20 06:12:28', '2025-07-20 06:44:45'),
 (17, 'create permissions', 'web', '2025-07-20 06:12:45', '2025-07-20 06:44:57'),
 (18, 'edit permissions', 'web', '2025-07-20 06:12:55', '2025-07-20 06:44:23'),
-(19, 'delete permissions', 'web', '2025-07-20 06:13:12', '2025-07-20 06:44:11');
+(19, 'delete permissions', 'web', '2025-07-20 06:13:12', '2025-07-20 06:44:11'),
+(23, 'apply leave', 'web', '2025-07-23 01:53:45', '2025-07-23 01:53:45'),
+(24, 'view all leaves', 'web', '2025-07-23 01:53:53', '2025-07-23 01:54:00'),
+(25, 'approve leave', 'web', '2025-07-23 01:54:08', '2025-07-23 01:54:08');
 
 -- --------------------------------------------------------
 
@@ -496,7 +518,12 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (16, 4),
 (17, 4),
 (18, 4),
-(19, 4);
+(19, 4),
+(23, 4),
+(23, 6),
+(24, 4),
+(24, 6),
+(25, 4);
 
 -- --------------------------------------------------------
 
@@ -518,10 +545,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('CINGymkim0RhKqkTNwg3O2bDz7zYf5iPPtBSAWEn', 8, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZGg0QVpMYUtSUXJhaE9SUWhWOFZUbE1HUFcwM3NqWTN2UHZvTnczbSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9oci9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo4O30=', 1753095915),
-('hYPwgfkDtcm7BOPG5Ge6Pu5RY6YybxfsfQSfsLZr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRllxTWZnMWxlUU05M2EwRmNtMmJBQmFmQVpKTE1mblZVUTdtd0lBayI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2VtcGxveWVlcyI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1753168755),
-('Jik7Ui47j3O6qln6Vcc5DuJWPi1oxnYds4SDViCL', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQTNWcXlqaWM0eGNJUUxjYndicG9VdW9vUE45VWNCSm44dHJRb3prTSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6MzoidXJsIjthOjE6e3M6ODoiaW50ZW5kZWQiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yb2xlcyI7fX0=', 1753097101),
-('S39lJvesn97YCAvtV8EubFZDasIziohVKuWOTO1s', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNU8zemsxcmZaZ0Y2QkY5anN1emVvZXZMbmRsSUFYdXppODJDRHpyTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9lbXBsb3llZXMiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo2O30=', 1753161210);
+('TZJnoVfC8g3NJJ6wm5JAfJELl80SbJ5OSDk3Gaa6', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiOGt4RHhLTzFYamNYQ1hBZk9KMHpsSFRCMXpnYkRvZ0czR1Y0UWRWRiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sZWF2ZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo2O30=', 1753255848);
 
 -- --------------------------------------------------------
 
@@ -608,7 +632,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `leave_balance` INT DEFAULT 12,
+  `leave_balance` int(11) DEFAULT 12,
   `google_id` varchar(255) DEFAULT NULL,
   `google_token` varchar(255) DEFAULT NULL,
   `google_refresh_token` varchar(255) DEFAULT NULL,
@@ -622,11 +646,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `google_id`, `google_token`, `google_refresh_token`, `google_avatar`, `remember_token`, `created_at`, `updated_at`) VALUES
-(6, 'Shivam Bandekar', 'admin@example.com', NULL, '$2y$12$DF9IP9X0wcgKuw1ru6IleOgAnjdH4copZ//q5njgbmarjessYoFq2', NULL, NULL, NULL, NULL, NULL, '2025-07-19 00:50:59', '2025-07-19 00:50:59'),
-(7, 'Shubham Chodankar', 'employee01@example.com', NULL, '$2y$12$/RghM8b7qNTgra/BXnYquO7aiy2J9OtNnzOvqm4NFonRpg9SktD0O', NULL, NULL, NULL, NULL, NULL, '2025-07-20 07:20:43', '2025-07-20 07:20:43'),
-(8, 'Viren Viren', 'hr@example.com', NULL, '$2y$12$U9XsQLYIx3u9mgs/ENoYReDPJWuEzVn4O4y.pIKgeowfmuuQPs3hG', NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:33:25', '2025-07-21 05:33:25'),
-(9, 'Dwepam Gain', 'manager@example.com', NULL, '$2y$12$z61E7b5gyzxRbsbgIEjlR.GhcIOV6c.ofRZ1gIdr7lnLf/XVlRQFG', NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:34:03', '2025-07-21 05:34:03');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `leave_balance`, `google_id`, `google_token`, `google_refresh_token`, `google_avatar`, `remember_token`, `created_at`, `updated_at`) VALUES
+(6, 'Shivam Bandekar', 'admin@example.com', NULL, '$2y$12$DF9IP9X0wcgKuw1ru6IleOgAnjdH4copZ//q5njgbmarjessYoFq2', 5, NULL, NULL, NULL, NULL, NULL, '2025-07-19 00:50:59', '2025-07-23 01:59:06'),
+(7, 'Shubham Chodankar', 'employee01@example.com', NULL, '$2y$12$/RghM8b7qNTgra/BXnYquO7aiy2J9OtNnzOvqm4NFonRpg9SktD0O', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-20 07:20:43', '2025-07-20 07:20:43'),
+(8, 'Viren Viren', 'hr@example.com', NULL, '$2y$12$U9XsQLYIx3u9mgs/ENoYReDPJWuEzVn4O4y.pIKgeowfmuuQPs3hG', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:33:25', '2025-07-21 05:33:25'),
+(9, 'Dwepam Gain', 'manager@example.com', NULL, '$2y$12$z61E7b5gyzxRbsbgIEjlR.GhcIOV6c.ofRZ1gIdr7lnLf/XVlRQFG', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:34:03', '2025-07-21 05:34:03');
 
 --
 -- Indexes for dumped tables
@@ -889,13 +913,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `leave_types`
 --
 ALTER TABLE `leave_types`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -913,7 +937,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `projects`
