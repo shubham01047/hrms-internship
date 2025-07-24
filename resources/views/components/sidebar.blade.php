@@ -2,7 +2,10 @@
 <aside
     class="fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
            bg-gradient-to-br from-[#ff2626] to-[#ff6969] text-white
-           transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
+           transition-transform duration-300 ease-in-out
+           md:translate-x-0 transform"
+    :class="{ '-translate-x-full': !sidebarOpen }"
+
     x-show="sidebarOpen"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0 transform -translate-x-full"
