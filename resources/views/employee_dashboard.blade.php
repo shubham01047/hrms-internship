@@ -26,7 +26,7 @@
       <img src="/placeholder.svg?height=64&width=64" alt="Employee Profile" class="w-16 h-16 rounded-full object-cover border-2 border-red-400 shadow-md">
       <div>
           <p class="text-gray-600 text-sm">Hi,</p>
-          <h3 class="text-xl font-bold text-gray-800">Deepan Gain</h3>
+          <h3 class="text-xl font-bold text-gray-800">{{Auth::user()->name}}</h3>
           <p class="text-gray-600 text-sm">Software Engineer</p>
       </div>
   </div>
@@ -132,9 +132,12 @@
           </div>
       </div>
       <div class="text-center">
-          <button class="px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#ff2626] to-[#ff6969] rounded-full shadow-lg hover:from-[#ff6969] hover:to-[#ff2626] active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-400">
-              Apply Leave
-          </button>
+          @can('apply leave')
+    <a href="{{ route('leaves.create') }}"
+       class="px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#ff2626] to-[#ff6969] rounded-full shadow-lg hover:from-[#ff6969] hover:to-[#ff2626] active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-400">
+        Apply Leave
+    </a>
+@endcan
       </div>
   </div>
 
