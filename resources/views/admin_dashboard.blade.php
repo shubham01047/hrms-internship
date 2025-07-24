@@ -56,6 +56,31 @@
                     z-index: 9999 !important;
                     position: absolute !important;
                 }
+
+                /* Dynamic Progress Bar Styles */
+                .progress-bar {
+                    width: 0%;
+                    transition: all 1.5s ease-in-out;
+                    border-radius: 9999px;
+                    height: 10px;
+                }
+                
+                .progress-bar.green {
+                    background-color: #16a34a !important; /* Green for 100% */
+                }
+                
+                .progress-bar.blue {
+                    background-color: #2563eb !important; /* Blue for 50-99% */
+                }
+                
+                .progress-bar.yellow {
+                    background-color: #eab308 !important; /* Yellow for 0-49% */
+                }
+
+                /* Status Badge Styles */
+                .status-badge {
+                    transition: all 0.3s ease-in-out;
+                }
             </style>
 
             <div class="py-12 bg-gray-100 min-h-screen"> {{-- Set overall background to gray-100 and ensure min-height --}}
@@ -350,7 +375,7 @@
                                 <p class="text-2xl font-bold text-red-500">10</p>
                             </div>
                             <div class="p-4 bg-green-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="text-700">Compliance</h3>
+                                <h3 class="text-gray-700">Compliance</h3>
                                 <p class="text-2xl font-bold text-green-600">92%</p>
                             </div>
                         </div>
@@ -509,7 +534,6 @@
                                         <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
                                         <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
                                     </td>
-
                                 </tr>
                             </tbody>
                         </table>
@@ -555,35 +579,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="1">
                                     <td class="p-3 text-gray-700">Alice Johnson</td>
                                     <td class="p-3 text-gray-700">Develop new API endpoint</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 80%;"></div>
+                                            <div class="progress-bar h-2.5 rounded-full" data-progress="80"></div>
                                         </div>
                                     </td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">In Progress</span></td>
+                                    <td class="p-3"><span class="status-badge px-2 py-1 text-xs font-semibold rounded-full">In Progress</span></td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="2">
                                     <td class="p-3 text-gray-700">Bob Williams</td>
                                     <td class="p-3 text-gray-700">Design UI for dashboard</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-green-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 100%;"></div>
+                                            <div class="progress-bar h-2.5 rounded-full" data-progress="100"></div>
                                         </div>
                                     </td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Completed</span></td>
+                                    <td class="p-3"><span class="status-badge px-2 py-1 text-xs font-semibold rounded-full">Completed</span></td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="3">
                                     <td class="p-3 text-gray-700">Charlie Brown</td>
                                     <td class="p-3 text-gray-700">Review code for module X</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-yellow-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 50%;"></div>
+                                            <div class="progress-bar h-2.5 rounded-full" data-progress="30"></div>
                                         </div>
                                     </td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">Pending</span></td>
+                                    <td class="p-3"><span class="status-badge px-2 py-1 text-xs font-semibold rounded-full">Pending</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -736,7 +760,102 @@
                     setTimeout(updateClock, 1000);
                 }
 
-                updateClock();
+                // Initialize progress bars with dynamic colors and animations
+                function initializeProgressBars() {
+                    const progressBars = document.querySelectorAll('.progress-bar');
+                    
+                    progressBars.forEach(bar => {
+                        const progress = parseInt(bar.getAttribute('data-progress'));
+                        
+                        // Remove any existing color classes
+                        bar.classList.remove('green', 'blue', 'yellow');
+                        
+                        // Determine color based on progress value
+                        let colorClass = '';
+                        if (progress === 100) {
+                            colorClass = 'green';
+                        } else if (progress >= 50) {
+                            colorClass = 'blue';
+                        } else {
+                            colorClass = 'yellow';
+                        }
+                        
+                        // Add the appropriate color class
+                        bar.classList.add(colorClass);
+                        
+                        // Animate the progress bar after a delay
+                        setTimeout(() => {
+                            bar.style.width = progress + '%';
+                        }, 500);
+                    });
+                }
+
+                // Update status badges based on progress values
+                function updateStatusBadges() {
+                    const rows = document.querySelectorAll('[data-row]');
+                    
+                    rows.forEach(row => {
+                        const progressBar = row.querySelector('.progress-bar');
+                        const statusBadge = row.querySelector('.status-badge');
+                        
+                        if (progressBar && statusBadge) {
+                            const progress = parseInt(progressBar.getAttribute('data-progress'));
+                            
+                            // Remove existing classes
+                            statusBadge.className = 'status-badge px-2 py-1 text-xs font-semibold rounded-full';
+                            
+                            // Update status text and styling based on progress
+                            if (progress === 100) {
+                                statusBadge.textContent = 'Completed';
+                                statusBadge.classList.add('text-green-800', 'bg-green-200');
+                            } else if (progress >= 50) {
+                                statusBadge.textContent = 'In Progress';
+                                statusBadge.classList.add('text-blue-800', 'bg-blue-200');
+                            } else {
+                                statusBadge.textContent = 'Pending';
+                                statusBadge.classList.add('text-yellow-800', 'bg-yellow-200');
+                            }
+                        }
+                    });
+                }
+
+                // Function to handle dynamic updates when data-progress changes
+                function updateProgressAndStatus() {
+                    initializeProgressBars();
+                    updateStatusBadges();
+                }
+
+                // Initialize everything when the page loads
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateClock();
+                    updateProgressAndStatus();
+                    
+                    // Optional: Add mutation observer to detect changes in data-progress attributes
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'attributes' && mutation.attributeName === 'data-progress') {
+                                updateProgressAndStatus();
+                            }
+                        });
+                    });
+                    
+                    // Observe all progress bars for attribute changes
+                    document.querySelectorAll('.progress-bar').forEach(bar => {
+                        observer.observe(bar, { attributes: true });
+                    });
+                });
+
+                // For testing: Function to manually update progress (you can call this from console)
+                function setProgress(rowNumber, newProgress) {
+                    const row = document.querySelector(`[data-row="${rowNumber}"]`);
+                    if (row) {
+                        const progressBar = row.querySelector('.progress-bar');
+                        if (progressBar) {
+                            progressBar.setAttribute('data-progress', newProgress);
+                            updateProgressAndStatus();
+                        }
+                    }
+                }
             </script>
 
         </div>
