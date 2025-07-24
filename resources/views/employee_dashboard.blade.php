@@ -12,6 +12,26 @@
 
                   {{-- employee code --}}
 
+<style>
+    /* Dynamic Progress Bar Styles */
+    .progress-bar {
+        width: 0%;
+        transition: all 1.5s ease-in-out;
+        border-radius: 9999px;
+    }
+    
+    .progress-bar.green {
+        background-color: #16a34a; /* Green for 100% */
+    }
+    
+    .progress-bar.blue {
+        background-color: #2563eb; /* Blue for 50-99% */
+    }
+    
+    .progress-bar.yellow {
+        background-color: #eab308; /* Yellow for 0-49% */
+    }
+</style>
 
   <main class="p-6 space-y-8 bg-gray-100 min-h-screen">
 
@@ -368,6 +388,36 @@
   }
   setInterval(updateClock, 1000);
   updateClock();
+
+  // Dynamic Progress Bar Logic
+  function initializeProgressBars() {
+      const progressBars = document.querySelectorAll('.progress-bar');
+      
+      progressBars.forEach(bar => {
+          const progress = parseInt(bar.getAttribute('data-progress'));
+          
+          // Determine color based on progress value
+          let colorClass = '';
+          if (progress === 100) {
+              colorClass = 'green';
+          } else if (progress >= 50) {
+              colorClass = 'blue';
+          } else {
+              colorClass = 'yellow';
+          }
+          
+          // Add the appropriate color class
+          bar.classList.add(colorClass);
+          
+          // Animate the progress bar
+          setTimeout(() => {
+              bar.style.width = progress + '%';
+          }, 500);
+      });
+  }
+
+  // Initialize progress bars after page load
+  setTimeout(initializeProgressBars, 1000);
 </script>
 
               </div>
