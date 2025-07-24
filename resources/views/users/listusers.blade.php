@@ -13,8 +13,8 @@
             <x-message></x-message>
             <div class="p-6 text-black">
                 <div class="overflow-x-auto">
-    <table class="min-w-full border border-gray-600 rounded-lg shadow-md text-sm text-left text-gray-900">
-        <thead class="bg-red-600 text-white uppercase text-xs tracking-wider">
+    <table class="min-w-full border border-gray-600 rounded-lg shadow-md overflow-hidden text-sm text-left text-gray-900">
+        <thead class="bg-gradient-to-br from-red-600 to-red-400 text-white uppercase text-xs tracking-wider">
             <tr class="border-b border-gray-800">
                 <th class="px-6 py-3">#</th>
                 <th class="px-6 py-3">Name</th>
