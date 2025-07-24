@@ -1,3 +1,8 @@
+ @php
+                      $role = strtolower(Auth::user()->roles->pluck('name')->first()) ;
+                      $routeName = ($role === 'human resource') ? 'hr.dashboard' : strtolower($role) . '.dashboard';
+                  @endphp
+
 <nav x-data="{ open: false }" class="bg-gradient-to-r from-[#ff2626] to-[#ff6969] border-b border-[#ff6969] text-white shadow-lg">
 
   <!-- Primary Navigation Menu -->
@@ -6,18 +11,15 @@
           <div class="flex items-center">
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
-                  <a href="{{ route('dashboard') }}">
+                  <a href="{{route($routeName)}}">
                       <x-application-logo class="block h-7 w-auto fill-current text-white" />
                   </a>
               </div>
 
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                  @php
-                      $role = strtolower(Auth::user()->roles->pluck('name')->first()) ;
-                      $routeName = ($role === 'human resource') ? 'hr.dashboard' : strtolower($role) . '.dashboard';
-                  @endphp
-                  <x-nav-link href="{{route($routeName)}}" :active="request()->routeIs('dashboard')"
+                 
+                  <x-nav-link href="{{route($routeName)}}" :active="request()->routeIs($routeName)"
                       class="text-white hover:text-red-100 font-semibold transition-colors duration-200">
                       {{ __('Dashboard') }}
                   </x-nav-link>
@@ -53,7 +55,7 @@
               <x-dropdown align="right" width="48">
                   <x-slot name="trigger">
                       <button
-                          class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-700 hover:text-red-100 hover:bg-red-800 focus:outline-none transition ease-in-out duration-150">
+                          class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-ffffff00 hover:text-black hover:bg-white focus:outline-none transition ease-in-out duration-150">
                           <div>{{ Auth::user()->name }} ({{ Auth::user()->roles->pluck('name')->implode(', ') }})
                           </div>
 
