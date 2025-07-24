@@ -45,12 +45,23 @@
         <!-- User Management -->
         <div class="border-b border-[#ff6969] pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">User Management</div>
-            <a href="#"
+            <a href="{{route('profile.edit')}}"
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">👥
-                Employee Profiles</a>
-            <a href="#"
+                 Profiles</a>
+
+                 @can('create roles')
+                        <a href="{{route('roles.index')}}"
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">🔐
-                Roles & Permissions</a>
+                Roles</a>
+                 @endcan
+
+                  @can('create permissions')
+                        <a href="{{route('permissions.index')}}"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">🔐
+                 Permission</a>
+                 @endcan
+
+            
             <a href="#"
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">🏢
                 Departments & Designations</a>
@@ -69,8 +80,9 @@
 
         <!-- ✅ Leave (Dynamic with Blade Directives) -->
         <div class="border-b border-[#ff6969] pb-2 mb-2 ">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">Leave</div>
+            
             @can('apply leave')
+                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">Leave</div>
                 <a href="{{ route('leaves.create') }}" class="{{ $isActive('leaves.create') }}">
                     📝 Apply for Leave
                 </a>
