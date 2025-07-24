@@ -1,81 +1,207 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-black leading-tight">
-                {{ __('Users') }}
-            </h2>
-            {{-- <a href="{{ route('roles.create') }}" class="bg-green-700">Create</a> --}}
-        </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-message></x-message>
-            <div class="p-6 text-black">
-                <div class="overflow-x-auto">
-    <table class="min-w-full border border-gray-600 rounded-lg shadow-md overflow-hidden text-sm text-left text-gray-900">
-        <thead class="bg-gradient-to-br from-red-600 to-red-400 text-white uppercase text-xs tracking-wider">
-            <tr class="border-b border-gray-800">
-                <th class="px-6 py-3">#</th>
-                <th class="px-6 py-3">Name</th>
-                <th class="px-6 py-3">Email</th>
-                <th class="px-6 py-3">Role Assigned</th>
-                <th class="px-6 py-3">Created</th>
-                <th class="px-6 py-3">Action</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-300 bg-white">
-            @if ($users->isNotEmpty())
-                @foreach ($users as $index => $user)
-                    <tr class="hover:bg-gray-100 transition">
-                        <td class="px-6 py-4">{{ $index + 1 }}</td>
-                        <td class="px-6 py-4 font-medium">{{ $user->name }}</td>
-                        <td class="px-6 py-4">{{ $user->email }}</td>
-                        <td class="px-6 py-4 text-gray-700">
-                            {{ $user->roles->pluck('name')->implode(', ') }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex space-x-2">
-                                @can('edit users')
-                                    <a href="{{ route('users.edit', $user->id) }}"
-                                       class="inline-block px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
-                                        <x-pencil/>Edit
-                                    </a>
-                                @endcan
-                                {{-- 
-                                @can('delete users')
-                                    <a href="javascript:void(0);"
-                                       onclick="deleteUser({{ $user->id }})"
-                                       class="inline-block px-3 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition">
-                                        <x-trashcan/>Delete
-                                    </a>
-                                @endcan
-                                --}}
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No users found.</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-</div>
-
-                <div class="my-3">
-                    {{ $users->links() }}
+        <div class="flex justify-between items-center bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-lg shadow-sm">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg shadow-md">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    {{ __('User Management') }}
+                </h2>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="text-sm text-gray-600 bg-white px-4 py-2 rounded-lg shadow-sm border">
+                    <span class="font-medium">Total Users:</span> 
+                    <span class="text-teal-600 font-bold">{{ $users->total() ?? $users->count() }}</span>
                 </div>
             </div>
         </div>
+    </x-slot>
+
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <x-message></x-message>
+            
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gradient-to-r from-red-600 to-red-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tl-lg">
+                                        <div class="flex items-center space-x-2">
+                                            <span>#</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                            <span>User</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <span>Email</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                            </svg>
+                                            <span>Roles</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
+                                            </svg>
+                                            <span>Joined</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tr-lg">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                            </svg>
+                                            <span>Actions</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @if ($users->isNotEmpty())
+                                    @foreach ($users as $index => $user)
+                                        <tr class="hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-sm font-semibold text-gray-700">
+                                                    {{ $index + 1 }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-12 w-12">
+                                                        <div class="h-12 w-12 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center shadow-lg">
+                                                            <span class="text-white font-semibold text-lg">
+                                                                {{ strtoupper(substr($user->name, 0, 2)) }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
+                                                        <div class="text-sm text-gray-500">System User</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    <span class="text-sm text-gray-900">{{ $user->email }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="max-w-xs">
+                                                    @if($user->roles->isNotEmpty())
+                                                        <div class="flex flex-wrap gap-1">
+                                                            @foreach($user->roles->take(2) as $role)
+                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                                                    {{ $role->name }}
+                                                                </span>
+                                                            @endforeach
+                                                            @if($user->roles->count() > 2)
+                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                                    +{{ $user->roles->count() - 2 }} more
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                    @else
+                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                                            No roles assigned
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
+                                                    </svg>
+                                                    <span class="text-sm text-gray-900 font-medium">
+                                                        {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center space-x-3">
+                                                    @can('edit users')
+                                                        <a href="{{ route('users.edit', $user->id) }}"
+                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                                            <x-pencil class="w-3 h-3 mr-1"/>
+                                                            Edit
+                                                        </a>
+                                                    @endcan
+                                                    {{-- 
+                                                    @can('delete users')
+                                                        <a href="javascript:void(0);" onclick="deleteUser({{ $user->id }})"
+                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
+                                                            <x-trashcan class="w-3 h-3 mr-1"/>
+                                                            Delete
+                                                        </a>
+                                                    @endcan
+                                                    --}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-12 text-center">
+                                            <div class="flex flex-col items-center justify-center space-y-4">
+                                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="text-lg font-medium text-gray-900">No users found</div>
+                                                <div class="text-sm text-gray-500">Users will appear here once they are registered.</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                @if ($users->hasPages())
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-xl">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-gray-700">
+                                Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} results
+                            </div>
+                            <div class="pagination-wrapper">
+                                {{ $users->links() }}
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
+    
     <x-slot name="script">
         <script type="text/javascript">
-            // deletePermission function here
+            // deleteUser function here (commented out as per original)
         </script>
     </x-slot>
 </x-app-layout>
