@@ -25,6 +25,39 @@
             <x-message></x-message>
             
             <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+                <!-- Search Bar Section -->
+                <div class="p-6 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                        <div class="relative flex-1 max-w-md">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input type="text" 
+                                   id="searchInput"
+                                   placeholder="Search users by name, email, or role..." 
+                                   class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 ease-in-out shadow-sm">
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <button id="clearSearch" 
+                                    class="hidden inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Clear
+                            </button>
+                            
+                            <div id="resultsCounter" class="text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                                <span class="font-semibold" id="totalCount">{{ $users->count() }}</span> 
+                                <span id="userText">{{ Str::plural('user', $users->count()) }}</span>
+                                <span id="searchContext"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="p-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -77,10 +110,14 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
                                 @if ($users->isNotEmpty())
                                     @foreach ($users as $index => $user)
-                                        <tr class="hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]">
+                                        <tr class="user-row hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]" 
+                                            data-user-name="{{ strtolower($user->name) }}"
+                                            data-user-email="{{ strtolower($user->email) }}"
+                                            data-user-roles="{{ strtolower($user->roles->pluck('name')->implode(' ')) }}"
+                                            data-user-id="{{ $user->id }}">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-sm font-semibold text-gray-700">
                                                     {{ $index + 1 }}
@@ -96,7 +133,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="ml-4">
-                                                        <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
+                                                        <div class="text-sm font-semibold text-gray-900 user-name">{{ $user->name }}</div>
                                                         <div class="text-sm text-gray-500">System User</div>
                                                     </div>
                                                 </div>
@@ -106,15 +143,15 @@
                                                     <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                     </svg>
-                                                    <span class="text-sm text-gray-900">{{ $user->email }}</span>
+                                                    <span class="text-sm text-gray-900 user-email">{{ $user->email }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="max-w-xs">
+                                                <div class="max-w-xs user-roles">
                                                     @if($user->roles->isNotEmpty())
                                                         <div class="flex flex-wrap gap-1">
                                                             @foreach($user->roles->take(2) as $role)
-                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 role-badge">
                                                                     {{ $role->name }}
                                                                 </span>
                                                             @endforeach
@@ -163,8 +200,28 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @else
-                                    <tr>
+                                @endif
+                                
+                                <!-- No Results Row (Hidden by default) -->
+                                <tr id="noResultsRow" class="hidden">
+                                    <td colspan="6" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-4">
+                                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="text-lg font-medium text-gray-900">No users found</div>
+                                            <div class="text-sm text-gray-500">
+                                                Try adjusting your search terms or <button onclick="clearSearch()" class="text-teal-600 hover:text-teal-500 underline">clear the search</button>.
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Empty State Row (Show when no users at all) -->
+                                @if ($users->isEmpty())
+                                    <tr id="emptyStateRow">
                                         <td colspan="6" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center space-y-4">
                                                 <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
@@ -201,6 +258,145 @@
     
     <x-slot name="script">
         <script type="text/javascript">
+            // Store original users data
+            const originalUsers = @json($users->items());
+            let currentSearchTerm = '';
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                currentSearchTerm = searchTerm;
+                filterUsers(searchTerm);
+                updateUI(searchTerm);
+            });
+
+            // Clear search functionality
+            document.getElementById('clearSearch').addEventListener('click', function() {
+                clearSearch();
+            });
+
+            function filterUsers(searchTerm) {
+                const rows = document.querySelectorAll('.user-row');
+                const noResultsRow = document.getElementById('noResultsRow');
+                let visibleCount = 0;
+
+                rows.forEach((row, index) => {
+                    const userName = row.getAttribute('data-user-name');
+                    const userEmail = row.getAttribute('data-user-email');
+                    const userRoles = row.getAttribute('data-user-roles');
+                    const nameElement = row.querySelector('.user-name');
+                    const emailElement = row.querySelector('.user-email');
+                    const roleElements = row.querySelectorAll('.role-badge');
+                    const originalUser = originalUsers[index] || {};
+
+                    // Search in user name, email, and roles
+                    const matchesName = userName.includes(searchTerm);
+                    const matchesEmail = userEmail.includes(searchTerm);
+                    const matchesRoles = userRoles.includes(searchTerm);
+
+                    if (searchTerm === '' || matchesName || matchesEmail || matchesRoles) {
+                        row.style.display = '';
+                        visibleCount++;
+                        
+                        // Update row number
+                        const numberCell = row.querySelector('td:first-child div');
+                        numberCell.textContent = visibleCount;
+                        
+                        // Highlight search term in user name
+                        if (searchTerm !== '' && matchesName) {
+                            const highlightedName = highlightSearchTerm(originalUser.name || '', searchTerm);
+                            nameElement.innerHTML = highlightedName;
+                        } else {
+                            nameElement.textContent = originalUser.name || '';
+                        }
+
+                        // Highlight search term in email
+                        if (searchTerm !== '' && matchesEmail) {
+                            const highlightedEmail = highlightSearchTerm(originalUser.email || '', searchTerm);
+                            emailElement.innerHTML = highlightedEmail;
+                        } else {
+                            emailElement.textContent = originalUser.email || '';
+                        }
+
+                        // Highlight search term in roles
+                        if (searchTerm !== '' && matchesRoles) {
+                            roleElements.forEach((element, roleIndex) => {
+                                const originalRole = originalUser.roles?.[roleIndex]?.name || element.textContent;
+                                if (originalRole.toLowerCase().includes(searchTerm)) {
+                                    element.innerHTML = highlightSearchTerm(originalRole, searchTerm);
+                                } else {
+                                    element.textContent = originalRole;
+                                }
+                            });
+                        } else if (searchTerm === '') {
+                            // Reset role text when no search
+                            roleElements.forEach((element, roleIndex) => {
+                                const originalRole = originalUser.roles?.[roleIndex]?.name || element.textContent;
+                                element.textContent = originalRole;
+                            });
+                        }
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide no results row
+                if (visibleCount === 0 && searchTerm !== '') {
+                    noResultsRow.style.display = '';
+                } else {
+                    noResultsRow.style.display = 'none';
+                }
+
+                // Update counter
+                updateCounter(visibleCount, searchTerm);
+            }
+
+            function highlightSearchTerm(text, searchTerm) {
+                if (!searchTerm) return text;
+                
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                return text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+            }
+
+            function updateCounter(count, searchTerm) {
+                const totalCountElement = document.getElementById('totalCount');
+                const userTextElement = document.getElementById('userText');
+                const searchContextElement = document.getElementById('searchContext');
+
+                totalCountElement.textContent = count;
+                userTextElement.textContent = count === 1 ? 'user' : 'users';
+                
+                if (searchTerm) {
+                    searchContextElement.innerHTML = ` found for "<span class="font-medium text-teal-600">${searchTerm}</span>"`;
+                } else {
+                    searchContextElement.textContent = '';
+                }
+            }
+
+            function updateUI(searchTerm) {
+                const clearButton = document.getElementById('clearSearch');
+                
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                    clearButton.classList.add('inline-flex');
+                } else {
+                    clearButton.classList.add('hidden');
+                    clearButton.classList.remove('inline-flex');
+                }
+            }
+
+            function clearSearch() {
+                document.getElementById('searchInput').value = '';
+                currentSearchTerm = '';
+                filterUsers('');
+                updateUI('');
+            }
+
+            // Initialize on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCounter({{ $users->count() }}, '');
+            });
+
             // deleteUser function here (commented out as per original)
         </script>
     </x-slot>
