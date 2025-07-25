@@ -81,6 +81,35 @@
                 .status-badge {
                     transition: all 0.3s ease-in-out;
                 }
+
+                /* Dynamic Leave Status Styles */
+                .leave-status-badge {
+                    transition: all 0.3s ease-in-out;
+                    transform: scale(1);
+                }
+
+                .leave-status-badge:hover {
+                    transform: scale(1.05);
+                }
+
+                /* Status-specific styles - Only 3 statuses as requested */
+                .status-pending {
+                    background-color: #fef3c7 !important;
+                    color: #92400e !important;
+                    border: 1px solid #f59e0b;
+                }
+
+                .status-approved {
+                    background-color: #d1fae5 !important;
+                    color: #065f46 !important;
+                    border: 1px solid #10b981;
+                }
+
+                .status-rejected {
+                    background-color: #fee2e2 !important;
+                    color: #991b1b !important;
+                    border: 1px solid #ef4444;
+                }
             </style>
 
             <div class="py-12 bg-gray-100 min-h-screen"> {{-- Set overall background to gray-100 and ensure min-height --}}
@@ -88,7 +117,7 @@
 
                     <!-- Header -->
                     <div class="header-gradient text-white p-6 rounded-xl shadow-lg flex justify-center items-center animate-fade-in relative">
-                        <!-- Centered: Search, Clock, Notification, Profile -->
+                        <!-- Centered: Search, Clock -->
                         <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-4xl justify-center">
                             <!-- Search Bar -->
                             <div class="relative flex-1 w-full sm:w-auto max-w-md">
@@ -99,115 +128,6 @@
                             <!-- Live Clock -->
                             <div id="live-clock" class="text-lg font-medium whitespace-nowrap">
                                 <span id="clock-time"></span>
-                            </div>
-
-                            <!-- Notifications Bell icon and dropdown -->
-                            <div x-data="{ notificationsOpen: false }" class="relative">
-                                <button @click="notificationsOpen = !notificationsOpen" class="p-2 rounded-full hover:bg-white hover:bg-opacity-30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 relative">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.36 14H13.64a2 2 0 0 1-.97 3.5c-.93.47-2.09.47-3.02 0a2 2 0 0 1-.97-3.5Z"/></svg>
-                                    <span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500 animate-pulse"></span> <!-- Red dot badge -->
-                                </button>
-
-                                <!-- Notification Dropdown with Fixed Z-Index -->
-                                <div x-show="notificationsOpen" 
-                                     @click.away="notificationsOpen = false"
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 scale-95"
-                                     x-transition:enter-end="opacity-100 scale-100"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 scale-100"
-                                     x-transition:leave-end="opacity-0 scale-95"
-                                     class="notification-dropdown right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-200"
-                                     style="position: absolute; z-index: 9999;">
-                                    <div class="py-2">
-                                        <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                                            <h3 class="text-sm font-semibold text-gray-800">Notifications</h3>
-                                        </div>
-                                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
-                                            <div class="flex items-start gap-3">
-                                                <div class="flex-shrink-0 w-2 h-2 bg-red-500 rounded-full mt-2"></div>
-                                                <div>
-                                                    <span class="font-semibold text-gray-800">2 Pending Leave Requests</span>
-                                                    <p class="text-xs text-gray-500 mt-1">Review required for John Doe and Sarah Wilson</p>
-                                                    <p class="text-xs text-gray-400 mt-1">5 minutes ago</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
-                                            <div class="flex items-start gap-3">
-                                                <div class="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                                                <div>
-                                                    <span class="font-semibold text-gray-800">New Policy Update</span>
-                                                    <p class="text-xs text-gray-500 mt-1">Updated remote work policy available</p>
-                                                    <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
-                                            <div class="flex items-start gap-3">
-                                                <div class="flex-shrink-0 w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                                                <div>
-                                                    <span class="font-semibold text-gray-800">System Maintenance Tonight</span>
-                                                    <p class="text-xs text-gray-500 mt-1">Expected downtime 1-3 AM</p>
-                                                    <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150">
-                                            <div class="flex items-start gap-3">
-                                                <div class="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                                                <div>
-                                                    <span class="font-semibold text-gray-800">New Employee Onboarded</span>
-                                                    <p class="text-xs text-gray-500 mt-1">Welcome Alice Johnson to the team</p>
-                                                    <p class="text-xs text-gray-400 mt-1">Yesterday</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="border-t border-gray-100 bg-gray-50">
-                                        <a href="#" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 text-center transition-colors duration-150 font-medium">
-                                            View All Notifications
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Profile Icon with dropdown -->
-                            <div class="flex items-center">
-                                <x-dropdown align="right" width="48">
-                                    <x-slot name="trigger">
-                                        <button
-                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-white bg-opacity-20 hover:text-red-100 hover:bg-opacity-30 focus:outline-none transition ease-in-out duration-150">
-                                            <div>{{ Auth::user()->name }}</div>
-                                            <div class="ms-1">
-                                                <svg class="fill-current h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    </x-slot>
-
-                                    <x-slot name="content">
-                                        <x-dropdown-link :href="route('profile.edit')" class="text-gray-700 hover:bg-red-50 hover:text-red-800">
-                                            {{ __('Profile') }}
-                                        </x-dropdown-link>
-                                        <x-dropdown-link href="#" class="text-gray-700 hover:bg-red-50 hover:text-red-800">
-                                            {{ __('Settings') }}
-                                        </x-dropdown-link>
-                                        <!-- Authentication -->
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <x-dropdown-link :href="route('logout')"
-                                                onclick="event.preventDefault(); this.closest('form').submit();"
-                                                class="text-gray-700 hover:bg-red-50 hover:text-red-800">
-                                                {{ __('Log Out') }}
-                                            </x-dropdown-link>
-                                        </form>
-                                    </x-slot>
-                                </x-dropdown>
                             </div>
                         </div>
                     </div>
@@ -490,6 +410,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <table class="w-full border-collapse text-left">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -502,37 +423,49 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-leave-row="1">
                                     <td class="p-3 text-gray-700">John Doe</td>
                                     <td class="p-3 text-gray-700">Sick Leave</td>
                                     <td class="p-3 text-gray-700">20 Jul</td>
                                     <td class="p-3 text-gray-700">22 Jul</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">Pending</span></td>
                                     <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
+                                        <span class="leave-status-badge px-3 py-1 text-xs font-semibold rounded-full" data-status="pending">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="p-3">
+                                        <button onclick="updateLeaveStatus(1, 'approved')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
+                                        <button onclick="updateLeaveStatus(1, 'rejected')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
                                     </td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-leave-row="2">
                                     <td class="p-3 text-gray-700">Alice Smith</td>
                                     <td class="p-3 text-gray-700">Casual Leave</td>
                                     <td class="p-3 text-gray-700">23 Jul</td>
                                     <td class="p-3 text-gray-700">24 Jul</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Approved</span></td>
                                     <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
+                                        <span class="leave-status-badge px-3 py-1 text-xs font-semibold rounded-full" data-status="approved">
+                                            Approved
+                                        </span>
+                                    </td>
+                                    <td class="p-3">
+                                        <button onclick="updateLeaveStatus(2, 'approved')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
+                                        <button onclick="updateLeaveStatus(2, 'rejected')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
                                     </td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-leave-row="3">
                                     <td class="p-3 text-gray-700">Bob Johnson</td>
                                     <td class="p-3 text-gray-700">Annual Leave</td>
                                     <td class="p-3 text-gray-700">15 Aug</td>
                                     <td class="p-3 text-gray-700">20 Aug</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">Pending</span></td>
                                     <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
+                                        <span class="leave-status-badge px-3 py-1 text-xs font-semibold rounded-full" data-status="pending">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="p-3">
+                                        <button onclick="updateLeaveStatus(3, 'approved')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
+                                        <button onclick="updateLeaveStatus(3, 'rejected')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -819,6 +752,76 @@
                     });
                 }
 
+                // Dynamic Leave Status Update Function
+                function updateLeaveStatus(rowNumber, newStatus) {
+                    const row = document.querySelector(`[data-leave-row="${rowNumber}"]`);
+                    if (!row) return;
+
+                    const statusBadge = row.querySelector('.leave-status-badge');
+                    if (!statusBadge) return;
+
+                    // Remove all existing status classes
+                    statusBadge.classList.remove('status-pending', 'status-approved', 'status-rejected');
+                    
+                    // Update the data-status attribute
+                    statusBadge.setAttribute('data-status', newStatus);
+                    
+                    // Define status configurations - only 3 statuses as requested
+                    const statusConfig = {
+                        'pending': {
+                            text: 'Pending',
+                            class: 'status-pending'
+                        },
+                        'approved': {
+                            text: 'Approved',
+                            class: 'status-approved'
+                        },
+                        'rejected': {
+                            text: 'Rejected',
+                            class: 'status-rejected'
+                        }
+                    };
+
+                    // Apply new status
+                    const config = statusConfig[newStatus];
+                    if (config) {
+                        statusBadge.textContent = config.text;
+                        statusBadge.classList.add(config.class);
+                        
+                        // Add a subtle animation effect
+                        statusBadge.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            statusBadge.style.transform = 'scale(1)';
+                        }, 200);
+                    }
+                }
+
+                // Initialize leave status badges on page load
+                function initializeLeaveStatusBadges() {
+                    const statusBadges = document.querySelectorAll('.leave-status-badge');
+                    
+                    statusBadges.forEach(badge => {
+                        const currentStatus = badge.getAttribute('data-status');
+                        if (currentStatus) {
+                            // Remove any existing status classes
+                            badge.classList.remove('status-pending', 'status-approved', 'status-rejected');
+                            
+                            // Apply the appropriate class based on current status
+                            switch(currentStatus) {
+                                case 'pending':
+                                    badge.classList.add('status-pending');
+                                    break;
+                                case 'approved':
+                                    badge.classList.add('status-approved');
+                                    break;
+                                case 'rejected':
+                                    badge.classList.add('status-rejected');
+                                    break;
+                            }
+                        }
+                    });
+                }
+
                 // Function to handle dynamic updates when data-progress changes
                 function updateProgressAndStatus() {
                     initializeProgressBars();
@@ -829,6 +832,7 @@
                 document.addEventListener('DOMContentLoaded', function() {
                     updateClock();
                     updateProgressAndStatus();
+                    initializeLeaveStatusBadges();
                     
                     // Optional: Add mutation observer to detect changes in data-progress attributes
                     const observer = new MutationObserver(function(mutations) {

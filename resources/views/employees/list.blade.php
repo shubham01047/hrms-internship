@@ -28,6 +28,39 @@
             <x-message></x-message>
             
             <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+                <!-- Search Bar Section -->
+                <div class="p-6 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                        <div class="relative flex-1 max-w-md">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input type="text" 
+                                   id="searchInput"
+                                   placeholder="Search employees by name or email..." 
+                                   class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out shadow-sm">
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <button id="clearSearch" 
+                                    class="hidden inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Clear
+                            </button>
+                            
+                            <div id="resultsCounter" class="text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                                <span class="font-semibold" id="totalCount">{{ $employees->count() }}</span> 
+                                <span id="employeeText">{{ Str::plural('employee', $employees->count()) }}</span>
+                                <span id="searchContext"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="p-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -72,10 +105,13 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody id="employeesTableBody" class="bg-white divide-y divide-gray-200">
                                 @if ($employees->isNotEmpty())
                                     @foreach ($employees as $index => $employee)
-                                        <tr class="hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]">
+                                        <tr class="employee-row hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]" 
+                                            data-employee-name="{{ strtolower($employee->first_name . ' ' . $employee->last_name) }}"
+                                            data-employee-email="{{ strtolower($employee->email) }}"
+                                            data-employee-id="{{ $employee->id }}">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-sm font-semibold text-gray-700">
                                                     {{ $index + 1 }}
@@ -91,7 +127,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="ml-4">
-                                                        <div class="text-sm font-semibold text-gray-900">
+                                                        <div class="text-sm font-semibold text-gray-900 employee-name">
                                                             {{ $employee->first_name . ' ' . $employee->last_name }}
                                                         </div>
                                                         <div class="text-sm text-gray-500">Employee</div>
@@ -103,7 +139,7 @@
                                                     <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                     </svg>
-                                                    <span class="text-sm text-gray-900">{{ $employee->email }}</span>
+                                                    <span class="text-sm text-gray-900 employee-email">{{ $employee->email }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -136,8 +172,28 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @else
-                                    <tr>
+                                @endif
+                                
+                                <!-- No Results Row (Hidden by default) -->
+                                <tr id="noResultsRow" class="hidden">
+                                    <td colspan="5" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-4">
+                                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="text-lg font-medium text-gray-900">No employees found</div>
+                                            <div class="text-sm text-gray-500">
+                                                Try adjusting your search terms or <button onclick="clearSearch()" class="text-indigo-600 hover:text-indigo-500 underline">clear the search</button>.
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Empty State Row (Show when no employees at all) -->
+                                @if ($employees->isEmpty())
+                                    <tr id="emptyStateRow">
                                         <td colspan="5" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center space-y-4">
                                                 <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
@@ -174,10 +230,125 @@
     
     <x-slot name="script">
         <script type="text/javascript">
-            // deleteEmployee function here
+            // Store original employees data
+            const originalEmployees = @json($employees->items());
+            let currentSearchTerm = '';
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                currentSearchTerm = searchTerm;
+                filterEmployees(searchTerm);
+                updateUI(searchTerm);
+            });
+
+            // Clear search functionality
+            document.getElementById('clearSearch').addEventListener('click', function() {
+                clearSearch();
+            });
+
+            function filterEmployees(searchTerm) {
+                const rows = document.querySelectorAll('.employee-row');
+                const noResultsRow = document.getElementById('noResultsRow');
+                let visibleCount = 0;
+
+                rows.forEach((row, index) => {
+                    const employeeName = row.getAttribute('data-employee-name');
+                    const employeeEmail = row.getAttribute('data-employee-email');
+                    const nameElement = row.querySelector('.employee-name');
+                    const emailElement = row.querySelector('.employee-email');
+                    const originalEmployee = originalEmployees[index] || {};
+
+                    // Search in employee name and email
+                    const matchesName = employeeName.includes(searchTerm);
+                    const matchesEmail = employeeEmail.includes(searchTerm);
+
+                    if (searchTerm === '' || matchesName || matchesEmail) {
+                        row.style.display = '';
+                        visibleCount++;
+                        
+                        // Update row number
+                        const numberCell = row.querySelector('td:first-child div');
+                        numberCell.textContent = visibleCount;
+                        
+                        // Highlight search term in employee name
+                        if (searchTerm !== '' && matchesName) {
+                            const fullName = (originalEmployee.first_name || '') + ' ' + (originalEmployee.last_name || '');
+                            const highlightedName = highlightSearchTerm(fullName, searchTerm);
+                            nameElement.innerHTML = highlightedName;
+                        } else {
+                            const fullName = (originalEmployee.first_name || '') + ' ' + (originalEmployee.last_name || '');
+                            nameElement.textContent = fullName;
+                        }
+
+                        // Highlight search term in email
+                        if (searchTerm !== '' && matchesEmail) {
+                            const highlightedEmail = highlightSearchTerm(originalEmployee.email || '', searchTerm);
+                            emailElement.innerHTML = highlightedEmail;
+                        } else {
+                            emailElement.textContent = originalEmployee.email || '';
+                        }
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide no results row
+                if (visibleCount === 0 && searchTerm !== '') {
+                    noResultsRow.style.display = '';
+                } else {
+                    noResultsRow.style.display = 'none';
+                }
+
+                // Update counter
+                updateCounter(visibleCount, searchTerm);
+            }
+
+            function highlightSearchTerm(text, searchTerm) {
+                if (!searchTerm) return text;
+                
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                return text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+            }
+
+            function updateCounter(count, searchTerm) {
+                const totalCountElement = document.getElementById('totalCount');
+                const employeeTextElement = document.getElementById('employeeText');
+                const searchContextElement = document.getElementById('searchContext');
+
+                totalCountElement.textContent = count;
+                employeeTextElement.textContent = count === 1 ? 'employee' : 'employees';
+                
+                if (searchTerm) {
+                    searchContextElement.innerHTML = ` found for "<span class="font-medium text-indigo-600">${searchTerm}</span>"`;
+                } else {
+                    searchContextElement.textContent = '';
+                }
+            }
+
+            function updateUI(searchTerm) {
+                const clearButton = document.getElementById('clearSearch');
+                
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                    clearButton.classList.add('inline-flex');
+                } else {
+                    clearButton.classList.add('hidden');
+                    clearButton.classList.remove('inline-flex');
+                }
+            }
+
+            function clearSearch() {
+                document.getElementById('searchInput').value = '';
+                currentSearchTerm = '';
+                filterEmployees('');
+                updateUI('');
+            }
+
+            // deleteEmployee function
             function deleteEmployee(id) {
                 console.log("Calling delete for ID:", id);
-                if (confirm('Are you sure u want to delete "{{ $employee->first_name }}"?')) {
+                if (confirm('Are you sure you want to delete this employee?')) {
                     $.ajax({
                         url: '{{ route('employees.destroy') }}',
                         type: 'DELETE',
@@ -189,11 +360,25 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            window.location.href = '{{ route('employees.index') }}'
+                            // Remove the row from DOM
+                            const row = document.querySelector(`[data-employee-id="${id}"]`);
+                            if (row) {
+                                row.remove();
+                                // Re-filter to update numbering and counter
+                                filterEmployees(currentSearchTerm);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error deleting employee: ' + error);
                         }
                     });
                 }
             }
+
+            // Initialize on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCounter({{ $employees->count() }}, '');
+            });
         </script>
     </x-slot>
 </x-app-layout>
