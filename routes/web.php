@@ -12,6 +12,8 @@ use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
+use App\Models\Employee;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -63,7 +65,7 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     //Redirection of Admin, HR, Manager and Employee
-    Route::view('/admin/dashboard', 'admin_dashboard')->name('admin.dashboard');
+   Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
     Route::view('/employee/dashboard', 'employee_dashboard')->name('employee.dashboard');
