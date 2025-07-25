@@ -51,13 +51,13 @@
 
                  @can('create roles')
                         <a href="{{route('roles.index')}}"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">🔐
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300 {{ $isActive('roles.index') }}">🔐
                 Roles</a>
                  @endcan
 
                   @can('create permissions')
                         <a href="{{route('permissions.index')}}"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">🔐
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300 {{ $isActive('permissions.index') }}">🔐
                  Permission</a>
                  @endcan
 

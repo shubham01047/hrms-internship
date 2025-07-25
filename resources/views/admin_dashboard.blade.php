@@ -389,49 +389,129 @@
                                 <h2 class="text-xl font-semibold text-white">Employee Directory</h2>
                             </div>
                             <div class="overflow-x-auto">
-                                <table class="w-full border-collapse text-left">
-                                    <thead class="bg-gray-100">
-                                        <tr>
-                                            <th class="p-3 text-gray-800">Name</th>
-                                            <th class="p-3 text-gray-800">Designation</th>
-                                            <th class="p-3 text-gray-800">Department</th>
-                                            <th class="p-3 text-gray-800">Contact</th>
-                                            <th class="p-3 text-gray-800">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                            <td class="p-3 text-gray-700">Jane Doe</td>
-                                            <td class="p-3 text-gray-700">Software Engineer</td>
-                                            <td class="p-3 text-gray-700">Engineering</td>
-                                            <td class="p-3 text-gray-700">jane.doe@example.com</td>
-                                            <td class="p-3 flex items-center gap-2">
-                                                <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors duration-200 text-sm shadow-sm">View</button>
-                                                <button class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition-colors duration-200 text-sm shadow-sm">Edit</button>
+                                <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gradient-to-r from-red-600 to-red-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tl-lg">
+                                        <div class="flex items-center space-x-2">
+                                            <span>#</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                            <span>Employee</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <span>Email</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
+                                            </svg>
+                                            <span>Joined</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tr-lg hidden">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                            </svg>
+                                            <span>Actions</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @if ($employees->isNotEmpty())
+                                    @foreach ($employees as $index => $employee)
+                                        <tr class="hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-sm font-semibold text-gray-700">
+                                                    {{ $index + 1 }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-12 w-12">
+                                                        <div class="h-12 w-12 rounded-full bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center shadow-lg">
+                                                            <span class="text-white font-semibold text-lg">
+                                                                {{ strtoupper(substr($employee->first_name, 0, 1) . substr($employee->last_name, 0, 1)) }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-semibold text-gray-900">
+                                                            {{ $employee->first_name . ' ' . $employee->last_name }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">Employee</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    <span class="text-sm text-gray-900">{{ $employee->email }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
+                                                    </svg>
+                                                    <span class="text-sm text-gray-900 font-medium">
+                                                        {{ \Carbon\Carbon::parse($employee->created_at)->format('d M, Y') }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap hidden">
+                                                <div class="flex items-center space-x-3">
+                                                    @can('edit employee')
+                                                        <a href="{{ route('employees.edit', $employee->id) }}"
+                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                                            <x-pencil class="w-3 h-3 mr-1"/>
+                                                            Edit
+                                                        </a>
+                                                    @endcan
+                                                    @can('delete employee')
+                                                        <a href="javascript:void(0);" onclick="deleteEmployee({{ $employee->id }})"
+                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
+                                                            <x-trashcan class="w-3 h-3 mr-1"/>
+                                                            Delete
+                                                        </a>
+                                                    @endcan
+                                                </div>
                                             </td>
                                         </tr>
-                                        <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                            <td class="p-3 text-gray-700">John Smith</td>
-                                            <td class="p-3 text-gray-700">HR Manager</td>
-                                            <td class="p-3 text-gray-700">Human Resources</td>
-                                            <td class="p-3 text-gray-700">john.smith@example.com</td>
-                                            <td class="p-3 flex items-center gap-2">
-                                                <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors duration-200 text-sm shadow-sm">View</button>
-                                                <button class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition-colors duration-200 text-sm shadow-sm">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                            <td class="p-3 text-gray-700">Emily White</td>
-                                            <td class="p-3 text-gray-700">Marketing Specialist</td>
-                                            <td class="p-3 text-gray-700">Marketing</td>
-                                            <td class="p-3 text-gray-700">emily.white@example.com</td>
-                                            <td class="p-3 flex items-center gap-2">
-                                                <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors duration-200 text-sm shadow-sm">View</button>
-                                                <button class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition-colors duration-200 text-sm shadow-sm">Edit</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-12 text-center">
+                                            <div class="flex flex-col items-center justify-center space-y-4">
+                                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="text-lg font-medium text-gray-900">No employees found</div>
+                                                <div class="text-sm text-gray-500">Get started by adding your first employee.</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
                             </div>
                         </div>
 
@@ -458,85 +538,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Leave Management -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-800 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Recent Leave Requests Table</h2>
-                        </div>
-                        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-                            <div class="relative w-full sm:w-auto flex-1">
-                                <input type="text" placeholder="Search leaves..." class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5"></i>
-                            </div>
-                            <div x-data="{ filterOpen: false }" class="relative">
-                                <button @click="filterOpen = !filterOpen" class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                                    Filter by Status
-                                    <i class="bi bi-chevron-down"></i>
-                                </button>
-                                <div x-show="filterOpen" @click.away="filterOpen = false"
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 scale-95"
-                                     x-transition:enter-end="opacity-100 scale-100"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 scale-100"
-                                     x-transition:leave-end="opacity-0 scale-95"
-                                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 overflow-hidden border border-gray-200">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Approved</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Rejected</a>
-                                </div>
-                            </div>
-                        </div>
-                        <table class="w-full border-collapse text-left">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="p-3 text-gray-800">Employee Name</th>
-                                    <th class="p-3 text-gray-800">Leave Type</th>
-                                    <th class="p-3 text-gray-800">From Date</th>
-                                    <th class="p-3 text-gray-800">To Date</th>
-                                    <th class="p-3 text-gray-800">Status</th>
-                                    <th class="p-3 text-gray-800">Action Buttons</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="p-3 text-gray-700">John Doe</td>
-                                    <td class="p-3 text-gray-700">Sick Leave</td>
-                                    <td class="p-3 text-gray-700">20 Jul</td>
-                                    <td class="p-3 text-gray-700">22 Jul</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">Pending</span></td>
-                                    <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
-                                    </td>
-                                </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="p-3 text-gray-700">Alice Smith</td>
-                                    <td class="p-3 text-gray-700">Casual Leave</td>
-                                    <td class="p-3 text-gray-700">23 Jul</td>
-                                    <td class="p-3 text-gray-700">24 Jul</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Approved</span></td>
-                                    <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
-                                    </td>
-                                </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="p-3 text-gray-700">Bob Johnson</td>
-                                    <td class="p-3 text-gray-700">Annual Leave</td>
-                                    <td class="p-3 text-gray-700">15 Aug</td>
-                                    <td class="p-3 text-gray-700">20 Aug</td>
-                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">Pending</span></td>
-                                    <td class="p-3">
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors duration-200">Approve</button>
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2 transition-colors duration-200">Reject</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
 
                     <!-- Team Performance Table -->
