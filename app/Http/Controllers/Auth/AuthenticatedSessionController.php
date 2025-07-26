@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         } elseif ($roles->contains('Employee')) {
             return redirect()->route('employee.dashboard');
         }
-        return redirect('/'); // fallback redirect
+        return redirect('/dashboard'); // fallback redirect
         // return redirect()->intended(route('dashboard', absolute: false));
     }
 
