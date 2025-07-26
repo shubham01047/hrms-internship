@@ -251,7 +251,7 @@
         </div>
         
         <div class="message">
-            wait until someone assigns you a role or try to login after sometime
+            Wait until someone assigns you a role or try to login after sometime
         </div>
         
         <div class="loading-dots">

@@ -65,7 +65,6 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     //Redirection of Admin, HR, Manager and Employee
-    // Route::get('/admin/dashboard', 'admin_dashboard')->name('admin.dashboard');
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
