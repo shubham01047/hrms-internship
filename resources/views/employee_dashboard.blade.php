@@ -23,68 +23,525 @@
             ->toArray();
     }
 @endphp
+
 <x-app-layout>
-<!-- Work Status Section -->
-<div>
-    <h2>Work Status</h2>
-    <p>Track your work hours easily</p>
-    <div>Total Working Time:<span id="workTime">
-            @if ($attendanceToday && $attendanceToday->punch_out)
-                {{ $attendanceToday->total_working_hours ?? '00:00:00' }}
-            @elseif ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
-                00:00:00 {{-- This will be updated live by JavaScript --}}
-            @else
-                00:00:00
-            @endif
-        </span>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ffffff 50%, #ff4757 100%);
+        min-height: 100vh;
+    }
+    
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(255, 75, 87, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(255, 75, 87, 0.15);
+    }
+    
+    .header-gradient {
+        background: linear-gradient(135deg, #ff2626, #ff6969);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .card h2 {
+        color: #ff4757;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card h2.header-gradient {
+        background: linear-gradient(135deg, #ff2626, #ff6969);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .work-time-display {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        border-radius: 15px;
+        margin: 1rem 0;
+        color: white;
+    }
+    
+    #workTime {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Different colored buttons */
+    .btn-punch-in {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-punch-in:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(46, 204, 113, 0.4);
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+    }
+    
+    .btn-punch-out {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-punch-out:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(231, 76, 60, 0.4);
+        background: linear-gradient(45deg, #c0392b, #e74c3c);
+    }
+    
+    .btn-morning-tea {
+        background: linear-gradient(45deg, #f39c12, #e67e22);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-morning-tea:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(243, 156, 18, 0.4);
+    }
+    
+    .btn-lunch {
+        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(155, 89, 182, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-lunch:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(155, 89, 182, 0.4);
+    }
+    
+    .btn-evening-tea {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-evening-tea:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
+    }
+    
+    .btn-custom {
+        background: linear-gradient(45deg, #1abc9c, #16a085);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(26, 188, 156, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(26, 188, 156, 0.4);
+    }
+    
+    .btn-end-break {
+        background: linear-gradient(45deg, #ff4757, #ff6b6b);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-end-break:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(255, 75, 87, 0.4);
+    }
+    
+    .btn:disabled {
+        background: #95a5a6 !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .break-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .break-timer {
+        background: linear-gradient(135deg, #ffffff, #ffe6e6);
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        border: 2px solid #ff4757;
+    }
+    
+    #breakTimer {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ff4757;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .active-break {
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+    }
+    
+    .day-completed {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    
+    /* Clock Styles */
+    .clock-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+    
+    .analog-clock {
+        width: 200px;
+        height: 200px;
+        border: 8px solid #ff4757;
+        border-radius: 50%;
+        position: relative;
+        background: linear-gradient(135deg, #ffffff, #ffe6e6);
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+    }
+    
+    .clock-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background: #ff4757;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+    }
+    
+    .clock-hand {
+        position: absolute;
+        background: #ff4757;
+        transform-origin: bottom center;
+        border-radius: 2px;
+        transition: transform 0.1s ease-in-out;
+    }
+    
+    .hour-hand {
+        width: 4px;
+        height: 60px;
+        top: 40px;
+        left: 50%;
+        margin-left: -2px;
+    }
+    
+    .minute-hand {
+        width: 3px;
+        height: 80px;
+        top: 20px;
+        left: 50%;
+        margin-left: -1.5px;
+    }
+    
+    .second-hand {
+        width: 1px;
+        height: 90px;
+        top: 10px;
+        left: 50%;
+        margin-left: -0.5px;
+        background: #ff6b6b;
+    }
+    
+    .digital-clock {
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+    }
+    
+    .digital-time {
+        font-size: 2.5rem;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .digital-date {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+        opacity: 0.9;
+    }
+    
+    @media (max-width: 768px) {
+        .clock-container {
+            flex-direction: column;
+        }
+        
+        .analog-clock {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .digital-time {
+            font-size: 2rem;
+        }
+        
+        #workTime {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <!-- Clock Section -->
+    <div class="card">
+        <h2 class="header-gradient">Current Time</h2>
+        <div class="clock-container">
+            <div class="analog-clock" id="analogClock">
+                <div class="clock-center"></div>
+                <div class="clock-hand hour-hand" id="hourHand"></div>
+                <div class="clock-hand minute-hand" id="minuteHand"></div>
+                <div class="clock-hand second-hand" id="secondHand"></div>
+            </div>
+            <div class="digital-clock">
+                <div class="digital-time" id="digitalTime">00:00:00</div>
+                <div class="digital-date" id="digitalDate">Loading...</div>
+            </div>
+        </div>
     </div>
 
-    @if (!$attendanceToday)
-        <form method="POST" action="{{ route('attendance.punchIn') }}">
-            @csrf
-            <button type="submit">Punch In</button>
-        </form>
-    @elseif (!$attendanceToday->punch_out)
-        <form method="POST" action="{{ route('attendance.punchOut') }}">
-            @csrf
-            <button type="submit">Punch Out</button>
-        </form>
-    @else
-        <div>Day Completed</div>
+    <!-- Work Status Section -->
+    <div class="card">
+        <h2 class="header-gradient">Work Status</h2>
+        <p>Track your work hours easily</p>
+        <div class="work-time-display">
+            <div>Total Working Time:</div>
+            <div id="workTime">
+                @if ($attendanceToday && $attendanceToday->punch_out)
+                    {{ $attendanceToday->total_working_hours ?? '00:00:00' }}
+                @elseif ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
+                    00:00:00 {{-- This will be updated live by JavaScript --}}
+                @else
+                    00:00:00
+                @endif
+            </div>
+        </div>
+
+        @if (!$attendanceToday)
+            <form method="POST" action="{{ route('attendance.punchIn') }}">
+                @csrf
+                <button type="submit" class="btn-punch-in">Punch In</button>
+            </form>
+        @elseif (!$attendanceToday->punch_out)
+            <form method="POST" action="{{ route('attendance.punchOut') }}">
+                @csrf
+                <button type="submit" class="btn-punch-out">Punch Out</button>
+            </form>
+        @else
+            <div class="day-completed">Day Completed ✅</div>
+        @endif
+    </div>
+
+    <!-- Break Management -->
+    @if ($attendanceToday && !$attendanceToday->punch_out)
+        <div class="card">
+            <h2 class="header-gradient">Manage Breaks</h2>
+
+            @if (!$activeBreak)
+                <form method="POST" action="{{ route('attendance.startBreak') }}">
+                    @csrf
+                    <div class="break-buttons">
+                        <button type="submit" name="break_type" value="Morning Tea" 
+                            class="btn-morning-tea {{ in_array('Morning Tea', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Morning Tea', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Morning Tea Break
+                        </button>
+                        <button type="submit" name="break_type" value="Lunch" 
+                            class="btn-lunch {{ in_array('Lunch', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Lunch', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Lunch Break
+                        </button>
+                        <button type="submit" name="break_type" value="Evening Tea" 
+                            class="btn-evening-tea {{ in_array('Evening Tea', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Evening Tea', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Evening Tea Break
+                        </button>
+                        <button type="submit" name="break_type" value="Custom" 
+                            class="btn-custom {{ in_array('Custom', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Custom', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Custom Break
+                        </button>
+                    </div>
+                </form>
+            @else
+                <div class="active-break">
+                    <div>On {{ $activeBreak->break_type }} break since
+                        {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
+                    </div>
+                    <form method="POST" action="{{ route('attendance.endBreak') }}" style="margin-top: 1rem;">
+                        @csrf
+                        <button type="submit" class="btn-end-break">End Break</button>
+                    </form>
+                </div>
+            @endif
+
+            <div class="break-timer">
+                <div>Break Timer:</div>
+                <div id="breakTimer">00:00:00</div>
+            </div>
+        </div>
     @endif
 </div>
 
-<!-- Break Management -->
-@if ($attendanceToday && !$attendanceToday->punch_out)
-    <div>
-        <h2>Manage Breaks</h2>
-
-        @if (!$activeBreak)
-            <form method="POST" action="{{ route('attendance.startBreak') }}">
-                @csrf
-                <div>
-                    @foreach (['Morning Tea', 'Lunch', 'Evening Tea', 'Custom'] as $break)
-                        <button type="submit" name="break_type" value="{{ $break }}"
-                            {{ in_array($break, $completedBreaks) ? 'disabled' : '' }}>
-                            Start {{ $break }} Break
-                        </button>
-                    @endforeach
-                </div>
-            </form>
-        @else
-            <div>
-                On {{ $activeBreak->break_type }} break since
-                {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
-            </div>
-            <form method="POST" action="{{ route('attendance.endBreak') }}">
-                @csrf
-                <button type="submit">End Break</button>
-            </form>
-        @endif
-
-        <div>Break Timer: <span id="breakTimer">00:00:00</span></div>
-    </div>
-@endif
+<!-- Clock JavaScript -->
+<script>
+    function updateClocks() {
+        const now = new Date();
+        
+        // Digital Clock
+        const digitalTime = document.getElementById('digitalTime');
+        const digitalDate = document.getElementById('digitalDate');
+        
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const dateString = now.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        if (digitalTime) digitalTime.textContent = timeString;
+        if (digitalDate) digitalDate.textContent = dateString;
+        
+        // Analog Clock
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        
+        const hourDegree = (hours * 30) + (minutes * 0.5);
+        const minuteDegree = minutes * 6;
+        const secondDegree = seconds * 6;
+        
+        if (hourHand) hourHand.style.transform = `rotate(${hourDegree}deg)`;
+        if (minuteHand) minuteHand.style.transform = `rotate(${minuteDegree}deg)`;
+        if (secondHand) secondHand.style.transform = `rotate(${secondDegree}deg)`;
+    }
+    
+    // Update clocks immediately and then every second
+    updateClocks();
+    setInterval(updateClocks, 1000);
+</script>
 
 @if ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
     @php
