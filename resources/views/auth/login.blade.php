@@ -64,13 +64,6 @@
                         </button>
                     @endif
 
-                    <!-- Register -->
-                    @if (Route::has('register'))
-                        <p class="text-center text-gray-600 text-sm">
-                            Don't have an account?
-                            <a href="{{ route('register') }}" class="text-red-600 hover:underline">Register</a> {{-- Updated link color --}}
-                        </p>
-                    @endif
                 </form>
             </div>
         </div>

@@ -170,10 +170,7 @@
                     Sign in with Google
                 </button>
             </div>
-            <div class="links">
-                Don’t have an account? <a href="{{ url('/register') }}">Register</a>
-            </div>
-        </form>
+    </form>
     </div>
 </div>
 
