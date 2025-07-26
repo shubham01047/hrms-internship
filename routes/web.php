@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\GoogleController;
 use Laravel\Socialite\Facades\Socialite;
@@ -12,8 +13,7 @@ use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
-use App\Models\Employee;
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,28 +65,30 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     //Redirection of Admin, HR, Manager and Employee
-   Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
+
+    //Punchin/Punchout & Breaks routes
     Route::view('/employee/dashboard', 'employee_dashboard')->name('employee.dashboard');
-});
+    Route::post('/start-break', [AttendanceController::class, 'startBreak'])->name('attendance.startBreak');
+    Route::post('/end-break', [AttendanceController::class, 'endBreak'])->name('attendance.endBreak');
+    Route::post('/punch-in', [AttendanceController::class, 'punchIn'])->name('attendance.punchIn');
+    Route::post('/punch-out', [AttendanceController::class, 'punchOut'])->name('attendance.punchOut');
 
-require __DIR__ . '/auth.php';
-
-//Leaves and leaves type routes
-Route::middleware(['auth'])->group(function () {
+    //Leaves and leaves type routes
     Route::get('/leaves', [LeaveController::class, 'index'])->name('leaves.index');
     Route::get('/leaves/apply', [LeaveController::class, 'create'])->name('leaves.create');
     Route::post('/leaves', [LeaveController::class, 'store'])->name('leaves.store');
-
     Route::get('/leaves/manage', [LeaveController::class, 'manage'])->name('leaves.manage');
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
     Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
+
+    //Attendance Report
+    Route::get('/admin/attendance-report', [AdminDashboardController::class, 'showAttendanceReport'])->name('admin.attendance.report');
 });
 
-// Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])
-//     ->middleware(['auth', 'role:hr|manager']) // optional role middleware
-//     ->name('leaves.approve');
+require __DIR__ . '/auth.php';
 
 // routes/web.php
 Route::get('/admin/company', [CompanyController::class, 'edit'])->name('company.edit');

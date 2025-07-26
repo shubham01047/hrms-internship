@@ -1,430 +1,611 @@
+@php
+    use App\Models\Attendance;
+    use App\Models\BreakModel;
+    use Carbon\Carbon;
+
+    $attendanceToday = Attendance::where('user_id', auth()->id())
+        ->whereDate('date', now())
+        ->first();
+
+    $activeBreak = null;
+    $completedBreaks = [];
+    $netWorkTime = null;
+
+    if ($attendanceToday) {
+        $activeBreak = BreakModel::where('attendance_id', $attendanceToday->id)
+            ->whereNull('break_end')
+            ->latest()
+            ->first();
+
+        $completedBreaks = BreakModel::where('attendance_id', $attendanceToday->id)
+            ->whereNotNull('break_end')
+            ->pluck('break_type')
+            ->toArray();
+    }
+@endphp
+
 <x-app-layout>
-  <x-slot name="header">
-      <h2 class="font-semibold text-xl text-black leading-tight">
-          {{ __('Dashboard') }}
-      </h2>
-  </x-slot>
-
-  <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
-              <div class="p-6 text-black">
-
-                  {{-- employee code --}}
-
 <style>
-    /* Dynamic Progress Bar Styles */
-    .progress-bar {
-        width: 0%;
-        transition: all 1.5s ease-in-out;
-        border-radius: 9999px;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
     
-    .progress-bar.green {
-        background-color: #16a34a; /* Green for 100% */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ffffff 50%, #ff4757 100%);
+        min-height: 100vh;
     }
     
-    .progress-bar.blue {
-        background-color: #2563eb; /* Blue for 50-99% */
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
     }
     
-    .progress-bar.yellow {
-        background-color: #eab308; /* Yellow for 0-49% */
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(255, 75, 87, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(255, 75, 87, 0.15);
+    }
+    
+    .header-gradient {
+        background: linear-gradient(135deg, #ff2626, #ff6969);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .card h2 {
+        color: #ff4757;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card h2.header-gradient {
+        background: linear-gradient(135deg, #ff2626, #ff6969);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .work-time-display {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        border-radius: 15px;
+        margin: 1rem 0;
+        color: white;
+    }
+    
+    #workTime {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Different colored buttons */
+    .btn-punch-in {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-punch-in:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(46, 204, 113, 0.4);
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+    }
+    
+    .btn-punch-out {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-punch-out:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(231, 76, 60, 0.4);
+        background: linear-gradient(45deg, #c0392b, #e74c3c);
+    }
+    
+    .btn-morning-tea {
+        background: linear-gradient(45deg, #f39c12, #e67e22);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-morning-tea:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(243, 156, 18, 0.4);
+    }
+    
+    .btn-lunch {
+        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(155, 89, 182, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-lunch:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(155, 89, 182, 0.4);
+    }
+    
+    .btn-evening-tea {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-evening-tea:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
+    }
+    
+    .btn-custom {
+        background: linear-gradient(45deg, #1abc9c, #16a085);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(26, 188, 156, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(26, 188, 156, 0.4);
+    }
+    
+    .btn-end-break {
+        background: linear-gradient(45deg, #ff4757, #ff6b6b);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+        margin: 0.5rem;
+    }
+    
+    .btn-end-break:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(255, 75, 87, 0.4);
+    }
+    
+    .btn:disabled {
+        background: #95a5a6 !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .break-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .break-timer {
+        background: linear-gradient(135deg, #ffffff, #ffe6e6);
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        border: 2px solid #ff4757;
+    }
+    
+    #breakTimer {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ff4757;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .active-break {
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+    }
+    
+    .day-completed {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    
+    /* Clock Styles */
+    .clock-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+    
+    .analog-clock {
+        width: 200px;
+        height: 200px;
+        border: 8px solid #ff4757;
+        border-radius: 50%;
+        position: relative;
+        background: linear-gradient(135deg, #ffffff, #ffe6e6);
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+    }
+    
+    .clock-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background: #ff4757;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+    }
+    
+    .clock-hand {
+        position: absolute;
+        background: #ff4757;
+        transform-origin: bottom center;
+        border-radius: 2px;
+        transition: transform 0.1s ease-in-out;
+    }
+    
+    .hour-hand {
+        width: 4px;
+        height: 60px;
+        top: 40px;
+        left: 50%;
+        margin-left: -2px;
+    }
+    
+    .minute-hand {
+        width: 3px;
+        height: 80px;
+        top: 20px;
+        left: 50%;
+        margin-left: -1.5px;
+    }
+    
+    .second-hand {
+        width: 1px;
+        height: 90px;
+        top: 10px;
+        left: 50%;
+        margin-left: -0.5px;
+        background: #ff6b6b;
+    }
+    
+    .digital-clock {
+        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+    }
+    
+    .digital-time {
+        font-size: 2.5rem;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .digital-date {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+        opacity: 0.9;
+    }
+    
+    @media (max-width: 768px) {
+        .clock-container {
+            flex-direction: column;
+        }
+        
+        .analog-clock {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .digital-time {
+            font-size: 2rem;
+        }
+        
+        #workTime {
+            font-size: 2rem;
+        }
     }
 </style>
 
-  <main class="p-6 space-y-8 bg-gray-100 min-h-screen">
+<div class="dashboard-container">
+    <!-- Clock Section -->
+    <div class="card">
+        <h2 class="header-gradient">Current Time</h2>
+        <div class="clock-container">
+            <div class="analog-clock" id="analogClock">
+                <div class="clock-center"></div>
+                <div class="clock-hand hour-hand" id="hourHand"></div>
+                <div class="clock-hand minute-hand" id="minuteHand"></div>
+                <div class="clock-hand second-hand" id="secondHand"></div>
+            </div>
+            <div class="digital-clock">
+                <div class="digital-time" id="digitalTime">00:00:00</div>
+                <div class="digital-date" id="digitalDate">Loading...</div>
+            </div>
+        </div>
+    </div>
 
-  <!-- Header with Real-time Clock -->
-  <div class="bg-gradient-to-r from-[#ff2626] to-[#ff6969] text-white p-6 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center"> {{-- Added flex-col sm:flex-row for responsiveness --}}
-      <h2 class="text-2xl font-bold mb-2 sm:mb-0">Employee Dashboard</h2>
-      <div id="clock" class="text-3xl font-extrabold text-white tracking-wide"></div>
-  </div>
+    <!-- Work Status Section -->
+    <div class="card">
+        <h2 class="header-gradient">Work Status</h2>
+        <p>Track your work hours easily</p>
+        <div class="work-time-display">
+            <div>Total Working Time:</div>
+            <div id="workTime">
+                @if ($attendanceToday && $attendanceToday->punch_out)
+                    {{ $attendanceToday->total_working_hours ?? '00:00:00' }}
+                @elseif ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
+                    00:00:00 {{-- This will be updated live by JavaScript --}}
+                @else
+                    00:00:00
+                @endif
+            </div>
+        </div>
 
-  <!-- Profile Card -->
-  <div class="bg-white shadow-lg rounded-xl p-6 flex items-center gap-4 animate-fade-in animate-delay-50">
-      <img src="/placeholder.svg?height=64&width=64" alt="Employee Profile" class="w-16 h-16 rounded-full object-cover border-2 border-red-400 shadow-md">
-      <div>
-          <p class="text-gray-600 text-sm">Hi,</p>
-          <h3 class="text-xl font-bold text-gray-800">{{Auth::user()->name}}</h3>
-          <p class="text-gray-600 text-sm">Software Engineer</p>
-      </div>
-  </div>
+        @if (!$attendanceToday)
+            <form method="POST" action="{{ route('attendance.punchIn') }}">
+                @csrf
+                <button type="submit" class="btn-punch-in">Punch In</button>
+            </form>
+        @elseif (!$attendanceToday->punch_out)
+            <form method="POST" action="{{ route('attendance.punchOut') }}">
+                @csrf
+                <button type="submit" class="btn-punch-out">Punch Out</button>
+            </form>
+        @else
+            <div class="day-completed">Day Completed ✅</div>
+        @endif
+    </div>
 
-  <!-- Quick Info Cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in animate-delay-150"> {{-- Responsive grid --}}
-      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/></svg>
-          <h3 class="text-gray-600 text-lg font-semibold">Total Tasks</h3>
-          <p class="text-4xl font-extrabold text-red-600">12</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-          <h3 class="text-gray-600 text-lg font-semibold">Pending Tasks</h3>
-          <p class="text-4xl font-extrabold text-yellow-600">3</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          <h3 class="text-gray-600 text-lg font-semibold">Completed Tasks</h3>
-          <p class="text-4xl font-extrabold text-green-600">9</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01] flex flex-col items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/></svg>
-          <h3 class="text-gray-600 text-lg font-semibold">Projects</h3>
-          <p class="text-4xl font-extrabold text-pink-600">4</p>
-      </div>
-  </div>
+    <!-- Break Management -->
+    @if ($attendanceToday && !$attendanceToday->punch_out)
+        <div class="card">
+            <h2 class="header-gradient">Manage Breaks</h2>
 
-  <!-- Punch In / Punch Out Section -->
-  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-200">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-          <div>
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">Work Status</h2>
-              <p class="text-gray-600 text-lg">Track your work hours easily</p>
-              <div class="mt-6 text-gray-700 font-medium text-xl">
-                  Total Working Time:
-                  <span id="workTime" class="font-extrabold text-red-600 text-3xl ml-2">00:00:00</span>
-              </div>
-              <div id="geolocationStatus" class="mt-2 text-sm text-gray-500"></div> {{-- Added for geolocation status --}}
-          </div>
-          <div>
-             <button id="punchButton"
-                  class="w-80 px-10 py-8 text-3xl font-extrabold text-white bg-green-600 rounded-full shadow-2xl hover:bg-green-700 hover:shadow-red-500/50 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-400">
-                  Punch In
-              </button>
-          </div>
-      </div>
-  </div>
+            @if (!$activeBreak)
+                <form method="POST" action="{{ route('attendance.startBreak') }}">
+                    @csrf
+                    <div class="break-buttons">
+                        <button type="submit" name="break_type" value="Morning Tea" 
+                            class="btn-morning-tea {{ in_array('Morning Tea', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Morning Tea', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Morning Tea Break
+                        </button>
+                        <button type="submit" name="break_type" value="Lunch" 
+                            class="btn-lunch {{ in_array('Lunch', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Lunch', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Lunch Break
+                        </button>
+                        <button type="submit" name="break_type" value="Evening Tea" 
+                            class="btn-evening-tea {{ in_array('Evening Tea', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Evening Tea', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Evening Tea Break
+                        </button>
+                        <button type="submit" name="break_type" value="Custom" 
+                            class="btn-custom {{ in_array('Custom', $completedBreaks) ? 'btn' : '' }}"
+                            {{ in_array('Custom', $completedBreaks) ? 'disabled' : '' }}>
+                            Start Custom Break
+                        </button>
+                    </div>
+                </form>
+            @else
+                <div class="active-break">
+                    <div>On {{ $activeBreak->break_type }} break since
+                        {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
+                    </div>
+                    <form method="POST" action="{{ route('attendance.endBreak') }}" style="margin-top: 1rem;">
+                        @csrf
+                        <button type="submit" class="btn-end-break">End Break</button>
+                    </form>
+                </div>
+            @endif
 
-  <!-- Manage Breaks -->
-  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-300">
-      <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Breaks</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> {{-- Responsive grid --}}
-          <!-- Morning Tea Break -->
-          <button data-break="Morning Tea" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-yellow-500 hover:bg-yellow-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
-              Start Morning Tea Break
-          </button>
+            <div class="break-timer">
+                <div>Break Timer:</div>
+                <div id="breakTimer">00:00:00</div>
+            </div>
+        </div>
+    @endif
+</div>
 
-          <!-- Lunch Break -->
-          <button data-break="Lunch" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-pink-500 hover:bg-pink-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
-              Start Lunch Break
-          </button>
-
-          <!-- Evening Tea Break -->
-          <button data-break="Evening Tea" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-purple-500 hover:bg-purple-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
-              Start Evening Tea Break
-          </button>
-
-          <!-- Custom Break -->
-          <button data-break="Custom" class="text-white px-6 py-4 rounded-xl shadow-md font-semibold break-btn bg-gray-500 hover:bg-gray-600 active:scale-95 transition-all duration-300 ease-in-out hover:scale-105">
-              Start Custom Break
-          </button>
-      </div>
-
-      <!-- Break Status & Timer -->
-      <div id="breakStatus" class="mt-8 text-gray-800 font-semibold text-xl">
-          No break active
-      </div>
-      <div id="breakTimer" class="text-3xl text-red-600 font-extrabold mt-2">00:00:00</div>
-  </div>
-
-  <!-- Leave Balance Section -->
-  <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 animate-fade-in animate-delay-400">
-      <h2 class="text-2xl font-bold mb-4 text-gray-800">Leave Balance</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6"> {{-- Responsive grid --}}
-          <!-- Sick Leaves -->
-          <div class="bg-blue-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-              <h3 class="text-lg font-semibold">Sick Leaves</h3>
-              <p class="text-3xl font-extrabold">05</p>
-          </div>
-          <!-- Casual Leaves -->
-          <div class="bg-orange-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-              <h3 class="text-lg font-semibold">Casual Leaves</h3>
-              <p class="text-3xl font-extrabold">08</p>
-          </div>
-          <!-- Annual Leaves -->
-          <div class="bg-teal-500 text-white p-4 rounded-xl shadow-md text-center hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] flex flex-col items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              <h3 class="text-lg font-semibold">Annual Leaves</h3>
-              <p class="text-3xl font-extrabold">15</p>
-          </div>
-      </div>
-      <div class="text-center">
-          @can('apply leave')
-    <a href="{{ route('leaves.create') }}"
-       class="px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#ff2626] to-[#ff6969] rounded-full shadow-lg hover:from-[#ff6969] hover:to-[#ff2626] active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-400">
-        Apply Leave
-    </a>
-@endcan
-      </div>
-  </div>
-
-  <!-- Holidays or Events Section -->
-  <div class="bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in animate-delay-500">
-      <h2 class="text-2xl font-bold mb-6 text-gray-800">Upcoming Holidays & Events</h2>
-      <ul class="space-y-4">
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              <div>
-                  <p class="font-semibold text-gray-800">Independence Day</p>
-                  <p class="text-sm text-gray-600">August 15, 2025</p>
-              </div>
-          </li>
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              <div>
-                  <p class="font-semibold text-gray-800">Company Annual Picnic</p>
-                  <p class="text-sm text-gray-600">September 10, 2025</p>
-              </div>
-          </li>
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              <div>
-                  <p class="font-semibold text-gray-800">Diwali Holiday</p>
-                  <p class="text-sm text-gray-600">October 31, 2025</p>
-              </div>
-          </li>
-      </ul>
-  </div>
-
-  <!-- Notifications Section -->
-  <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-fade-in animate-delay-600">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
-      <ul class="space-y-3">
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-gray-700">Your leave request for July 25th was approved.</span>
-          </li>
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-              <span class="text-gray-700">New task "Employee Onboarding Flow" assigned to you.</span>
-          </li>
-          <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.36 14H13.64a2 2 0 0 1-.97 3.5c-.93.47-2.09.47-3.02 0a2 2 0 0 1-.97-3.5Z"/></svg>
-              <span class="text-gray-700">Reminder: Your performance review is scheduled for next week.</span>
-          </li>
-      </ul>
-  </div>
-
-  <!-- Current Tasks Table -->
-  <div class="bg-white p-8 shadow-lg rounded-xl border border-gray-200 animate-fade-in animate-delay-700">
-      <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Current Tasks</h2>
-          <button class="text-red-600 hover:text-red-800 font-semibold transition-colors duration-200">View All</button>
-      </div>
-      <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-              <thead class="bg-gray-100 rounded-lg">
-                  <tr>
-                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider rounded-tl-lg">Task</th>
-                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">Deadline</th>
-                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                      <th class="p-4 text-sm font-semibold text-gray-700 uppercase tracking-wider rounded-tr-lg">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                      <td class="p-4 text-gray-800">Update HRMS UI</td>
-                      <td class="p-4 text-gray-600">20 July 2025</td>
-                      <td class="p-4 text-green-600 font-medium">In Progress</td>
-                      <td class="p-4">
-                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
-                      </td>
-                  </tr>
-                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                      <td class="p-4 text-gray-800">Fix Punch In Bug</td>
-                      <td class="p-4 text-gray-600">18 July 2025</td>
-                      <td class="p-4 text-yellow-600 font-medium">Pending</td>
-                      <td class="p-4">
-                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
-                      </td>
-                  </tr>
-                  <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                      <td class="p-4 text-gray-800">Prepare Q3 Report</td>
-                      <td class="p-4 text-gray-600">25 July 2025</td>
-                      <td class="p-4 text-blue-600 font-medium">Assigned</td>
-                      <td class="p-4">
-                          <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200 shadow-sm">Complete</button>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-  </div>
-
-</main>
-
-<!-- JavaScript -->
+<!-- Clock JavaScript -->
 <script>
-  const punchButton = document.getElementById('punchButton');
-  const breakButtons = document.querySelectorAll('.break-btn');
-  const breakStatus = document.getElementById('breakStatus');
-  const workTimeEl = document.getElementById('workTime');
-  const breakTimerEl = document.getElementById('breakTimer');
-  const geolocationStatusEl = document.getElementById('geolocationStatus'); // New element for status
-  let isPunchedIn = false;
-  let workSeconds = 0;
-  let workTimer;
-  let breakTimer, breakSeconds = 0;
-
-  // Geolocation function
-  function getGeolocation() {
-      if (navigator.geolocation) {
-          geolocationStatusEl.textContent = 'Getting location...';
-          navigator.geolocation.getCurrentPosition(
-              (position) => {
-                  const latitude = position.coords.latitude;
-                  const longitude = position.coords.longitude;
-                  geolocationStatusEl.textContent = `Location: Lat ${latitude.toFixed(4)}, Lon ${longitude.toFixed(4)}`;
-                  console.log('Geolocation captured:', { latitude, longitude });
-                  // Here you would typically send this data to your server
-              },
-              (error) => {
-                  let errorMessage = 'Geolocation error: ';
-                  switch(error.code) {
-                      case error.PERMISSION_DENIED:
-                          errorMessage += 'User denied the request for Geolocation.';
-                          break;
-                      case error.POSITION_UNAVAILABLE:
-                          errorMessage += 'Location information is unavailable.';
-                          break;
-                      case error.TIMEOUT:
-                          errorMessage += 'The request to get user location timed out.';
-                          break;
-                      case error.UNKNOWN_ERROR:
-                          errorMessage += 'An unknown error occurred.';
-                          break;
-                  }
-                  geolocationStatusEl.textContent = errorMessage;
-                  console.error(errorMessage);
-              },
-              {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0
-              }
-          );
-      } else {
-          geolocationStatusEl.textContent = 'Geolocation is not supported by this browser.';
-          console.error('Geolocation is not supported by this browser.');
-      }
-  }
-
-  // Punch In / Out Logic
-  punchButton.addEventListener('click', () => {
-      isPunchedIn = !isPunchedIn;
-      punchButton.textContent = isPunchedIn ? 'Punch Out' : 'Punch In';
-      // Update classes for Punch In/Out button
-      if (isPunchedIn) { // User just punched IN, button should now be RED (Punch Out state)
-          punchButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
-          punchButton.classList.add('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
-          getGeolocation(); // Capture geolocation on punch in
-      } else { // User just punched OUT, button should now be GREEN (Punch In state)
-          punchButton.classList.remove('bg-red-600', 'hover:bg-red-700', 'focus:ring-red-400');
-          punchButton.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-400');
-          geolocationStatusEl.textContent = ''; // Clear status on punch out
-      }
-
-      if (isPunchedIn) {
-          startWorkTimer();
-      } else {
-          stopWorkTimer();
-      }
-  });
-
-  function startWorkTimer() {
-      workTimer = setInterval(() => {
-          workSeconds++;
-          workTimeEl.textContent = formatTime(workSeconds);
-      }, 1000);
-  }
-
-  function stopWorkTimer() {
-      clearInterval(workTimer);
-  }
-
-  function formatTime(sec) {
-      let h = Math.floor(sec / 3600);
-      let m = Math.floor((sec % 3600) / 60);
-      let s = sec % 60;
-      return [h, m, s].map(v => String(v).padStart(2, '0')).join(':');
-  }
-
-  // Break Timer Functions
-  function startBreakTimer() {
-      clearInterval(breakTimer);
-      breakSeconds = 0;
-      breakTimer = setInterval(() => {
-          breakSeconds++;
-          breakTimerEl.textContent = formatTime(breakSeconds);
-      }, 1000);
-  }
-
-  function stopBreakTimer() {
-      clearInterval(breakTimer);
-  }
-
-  // Break Buttons Logic
-  breakButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-          const breakName = btn.dataset.break;
-          if (btn.textContent.startsWith('Start')) {
-              btn.textContent = `End ${breakName} Break`;
-              breakStatus.textContent = `${breakName} started at ${new Date().toLocaleTimeString()}`;
-              startBreakTimer();
-              btn.classList.add('opacity-80');
-          } else {
-              btn.textContent = `Start ${breakName} Break`;
-              breakStatus.textContent = `${breakName} ended at ${new Date().toLocaleTimeString()}`;
-              stopBreakTimer();
-              breakTimerEl.textContent = '00:00:00';
-              btn.classList.remove('opacity-80');
-          }
-      });
-  });
-
-  // Real-Time Clock
-  function updateClock() {
-      document.getElementById('clock').textContent = new Date().toLocaleTimeString();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  // Dynamic Progress Bar Logic
-  function initializeProgressBars() {
-      const progressBars = document.querySelectorAll('.progress-bar');
-      
-      progressBars.forEach(bar => {
-          const progress = parseInt(bar.getAttribute('data-progress'));
-          
-          // Determine color based on progress value
-          let colorClass = '';
-          if (progress === 100) {
-              colorClass = 'green';
-          } else if (progress >= 50) {
-              colorClass = 'blue';
-          } else {
-              colorClass = 'yellow';
-          }
-          
-          // Add the appropriate color class
-          bar.classList.add(colorClass);
-          
-          // Animate the progress bar
-          setTimeout(() => {
-              bar.style.width = progress + '%';
-          }, 500);
-      });
-  }
-
-  // Initialize progress bars after page load
-  setTimeout(initializeProgressBars, 1000);
+    function updateClocks() {
+        const now = new Date();
+        
+        // Digital Clock
+        const digitalTime = document.getElementById('digitalTime');
+        const digitalDate = document.getElementById('digitalDate');
+        
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const dateString = now.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        if (digitalTime) digitalTime.textContent = timeString;
+        if (digitalDate) digitalDate.textContent = dateString;
+        
+        // Analog Clock
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        
+        const hourDegree = (hours * 30) + (minutes * 0.5);
+        const minuteDegree = minutes * 6;
+        const secondDegree = seconds * 6;
+        
+        if (hourHand) hourHand.style.transform = `rotate(${hourDegree}deg)`;
+        if (minuteHand) minuteHand.style.transform = `rotate(${minuteDegree}deg)`;
+        if (secondHand) secondHand.style.transform = `rotate(${secondDegree}deg)`;
+    }
+    
+    // Update clocks immediately and then every second
+    updateClocks();
+    setInterval(updateClocks, 1000);
 </script>
 
-              </div>
-          </div>
-      </div>
-  </div>
+@if ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
+    @php
+        $punchInTimestamp = \Carbon\Carbon::parse($attendanceToday->punch_in)->timestamp;
+
+        $breakSeconds = \App\Models\BreakModel::where('attendance_id', $attendanceToday->id)
+            ->whereNotNull('break_start')
+            ->whereNotNull('break_end')
+            ->get()
+            ->sum(
+                fn($b) => \Carbon\Carbon::parse($b->break_end)->diffInSeconds(\Carbon\Carbon::parse($b->break_start)),
+            );
+    @endphp
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const punchInTime = new Date({{ $punchInTimestamp * 1000 }}); // convert to JS timestamp
+            const totalBreakSeconds = {{ $breakSeconds }};
+            const workTimerEl = document.getElementById('workTime');
+
+            function updateWorkTimer() {
+                const now = new Date();
+                let diff = Math.floor((now - punchInTime) / 1000);
+
+                diff -= totalBreakSeconds;
+
+                // ✅ Clamp to zero to avoid negative values
+                diff = Math.max(diff, 0);
+
+                const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                const secs = String(diff % 60).padStart(2, '0');
+
+                if (workTimerEl) {
+                    workTimerEl.textContent = `${hrs}:${mins}:${secs}`;
+                }
+            }
+
+            updateWorkTimer(); // Initial run
+            setInterval(updateWorkTimer, 1000); // Update every second
+        });
+    </script>
+@endif
+
+<!-- JS for Break Timer -->
+@if ($activeBreak)
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const breakStart = new Date(
+                "{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
+            const breakTimerEl = document.getElementById('breakTimer');
+
+            function updateBreakTimer() {
+                const now = new Date();
+                const diff = Math.floor((now - breakStart) / 1000);
+                const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                const secs = String(diff % 60).padStart(2, '0');
+                breakTimerEl.textContent = `${hrs}:${mins}:${secs}`;
+            }
+
+            updateBreakTimer();
+            setInterval(updateBreakTimer, 1000);
+        });
+    </script>
+@endif
 </x-app-layout>

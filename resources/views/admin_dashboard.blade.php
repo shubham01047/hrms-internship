@@ -81,18 +81,163 @@
                 .status-badge {
                     transition: all 0.3s ease-in-out;
                 }
+
+                /* Analog Clock Styles */
+                .analog-clock {
+                    width: 120px;
+                    height: 120px;
+                    border: 4px solid rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    position: relative;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                }
+
+                .clock-center {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 8px;
+                    height: 8px;
+                    background: white;
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 10;
+                }
+
+                .clock-hand {
+                    position: absolute;
+                    background: white;
+                    transform-origin: bottom center;
+                    border-radius: 2px;
+                }
+
+                .hour-hand {
+                    width: 3px;
+                    height: 30px;
+                    top: 20%;
+                    left: 50%;
+                    margin-left: -1.5px;
+                    transition: transform 0.5s ease-in-out;
+                }
+
+                .minute-hand {
+                    width: 2px;
+                    height: 40px;
+                    top: 15%;
+                    left: 50%;
+                    margin-left: -1px;
+                    transition: transform 0.5s ease-in-out;
+                }
+
+                .second-hand {
+                    width: 1px;
+                    height: 45px;
+                    top: 12.5%;
+                    left: 50%;
+                    margin-left: -0.5px;
+                    background: #ef4444;
+                    transition: transform 0.1s ease-in-out;
+                }
+
+                /* Clock Numbers */
+                .clock-number {
+                    position: absolute;
+                    color: white;
+                    font-size: 12px;
+                    font-weight: bold;
+                    transform: translate(-50%, -50%);
+                }
+
+                /* Digital Clock Animation */
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.7; }
+                }
+
+                .digital-clock {
+                    animation: pulse 2s ease-in-out infinite;
+                }
+
+                /* Clock Container Animation */
+                @keyframes clockFloat {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-5px); }
+                }
+
+                .clock-container {
+                    animation: clockFloat 3s ease-in-out infinite;
+                }
+
+                /* Welcome Text Animation */
+                @keyframes welcomeGlow {
+                    0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+                    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+                }
+
+                .welcome-text {
+                    animation: welcomeGlow 2s ease-in-out infinite;
+                }
             </style>
 
-            <div class="py-12 bg-gray-100 min-h-screen"> {{-- Set overall background to gray-100 and ensure min-height --}}
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 gap-6"> {{-- Consistent vertical spacing between sections --}}
+            <div class="py-12 bg-gray-100 min-h-screen">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 gap-6">
 
-                    <!-- Header -->
-                    <div class="header-gradient text-white p-6 rounded-xl shadow-lg flex justify-center items-center animate-fade-in relative">
-                        <!-- Centered: Search, Clock -->
-                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-4xl justify-center">
-                                        <!-- Live Clock -->
-                            <div id="live-clock" class="text-lg font-medium whitespace-nowrap">
-                                <span id="clock-time"></span>
+                    <!-- Welcome Header with Clocks -->
+                    <div class="header-gradient text-white p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
+                        <!-- Background Pattern -->
+                        <div class="absolute inset-0 opacity-10">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>
+                            <div class="absolute bottom-0 right-0 w-24 h-24 bg-white rounded-full translate-x-12 translate-y-12"></div>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <!-- Welcome Message -->
+                            <div class="text-center mb-8">
+                                <h1 class="text-4xl font-bold mb-2 welcome-text">Welcome, {{ Auth::user()->name }}!</h1>
+                                <p class="text-xl opacity-90">Here's your quick overview for today</p>
+                            </div>
+
+                            <!-- Clocks Section -->
+                            <div class="flex flex-col lg:flex-row items-center justify-center gap-8">
+                                <!-- Analog Clock -->
+                                <div class="clock-container">
+                                    <div class="analog-clock" id="analog-clock">
+                                        <!-- Clock Numbers -->
+                                        <div class="clock-number" style="top: 8px; left: 50%;">12</div>
+                                        <div class="clock-number" style="top: 50%; right: 8px;">3</div>
+                                        <div class="clock-number" style="bottom: 8px; left: 50%;">6</div>
+                                        <div class="clock-number" style="top: 50%; left: 8px;">9</div>
+                                        
+                                        <!-- Clock Hands -->
+                                        <div class="clock-hand hour-hand" id="hour-hand"></div>
+                                        <div class="clock-hand minute-hand" id="minute-hand"></div>
+                                        <div class="clock-hand second-hand" id="second-hand"></div>
+                                        <div class="clock-center"></div>
+                                    </div>
+                                    <p class="text-center mt-2 text-sm opacity-75">Analog</p>
+                                </div>
+
+                                <!-- Digital Clock -->
+                                <div class="text-center">
+                                    <div class="digital-clock">
+                                        <div id="digital-time" class="text-5xl font-bold mb-2">00:00:00</div>
+                                        <div id="digital-date" class="text-lg opacity-90">Loading...</div>
+                                        <div id="digital-ampm" class="text-sm opacity-75 mt-1">AM</div>
+                                    </div>
+                                    <p class="text-center mt-2 text-sm opacity-75">Digital</p>
+                                </div>
+
+                                <!-- Time Zone Info -->
+                                <div class="text-center">
+                                    <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-filter backdrop-blur-sm">
+                                        <div class="text-sm opacity-75 mb-1">Current Time Zone</div>
+                                        <div id="timezone" class="font-semibold">Loading...</div>
+                                        <div class="text-xs opacity-60 mt-2">
+                                            <div id="utc-offset">UTC+0</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -141,15 +286,9 @@
                         </div>
                     </div>
 
-                    <!-- Welcome Section -->
-                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-fade-in animate-delay-200">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome, {{ Auth::user()->name }}!</h2>
-                        <p class="text-gray-600 text-lg">Here's your quick overview for today.</p>
-                    </div>
-
                     <!-- Quick Stats -->
                     <div class="overflow-x-auto hide-scrollbar pb-4 animate-fade-in animate-delay-300">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[700px]"> {{-- Updated for responsiveness --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[700px]">
                             <a href="{{ route('employees.index') }}" class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                                 bg-white text-red-600 border border-gray-200
                                 flex flex-col items-start gap-3 cursor-pointer">
@@ -189,7 +328,7 @@
                     </div>
 
                     <!-- Notifications and Quick Actions Wrapper -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in animate-delay-400"> {{-- New wrapper for 2-column layout on desktop --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in animate-delay-400">
                         <!-- Notifications Section -->
                         <div class="bg-white p-6 rounded-xl shadow-lg">
                             <h2 class="text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
@@ -212,7 +351,7 @@
                         <!-- Quick Actions Section -->
                         <div class="bg-white p-6 rounded-xl shadow-lg animate-fade-in animate-delay-500">
                             <h2 class="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> {{-- Adjusted for responsiveness within its column --}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-white text-center
                                                   bg-gradient-to-br from-[#ef4444] to-[#f87171] shadow-md
                                                   hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
@@ -266,29 +405,26 @@
                         </div>
                     </div>
 
-                    <!-- Employee Directory Table and Recruitment Status Panel Wrapper -->
-                    <div>
-                        <!-- Recruitment Status Panel -->
-                        <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200">
-                            <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                                <h2 class="text-xl font-semibold text-white">Recruitment Status</h2>
+                    <!-- Recruitment Status Panel -->
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-700 mt-8">
+                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-white">Recruitment Status</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="p-4 bg-blue-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <h3 class="text-gray-700 text-lg font-semibold">Open Positions</h3>
+                                <p class="text-4xl font-extrabold text-blue-600">15</p>
                             </div>
-                            <div class="space-y-4">
-                                <div class="p-4 bg-blue-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                    <h3 class="text-gray-700 text-lg font-semibold">Open Positions</h3>
-                                    <p class="text-4xl font-extrabold text-blue-600">15</p>
-                                </div>
-                                <div class="p-4 bg-green-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                                    <h3 class="text-gray-700 text-lg font-semibold">Candidates in Interview</h3>
-                                    <p class="text-4xl font-extrabold text-green-600">25</p>
-                                </div>
-                                <div class="p-4 bg-purple-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-                                    <h3 class="text-gray-700 text-lg font-semibold">Offers Released</h3>
-                                    <p class="text-4xl font-extrabold text-purple-600">07</p>
-                                </div>
+                            <div class="p-4 bg-green-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                <h3 class="text-gray-700 text-lg font-semibold">Candidates in Interview</h3>
+                                <p class="text-4xl font-extrabold text-green-600">25</p>
+                            </div>
+                            <div class="p-4 bg-purple-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                                <h3 class="text-gray-700 text-lg font-semibold">Offers Released</h3>
+                                <p class="text-4xl font-extrabold text-purple-600">07</p>
                             </div>
                         </div>
                     </div>
@@ -497,21 +633,52 @@
             </div>
 
             <script>
-                function updateClock() {
+                function updateClocks() {
                     const now = new Date();
+                    
+                    // Digital Clock
                     let hours = now.getHours();
                     let minutes = now.getMinutes();
                     let seconds = now.getSeconds();
                     const ampm = hours >= 12 ? 'PM' : 'AM';
 
-                    hours = hours % 12;
-                    hours = hours ? hours : 12; // the hour '0' should be '12'
-                    minutes = minutes < 10 ? '0'+minutes : minutes;
-                    seconds = seconds < 10 ? '0'+seconds : seconds;
+                    // Convert to 12-hour format
+                    const displayHours = hours % 12 || 12;
+                    
+                    // Format with leading zeros
+                    const formattedTime = 
+                        displayHours.toString().padStart(2, '0') + ':' +
+                        minutes.toString().padStart(2, '0') + ':' +
+                        seconds.toString().padStart(2, '0');
+                    
+                    document.getElementById('digital-time').textContent = formattedTime;
+                    document.getElementById('digital-ampm').textContent = ampm;
+                    
+                    // Date
+                    const options = { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    };
+                    document.getElementById('digital-date').textContent = now.toLocaleDateString('en-US', options);
+                    
+                    // Timezone
+                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    document.getElementById('timezone').textContent = timezone;
+                    
+                    const offset = -now.getTimezoneOffset() / 60;
+                    const offsetString = `UTC${offset >= 0 ? '+' : ''}${offset}`;
+                    document.getElementById('utc-offset').textContent = offsetString;
 
-                    const time = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-                    document.getElementById('clock-time').textContent = time;
-                    setTimeout(updateClock, 1000);
+                    // Analog Clock
+                    const hourAngle = (hours % 12) * 30 + minutes * 0.5; // 30 degrees per hour + minute adjustment
+                    const minuteAngle = minutes * 6; // 6 degrees per minute
+                    const secondAngle = seconds * 6; // 6 degrees per second
+
+                    document.getElementById('hour-hand').style.transform = `rotate(${hourAngle}deg)`;
+                    document.getElementById('minute-hand').style.transform = `rotate(${minuteAngle}deg)`;
+                    document.getElementById('second-hand').style.transform = `rotate(${secondAngle}deg)`;
                 }
 
                 // Initialize progress bars with dynamic colors and animations
@@ -581,8 +748,11 @@
 
                 // Initialize everything when the page loads
                 document.addEventListener('DOMContentLoaded', function() {
-                    updateClock();
+                    updateClocks();
                     updateProgressAndStatus();
+                    
+                    // Update clocks every second
+                    setInterval(updateClocks, 1000);
                     
                     // Optional: Add mutation observer to detect changes in data-progress attributes
                     const observer = new MutationObserver(function(mutations) {
