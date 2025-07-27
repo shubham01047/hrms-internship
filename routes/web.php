@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ProfileController;
@@ -84,6 +85,12 @@ Route::middleware('auth')->group(function () {
 
     //Attendance Report
     Route::get('/admin/attendance-report', [AdminDashboardController::class, 'showAttendanceReport'])->name('admin.attendance.report');
+
+    //Holidays Routes WEB
+    Route::get('/holidays', [HolidayController::class, 'index'])->name('holidays.index');
+    Route::get('/holidays/create', [HolidayController::class, 'create'])->name('holidays.create');
+    Route::post('/holidays', [HolidayController::class, 'store'])->name('holidays.store');
+    Route::delete('/holidays/{id}', [HolidayController::class, 'destroy'])->name('holidays.destroy');
 });
 
 require __DIR__ . '/auth.php';

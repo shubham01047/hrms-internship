@@ -1,92 +1,138 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
-use App\Models\Attendance;
-use App\Models\BreakTime;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Models\Attendance;
+use App\Models\BreakModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class AttendanceController extends Controller
 {
     public function punchIn(Request $request)
     {
-        $user = Auth::user();
+        $user = auth()->user();
+        $today = now()->toDateString();
 
-        $attendance = Attendance::create([
-            'user_id' => $user->id,
-            'date' => Carbon::today(),
-            'punch_in' => Carbon::now(),
-        ]);
+        $attendance = Attendance::firstOrCreate(
+            ['user_id' => $user->id, 'date' => $today],
+            ['punch_in' => now()->format('H:i:s')]
+        );
 
-        return response()->json(['message' => 'Punched in successfully', 'data' => $attendance]);
+        return response()->json([
+            'message' => 'Punched in successfully.',
+            'data' => $attendance
+        ], 200);
     }
 
     public function startBreak(Request $request)
     {
-        $user = Auth::user();
-        $attendance = Attendance::where('user_id', $user->id)->where('date', Carbon::today())->first();
+        $user = auth()->user();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', now())
+            ->first();
 
         if (!$attendance) {
-            return response()->json(['message' => 'Punch in first'], 400);
+            return response()->json(['message' => 'No active attendance found.'], 400);
         }
 
-        $break = BreakTime::create([
+        $activeBreak = BreakModel::where('attendance_id', $attendance->id)
+            ->whereNull('break_end')
+            ->latest()
+            ->first();
+
+        if ($activeBreak) {
+            return response()->json(['message' => 'You already have an active break.'], 400);
+        }
+
+        $break = BreakModel::create([
             'attendance_id' => $attendance->id,
-            'break_start' => Carbon::now(),
+            'break_type' => $request->break_type,
+            'break_start' => now()->format('H:i:s'),
         ]);
 
-        return response()->json(['message' => 'Break started', 'data' => $break]);
+        return response()->json([
+            'message' => 'Break started successfully.',
+            'data' => $break
+        ], 200);
     }
 
     public function endBreak(Request $request)
     {
-        $user = Auth::user();
-        $attendance = Attendance::where('user_id', $user->id)->where('date', Carbon::today())->first();
+        $user = auth()->user();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', now())
+            ->first();
 
         if (!$attendance) {
-            return response()->json(['message' => 'Punch in first'], 400);
+            return response()->json(['message' => 'Attendance not found.'], 404);
         }
 
-        $break = BreakTime::where('attendance_id', $attendance->id)
+        $break = BreakModel::where('attendance_id', $attendance->id)
             ->whereNull('break_end')
             ->latest()
             ->first();
 
         if (!$break) {
-            return response()->json(['message' => 'No active break found'], 400);
+            return response()->json(['message' => 'No active break.'], 400);
         }
 
-        $break->update(['break_end' => Carbon::now()]);
+        $break->break_end = now()->format('H:i:s');
+        $breakStart = Carbon::parse($break->break_start);
+        $breakEnd = Carbon::parse($break->break_end);
+        $interval = $breakStart->diff($breakEnd);
+        $break->total_break_time = $interval->format('%H:%I:%S');
+        $break->save();
 
-        return response()->json(['message' => 'Break ended', 'data' => $break]);
+        return response()->json([
+            'message' => 'Break ended successfully.',
+            'data' => $break
+        ], 200);
     }
 
-    public function punchOut(Request $request)
+    public function punchOut()
     {
-        $user = Auth::user();
-        $attendance = Attendance::where('user_id', $user->id)->where('date', Carbon::today())->first();
+        $user = auth()->user();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', now())
+            ->first();
 
         if (!$attendance || $attendance->punch_out) {
-            return response()->json(['message' => 'Already punched out or not punched in'], 400);
+            return response()->json(['message' => 'Already punched out or not punched in yet.'], 400);
         }
 
-        $attendance->update(['punch_out' => Carbon::now()]);
+        $punchOutTime = now()->format('H:i:s');
+        $punchIn = Carbon::createFromFormat('H:i:s', $attendance->punch_in);
+        $punchOut = Carbon::createFromFormat('H:i:s', $punchOutTime);
+        $workedDuration = $punchOut->diff($punchIn);
+        $totalWorked = sprintf(
+            '%02d:%02d:%02d',
+            $workedDuration->h,
+            $workedDuration->i,
+            $workedDuration->s
+        );
 
-        return response()->json(['message' => 'Punched out successfully', 'data' => $attendance]);
+        $attendance->update([
+            'punch_out' => $punchOutTime,
+            'total_working_hours' => $totalWorked,
+        ]);
+
+        return response()->json([
+            'message' => 'Punched out successfully.',
+            'data' => $attendance
+        ], 200);
     }
 
     public function today()
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $attendance = Attendance::with('breaks')
             ->where('user_id', $user->id)
-            ->where('date', Carbon::today())
+            ->where('date', now()->toDateString())
             ->first();
 
-        return response()->json(['data' => $attendance]);
+        return response()->json(['data' => $attendance], 200);
     }
 
     public function userAttendance($user_id)
@@ -97,6 +143,6 @@ class AttendanceController extends Controller
             ->take(30)
             ->get();
 
-        return response()->json(['data' => $attendance]);
+        return response()->json(['data' => $attendance], 200);
     }
 }
