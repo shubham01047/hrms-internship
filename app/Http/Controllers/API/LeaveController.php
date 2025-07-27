@@ -1,41 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Mail\LeaveApprovedMail;
-use Illuminate\Http\Request;
 use App\Models\Leave;
 use App\Models\LeaveType;
-use App\Notifications\LeaveApprovedNotification;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 
-class LeaveController extends Controller implements HasMiddleware
+class LeaveController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('permission:apply leave', only: ['create']),
-            new Middleware('permission:approve leave', only: ['manage']),
-            new Middleware('permission:view all leaves', only: ['index']),
-        ];
-    }
-
-    public function index()
-    {
-        $leaves = Leave::with('leaveType')->where('user_id', auth()->id())->get();
-        return view('leaves.index', compact('leaves'));
-    }
-
-    public function create()
-    {
-        $leaveTypes = LeaveType::all();
-        return view('leaves.create', compact('leaveTypes'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -44,9 +22,8 @@ class LeaveController extends Controller implements HasMiddleware
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string',
         ]);
-
-        Leave::create([
-            'user_id' => auth()->id(),
+        $leave = Leave::create([
+            'user_id' => Auth::id(),
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -54,21 +31,24 @@ class LeaveController extends Controller implements HasMiddleware
             'status' => 'pending',
             'applied_on' => now(),
         ]);
-
-        return redirect()->route('leaves.index')->with('success', 'Leave request submitted.');
+        return response()->json(['message' => 'Leave applied successfully.', 'leave' => $leave], 201);
     }
-
-    public function manage()
+    public function myLeaves()
+    {
+        $leaves = Leave::with('leaveType')->where('user_id', Auth::id())->get();
+        return response()->json($leaves);
+    }
+    public function pending()
     {
         $leaves = Leave::with('user', 'leaveType')->where('status', 'pending')->get();
-        return view('leaves.manage', compact('leaves'));
+        return response()->json($leaves);
     }
-
     public function approve($id)
     {
-        // Calculate total leave days
         $leave = Leave::with('user')->findOrFail($id);
-
+        if ($leave->status !== 'Pending') {
+            return response()->json(['error' => 'Leave is not in pending status.'], 400);
+        }
         $leaveDays = Carbon::parse($leave->start_date)->diffInDays(Carbon::parse($leave->end_date)) + 1;
         $user = $leave->user;
         if ($user->leave_balance < $leaveDays) {
@@ -76,24 +56,27 @@ class LeaveController extends Controller implements HasMiddleware
         }
         $user->leave_balance -= $leaveDays;
         $user->save();
-        //Approve email and send main
-        $leave = Leave::with('user')->findOrFail($id);
         $leave->status = 'Approved';
-        $leave->approved_by = auth()->id();
+        $leave->approved_by = Auth::id();
         $leave->save();
         Mail::to($leave->user->email)->send(new LeaveApprovedMail($leave));
-
-        return redirect()->back()->with('success', 'Leave approved and email sent.');
+        return response()->json(['message' => 'Leave approved successfully.']);
     }
-
     public function reject($id)
     {
         $leave = Leave::findOrFail($id);
+        if ($leave->status !== 'Pending') {
+            return response()->json(['error' => 'Leave is not in pending status.'], 400);
+        }
         $leave->update([
             'status' => 'rejected',
-            'approved_by' => auth()->id(),
+            'approved_by' => Auth::id(),
         ]);
-
-        return redirect()->back()->with('error', 'Leave rejected.');
+        return response()->json(['message' => 'Leave rejected.']);
+    }
+    public function report()
+    {
+        $report = Leave::with('user', 'leaveType')->get();
+        return response()->json($report);
     }
 }
