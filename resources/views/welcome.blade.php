@@ -28,11 +28,11 @@
             
             <!-- Title Beside Logo -->
             <div class="text-left">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold primary-text leading-tight">
                     Welcome to
                 </h1>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">
-                    <span class="bg-secondary-gradient bg-clip-text text-transparent">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl  font-bold">
+                    <span class="bg-secondary-gradient bg-clip-text primary-text">
                         {{ $company->name }}
                     </span>
                 </h2>
@@ -54,12 +54,12 @@
                     $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
                 @endphp
                 <a href="{{ route($routeName) }}"
-                    class="px-10 py-4 bg-secondary-gradient text-primary text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
+                    class="px-10 py-4 bg-secondary-gradient primary-text text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
                     Go to Dashboard
                 </a>
             @else
                 <a href="{{ route('login') }}"
-                    class="px-10 py-4 bg-secondary-gradient text-primary text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
+                    class="px-10 py-4 bg-secondary-gradient primary-text text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
                     Log In
                 </a>
                 

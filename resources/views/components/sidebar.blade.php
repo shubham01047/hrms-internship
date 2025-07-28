@@ -80,9 +80,9 @@
         <!-- Holidays -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Holidays</div>
-            <a href="{{ route('holidays.index') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📅 View Holidays</a>
+            <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index')}}">📅 View Holidays</a>
             @can('create holiday')
-                <a href="{{ route('holidays.create') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📝 Create Holiday</a>
+                <a href="{{ route('holidays.create') }}" class="{{ $isActive('holidays.create') }}">📝 Create Holiday</a>
             @endcan
         </div>
 
