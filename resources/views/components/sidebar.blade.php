@@ -8,21 +8,19 @@
     $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
 @endphp
 
-<aside
-    class="fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
+<aside class="fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
            bg-gradient-to-br from-[#ff2626] to-[#ff6969] text-white
            transition-transform duration-300 ease-in-out
-           md:translate-x-0 transform"
-    :class="{ '-translate-x-full': !sidebarOpen }" x-show="sidebarOpen"
-    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-x-full"
+           md:translate-x-0 transform" :class="{ '-translate-x-full': !sidebarOpen }" x-show="sidebarOpen"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform -translate-x-full"
     x-transition:enter-end="opacity-100 transform translate-x-0" x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 transform translate-x-0"
     x-transition:leave-end="opacity-0 transform -translate-x-full">
     <!-- Mobile Toggle Button -->
     <button @click="sidebarOpen = !sidebarOpen"
         class="md:hidden px-4 py-2 focus:outline-none sticky top-0 z-40 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
     </button>
@@ -102,11 +100,22 @@
                 </a>
             @endcan
         </div>
-
+        <!-- Holidays -->
+        <div class="border-b border-[#ff6969] pb-2 mb-2">
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">Holidays</div>
+            <a href="{{ route('holidays.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">📅
+                View Holidays</a>
+            @can('create holiday')
+                <a href="{{ route('holidays.create') }}"
+                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">📝
+                    Create Holiday</a>
+            @endcan
+        </div>
         <!-- Projects -->
         <div class="border-b border-[#ff6969] pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">Projects</div>
-            <a href="#"
+            <a href=""
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">📁
                 View Projects</a>
             <a href="#"
