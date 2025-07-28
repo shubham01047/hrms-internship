@@ -25,6 +25,43 @@
   .back-button{
     @apply text-white bg-gray-600 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
   }
+
+   .theme-app {
+    --primary-bg: #2563eb;      /* blue-600 */
+    --primary-bg-light: #3b82f6;/* blue-500 */
+    --primary-text: #ffffff;
+    --primary-border: #60a5fa;  /* blue-400 */
+    --hover-bg: #1d4ed8;        /* blue-700 */
+
+    --secondary-bg: #4fb8ff;
+    --secondary-text: #1e3a8a;
+  }
+
+  .theme-app .bg-primary {
+    background-color: var(--primary-bg);
+  }
+
+  .theme-app .bg-primary-light {
+    background-color: var(--primary-bg-light);
+  }
+
+  .theme-app .text-primary {
+    color: var(--primary-text);
+  }
+
+  .theme-app .border-primary {
+    border-color: var(--primary-border);
+  }
+
+  .theme-app .hover\:bg-hover:hover {
+    background-color: var(--hover-bg);
+  }
+
+  .theme-app .bg-secondary-gradient {
+  background-image: linear-gradient(to bottom right, var(--secondary-bg), var(--primary-bg-light));
+}
+
+
 }
 
 
@@ -68,3 +105,5 @@
 .colored-toast .swal2-html-container {
   color: white;
 }
+
+
