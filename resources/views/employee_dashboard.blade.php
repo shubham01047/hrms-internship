@@ -36,7 +36,7 @@
     
     body {
         font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #ff6b6b 0%, #ffffff 50%, #ff4757 100%);
+        background: linear-gradient(135deg, var(--primary-color) 0%, #ffffff 50%, var(--primary-color) 100%);
         min-height: 100vh;
     }
     
@@ -52,44 +52,30 @@
         border-radius: 20px;
         padding: 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(255, 75, 87, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
         transition: all 0.3s ease;
     }
     
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 30px 60px rgba(255, 75, 87, 0.15);
-    }
-    
-    .header-gradient {
-        background: linear-gradient(135deg, #ff2626, #ff6969);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
     }
     
     .card h2 {
-        color: #ff4757;
+        color: var(--primary-color);
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
     
-    .card h2.header-gradient {
-        background: linear-gradient(135deg, #ff2626, #ff6969);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
     .work-time-display {
         text-align: center;
         padding: 2rem;
-        background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        background: var(--secondary-gradient);
         border-radius: 15px;
         margin: 1rem 0;
-        color: white;
+        color: var(--text-primary);
     }
     
     #workTime {
@@ -217,8 +203,8 @@
     }
     
     .btn-end-break {
-        background: linear-gradient(45deg, #ff4757, #ff6b6b);
-        color: white;
+        background: var(--secondary-gradient);
+        color: var(--text-primary);
         border: none;
         padding: 1rem 2rem;
         border-radius: 50px;
@@ -226,13 +212,14 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         margin: 0.5rem;
     }
     
     .btn-end-break:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 35px rgba(255, 75, 87, 0.4);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        background: var(--hover-color);
     }
     
     .btn:disabled {
@@ -258,19 +245,19 @@
         padding: 1.5rem;
         border-radius: 15px;
         text-align: center;
-        border: 2px solid #ff4757;
+        border: 2px solid var(--primary-color);
     }
     
     #breakTimer {
         font-size: 2rem;
         font-weight: 700;
-        color: #ff4757;
+        color: var(--primary-color);
         font-family: 'Courier New', monospace;
     }
     
     .active-break {
-        background: linear-gradient(135deg, #ff4757, #ff6b6b);
-        color: white;
+        background: var(--secondary-gradient);
+        color: var(--text-primary);
         padding: 1.5rem;
         border-radius: 15px;
         text-align: center;
@@ -299,11 +286,11 @@
     .analog-clock {
         width: 200px;
         height: 200px;
-        border: 8px solid #ff4757;
+        border: 8px solid var(--primary-color);
         border-radius: 50%;
         position: relative;
         background: linear-gradient(135deg, #ffffff, #ffe6e6);
-        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
     
     .clock-center {
@@ -312,7 +299,7 @@
         left: 50%;
         width: 12px;
         height: 12px;
-        background: #ff4757;
+        background: var(--primary-color);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         z-index: 10;
@@ -320,7 +307,7 @@
     
     .clock-hand {
         position: absolute;
-        background: #ff4757;
+        background: var(--primary-color);
         transform-origin: bottom center;
         border-radius: 2px;
         transition: transform 0.1s ease-in-out;
@@ -348,16 +335,16 @@
         top: 10px;
         left: 50%;
         margin-left: -0.5px;
-        background: #ff6b6b;
+        background: var(--primary-color);
     }
     
     .digital-clock {
-        background: linear-gradient(135deg, #ff4757, #ff6b6b);
-        color: white;
+        background: var(--secondary-gradient);
+        color: var(--text-primary);
         padding: 2rem;
         border-radius: 15px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
     
     .digital-time {
@@ -393,10 +380,10 @@
     }
 </style>
 
-<div class="dashboard-container">
+<div class="dashboard-container theme-app">
     <!-- Clock Section -->
     <div class="card">
-        <h2 class="header-gradient">Current Time</h2>
+        <h2>Current Time</h2>
         <div class="clock-container">
             <div class="analog-clock" id="analogClock">
                 <div class="clock-center"></div>
@@ -413,8 +400,8 @@
 
     <!-- Work Status Section -->
     <div class="card">
-        <h2 class="header-gradient">Work Status</h2>
-        <p>Track your work hours easily</p>
+        <h2>Work Status</h2>
+        <p class="text-primary">Track your work hours easily</p>
         <div class="work-time-display">
             <div>Total Working Time:</div>
             <div id="workTime">
@@ -446,7 +433,7 @@
     <!-- Break Management -->
     @if ($attendanceToday && !$attendanceToday->punch_out)
         <div class="card">
-            <h2 class="header-gradient">Manage Breaks</h2>
+            <h2>Manage Breaks</h2>
 
             @if (!$activeBreak)
                 <form method="POST" action="{{ route('attendance.startBreak') }}">

@@ -1,28 +1,20 @@
 <x-app-layout>
 <x-slot name="header">
-<h2 class="font-semibold text-xl text-black leading-tight">
+<h2 class="font-semibold text-xl text-primary leading-tight">
     {{ __('HR Dashboard') }}
 </h2>
 </x-slot>
 
-<div class="py-12">
+<div class="py-12 theme-app">
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
-        <div class="p-6 text-black">
+        <div class="p-6 text-primary">
 
             {{-- Custom styles for this page --}}
             <style>
                 /* Poppins font is assumed to be loaded by x-app-layout or globally */
                 body {
                     font-family: 'Poppins', sans-serif;
-                }
-                /* Custom gradient for the main dashboard header */
-                .header-gradient {
-                    background: linear-gradient(135deg, #ef4444, #f87171); /* Updated: Red-500 to Red-400 */
-                }
-                /* Custom gradient for section headers */
-                .section-header-gradient {
-                    background: linear-gradient(135deg, #ef4444, #f87171); /* Updated: Red-500 to Red-400 */
                 }
 
                 /* Fade-in animation */
@@ -147,7 +139,7 @@
                     top: 12.5%;
                     left: 50%;
                     margin-left: -0.5px;
-                    background: #ef4444;
+                    background: var(--primary-color);
                     transition: transform 0.1s ease-in-out;
                 }
 
@@ -195,7 +187,7 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 gap-6"> {{-- Consistent vertical spacing between sections --}}
 
                     <!-- Header -->
-                    <div class="header-gradient text-white p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
+                    <div class="bg-primary text-primary p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
     <!-- Background Pattern -->
     <div class="absolute inset-0 opacity-10">
         <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>
@@ -206,7 +198,7 @@
         <!-- Welcome Message -->
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold mb-2 welcome-text">Welcome, {{ Auth::user()->name }}!</h1>
-            <p class="text-xl opacity-90">Here's your quick overview for today</p>
+            <p class="text-xl opacity-90">Here's your HR overview for today</p>
         </div>
 
         <!-- Clocks Section -->
@@ -269,55 +261,55 @@
                      x-transition:leave="transition ease-in duration-150"
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95"
-                     class="notification-dropdown right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-200"
+                     class="notification-dropdown right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl overflow-hidden border-primary"
                      style="position: absolute; z-index: 9999;">
                     <div class="py-2">
-                        <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                            <h3 class="text-sm font-semibold text-gray-800">Notifications</h3>
+                        <div class="px-4 py-3 bg-gray-50 border-b border-primary">
+                            <h3 class="text-sm font-semibold text-primary">Notifications</h3>
                         </div>
-                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
+                        <a href="#" class="block px-4 py-3 text-sm text-primary hover:bg-gray-50 transition-colors duration-150 border-b border-primary">
                             <div class="flex items-start gap-3">
                                 <div class="flex-shrink-0 w-2 h-2 bg-red-500 rounded-full mt-2"></div>
                                 <div>
-                                    <span class="font-semibold text-gray-800">2 Pending Leave Requests</span>
+                                    <span class="font-semibold text-primary">2 Pending Leave Requests</span>
                                     <p class="text-xs text-gray-500 mt-1">Review required for John Doe and Sarah Wilson</p>
                                     <p class="text-xs text-gray-400 mt-1">5 minutes ago</p>
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
+                        <a href="#" class="block px-4 py-3 text-sm text-primary hover:bg-gray-50 transition-colors duration-150 border-b border-primary">
                             <div class="flex items-start gap-3">
                                 <div class="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                                 <div>
-                                    <span class="font-semibold text-gray-800">New Policy Update</span>
+                                    <span class="font-semibold text-primary">New Policy Update</span>
                                     <p class="text-xs text-gray-500 mt-1">Updated remote work policy available</p>
                                     <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100">
+                        <a href="#" class="block px-4 py-3 text-sm text-primary hover:bg-gray-50 transition-colors duration-150 border-b border-primary">
                             <div class="flex items-start gap-3">
                                 <div class="flex-shrink-0 w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
                                 <div>
-                                    <span class="font-semibold text-gray-800">System Maintenance Tonight</span>
+                                    <span class="font-semibold text-primary">System Maintenance Tonight</span>
                                     <p class="text-xs text-gray-500 mt-1">Expected downtime 1-3 AM</p>
                                     <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150">
+                        <a href="#" class="block px-4 py-3 text-sm text-primary hover:bg-gray-50 transition-colors duration-150">
                             <div class="flex items-start gap-3">
                                 <div class="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                                 <div>
-                                    <span class="font-semibold text-gray-800">New Employee Onboarded</span>
+                                    <span class="font-semibold text-primary">New Employee Onboarded</span>
                                     <p class="text-xs text-gray-500 mt-1">Welcome Alice Johnson to the team</p>
                                     <p class="text-xs text-gray-400 mt-1">Yesterday</p>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="border-t border-gray-100 bg-gray-50">
-                        <a href="#" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 text-center transition-colors duration-150 font-medium">
+                    <div class="border-t border-primary bg-gray-50">
+                        <a href="#" class="block px-4 py-3 text-sm text-primary hover:bg-hover text-center transition-colors duration-150 font-medium">
                             View All Notifications
                         </a>
                     </div>
@@ -329,7 +321,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-white bg-opacity-20 hover:text-red-100 hover:bg-opacity-30 focus:outline-none transition ease-in-out duration-150">
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-white bg-opacity-20 hover:text-primary hover:bg-opacity-30 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
@@ -343,10 +335,10 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')" class="text-gray-700 hover:bg-red-50 hover:text-red-800">
+                        <x-dropdown-link :href="route('profile.edit')" class="text-primary hover:bg-hover hover:text-primary">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        <x-dropdown-link href="#" class="text-gray-700 hover:bg-red-50 hover:text-red-800">
+                        <x-dropdown-link href="#" class="text-primary hover:bg-hover hover:text-primary">
                             {{ __('Settings') }}
                         </x-dropdown-link>
                         <!-- Authentication -->
@@ -354,7 +346,7 @@
                             @csrf
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();"
-                                class="text-gray-700 hover:bg-red-50 hover:text-red-800">
+                                class="text-primary hover:bg-hover hover:text-primary">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -366,43 +358,43 @@
 </div>
 
                     <!-- Recent Activities / Updates Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-100 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Recent Activities / Updates</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-100 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Recent Activities / Updates</h2>
                         </div>
                         <div class="max-h-60 overflow-y-auto space-y-3 pr-2">
-                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-person-check-fill text-blue-500 text-xl flex-shrink-0 mt-1"></i>
                                 <div>
-                                    <p class="font-semibold text-gray-800">User 'Admin' logged in from IP 192.168.1.10.</p>
+                                    <p class="font-semibold text-primary">User 'Admin' logged in from IP 192.168.1.10.</p>
                                     <p class="text-xs text-gray-500 mt-1">5 minutes ago</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-check-circle-fill text-green-500 text-xl flex-shrink-0 mt-1"></i>
                                 <div>
-                                    <p class="font-semibold text-gray-800">Approved leave request for John Doe.</p>
+                                    <p class="font-semibold text-primary">Approved leave request for John Doe.</p>
                                     <p class="text-xs text-gray-500 mt-1">2 minutes ago</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-folder-fill text-purple-500 text-xl flex-shrink-0 mt-1"></i>
                                 <div>
-                                    <p class="font-semibold text-gray-800">Project "New Dashboard UI" updated by Alice Johnson.</p>
+                                    <p class="font-semibold text-primary">Project "New Dashboard UI" updated by Alice Johnson.</p>
                                     <p class="text-xs text-gray-500 mt-1">1 hour ago</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-xl flex-shrink-0 mt-1"></i>
                                 <div>
-                                    <p class="font-semibold text-gray-800">2 pending expense report approvals.</p>
+                                    <p class="font-semibold text-primary">2 pending expense report approvals.</p>
                                     <p class="text-xs text-gray-500 mt-1">Yesterday</p>
                                 </div>
                             </div>
-                            <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex items-start gap-3 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="p-3 bg-gray-50 rounded-lg border-primary flex items-start gap-3 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-clipboard-check-fill text-purple-500 text-xl flex-shrink-0 mt-1"></i>
                                 <div>
-                                    <p class="font-semibold text-gray-800">Approved expense report for Sarah Lee.</p>
+                                    <p class="font-semibold text-primary">Approved expense report for Sarah Lee.</p>
                                     <p class="text-xs text-gray-500 mt-1">2 days ago</p>
                                 </div>
                             </div>
@@ -413,35 +405,35 @@
                     <div class="overflow-x-auto hide-scrollbar pb-4 animate-fade-in animate-delay-300">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[700px]"> {{-- Updated for responsiveness --}}
                             <a href="{{ route('employees.index') }}" class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                bg-white text-red-600 border border-gray-200
+                                bg-white text-primary border-primary
                                 flex flex-col items-start gap-3 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 <h3 class="text-sm text-gray-500">Total Employees</h3>
                                 <p class="text-3xl font-bold">120</p>
                             </a>
                             <div class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                bg-white text-green-600 border border-gray-200
+                                bg-white text-green-600 border-primary
                                 flex flex-col items-start gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                                 <h3 class="text-sm text-gray-500">Present Today</h3>
                                 <p class="text-3xl font-bold">98</p>
                             </div>
                             <div class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                bg-white text-purple-600 border border-gray-200
+                                bg-white text-purple-600 border-primary
                                 flex flex-col items-start gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/><path d="M12 22c4.4 0 8-3.6 8-8V7h-4V3H8v4H4v7c0 4.4 3.6 8 8 8z"/></svg>
                                 <h3 class="text-sm text-gray-500">Punch-In Users</h3>
                                 <p class="text-3xl font-bold">65</p>
                             </div>
                             <div class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                bg-white text-yellow-500 border border-gray-200
+                                bg-white text-yellow-500 border-primary
                                 flex flex-col items-start gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
                                 <h3 class="text-sm text-gray-500">Pending Leaves</h3>
                                 <p class="text-3xl font-bold">12</p>
                             </div>
                             <div class="p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                bg-white text-pink-600 border border-gray-200
+                                bg-white text-pink-600 border-primary
                                 flex flex-col items-start gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/></svg>
                                 <h3 class="text-sm text-gray-500">Active Projects</h3>
@@ -453,9 +445,9 @@
                     <!-- Charts Section -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in animate-delay-400">
                         <!-- Task Completion Rate Pie Chart -->
-                        <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200">
-                            <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                                <h2 class="text-xl font-semibold text-white">Task Completion Rate</h2>
+                        <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary">
+                            <div class="bg-primary p-4 rounded-t-xl mb-4">
+                                <h2 class="text-xl font-semibold text-primary">Task Completion Rate</h2>
                             </div>
                             <div class="chart-container">
                                 <canvas id="taskCompletionChart"></canvas>
@@ -486,9 +478,9 @@
                         </div>
 
                         <!-- Monthly Attendance Bar Graph -->
-                        <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200">
-                            <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                                <h2 class="text-xl font-semibold text-white">Monthly Attendance - <span id="currentYear">2025</span></h2>
+                        <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary">
+                            <div class="bg-primary p-4 rounded-t-xl mb-4">
+                                <h2 class="text-xl font-semibold text-primary">Monthly Attendance - <span id="currentYear">2025</span></h2>
                             </div>
                             <div class="chart-container">
                                 <canvas id="attendanceChart"></canvas>
@@ -499,18 +491,18 @@
                     <!-- Notifications and Quick Actions Wrapper -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in animate-delay-500"> {{-- New wrapper for 2-column layout on desktop --}}
                         <!-- Notifications Section -->
-                        <div class="bg-white p-6 rounded-xl shadow-lg">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-primary">
+                            <h2 class="text-2xl font-bold text-primary mb-4">Notifications</h2>
                             <ul class="space-y-3">
-                                <li class="flex items-center gap-3 text-gray-700">
+                                <li class="flex items-center gap-3 text-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                     <span>Leave approved for John Doe.</span>
                                 </li>
-                                <li class="flex items-center gap-3 text-gray-700">
+                                <li class="flex items-center gap-3 text-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                                     <span>Task "Website Redesign" deadline is tomorrow.</span>
                                 </li>
-                                <li class="flex items-center gap-3 text-gray-700">
+                                <li class="flex items-center gap-3 text-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                     <span>New employee, Jane Smith, has joined the team.</span>
                                 </li>
@@ -518,30 +510,30 @@
                         </div>
 
                         <!-- Quick Actions Section -->
-                        <div class="bg-white p-6 rounded-xl shadow-lg animate-fade-in animate-delay-600">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-lg animate-fade-in animate-delay-600 border-primary">
+                            <h2 class="text-2xl font-bold text-primary mb-4">Quick Actions</h2>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> {{-- Adjusted for responsiveness within its column --}}
-                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-white text-center
-                                                  bg-gradient-to-br from-[#ef4444] to-[#f87171] shadow-md
-                                                  hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
+                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-primary text-center
+                                                  bg-secondary-gradient shadow-md
+                                                  hover:scale-105 hover:shadow-xl hover:bg-hover transition-all duration-300 ease-in-out">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                                     <span class="font-semibold">Add Employee</span>
                                 </a>
-                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-white text-center
-                                                  bg-gradient-to-br from-green-500 to-green-700 shadow-md
-                                                  hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
+                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-primary text-center
+                                                  bg-secondary-gradient shadow-md
+                                                  hover:scale-105 hover:shadow-xl hover:bg-hover transition-all duration-300 ease-in-out">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M21 13V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><path d="M3 10h18"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
                                     <span class="font-semibold">Add Holiday</span>
                                 </a>
-                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-white text-center
-                                                  bg-gradient-to-br from-purple-500 to-purple-700 shadow-md
-                                                  hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
+                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-primary text-center
+                                                  bg-secondary-gradient shadow-md
+                                                  hover:scale-105 hover:shadow-xl hover:bg-hover transition-all duration-300 ease-in-out">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/><line x1="12" x2="12" y1="10" y2="16"/><line x1="9" x2="15" y1="13" y2="13"/></svg>
                                     <span class="font-semibold">Create Project</span>
                                 </a>
-                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-white text-center
-                                                  bg-gradient-to-br from-yellow-500 to-yellow-700 shadow-md
-                                                  hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
+                                <a href="#" class="flex flex-col items-center justify-center p-4 rounded-xl text-primary text-center
+                                                  bg-secondary-gradient shadow-md
+                                                  hover:scale-105 hover:shadow-xl hover:bg-hover transition-all duration-300 ease-in-out">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
                                     <span class="font-semibold">Generate Report</span>
                                 </a>
@@ -550,66 +542,66 @@
                     </div>
 
                     <!-- Attendance Overview -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-700 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Attendance Overview</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-700 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Attendance Overview</h2>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 bg-blue-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="text-gray-700">Punch-in Today</h3>
+                                <h3 class="text-primary">Punch-in Today</h3>
                                 <p class="text-2xl font-bold text-blue-600">98</p>
                             </div>
                             <div class="p-4 bg-yellow-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="text-gray-700">Late Comers</h3>
+                                <h3 class="text-primary">Late Comers</h3>
                                 <p class="text-2xl font-bold text-yellow-600">12</p>
                             </div>
                             <div class="p-4 bg-red-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="text-gray-700">Absent</h3>
+                                <h3 class="text-primary">Absent</h3>
                                 <p class="text-2xl font-bold text-red-500">10</p>
                             </div>
                             <div class="p-4 bg-green-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="text-gray-700">Compliance</h3>
+                                <h3 class="text-primary">Compliance</h3>
                                 <p class="text-2xl font-bold text-green-600">92%</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Recruitment Status Panel -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-800 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Recruitment Status</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-800 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Recruitment Status</h2>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="p-4 bg-blue-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                <h3 class="text-gray-700 text-lg font-semibold">Open Positions</h3>
+                                <h3 class="text-primary text-lg font-semibold">Open Positions</h3>
                                 <p class="text-4xl font-extrabold text-blue-600">15</p>
                             </div>
                             <div class="p-4 bg-green-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                                <h3 class="text-gray-700 text-lg font-semibold">Candidates in Interview</h3>
+                                <h3 class="text-primary text-lg font-semibold">Candidates in Interview</h3>
                                 <p class="text-4xl font-extrabold text-green-600">25</p>
                             </div>
                             <div class="p-4 bg-purple-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-                                <h3 class="text-gray-700 text-lg font-semibold">Offers Released</h3>
+                                <h3 class="text-primary text-lg font-semibold">Offers Released</h3>
                                 <p class="text-4xl font-extrabold text-purple-600">07</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Team Performance Table -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1000 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Team Performance</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1000 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Team Performance</h2>
                         </div>
                         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
                             <div class="relative w-full sm:w-auto flex-1">
-                                <input type="text" placeholder="Search employees..." class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                <input type="text" placeholder="Search employees..." class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 text-primary placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300">
                                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5"></i>
                             </div>
                             <div x-data="{ filterOpen: false }" class="relative">
-                                <button @click="filterOpen = !filterOpen" class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                <button @click="filterOpen = !filterOpen" class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 text-primary hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
                                     Filter by Status
                                     <i class="bi bi-chevron-down"></i>
                                 </button>
@@ -620,27 +612,27 @@
                                      x-transition:leave="transition ease-in duration-150"
                                      x-transition:leave-start="opacity-100 scale-100"
                                      x-transition:leave-end="opacity-0 scale-95"
-                                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 overflow-hidden border border-gray-200">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">In Progress</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Completed</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
+                                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 overflow-hidden border-primary">
+                                    <a href="#" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">All</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">In Progress</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Completed</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Pending</a>
                                 </div>
                             </div>
                         </div>
                         <table class="w-full border-collapse text-left">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-3 text-gray-800">Employee Name</th>
-                                    <th class="p-3 text-gray-800">Current Task</th>
-                                    <th class="p-3 text-gray-800">Progress</th>
-                                    <th class="p-3 text-gray-800">Status</th>
+                                    <th class="p-3 text-primary">Employee Name</th>
+                                    <th class="p-3 text-primary">Current Task</th>
+                                    <th class="p-3 text-primary">Progress</th>
+                                    <th class="p-3 text-primary">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="1">
-                                    <td class="p-3 text-gray-700">Alice Johnson</td>
-                                    <td class="p-3 text-gray-700">Develop new API endpoint</td>
+                                <tr class="border-t border-primary hover:bg-gray-50 transition-colors duration-150" data-row="1">
+                                    <td class="p-3 text-primary">Alice Johnson</td>
+                                    <td class="p-3 text-primary">Develop new API endpoint</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
                                             <div class="progress-bar h-2.5 rounded-full" data-progress="80"></div>
@@ -648,9 +640,9 @@
                                     </td>
                                     <td class="p-3"><span class="status-badge px-2 py-1 text-xs font-semibold rounded-full">In Progress</span></td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="2">
-                                    <td class="p-3 text-gray-700">Bob Williams</td>
-                                    <td class="p-3 text-gray-700">Design UI for dashboard</td>
+                                <tr class="border-t border-primary hover:bg-gray-50 transition-colors duration-150" data-row="2">
+                                    <td class="p-3 text-primary">Bob Williams</td>
+                                    <td class="p-3 text-primary">Design UI for dashboard</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
                                             <div class="progress-bar h-2.5 rounded-full" data-progress="100"></div>
@@ -658,9 +650,9 @@
                                     </td>
                                     <td class="p-3"><span class="status-badge px-2 py-1 text-xs font-semibold rounded-full">Completed</span></td>
                                 </tr>
-                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-150" data-row="3">
-                                    <td class="p-3 text-gray-700">Charlie Brown</td>
-                                    <td class="p-3 text-gray-700">Review code for module X</td>
+                                <tr class="border-t border-primary hover:bg-gray-50 transition-colors duration-150" data-row="3">
+                                    <td class="p-3 text-primary">Charlie Brown</td>
+                                    <td class="p-3 text-primary">Review code for module X</td>
                                     <td class="p-3">
                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
                                             <div class="progress-bar h-2.5 rounded-full" data-progress="30"></div>
@@ -673,39 +665,39 @@
                     </div>
 
                     <!-- Top Performer of the Month Box -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1100 mt-8 text-center">
-                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1100 mt-8 text-center">
+                        <h2 class="text-xl font-semibold text-primary mb-4">Top Performer of the Month</h2>
                         <div class="flex flex-col items-center justify-center gap-3">
                             <img src="/placeholder.svg?height=80&width=80" alt="Top Performer" class="w-20 h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
                             <p class="text-2xl font-bold text-green-600">Deepan Gain</p>
-                            <p class="text-lg text-gray-700">Productivity Score: <span class="font-bold">92%</span></p>
+                            <p class="text-lg text-primary">Productivity Score: <span class="font-bold">92%</span></p>
                         </div>
                     </div>
 
                     <!-- Upcoming Deadlines Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1200 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Upcoming Deadlines</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1200 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Upcoming Deadlines</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="p-4 bg-gray-50 rounded-lg border-primary flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-calendar-x-fill text-red-500 text-3xl"></i>
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Project Alpha Final Review</h3>
+                                    <h3 class="font-semibold text-primary">Project Alpha Final Review</h3>
                                     <p class="text-sm text-gray-600">Deadline: July 28, 2025</p>
                                 </div>
                             </div>
-                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="p-4 bg-gray-50 rounded-lg border-primary flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-calendar-x-fill text-red-500 text-3xl"></i>
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Marketing Campaign Launch</h3>
+                                    <h3 class="font-semibold text-primary">Marketing Campaign Launch</h3>
                                     <p class="text-sm text-gray-600">Deadline: August 5, 2025</p>
                                 </div>
                             </div>
-                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="p-4 bg-gray-50 rounded-lg border-primary flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <i class="bi bi-calendar-x-fill text-red-500 text-3xl"></i>
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Q3 Financial Report</h3>
+                                    <h3 class="font-semibold text-primary">Q3 Financial Report</h3>
                                     <p class="text-sm text-gray-600">Deadline: September 10, 2025</p>
                                 </div>
                             </div>
@@ -713,32 +705,32 @@
                     </div>
 
                     <!-- Upcoming Birthdays & Anniversaries Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1300 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Upcoming Birthdays & Anniversaries</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1300 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Upcoming Birthdays & Anniversaries</h2>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <!-- Example Card 1: Birthday -->
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-16 h-16 rounded-full object-cover border-2 border-blue-300">
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Jane Doe</h3>
+                                    <h3 class="font-semibold text-primary">Jane Doe</h3>
                                     <p class="text-sm text-gray-600">Birthday: August 10th</p>
                                 </div>
                             </div>
                             <!-- Example Card 2: Anniversary -->
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-16 h-16 rounded-full object-cover border-2 border-green-300">
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Michael Brown</h3>
+                                    <h3 class="font-semibold text-primary">Michael Brown</h3>
                                     <p class="text-sm text-gray-600">Anniversary: September 5th</p>
                                 </div>
                             </div>
                             <!-- Example Card 3: Birthday -->
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                 <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-16 h-16 rounded-full object-cover border-2 border-purple-300">
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">Sarah Lee</h3>
+                                    <h3 class="font-semibold text-primary">Sarah Lee</h3>
                                     <p class="text-sm text-gray-600">Birthday: October 22nd</p>
                                 </div>
                             </div>
@@ -746,28 +738,28 @@
                     </div>
 
                     <!-- Announcements & Notices Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1400 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">Announcements & Notices</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1400 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Announcements & Notices</h2>
                         </div>
                         <div class="max-h-60 overflow-y-auto space-y-4 pr-2">
-                            <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="font-semibold text-gray-800">Company Holiday on July 4th</h3>
+                            <div class="p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <h3 class="font-semibold text-primary">Company Holiday on July 4th</h3>
                                 <p class="text-sm text-gray-600 mt-1">Please note that the office will be closed on July 4th in observance of Independence Day.</p>
                                 <p class="text-xs text-gray-500 mt-2">Posted: July 1, 2025</p>
                             </div>
-                            <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="font-semibold text-gray-800">New Employee Onboarding Session</h3>
+                            <div class="p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <h3 class="font-semibold text-primary">New Employee Onboarding Session</h3>
                                 <p class="text-sm text-gray-600 mt-1">A mandatory onboarding session for all new employees will be held on July 15th at 10 AM in Conference Room B.</p>
                                 <p class="text-xs text-gray-500 mt-2">Posted: June 28, 2025</p>
                             </div>
-                            <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="font-semibold text-gray-800">IT System Maintenance</h3>
+                            <div class="p-3 bg-gray-50 rounded-lg border-primary hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <h3 class="font-semibold text-primary">IT System Maintenance</h3>
                                 <p class="text-sm text-gray-600 mt-1">Scheduled IT system maintenance will occur on July 20th from 1 AM to 5 AM. Services may be temporarily interrupted.</p>
                                 <p class="text-xs text-gray-500 mt-2">Posted: June 25, 2025</p>
                             </div>
-                            <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex items-start gap-3 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                                <h3 class="font-semibold text-gray-800">Employee Wellness Program Launch</h3>
+                            <div class="p-3 bg-gray-50 rounded-lg border-primary flex items-start gap-3 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                                <h3 class="font-semibold text-primary">Employee Wellness Program Launch</h3>
                                 <p class="text-sm text-gray-600 mt-1">Join our new employee wellness program starting August 1st! Details on activities and benefits will be shared soon.</p>
                                 <p class="text-xs text-gray-500 mt-2">Posted: June 20, 2025</p>
                             </div>
@@ -775,16 +767,16 @@
                     </div>
 
                     <!-- HR Policies Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1500 mt-8">
-                        <div class="section-header-gradient p-4 rounded-t-xl mb-4">
-                            <h2 class="text-xl font-semibold text-white">HR Policies</h2>
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1500 mt-8">
+                        <div class="bg-primary p-4 rounded-t-xl mb-4">
+                            <h2 class="text-xl font-semibold text-primary">HR Policies</h2>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button class="flex items-center justify-center p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-200 hover:scale-105">
+                            <button class="flex items-center justify-center p-4 rounded-lg bg-secondary-gradient text-primary font-semibold shadow-md hover:bg-hover transition-all duration-200 hover:scale-105">
                                 <i class="bi bi-file-earmark-text-fill text-2xl mr-2"></i>
                                 Download Policies
                             </button>
-                            <button class="flex items-center justify-center p-4 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:from-green-600 hover:to-green-800 transition-all duration-200 hover:scale-105">
+                            <button class="flex items-center justify-center p-4 rounded-lg bg-secondary-gradient text-primary font-semibold shadow-md hover:bg-hover transition-all duration-200 hover:scale-105">
                                 <i class="bi bi-book-fill text-2xl mr-2"></i>
                                 View Guidelines
                             </button>
@@ -792,8 +784,8 @@
                     </div>
 
                     <!-- Motivational Quote Section -->
-                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border border-gray-200 animate-fade-in animate-delay-1600 mt-8 hover:shadow-xl transition-all duration-200 hover:scale-[1.01]">
-                        <p class="text-xl font-semibold text-gray-800 italic">
+                    <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-6 border-primary animate-fade-in animate-delay-1600 mt-8 hover:shadow-xl transition-all duration-200 hover:scale-[1.01]">
+                        <p class="text-xl font-semibold text-primary italic">
                             "The only way to do great work is to love what you do."
                         </p>
                         <p class="text-sm text-gray-600 mt-2">- Steve Jobs</p>

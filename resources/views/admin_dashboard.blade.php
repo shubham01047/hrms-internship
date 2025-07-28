@@ -5,7 +5,7 @@
 </h2>
 </x-slot>
 
-<div class="py-12">
+<div class="py-12 theme-app">
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
     <div class="p-6 text-black">
@@ -15,14 +15,6 @@
             /* Poppins font is assumed to be loaded by x-app-layout or globally */
             body {
                 font-family: 'Poppins', sans-serif;
-            }
-            /* Custom gradient for the main dashboard header */
-            .header-gradient {
-                background: linear-gradient(135deg, #ef4444, #f87171);
-            }
-            /* Custom gradient for section headers */
-            .section-header-gradient {
-                background: linear-gradient(135deg, #ef4444, #f87171);
             }
 
             /* Fade-in animation */
@@ -87,8 +79,8 @@
             }
 
             .gantt-view-toggle button.active {
-                background: #3b82f6;
-                color: white;
+                background-color: var(--primary-bg);
+                color: var(--primary-text);
             }
 
             .gantt-view-toggle button:not(.active) {
@@ -210,7 +202,7 @@
             }
 
             .gantt-task-bar.in-progress {
-                background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+                background-color: var(--primary-bg);
             }
 
             .gantt-task-bar.planning {
@@ -246,7 +238,7 @@
             }
 
             .status-dot.completed { background: #10b981; }
-            .status-dot.in-progress { background: #3b82f6; }
+            .status-dot.in-progress { background-color: var(--primary-bg); }
             .status-dot.planning { background: #f59e0b; }
             .status-dot.on-hold { background: #ef4444; }
 
@@ -391,7 +383,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-4 sm:gap-6">
 
                 <!-- Welcome Header with Clocks -->
-                <div class="header-gradient text-white p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
+                <div class="bg-secondary-gradient text-primary p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
                     <!-- Background Pattern -->
                     <div class="absolute inset-0 opacity-10">
                         <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>
@@ -451,8 +443,8 @@
 
                 <!-- Recent Activities / Updates Section -->
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-100">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Recent Activities / Updates</h2>
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Recent Activities / Updates</h2>
                     </div>
                     <div class="max-h-60 overflow-y-auto space-y-3 pr-2">
                         <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
@@ -490,35 +482,35 @@
                 <div class="overflow-x-auto pb-4 animate-fade-in animate-delay-300">
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 min-w-[600px] lg:min-w-0">
                         <a href="{{ route('employees.index') }}" class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-red-600 border border-gray-200
+                            bg-white border-primary border
                             flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
                             <p class="text-2xl sm:text-3xl font-bold">120</p>
                         </a>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-green-600 border border-gray-200
+                            bg-white text-green-600 border-primary border
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Present Today</h3>
                             <p class="text-2xl sm:text-3xl font-bold">98</p>
                         </div>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-purple-600 border border-gray-200
+                            bg-white text-purple-600 border-primary border
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/><path d="M12 22c4.4 0 8-3.6 8-8V7h-4V3H8v4H4v7c0 4.4 3.6 8 8 8z"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Punch-In Users</h3>
                             <p class="text-2xl sm:text-3xl font-bold">65</p>
                         </div>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-yellow-500 border border-gray-200
+                            bg-white text-yellow-500 border-primary border
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Pending Leaves</h3>
                             <p class="text-2xl sm:text-3xl font-bold">12</p>
                         </div>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-pink-600 border border-gray-200
+                            bg-white text-pink-600 border-primary border
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Active Projects</h3>
@@ -530,7 +522,7 @@
                 <!-- Notifications and Quick Actions Wrapper -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 animate-fade-in animate-delay-400">
                     <!-- Notifications Section -->
-                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
+                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-primary border">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
                         <ul class="space-y-3">
                             <li class="flex items-center gap-3 text-gray-700">
@@ -549,29 +541,29 @@
                     </div>
 
                     <!-- Quick Actions Section -->
-                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg animate-fade-in animate-delay-500">
+                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-primary border animate-fade-in animate-delay-500">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
-                                              bg-gradient-to-br from-[#ef4444] to-[#f87171] shadow-md
+                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-primary text-center
+                                              bg-secondary-gradient shadow-md
                                               hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                                 <span class="font-semibold text-sm sm:text-base">Add Employee</span>
                             </a>
-                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
-                                              bg-gradient-to-br from-green-500 to-green-700 shadow-md
+                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-primary text-center
+                                              bg-secondary-gradient shadow-md
                                               hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M21 13V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><path d="M3 10h18"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
                                 <span class="font-semibold text-sm sm:text-base">Add Holiday</span>
                             </a>
-                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
-                                              bg-gradient-to-br from-purple-500 to-purple-700 shadow-md
+                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-primary text-center
+                                              bg-secondary-gradient shadow-md
                                               hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/><line x1="12" x2="12" y1="10" y2="16"/><line x1="9" x2="15" y1="13" y2="13"/></svg>
                                 <span class="font-semibold text-sm sm:text-base">Create Project</span>
                             </a>
-                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
-                                              bg-gradient-to-br from-yellow-500 to-yellow-700 shadow-md
+                            <a href="#" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-primary text-center
+                                              bg-secondary-gradient shadow-md
                                               hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
                                 <span class="font-semibold text-sm sm:text-base">Generate Report</span>
@@ -581,7 +573,7 @@
                 </div>
 
                 <!-- Dynamic Gantt Chart Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-600">
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-600">
                     <div class="gantt-container">
                         <!-- Gantt Header -->
                         <div class="gantt-header">
@@ -595,7 +587,7 @@
                                     <button onclick="setTimelineView('months')">Months</button>
                                     <button onclick="setTimelineView('days')">Days</button>
                                 </div>
-                                <button class="px-3 py-1 bg-green-500 text-white text-sm font-medium rounded hover:bg-green-600 transition-colors">
+                                <button class="px-3 py-1 bg-primary text-primary text-sm font-medium rounded hover:bg-hover transition-colors">
                                     Add Task
                                 </button>
                             </div>
@@ -609,7 +601,7 @@
                                     <div class="text-xs text-gray-600">Completed</div>
                                 </div>
                                 <div class="text-center">
-                                    <div class="text-lg font-bold text-blue-600">5</div>
+                                    <div class="text-lg font-bold" style="color: var(--primary-bg);">5</div>
                                     <div class="text-xs text-gray-600">In Progress</div>
                                 </div>
                                 <div class="text-center">
@@ -702,7 +694,7 @@
                                     <div class="text-sm text-gray-600">
                                         <span class="font-medium">Progress:</span> <span id="detail-progress"></span>%
                                     </div>
-                                    <button class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
+                                    <button class="px-3 py-1 bg-primary text-primary text-sm rounded hover:bg-hover transition-colors">
                                         Edit
                                     </button>
                                 </div>
@@ -712,14 +704,14 @@
                 </div>
 
                 <!-- Attendance Overview -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-700">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Attendance Overview</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-700">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Attendance Overview</h2>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                         <div class="p-3 sm:p-4 bg-blue-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Punch-in Today</h3>
-                            <p class="text-xl sm:text-2xl font-bold text-blue-600">98</p>
+                            <p class="text-xl sm:text-2xl font-bold" style="color: var(--primary-bg);">98</p>
                         </div>
                         <div class="p-3 sm:p-4 bg-yellow-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Late Comers</h3>
@@ -737,15 +729,15 @@
                 </div>
 
                 <!-- Recruitment Status Panel -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-800">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Recruitment Status</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-800">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Recruitment Status</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                         <div class="p-3 sm:p-4 bg-blue-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" style="color: var(--primary-bg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <h3 class="text-gray-700 text-sm sm:text-lg font-semibold">Open Positions</h3>
-                            <p class="text-2xl sm:text-4xl font-extrabold text-blue-600">15</p>
+                            <p class="text-2xl sm:text-4xl font-extrabold" style="color: var(--primary-bg);">15</p>
                         </div>
                         <div class="p-3 sm:p-4 bg-green-100 rounded-lg text-center flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -761,7 +753,7 @@
                 </div>
 
                 <!-- Top Performer of the Month Box -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-900 text-center">
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-900 text-center">
                     <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
                     <div class="flex flex-col items-center justify-center gap-3">
                         <img src="/placeholder.svg?height=80&width=80" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
@@ -771,9 +763,9 @@
                 </div>
 
                 <!-- Upcoming Deadlines Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-1000">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Upcoming Deadlines</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1000">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Deadlines</h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                         <div class="p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
@@ -801,14 +793,14 @@
                 </div>
 
                 <!-- Upcoming Birthdays & Anniversaries Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-1100">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Upcoming Birthdays & Anniversaries</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1100">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Birthdays & Anniversaries</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <!-- Example Card 1: Birthday -->
                         <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-blue-300">
+                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-primary">
                             <div>
                                 <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Jane Doe</h3>
                                 <p class="text-xs sm:text-sm text-gray-600">Birthday: August 10th</p>
@@ -834,9 +826,9 @@
                 </div>
 
                 <!-- Announcements & Notices Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-1200">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">Announcements & Notices</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1200">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Announcements & Notices</h2>
                     </div>
                     <div class="max-h-60 overflow-y-auto space-y-3 sm:space-y-4 pr-2">
                         <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
@@ -858,16 +850,16 @@
                 </div>
 
                 <!-- HR Policies Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-1300">
-                    <div class="section-header-gradient p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-white">HR Policies</h2>
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1300">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">HR Policies</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <button class="flex items-center justify-center p-3 sm:p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-200 hover:scale-105">
+                        <button class="flex items-center justify-center p-3 sm:p-4 rounded-lg bg-secondary-gradient text-primary font-semibold shadow-md hover:bg-hover transition-all duration-200 hover:scale-105">
                             <i class="bi bi-file-earmark-text-fill text-xl sm:text-2xl mr-2"></i>
                             <span class="text-sm sm:text-base">Download Policies</span>
                         </button>
-                        <button class="flex items-center justify-center p-3 sm:p-4 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:from-green-600 hover:to-green-800 transition-all duration-200 hover:scale-105">
+                        <button class="flex items-center justify-center p-3 sm:p-4 rounded-lg bg-secondary-gradient text-primary font-semibold shadow-md hover:bg-hover transition-all duration-200 hover:scale-105">
                             <i class="bi bi-book-fill text-xl sm:text-2xl mr-2"></i>
                             <span class="text-sm sm:text-base">View Guidelines</span>
                         </button>
@@ -875,7 +867,7 @@
                 </div>
 
                 <!-- Motivational Quote Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border border-gray-200 animate-fade-in animate-delay-1400 hover:shadow-xl transition-all duration-200 hover:scale-[1.01]">
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1400 hover:shadow-xl transition-all duration-200 hover:scale-[1.01]">
                     <p class="text-lg sm:text-xl font-semibold text-gray-800 italic">
                         "The only way to do great work is to love what you do."
                     </p>
