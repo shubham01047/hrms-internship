@@ -42,25 +42,60 @@ class EmployeeController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|min:3',
-            'last_name' => 'required|min:3',
-            'email' => 'required|min:3'
-        ]);
-        if ($validator->passes()) {
-            $employees = new Employee();
-            $employees->first_name = $request->first_name;
-            $employees->last_name = $request->last_name;
-            $employees->email = $request->email;
-            $employees->save();
-            return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
-        } else {
-            return redirect()->route('employees.create')->withInput()->withErrors($validator);
-        }
+  public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'first_name' => 'required|min:3',
+        'last_name' => 'required|min:3',
+        'gender' => 'required',
+        'date_of_birth' => 'required|date',
+        'email' => 'required|email',
+        'phone' => 'required',
+        'address' => 'required',
+        'city' => 'required',
+        'state' => 'required',
+        'postal_code' => 'required',
+        'country' => 'required',
+        'joining_date' => 'required|date',
+        'employment_type' => 'required',
+        'status' => 'required',
+        'resume' => 'nullable|mimes:pdf|max:2048',
+        'id_proof' => 'nullable|mimes:jpeg,jpg,png,pdf|max:2048',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->route('employees.create')->withInput()->withErrors($validator);
     }
 
+    $employee = new Employee();
+    $employee->first_name = $request->first_name;
+    $employee->last_name = $request->last_name;
+    $employee->gender = $request->gender;
+    $employee->date_of_birth = $request->date_of_birth;
+    $employee->email = $request->email;
+    $employee->phone = $request->phone;
+    $employee->address = $request->address;
+    $employee->city = $request->city;
+    $employee->state = $request->state;
+    $employee->postal_code = $request->postal_code;
+    $employee->country = $request->country;
+    $employee->joining_date = $request->joining_date;
+    $employee->employment_type = $request->employment_type;
+    $employee->status = $request->status;
+    $employee->user_id = auth()->id();
+
+    if ($request->hasFile('resume')) {
+        $employee->resume = $request->file('resume')->store('resumes', 'public');
+    }
+
+    if ($request->hasFile('id_proof')) {
+        $employee->id_proof = $request->file('id_proof')->store('id_proofs', 'public');
+    }
+
+    $employee->save();
+
+    return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+}
 
     /**
      * Show the form for editing the specified resource.

@@ -286,7 +286,7 @@
     .analog-clock {
         width: 200px;
         height: 200px;
-        border: 8px solid var(--primary-color);
+        border: 8px solid var(--secondary-text);
         border-radius: 50%;
         position: relative;
         background: linear-gradient(135deg, #ffffff, #ffe6e6);
@@ -299,7 +299,7 @@
         left: 50%;
         width: 12px;
         height: 12px;
-        background: var(--primary-color);
+        background: var(--text-primary);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         z-index: 10;
@@ -307,7 +307,7 @@
     
     .clock-hand {
         position: absolute;
-        background: var(--primary-color);
+        background: var(--secondary-text);
         transform-origin: bottom center;
         border-radius: 2px;
         transition: transform 0.1s ease-in-out;
@@ -335,11 +335,10 @@
         top: 10px;
         left: 50%;
         margin-left: -0.5px;
-        background: var(--primary-color);
+        background: var(--secondary-text);
     }
     
     .digital-clock {
-        background: var(--secondary-gradient);
         color: var(--text-primary);
         padding: 2rem;
         border-radius: 15px;

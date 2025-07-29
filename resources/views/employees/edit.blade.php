@@ -39,120 +39,120 @@
                 </div>
                 
                 <div class="p-8">
-                    <form action="{{ route('employees.update', $employee->id) }}" method="POST" class="space-y-6">
-                        @csrf
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label for="first_name" class="block text-sm font-semibold text-gray-700">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                        <span>First Name</span>
-                                        <span class="text-red-500">*</span>
-                                    </div>
-                                </label>
-                                <input type="text" 
-                                       name="first_name" 
-                                       id="first_name"
-                                       value="{{ old('first_name', $employee->first_name) }}"
-                                       placeholder="Enter first name"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                                @error('first_name')
-                                    <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
-                                    </div>
-                                @enderror
-                            </div>
+                    <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
 
-                            <div class="space-y-2">
-                                <label for="last_name" class="block text-sm font-semibold text-gray-700">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                        <span>Last Name</span>
-                                        <span class="text-red-500">*</span>
-                                    </div>
-                                </label>
-                                <input type="text" 
-                                       name="last_name" 
-                                       id="last_name"
-                                       value="{{ old('last_name', $employee->last_name) }}"
-                                       placeholder="Enter last name"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                                @error('last_name')
-                                    <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
-                                    </div>
-                                @enderror
-                            </div>
+    <input type="hidden" name="user_id" value="{{ $employee->user_id }}">
 
-                            <div class="md:col-span-2 space-y-2">
-                                <label for="email" class="block text-sm font-semibold text-gray-700">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                        </svg>
-                                        <span>Email Address</span>
-                                        <span class="text-red-500">*</span>
-                                    </div>
-                                </label>
-                                <input type="email" 
-                                       name="email" 
-                                       id="email"
-                                       value="{{ old('email', $employee->email) }}"
-                                       placeholder="Enter email address"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                                @error('email')
-                                    <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label>First Name</label>
+            <input type="text" name="first_name" value="{{ old('first_name', $employee->first_name) }}" required class="w-full border rounded px-3 py-2">
+        </div>
 
-                        <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
-                            <div class="flex items-start space-x-3">
-                                <svg class="w-5 h-5 text-yellow-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
-                                </svg>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-gray-900">Important Notice</h4>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Changes to employee information will be reflected immediately across the system.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                            <a href="{{ route('employees.index') }}"
-                               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold rounded-lg shadow-lg hover:from-gray-600 hover:to-gray-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                                Cancel
-                            </a>
-                            <button type="submit"
-                                    class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                </svg>
-                                Update Employee
-                            </button>
-                        </div>
-                    </form>
+        <div>
+            <label>Last Name</label>
+            <input type="text" name="last_name" value="{{ old('last_name', $employee->last_name) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Gender</label>
+            <select name="gender" required class="w-full border rounded px-3 py-2">
+                <option value="">Select</option>
+                <option value="male" {{ $employee->gender == 'male' ? 'selected' : '' }}>Male</option>
+                <option value="female" {{ $employee->gender == 'female' ? 'selected' : '' }}>Female</option>
+                <option value="other" {{ $employee->gender == 'other' ? 'selected' : '' }}>Other</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Date of Birth</label>
+            <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $employee->date_of_birth) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" name="email" value="{{ old('email', $employee->email) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ old('phone', $employee->phone) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Address</label>
+            <input type="text" name="address" value="{{ old('address', $employee->address) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>City</label>
+            <input type="text" name="city" value="{{ old('city', $employee->city) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>State</label>
+            <input type="text" name="state" value="{{ old('state', $employee->state) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Postal Code</label>
+            <input type="text" name="postal_code" value="{{ old('postal_code', $employee->postal_code) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Country</label>
+            <input type="text" name="country" value="{{ old('country', $employee->country) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Joining Date</label>
+            <input type="date" name="joining_date" value="{{ old('joining_date', $employee->joining_date) }}" required class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label>Employment Type</label>
+            <select name="employment_type" required class="w-full border rounded px-3 py-2">
+                <option value="">Select</option>
+                <option value="full-time" {{ $employee->employment_type == 'full-time' ? 'selected' : '' }}>Full-Time</option>
+                <option value="part-time" {{ $employee->employment_type == 'part-time' ? 'selected' : '' }}>Part-Time</option>
+                <option value="contract" {{ $employee->employment_type == 'contract' ? 'selected' : '' }}>Contract</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Status</label>
+            <select name="status" required class="w-full border rounded px-3 py-2">
+                <option value="">Select</option>
+                <option value="active" {{ $employee->status == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ $employee->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                <option value="terminated" {{ $employee->status == 'terminated' ? 'selected' : '' }}>Terminated</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Resume (PDF only)</label>
+            <input type="file" name="resume" accept="application/pdf" class="w-full border rounded px-3 py-2">
+            @if ($employee->resume)
+                <a href="{{ asset('storage/' . $employee->resume) }}" target="_blank" class="text-sm text-blue-600 underline block mt-1">View current resume</a>
+            @endif
+        </div>
+
+        <div>
+            <label>ID Proof (Image/PDF)</label>
+            <input type="file" name="id_proof" accept="image/*,application/pdf" class="w-full border rounded px-3 py-2">
+            @if ($employee->id_proof)
+                <a href="{{ asset('storage/' . $employee->id_proof) }}" target="_blank" class="text-sm text-blue-600 underline block mt-1">View current ID proof</a>
+            @endif
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <button type="submit" class="bg-primary text-white px-4 py-2 rounded">Update Employee</button>
+    </div>
+</form>
+
                 </div>
             </div>
         </div>
