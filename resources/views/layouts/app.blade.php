@@ -35,7 +35,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-h-screen">
+        <div class="flex-1 flex flex-col min-h-screen ">
             <!-- Toggle Button for mobile -->
             <button @click="sidebarOpen = !sidebarOpen" class="md:hidden px-4 py-2 focus:outline-none sticky top-0 z-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 primary-text" fill="none" viewBox="0 0 24 24"

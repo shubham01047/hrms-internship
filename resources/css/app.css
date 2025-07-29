@@ -27,13 +27,13 @@
   }
 
    .theme-app {
-    --primary-bg: #2b6cfa;      /* blue-600 */
-    --primary-bg-light: #3b6df6;/* blue-500 */
+    --primary-bg: #363636;      /* blue-600 */
+    --primary-bg-light: #2e3035;/* blue-500 */
     --primary-text: #ffffff;
-    --primary-border: #60a5fa;  /* blue-400 */
-    --hover-bg: #1d4ed8;        /* blue-700 */
+    --primary-border: #3d3d3d;  /* blue-400 */
+    --hover-bg: #838383;        /* blue-700 */
 
-    --secondary-bg: #82cdff;
+    --secondary-bg: #949393;
     --secondary-text: #000000;
   }
 
