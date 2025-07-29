@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\BreakModel;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -18,7 +19,13 @@ class AdminDashboardController extends Controller implements HasMiddleware
     }
     public function index()
     {
-        return view('admin_dashboard');
+        $employees = Employee::all();
+
+        $tomorrow = Carbon::tomorrow();
+        $employeesWithBirthdayTomorrow = Employee::whereMonth('birth_date', $tomorrow->month)
+            ->whereDay('birth_date', $tomorrow->day)
+            ->get();
+        return view('admin_dashboard', compact('employees'));
     }
     public function showAttendanceReport()
     {
