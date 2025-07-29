@@ -20,12 +20,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
     public function index()
     {
         $employees = Employee::all();
-
-        $tomorrow = Carbon::tomorrow();
-        $employeesWithBirthdayTomorrow = Employee::whereMonth('birth_date', $tomorrow->month)
-            ->whereDay('birth_date', $tomorrow->day)
-            ->get();
-        return view('admin_dashboard', compact('employees'));
+        return view('admin_dashboard',compact('employees'));
     }
     public function showAttendanceReport()
     {
