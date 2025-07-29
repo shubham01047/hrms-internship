@@ -486,7 +486,7 @@
                             flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
-                            <p class="text-2xl sm:text-3xl font-bold">120</p>
+                            <p class="text-2xl sm:text-3xl font-bold"></p>
                         </a>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                             bg-white text-green-600 border-primary border

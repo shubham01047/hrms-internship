@@ -66,7 +66,7 @@
                     @if (Route::has('register'))
                         <p class="text-center text-gray-600 text-sm">
                             Don't have an account?
-                            <a href="{{ route('register') }}" class="text-primary hover:underline">Register</a>
+                            <a href="{{ route('register') }}" class="text-secondary hover:underline">Register</a>
                         </p>
                     @endif
                 </form>
