@@ -17,11 +17,20 @@ class AdminDashboardController extends Controller implements HasMiddleware
             new Middleware('permission:attendance report', only: ['attendance_report']),
         ];
     }
-    public function index()
-    {
-        $employees = Employee::all();
-        return view('admin_dashboard',compact('employees'));
-    }
+   public function index()
+{
+    $employees = Employee::all();
+
+    // Get tomorrow's date
+    $tomorrow = Carbon::tomorrow();
+
+    // Filter employees whose birthday is tomorrow (ignoring year)
+    $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
+        ->whereDay('date_of_birth', $tomorrow->day)
+        ->get();
+
+    return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow'));
+}
     public function showAttendanceReport()
     {
         $today = now()->toDateString();

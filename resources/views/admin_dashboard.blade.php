@@ -793,37 +793,35 @@
                 </div>
 
                 <!-- Upcoming Birthdays & Anniversaries Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1100">
-                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Birthdays & Anniversaries</h2>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                        <!-- Example Card 1: Birthday -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-primary">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Jane Doe</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Birthday: August 10th</p>
-                            </div>
-                        </div>
-                        <!-- Example Card 2: Anniversary -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-green-300">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Michael Brown</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Anniversary: September 5th</p>
-                            </div>
-                        </div>
-                        <!-- Example Card 3: Birthday -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-purple-300">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Sarah Lee</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Birthday: October 22nd</p>
-                            </div>
-                        </div>
+            <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1100">
+    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Birthdays</h2>
+    </div>
+
+    @if($employeesWithBirthdayTomorrow->count())
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            @foreach($employeesWithBirthdayTomorrow as $employee)
+                <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                    <img src="{{ $employee->profile_photo ? asset('storage/' . $employee->profile_photo) : '/placeholder.svg?height=64&width=64' }}" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-primary">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 text-sm sm:text-base">
+                            {{ $employee->first_name }} {{ $employee->last_name }}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-gray-600">
+                            Birthday: {{ \Carbon\Carbon::parse($employee->date_of_birth)->format('F jS') }}
+                        </p>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center text-sm sm:text-base text-gray-600 py-6">
+            🎉 No birthdays tomorrow.
+        </div>
+    @endif
+</div>
+
+                       
 
                 <!-- Announcements & Notices Section -->
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1200">
