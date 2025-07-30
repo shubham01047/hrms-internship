@@ -27,14 +27,14 @@
   }
 
    .theme-app {
-    --primary-bg: #363636;      /* blue-600 */
-    --primary-bg-light: #2e3035;/* blue-500 */
-    --primary-text: #ffffff;
-    --primary-border: #3d3d3d;  /* blue-400 */
-    --hover-bg: #838383;        /* blue-700 */
+    --primary-bg: #3b1f22;         /* Deep cherry red (replaces black) */
+--primary-bg-light: #f43f5e;   /* Rose-500 */
+--primary-text: #fff1f2;       /* Rose-100 */
+--primary-border: #fb7185;     /* Rose-400 */
+--hover-bg: #e11d48;           /* Rose-600 */
 
-    --secondary-bg: #949393;
-    --secondary-text: #000000;
+--secondary-bg: #502b31;       /* Muted crimson plum */
+--secondary-text: #ffe4e6;     /* Soft blush white */
   }
 
   .theme-app .bg-primary {
