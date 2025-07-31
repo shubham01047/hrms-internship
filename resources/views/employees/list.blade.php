@@ -83,7 +83,7 @@
                     <td class="border px-4 py-2">{{ $employee->phone ?? '-' }}</td>
                     <td class="border px-4 py-2">{{ ucfirst($employee->status) ?? 'N/A' }}</td>
                     <td class="border px-4 py-2">
-                        <a href="{{ route('employees.edit', $employee->id) }}" class="text-blue-600">Edit</a>
+                        <a href="{{ route('employees.edit', $employee->id) }}" class="text-blue-600">edit</a>
                     </td>
                 </tr>
             @empty
