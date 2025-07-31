@@ -11,4 +11,6 @@ class Employee extends Model
     'address', 'city', 'state', 'postal_code', 'country', 'joining_date',
     'employment_type', 'status', 'user_id', 'resume', 'id_proof'
 ];
+
+
 }
