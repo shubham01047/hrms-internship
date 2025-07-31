@@ -756,7 +756,7 @@
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-900 text-center">
                     <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
                     <div class="flex flex-col items-center justify-center gap-3">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
+                        <img src="{{ asset('images/top-performer.png') }}" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
                         <p class="text-xl sm:text-2xl font-bold text-green-600">Deepan Gain</p>
                         <p class="text-base sm:text-lg text-gray-700">Productivity Score: <span class="font-bold">92%</span></p>
                     </div>
