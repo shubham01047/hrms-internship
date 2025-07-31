@@ -111,25 +111,44 @@ class EmployeeController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $employees = Employee::findOrFail($id);
+ public function update(Request $request, $id)
+{
+    $employee = Employee::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|min:3',
-            'last_name' => 'required|min:3',
-            'email' => 'required|min:3'
-        ]);
-        if ($validator->passes()) {
-            $employees->first_name = $request->first_name;
-            $employees->last_name = $request->last_name;
-            $employees->email = $request->email;
-            $employees->save();
-            return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
-        } else {
-            return redirect()->route('employees.edit', $id)->withInput()->withErrors($validator);
-        }
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'gender' => 'nullable|string',
+        'date_of_birth' => 'nullable|date',
+        'email' => 'nullable|email',
+        'phone' => 'nullable|string',
+        'address' => 'nullable|string',
+        'city' => 'nullable|string',
+        'state' => 'nullable|string',
+        'postal_code' => 'nullable|string',
+        'country' => 'nullable|string',
+        'joining_date' => 'nullable|date',
+        'employment_type' => 'nullable|string',
+        'status' => 'nullable|string',
+        'resume' => 'nullable|file',
+        'id_proof' => 'nullable|file',
+    ]);
+
+    // Handle file uploads
+    if ($request->hasFile('resume')) {
+        $data['resume'] = $request->file('resume')->store('resumes', 'public');
     }
+
+    if ($request->hasFile('id_proof')) {
+        $data['id_proof'] = $request->file('id_proof')->store('id_proofs', 'public');
+    }
+
+    $employee->update($data);
+
+    return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+}
+
+
+
 
     /**
      * Remove the specified resource from storage.

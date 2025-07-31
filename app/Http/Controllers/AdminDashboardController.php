@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\BreakModel;
 use App\Models\Employee;
+use App\Models\Leave;
 use Carbon\Carbon;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -17,11 +18,24 @@ class AdminDashboardController extends Controller implements HasMiddleware
             new Middleware('permission:attendance report', only: ['attendance_report']),
         ];
     }
-    public function index()
-    {
-        $employees = Employee::all();
-        return view('admin_dashboard',compact('employees'));
-    }
+   public function index()
+{
+    $employees = Employee::all();
+
+    // Get tomorrow's date
+    $tomorrow = Carbon::tomorrow();
+
+    // Filter employees whose birthday is tomorrow (ignoring year)
+    $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
+        ->whereDay('date_of_birth', $tomorrow->day)
+        ->get();
+
+        $pendingLeaves = Leave::where('status', 'pending')->count();
+
+
+
+    return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow','pendingLeaves'));
+}
     public function showAttendanceReport()
     {
         $today = now()->toDateString();
