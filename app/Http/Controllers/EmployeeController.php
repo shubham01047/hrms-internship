@@ -111,63 +111,44 @@ class EmployeeController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, string $id)
+ public function update(Request $request, $id)
 {
     $employee = Employee::findOrFail($id);
 
-    $validator = Validator::make($request->all(), [
-        'first_name' => 'required|min:3',
-        'last_name' => 'required|min:3',
-        'gender' => 'required',
-        'date_of_birth' => 'required|date',
-        'email' => 'required|email',
-        'phone' => 'required',
-        'address' => 'required',
-        'city' => 'required',
-        'state' => 'required',
-        'postal_code' => 'required',
-        'country' => 'required',
-        'joining_date' => 'required|date',
-        'employment_type' => 'required',
-        'status' => 'required',
-        'resume' => 'nullable|mimes:pdf|max:2048',
-        'id_proof' => 'nullable|mimes:jpeg,jpg,png,pdf|max:2048',
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'gender' => 'nullable|string',
+        'date_of_birth' => 'nullable|date',
+        'email' => 'nullable|email',
+        'phone' => 'nullable|string',
+        'address' => 'nullable|string',
+        'city' => 'nullable|string',
+        'state' => 'nullable|string',
+        'postal_code' => 'nullable|string',
+        'country' => 'nullable|string',
+        'joining_date' => 'nullable|date',
+        'employment_type' => 'nullable|string',
+        'status' => 'nullable|string',
+        'resume' => 'nullable|file',
+        'id_proof' => 'nullable|file',
     ]);
 
-    if ($validator->fails()) {
-        return redirect()->route('employees.edit', $id)->withInput()->withErrors($validator);
-    }
-
-    // Update fields
-    $employee->first_name = $request->first_name;
-    $employee->last_name = $request->last_name;
-    $employee->gender = $request->gender;
-    $employee->date_of_birth = $request->date_of_birth;
-    $employee->email = $request->email;
-    $employee->phone = $request->phone;
-    $employee->address = $request->address;
-    $employee->city = $request->city;
-    $employee->state = $request->state;
-    $employee->postal_code = $request->postal_code;
-    $employee->country = $request->country;
-    $employee->joining_date = $request->joining_date;
-    $employee->employment_type = $request->employment_type;
-    $employee->status = $request->status;
-
-    // Update resume only if a new file is uploaded
+    // Handle file uploads
     if ($request->hasFile('resume')) {
-        $employee->resume = $request->file('resume')->store('resumes', 'public');
+        $data['resume'] = $request->file('resume')->store('resumes', 'public');
     }
 
-    // Update ID proof only if a new file is uploaded
     if ($request->hasFile('id_proof')) {
-        $employee->id_proof = $request->file('id_proof')->store('id_proofs', 'public');
+        $data['id_proof'] = $request->file('id_proof')->store('id_proofs', 'public');
     }
 
-    $employee->save();
+    $employee->update($data);
 
     return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
 }
+
+
+
 
     /**
      * Remove the specified resource from storage.

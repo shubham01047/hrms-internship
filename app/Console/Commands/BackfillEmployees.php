@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Observers;
+namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\Employee;
 
-class UserObserver
+class BackfillEmployees extends Command
 {
-    public function saved(User $user)
+    protected $signature = 'backfill:employees';
+    protected $description = 'Create employee records for users with employee role if missing';
+
+    public function handle()
     {
-        // Auto-create if employee role is newly assigned and no Employee exists
-        if ($user->hasRole('employee') && !$user->employee) {
+        $users = User::role('employee')->doesntHave('employee')->get();
+        $count = 0;
+
+        foreach ($users as $user) {
             Employee::create([
                 'user_id' => $user->id,
                 'name' => $user->name,
@@ -29,11 +35,9 @@ class UserObserver
                 'resume' => null,
                 'id_proof' => null,
             ]);
+            $count++;
         }
 
-        // Delete employee if role removed
-        if (!$user->hasRole('employee') && $user->employee) {
-            $user->employee->delete();
-        }
+        $this->info("Backfilled $count employee(s).");
     }
 }

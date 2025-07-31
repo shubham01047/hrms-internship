@@ -89,6 +89,8 @@ class UserController extends Controller implements HasMiddleware
         $users->save();
 
         $users->syncRoles($request->role);
+        \Artisan::call('backfill:employees');
+
 
         return redirect()->route('users.index', $id)->with('success', 'Users updated successfully.');
     }
