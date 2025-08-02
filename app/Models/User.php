@@ -27,7 +27,7 @@ class User extends Authenticatable
         'google_token',
         'google_refresh_token',
         'google_avatar',
-        
+
     ];
 
       public function employee()
@@ -57,6 +57,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_members')->withTimestamps();
+    }
+    public function assignedTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_members');
+    }
+    public function taskComments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+    public function timesheets()
+    {
+        return $this->hasMany(Timesheet::class);
+    }
 }
