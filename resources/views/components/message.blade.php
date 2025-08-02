@@ -12,7 +12,7 @@
                 timer: 2500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                    toast.style.marginTop = '60px'; // push down
+                    toast.style.marginTop = '60px'; 
                 }
             });
 

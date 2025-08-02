@@ -16,7 +16,6 @@ class HolidayController extends Controller implements HasMiddleware
             new Middleware('permission:delete holiday', only: ['delete']),
         ];
     }
-
     public function index()
     {
         $holidays = Holiday::orderBy('date')->get();
@@ -27,7 +26,6 @@ class HolidayController extends Controller implements HasMiddleware
     {
         return view('holidays.create');
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -36,15 +34,13 @@ class HolidayController extends Controller implements HasMiddleware
             'type' => 'required|in:national,company,event,festival',
             'description' => 'nullable|string',
         ]);
-
         Holiday::create($request->all());
-        return redirect()->route('holidays.index')->with('success', 'Holiday added.');
+        return redirect()->route('holidays.index')->with('success', 'Holiday added sucessfully.');
     }
-
     public function destroy($id)
     {
         Holiday::destroy($id);
-        return redirect()->back()->with('success', 'Holiday deleted.');
+        return redirect()->back()->with('success', 'Holiday deleted sucessfully.');
     }
 }
 
