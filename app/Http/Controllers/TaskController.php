@@ -21,7 +21,7 @@ class TaskController extends Controller implements HasMiddleware
     }
     public function create($projectId)
     {
-        $project = Project::with('users')->findOrFail($projectId); // Only show assigned users
+        $project = Project::with('users')->findOrFail($projectId); 
         return view('tasks.create', compact('project'));
     }
 
@@ -35,7 +35,6 @@ class TaskController extends Controller implements HasMiddleware
             'due_date' => 'nullable|date',
             'assigned_user_ids' => 'nullable|array',
         ]);
-
         $task = new Task();
         $task->project_id = $projectId;
         $task->title = $validated['title'];
@@ -44,27 +43,22 @@ class TaskController extends Controller implements HasMiddleware
         $task->status = $validated['status'];
         $task->due_date = $validated['due_date'] ?? null;
         $task->save();
-
         if (!empty($validated['assigned_user_ids'])) {
             $task->assignedUsers()->sync($validated['assigned_user_ids']);
         }
-
         return redirect()->route('projects.show', $projectId)->with('success', 'Task created successfully.');
     }
-
     public function show($projectId, Task $task)
     {
-        $task->load('assignedUsers'); // eager load assigned users
+        $task->load('assignedUsers'); 
         return view('projects.show', compact('task'));
     }
-
     public function edit($projectId, Task $task)
     {
         $project = Project::with('users')->findOrFail($projectId);
         $task->load('assignedUsers');
         return view('tasks.edit', compact('task', 'project'));
     }
-
     public function update(Request $request, $projectId, Task $task)
     {
         $validated = $request->validate([
@@ -75,30 +69,21 @@ class TaskController extends Controller implements HasMiddleware
             'due_date' => 'nullable|date',
             'assigned_user_ids' => 'nullable|array',
         ]);
-
         $task->title = $validated['title'];
         $task->description = $validated['description'] ?? null;
         $task->priority = $validated['priority'];
         $task->status = $validated['status'];
         $task->due_date = $validated['due_date'] ?? null;
         $task->save();
-
         $task->assignedUsers()->sync($validated['assigned_user_ids'] ?? []);
-
         return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');
     }
-    // public function show(Project $project)
-    // {
-    //     $project->load('users', 'tasks');
-    //     return view('projects.show', compact('project'));
-    // }
     public function destroy($projectId, Task $task)
     {
         $task->assignedUsers()->detach();
         $task->delete();
-        return back()->with('success', 'Task deleted');
+        return back()->with('success', 'Task deleted successfully.');
     }
-
     public function showTasksForProject($projectId)
     {
         $project = Project::with(['tasks.assignedUsers'])->findOrFail($projectId);

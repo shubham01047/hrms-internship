@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\BreakModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
@@ -23,10 +24,8 @@ class AttendanceController extends Controller
         $request->validate([
             'punch_in_remarks' => 'nullable|string|max:255',
         ]);
-
         $user = auth()->user();
         $today = now()->toDateString();
-
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'date' => $today],
             [
@@ -34,10 +33,8 @@ class AttendanceController extends Controller
                 'punch_in_remarks' => $request->input('punch_in_remarks'),
             ]
         );
-
         return redirect()->back()->with('success', 'Punched in successfully.');
     }
-
     public function startBreak(Request $request)
     {
         $attendance = Attendance::where('user_id', auth()->id())
@@ -88,101 +85,90 @@ class AttendanceController extends Controller
         $request->validate([
             'punch_out_remarks' => 'nullable|string|max:255',
         ]);
-
         $user = auth()->user();
         $attendance = Attendance::where('user_id', $user->id)
             ->whereDate('date', now())
             ->first();
-
         if (!$attendance || $attendance->punch_out) {
             return redirect()->back()->with('error', 'Already punched out or not punched in yet.');
         }
-
         $punchIn = Carbon::parse($attendance->punch_in);
         $punchOut = now();
         $workedDuration = $punchOut->diff($punchIn);
-
         $totalWorked = sprintf(
             '%02d:%02d:%02d',
             $workedDuration->h,
             $workedDuration->i,
             $workedDuration->s
         );
-
         $attendance->update([
             'punch_out' => $punchOut,
             'punch_out_remarks' => $request->input('punch_out_remarks'),
             'total_working_hours' => $totalWorked,
         ]);
-
         return redirect()->back()->with('success', 'Punched out successfully.');
     }
-public function punchInAgain(Request $request)
-{
-    $request->validate([
-        'punch_in_again_remarks' => 'nullable|string|max:255',
-    ]);
-
-    $user = auth()->user();
-    $today = now()->toDateString();
-
-    $attendance = Attendance::where('user_id', $user->id)
-        ->whereDate('date', $today)
-        ->first();
-
-    if (!$attendance) {
-        return redirect()->back()->with('error', 'No attendance found for today. Please punch in first.');
+    public function punchInAgain(Request $request)
+    {
+        $request->validate([
+            'punch_in_again_remarks' => 'nullable|string|max:255',
+        ]);
+        $user = auth()->user();
+        $today = now()->toDateString();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->first();
+        if (!$attendance) {
+            return redirect()->back()->with('error', 'No attendance found for today. Please punch in first.');
+        }
+        if (!empty($attendance->punch_in_again) && empty($attendance->punch_out_again)) {
+            return redirect()->back()->with('error', 'Already punched in again. Please punch out again before punching in again.');
+        }
+        $attendance->update([
+            'punch_in_again' => now()->format('Y-m-d H:i:s'),
+            'punch_in_again_remarks' => $request->input('punch_in_again_remarks'),
+            'punch_out_again' => null,
+            'punch_out_again_remarks' => null,
+        ]);
+        return redirect()->back()->with('success', 'Punched in again successfully.');
     }
-
-    if (!empty($attendance->punch_in_again) && empty($attendance->punch_out_again)) {
-        return redirect()->back()->with('error', 'Already punched in again. Please punch out again before punching in again.');
+    public function punchOutAgain(Request $request)
+    {
+        $request->validate([
+            'punch_out_again_remarks' => 'nullable|string|max:255',
+        ]);
+        $user = auth()->user();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', now())
+            ->first();
+        if (!$attendance || !$attendance->punch_in_again || $attendance->punch_out_again) {
+            return redirect()->back()->with('error', 'Not punched in again or already punched out again.');
+        }
+        $punchInAgain = Carbon::parse($attendance->punch_in_again);
+        $punchOutAgain = now();
+        $workedDuration = $punchOutAgain->diff($punchInAgain);
+        $existingOvertime = '00:00:00';
+        if ($attendance->overtime_working_hours) {
+            $existingOvertime = $attendance->overtime_working_hours;
+        }
+        list($hours, $minutes, $seconds) = explode(':', $existingOvertime);
+        $existingOvertimeInSeconds = ($hours * 3600) + ($minutes * 60) + $seconds;
+        $newOvertimeInSeconds = ($workedDuration->h * 3600) + ($workedDuration->i * 60) + $workedDuration->s;
+        $totalOvertimeInSeconds = $existingOvertimeInSeconds + $newOvertimeInSeconds;
+        $totalHours = floor($totalOvertimeInSeconds / 3600);
+        $totalMinutes = floor(($totalOvertimeInSeconds % 3600) / 60);
+        $totalSeconds = $totalOvertimeInSeconds % 60;
+        $totalOvertime = sprintf(
+            '%02d:%02d:%02d',
+            $totalHours,
+            $totalMinutes,
+            $totalSeconds
+        );
+        $attendance->update([
+            'punch_out_again' => $punchOutAgain,
+            'punch_out_again_remarks' => $request->input('punch_out_again_remarks'),
+            'overtime_working_hours' => $totalOvertime,
+        ]);
+        return redirect()->back()->with('success', 'Punched out again successfully.');
     }
-
-    $attendance->update([
-        'punch_in_again' => now()->format('Y-m-d H:i:s'), // Save full datetime as string (text column)
-        'punch_in_again_remarks' => $request->input('punch_in_again_remarks'),
-        'punch_out_again' => null,
-        'punch_out_again_remarks' => null,
-    ]);
-
-    return redirect()->back()->with('success', 'Punched in again successfully.');
-}
-public function punchOutAgain(Request $request)
-{
-    $request->validate([
-        'punch_out_again_remarks' => 'nullable|string|max:255',
-    ]);
-
-    $user = auth()->user();
-    $attendance = Attendance::where('user_id', $user->id)
-        ->whereDate('date', now())
-        ->first();
-
-    if (!$attendance || !$attendance->punch_in_again || $attendance->punch_out_again) {
-        return redirect()->back()->with('error', 'Not punched in again or already punched out again.');
-    }
-
-    $punchInAgain = Carbon::parse($attendance->punch_in_again);
-    $punchOutAgain = now();
-    $workedDuration = $punchOutAgain->diff($punchInAgain);
-
-    $overtimeWorked = sprintf(
-        '%02d:%02d:%02d',
-        $workedDuration->h,
-        $workedDuration->i,
-        $workedDuration->s
-    );
-
-    // Optional: you might want to add this extra time to total_working_hours, but that depends on your logic.
-
-    $attendance->update([
-        'punch_out_again' => $punchOutAgain,
-        'punch_out_again_remarks' => $request->input('punch_out_again_remarks'),
-        'overtime_working_hours' => $overtimeWorked,
-    ]);
-
-    return redirect()->back()->with('success', 'Punched out again successfully.');
-}
-
-
 }

@@ -2,7 +2,6 @@
     use App\Models\Attendance;
     use App\Models\BreakModel;
     use Carbon\Carbon;
-
     $attendanceToday = Attendance::where('user_id', auth()->id())
         ->whereDate('date', now())
         ->first();
@@ -433,24 +432,20 @@
                     @endif
                 </div>
                 <div>Total Extra Working Time:</div>
-                <div id="extraWorkTime">
-                    @if ($attendanceToday && $attendanceToday->punch_out_again)
-                        {{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}
-                    @elseif ($attendanceToday && $attendanceToday->punch_in_again && !$attendanceToday->punch_out_again)
-                        00:00:00
-                    @else
-                        00:00:00
-                    @endif
-                </div>
+                @if ($attendanceToday && $attendanceToday->punch_out_again)
+                    {{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}
+                @else
+                    <div id="extraWorkTime"> 00:00:00 </div>
+                @endif
             </div>
             @if (!$attendanceToday)
                 {{-- First Punch In --}}
                 <form method="POST" action="{{ route('attendance.punchIn') }}" class="flex gap-4">
                     @csrf
-                    <button type="submit" class="btn-punch-in w-14 flex-none">Punch In</button>
+                    <button type="submit" class="btn-punch-in w-48 flex-none">Punch In</button>
                     <div class="w-32 flex-1">
                         <label for="punch_in_remarks" class="block text-sm font-medium">Remarks (optional):</label>
-                        <input type="text" name="punch_in_remarks" id="punch_in_remarks" class="form-control"
+                        <input type="text" name="punch_in_remarks" id="punch_in_remarks" class="form-control w-64"
                             placeholder="Late due to traffic.">
                     </div>
                 </form>
@@ -458,7 +453,7 @@
                 {{-- First Punch Out --}}
                 <form method="POST" action="{{ route('attendance.punchOut') }}" class="flex gap-4">
                     @csrf
-                    <button type="submit" class="btn-punch-out w-14 flex-none">Punch Out</button>
+                    <button type="submit" class="btn-punch-out w-48 flex-none">Punch Out</button>
                     <div class="w-64 flex-1">
                         <label for="punch_out_remarks" class="block text-sm font-medium">Remarks (optional):</label>
                         <input type="text" name="punch_out_remarks" id="punch_out_remarks" class="form-control w-64"
@@ -470,13 +465,13 @@
                 <form method="POST" action="{{ route('attendance.punchOutAgain') }}" class="flex gap-4"
                     id="punchOutAgainForm">
                     @csrf
-                    <button type="submit" class="btn-punch-out w-14 flex-none" id="btnPunchOutAgain">Punch Out
+                    <button type="submit" class="btn-punch-out w-48 flex-none" id="btnPunchOutAgain">Punch Out
                         Again</button>
                     <div>
                         <label for="punch_out_again_remarks" class="block text-sm font-medium">Remarks
                             (optional):</label>
                         <input type="text" name="punch_out_again_remarks" id="punch_out_again_remarks"
-                            class="form-control w-full mt-1" placeholder="Finished extra work.">
+                            class="form-control w-64 mt-1" placeholder="Finished extra work.">
                     </div>
                 </form>
             @else
@@ -484,13 +479,13 @@
                 <form method="POST" action="{{ route('attendance.punchInAgain') }}" class="flex gap-4"
                     id="punchInAgainForm">
                     @csrf
-                    <button type="submit" class="btn-punch-in w-14 flex-none" id="btnPunchInAgain">Punch In
+                    <button type="submit" class="btn-punch-in w-48 flex-none" id="btnPunchInAgain">Punch In
                         Again</button>
                     <div>
                         <label for="punch_in_again_remarks" class="block text-sm font-medium">Remarks
                             (optional):</label>
                         <input type="text" name="punch_in_again_remarks" id="punch_in_again_remarks"
-                            class="form-control w-full mt-1" placeholder="Some extra work.">
+                            class="form-control w-64 mt-1" placeholder="Some extra work.">
                     </div>
                 </form>
             @endif
@@ -585,7 +580,6 @@
             if (minuteHand) minuteHand.style.transform = `rotate(${minuteDegree}deg)`;
             if (secondHand) secondHand.style.transform = `rotate(${secondDegree}deg)`;
         }
-
         // Update clocks immediately and then every second
         updateClocks();
         setInterval(updateClocks, 1000);
@@ -599,7 +593,6 @@
                         \Carbon\Carbon::parse($b->break_start),
                     ),
                 );
-
             $activeBreakStart = $activeBreak
                 ? \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s')
                 : null;
@@ -611,7 +604,6 @@
                     {{ $attendanceToday->punch_out ? "new Date('{$attendanceToday->punch_out}')" : 'null' }};
                 const activeBreakStart = {{ $activeBreakStart ? "new Date('{$activeBreakStart}')" : 'null' }};
                 const workTimeEl = document.getElementById("workTime");
-
                 function updateWorkTimer() {
                     const now = new Date();
                     let activeBreakSeconds = 0;
@@ -641,7 +633,6 @@
                 const breakStart = new Date(
                     "{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
                 const breakTimerEl = document.getElementById('breakTimer');
-
                 function updateBreakTimer() {
                     const now = new Date();
                     const diff = Math.floor((now - breakStart) / 1000);
@@ -657,14 +648,24 @@
     @endif
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const punchInAgain = new Date("{{ $attendanceToday->punch_in_again }}");
-            const punchOutAgain =
-                {{ $attendanceToday->punch_out_again ? "new Date('{$attendanceToday->punch_out_again}')" : 'null' }};
+            const punchInAgainStr = {!! json_encode(
+                $attendanceToday?->punch_in_again
+                    ? \Carbon\Carbon::parse($attendanceToday->punch_in_again)->toIso8601String()
+                    : null,
+            ) !!};
+            const punchOutAgainStr = {!! json_encode(
+                $attendanceToday?->punch_out_again
+                    ? \Carbon\Carbon::parse($attendanceToday->punch_out_again)->toIso8601String()
+                    : null,
+            ) !!};
+            const punchInDate = punchInAgainStr ? new Date(punchInAgainStr) : null;
+            const punchOutDate = punchOutAgainStr ? new Date(punchOutAgainStr) : null;
             const extraWorkTimeEl = document.getElementById("extraWorkTime");
-
-            function updateextraWorkTimer() {
+            function updateExtraWorkTimer() {
                 const now = new Date();
-                let diffSeconds = ((punchOutAgain ?? now) - punchInAgain) / 1000;
+                const effectiveEnd = punchOutDate ?? now;
+                if (!punchInDate) return;
+                let diffSeconds = (effectiveEnd - punchInDate) / 1000;
                 diffSeconds = Math.max(diffSeconds, 0);
                 const hrs = String(Math.floor(diffSeconds / 3600)).padStart(2, '0');
                 const mins = String(Math.floor((diffSeconds % 3600) / 60)).padStart(2, '0');
@@ -673,11 +674,12 @@
                     extraWorkTimeEl.textContent = `${hrs}:${mins}:${secs}`;
                 }
             }
-            if (!punchOutAgain) {
-                setInterval(updateextraWorkTimer, 1000);
+            if (punchInDate && !punchOutDate) {
+                updateExtraWorkTimer(); 
+                setInterval(updateExtraWorkTimer, 1000); 
+            } else if (punchInDate && punchOutDate) {
+                updateExtraWorkTimer(); 
             }
-            updateextraWorkTimer();
-
         });
     </script>
 </x-app-layout>

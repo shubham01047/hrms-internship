@@ -79,7 +79,7 @@ class ProjectController extends Controller implements HasMiddleware
             $taskIds = $project->tasks()->pluck('id');
             \DB::table('task_members')
                 ->whereIn('task_id', $taskIds)
-                ->whereNotIn('user_id', $validated['members']) 
+                ->whereNotIn('user_id', $validated['members'])
                 ->delete();
         }
         return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
