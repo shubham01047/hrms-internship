@@ -486,7 +486,7 @@
                             flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
-                            <p class="text-2xl sm:text-3xl font-bold"></p>
+                            <p class="text-2xl sm:text-3xl font-bold">{{$employees->count()}}</p>
                         </a>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                             bg-white text-green-600 border-primary border
@@ -507,7 +507,7 @@
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Pending Leaves</h3>
-                            <p class="text-2xl sm:text-3xl font-bold">12</p>
+                            <p class="text-2xl sm:text-3xl font-bold">{{$pendingLeaves}}</p>
                         </div>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                             bg-white text-pink-600 border-primary border
@@ -756,7 +756,7 @@
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-900 text-center">
                     <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
                     <div class="flex flex-col items-center justify-center gap-3">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
+                        <img src="{{ asset('images/top-performer.png') }}" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
                         <p class="text-xl sm:text-2xl font-bold text-green-600">Deepan Gain</p>
                         <p class="text-base sm:text-lg text-gray-700">Productivity Score: <span class="font-bold">92%</span></p>
                     </div>
@@ -793,37 +793,35 @@
                 </div>
 
                 <!-- Upcoming Birthdays & Anniversaries Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1100">
-                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
-                        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Birthdays & Anniversaries</h2>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                        <!-- Example Card 1: Birthday -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-primary">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Jane Doe</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Birthday: August 10th</p>
-                            </div>
-                        </div>
-                        <!-- Example Card 2: Anniversary -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-green-300">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Michael Brown</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Anniversary: September 5th</p>
-                            </div>
-                        </div>
-                        <!-- Example Card 3: Birthday -->
-                        <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                            <img src="/placeholder.svg?height=64&width=64" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-purple-300">
-                            <div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">Sarah Lee</h3>
-                                <p class="text-xs sm:text-sm text-gray-600">Birthday: October 22nd</p>
-                            </div>
-                        </div>
+            <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1100">
+    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+        <h2 class="text-lg sm:text-xl font-semibold text-primary">Upcoming Birthdays</h2>
+    </div>
+
+    @if($employeesWithBirthdayTomorrow->count())
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            @foreach($employeesWithBirthdayTomorrow as $employee)
+                <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                    <img src="{{ $employee->profile_photo ? asset('storage/' . $employee->profile_photo) : '/placeholder.svg?height=64&width=64' }}" alt="Employee Photo" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-primary">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 text-sm sm:text-base">
+                            {{ $employee->first_name }} {{ $employee->last_name }}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-gray-600">
+                            Birthday: {{ \Carbon\Carbon::parse($employee->date_of_birth)->format('F jS') }}
+                        </p>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center text-sm sm:text-base text-gray-600 py-6">
+            🎉 No birthdays tomorrow.
+        </div>
+    @endif
+</div>
+
+                       
 
                 <!-- Announcements & Notices Section -->
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-1200">
