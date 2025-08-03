@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
-<body class="antialiased bg-gray-50 text-gray-800 h-screen overflow-hidden font-['Poppins']">
+<body class="antialiased bg-gray-50 text-primary h-screen overflow-hidden font-['Poppins'] theme-app">
 
     <!-- Single Window Layout -->
     <div class="h-screen flex flex-col justify-center items-center px-6 py-8">
@@ -17,7 +17,7 @@
         <!-- Logo and Title in One Line -->
         <div class="flex items-center justify-center mb-12">
             <!-- Bigger Logo with Shadow -->
-            <div class="w-40 h-40 header-gradient rounded-2xl shadow-2xl p-5 flex items-center justify-center mr-10 flex-shrink-0 border border-gray-200">
+            <div class="w-40 h-40 bg-primary rounded-2xl shadow-2xl p-5 flex items-center justify-center mr-10 flex-shrink-0 border-primary">
                 <img 
                     src="{{ url('images/logo.png') }}" 
                     alt="{{ $company->name }} Logo" 
@@ -28,11 +28,11 @@
             
             <!-- Title Beside Logo -->
             <div class="text-left">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold primary-text leading-tight">
                     Welcome to
                 </h1>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">
-                    <span class="bg-gradient-to-r from-red-500 to-red-400 bg-clip-text text-transparent">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl  font-bold">
+                    <span class="bg-secondary-gradient bg-clip-text primary-text">
                         {{ $company->name }}
                     </span>
                 </h2>
@@ -54,12 +54,12 @@
                     $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
                 @endphp
                 <a href="{{ route($routeName) }}"
-                    class="px-10 py-4 bg-gradient-to-r from-red-500 to-red-400 text-white text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:from-red-600 hover:to-red-500 text-center min-w-48">
+                    class="px-10 py-4 bg-secondary-gradient primary-text text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
                     Go to Dashboard
                 </a>
             @else
                 <a href="{{ route('login') }}"
-                    class="px-10 py-4 bg-gradient-to-r from-red-500 to-red-400 text-white text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:from-red-600 hover:to-red-500 text-center min-w-48">
+                    class="px-10 py-4 bg-secondary-gradient primary-text text-xl font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-hover text-center min-w-48">
                     Log In
                 </a>
                 
@@ -74,10 +74,6 @@
 
     <!-- Custom Styles -->
     <style>
-        .header-gradient {
-            background: linear-gradient(135deg, #ff2626, #ff6969);
-        }
-
         /* Gradient text support */
         .bg-clip-text {
             -webkit-background-clip: text;

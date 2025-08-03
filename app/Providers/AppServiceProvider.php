@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\View;        // ✅ Required to use View::share
 use App\Models\Company;                     // ✅ Required to access Company model
 use Illuminate\Support\Facades\Schema;      // ✅ (Optional) to safely check DB table
 
+use App\Models\User;
+use App\Observers\UserObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
             $company = Company::first();
             View::share('company', $company);
         }
+
+         if (\Schema::hasTable('users')) {
+        User::observe(UserObserver::class);
+    }
     }
 }
