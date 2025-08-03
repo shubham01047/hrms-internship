@@ -89,6 +89,10 @@
                                         <div>
                                             <p class="text-sm font-medium text-green-800">Punch In</p>
                                             <p class="text-lg font-bold text-green-900">{{ $attendance['punch_in'] }}</p>
+                                            <p class="text-lg font-bold text-green-900">
+                                                <p class="text-sm font-medium text-green-800">Remark:</p>
+                                                {{ $attendance->punch_in_remarks ?? '-' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +108,10 @@
                                         <div>
                                             <p class="text-sm font-medium text-red-800">Punch Out</p>
                                             <p class="text-lg font-bold text-red-900">{{ $attendance['punch_out'] ?: 'Not punched out' }}</p>
+                                            <p>
+                                                <p class="text-sm font-medium text-red-800">Remark:</p>
+                                                {{ $attendance->punch_out_remarks ?? '-' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
