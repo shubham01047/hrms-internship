@@ -21,7 +21,7 @@
 
         <label>Assign Employees:</label><br>
         @foreach ($users as $user)
-            <input type="checkbox" name="members[]" value="{{ $user->id }}"> {{ $user->name }}<br>
+            <input type="checkbox" name="members[]" value="{{ $user->id }}"> {{ $user->employee->name }}<br>
         @endforeach
 
         <button type="submit">Submit</button>

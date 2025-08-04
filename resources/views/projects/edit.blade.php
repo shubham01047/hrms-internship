@@ -26,7 +26,7 @@
         @foreach ($users as $user)
             <input type="checkbox" name="members[]" value="{{ $user->id }}"
                 {{ $project->members->contains($user->id) ? 'checked' : '' }}>
-            {{ $user->name }}<br>
+            {{ $user->employee->name }}<br>
         @endforeach
 
         <button type="submit">Update</button>
