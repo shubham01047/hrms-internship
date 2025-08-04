@@ -1,6 +1,6 @@
 @php
     $isActive = fn($route) => request()->routeIs($route)
-        ? 'flex items-center gap-2 px-4 py-2 rounded bg-primary-light border-l-4 border-white hover:scale-105 hover:bg-hover transition-all duration-300 ease-in-out'
+        ? 'flex items-center gap-2 px-4 py-2 rounded bg-primary border-l-4 border-white hover:scale-105 hover:bg-hover transition-all duration-300 ease-in-out'
         : 'flex items-center gap-2 px-4 py-2 rounded hover:scale-105 hover:bg-hover transition-all duration-300 ease-in-out';
 
     $role = Auth::user()->roles->pluck('name')->first();
@@ -51,7 +51,7 @@
             @can('create permissions')
                 <a href="{{ route('permissions.index') }}" class="{{ $isActive('permissions.index') }}">🔐 Permissions</a>
             @endcan
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">🏢 Departments</a>
+
         </div>
 
         <!-- Attendance -->

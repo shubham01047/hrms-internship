@@ -28,7 +28,7 @@ class ProjectController extends Controller implements HasMiddleware
     }
     public function create()
     {
-        $users = User::all();
+        $users = User::whereHas('employee')->with('employee')->get();
         return view('projects.create', compact('users'));
     }
     public function store(Request $request)
@@ -58,7 +58,7 @@ class ProjectController extends Controller implements HasMiddleware
     }
     public function edit(Project $project)
     {
-        $users = User::all();
+        $users = User::whereHas('employee')->with('employee')->get();
         $project->load('members');
         return view('projects.edit', compact('project', 'users'));
     }

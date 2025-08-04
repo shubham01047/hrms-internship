@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2025 at 12:56 PM
+-- Generation Time: Aug 02, 2025 at 09:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,15 +36,27 @@ CREATE TABLE `attendance` (
   `punch_out` text DEFAULT NULL,
   `punch_out_remarks` text DEFAULT NULL,
   `total_working_hours` time DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL,
   `punch_in_again` text DEFAULT NULL,
   `punch_in_again_remarks` text DEFAULT NULL,
   `punch_out_again` text DEFAULT NULL,
   `punch_out_again_remarks` text DEFAULT NULL,
   `overtime_working_hours` time DEFAULT NULL
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `deleted_at` datetime DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `user_id`, `date`, `punch_in`, `punch_in_remarks`, `punch_out`, `punch_out_remarks`, `total_working_hours`, `created_at`, `updated_at`, `deleted_at`, `punch_in_again`, `punch_in_again_remarks`, `punch_out_again`, `punch_out_again_remarks`, `overtime_working_hours`) VALUES
+(44, 7, '2025-07-31', '2025-07-31 19:04:20', NULL, NULL, NULL, NULL, '2025-07-31 19:04:20', '2025-07-31 19:04:20', NULL, NULL, NULL, NULL, NULL, '00:00:00'),
+(45, 7, '2025-08-01', '2025-08-01 14:01:27', NULL, '2025-08-01 14:17:28', NULL, '00:16:01', '2025-08-01 14:01:27', '2025-08-01 14:17:28', NULL, NULL, NULL, NULL, NULL, '00:00:00'),
+(69, 8, '2025-08-01', '2025-08-01 20:22:37', NULL, '2025-08-01 20:22:55', 'out', '00:00:18', '2025-08-01 20:22:37', '2025-08-01 20:30:46', NULL, '2025-08-01 20:30:41', NULL, '2025-08-01 20:30:46', 'aaaa', '00:00:05'),
+(80, 7, '2025-08-02', '2025-08-02 16:25:15', 'punch in', '2025-08-02 16:25:29', 'punchout', '00:00:14', '2025-08-02 16:25:15', '2025-08-02 16:26:36', NULL, '2025-08-02 16:26:33', NULL, '2025-08-02 16:26:36', NULL, '00:00:36');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `breaks`
@@ -196,11 +208,10 @@ CREATE TABLE `company_profile` (
 
 CREATE TABLE `employees` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `gender` enum('male','female','other') DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
@@ -210,7 +221,7 @@ CREATE TABLE `employees` (
   `joining_date` date DEFAULT NULL,
   `employment_type` enum('full_time','part_time','intern') NOT NULL DEFAULT 'full_time',
   `status` enum('active','inactive','terminated') NOT NULL DEFAULT 'active',
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
   `resume` varchar(255) DEFAULT NULL,
   `id_proof` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -222,12 +233,10 @@ CREATE TABLE `employees` (
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `first_name`, `last_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `city`, `state`, `postal_code`, `country`, `joining_date`, `employment_type`, `status`, `user_id`, `resume`, `id_proof`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 'Shivam', 'Bandekar', NULL, NULL, 'shivam@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', NULL, NULL, NULL, '2025-07-20 05:09:37', '2025-07-20 05:09:37', NULL),
-(5, 'shubham', 'chodankar', NULL, NULL, 'shubham@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', NULL, NULL, NULL, '2025-07-20 05:25:53', '2025-07-20 05:25:53', NULL),
-(7, 'Viren', 'Viren', NULL, NULL, 'employee03@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', NULL, NULL, NULL, '2025-07-21 05:31:11', '2025-08-01 09:11:18', NULL),
-(11, 'Dweepamz', 'Gain', NULL, NULL, 'manager@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', NULL, NULL, NULL, '2025-07-21 05:31:59', '2025-07-25 01:44:11', NULL),
-(12, 'Shivam', 'Bandekar', NULL, NULL, 'employee02@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', NULL, NULL, NULL, '2025-08-01 09:09:10', '2025-08-01 09:09:10', NULL);
+INSERT INTO `employees` (`id`, `name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `city`, `state`, `postal_code`, `country`, `joining_date`, `employment_type`, `status`, `user_id`, `resume`, `id_proof`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Shubham Chodankar', NULL, NULL, 'employee01@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', 7, NULL, NULL, '2025-07-31 10:22:18', '2025-07-31 10:22:18', NULL),
+(2, 'Shivam Bandekar', NULL, NULL, 'employee02@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', 10, NULL, NULL, '2025-07-31 10:22:18', '2025-07-31 10:22:18', NULL),
+(11, 'Viren Viren', NULL, NULL, 'employee03@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'full_time', 'active', 8, NULL, NULL, '2025-08-02 18:19:28', '2025-08-02 18:22:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -726,7 +735,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('V31K7VAP3UWbUq4AxdY4lkPXJXYjkNH1TsuXOrYz', 7, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidjRLTFhSWmdxZkdIVnlKbURoa3RaVnF2N01JVE9RR2tPcVc5UDBkUiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9lbXBsb3llZS9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo3O30=', 1754132197);
+('bfLjGpM1GOb4vhMZwAYSli2htKsl7m9cP07bWGrW', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieUdlWFFMQ2Fsemt6eGREd0hlQ0VVQ1dvNzZoWDlWVGRsNURXVVV0OCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9qZWN0cyI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1754159375);
 
 -- --------------------------------------------------------
 
@@ -949,8 +958,7 @@ ALTER TABLE `company_profile`
 --
 ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `employees_email_unique` (`email`),
-  ADD KEY `employees_user_id_foreign` (`user_id`);
+  ADD UNIQUE KEY `employees_user_id_unique` (`user_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -1277,7 +1285,7 @@ ALTER TABLE `breaks`
 -- Constraints for table `employees`
 --
 ALTER TABLE `employees`
-  ADD CONSTRAINT `employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `fk_user_employee` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `model_has_permissions`

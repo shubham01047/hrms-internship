@@ -16,8 +16,8 @@ class AttendanceController extends Controller
         $today = now()->toDateString();
 
         $attendance = Attendance::with('breaks')->where('user_id', $user->id)->where('date', $today)->first();
-
         return view('attendance.index', compact('attendance'));
+
     }
     public function punchIn(Request $request)
     {
