@@ -21,293 +21,30 @@
 @endphp
 <x-app-layout>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Only essential spacing and layout styles - using your existing theme */
+        .main-dashboard-container {
+            padding-top: 2rem;
+            margin-top: 1rem;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffffff 50%, #ff4757 100%);
-            min-height: 100vh;
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 20px 40px rgba(255, 75, 87, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(255, 75, 87, 0.15);
-        }
-
-        .header-gradient {
-            background: linear-gradient(135deg, #ff2626, #ff6969);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .card h2 {
-            color: #ff4757;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .card h2.header-gradient {
-            background: linear-gradient(135deg, #ff2626, #ff6969);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .work-time-display {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #ff4757, #ff6b6b);
-            border-radius: 15px;
-            margin: 1rem 0;
-            color: white;
-        }
-
-        #workTime {
-            font-size: 3rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Different colored buttons */
-        .btn-punch-in {
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-punch-in:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(46, 204, 113, 0.4);
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
-        }
-
-        .btn-punch-out {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-punch-out:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.4);
-            background: linear-gradient(45deg, #c0392b, #e74c3c);
-        }
-
-        .btn-morning-tea {
-            background: linear-gradient(45deg, #f39c12, #e67e22);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-morning-tea:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(243, 156, 18, 0.4);
-        }
-
-        .btn-lunch {
-            background: linear-gradient(45deg, #9b59b6, #8e44ad);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-lunch:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(155, 89, 182, 0.4);
-        }
-
-        .btn-evening-tea {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-evening-tea:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn-custom {
-            background: linear-gradient(45deg, #1abc9c, #16a085);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(26, 188, 156, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(26, 188, 156, 0.4);
-        }
-
-        .btn-end-break {
-            background: linear-gradient(45deg, #ff4757, #ff6b6b);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
-            margin: 0.5rem;
-        }
-
-        .btn-end-break:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 75, 87, 0.4);
-        }
-
-        .btn:disabled {
-            background: #95a5a6 !important;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .btn:disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .break-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .break-timer {
-            background: linear-gradient(135deg, #ffffff, #ffe6e6);
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid #ff4757;
-        }
-
-        #breakTimer {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ff4757;
-            font-family: 'Courier New', monospace;
-        }
-
-        .active-break {
-            background: linear-gradient(135deg, #ff4757, #ff6b6b);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .day-completed {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        /* Clock Styles */
-        .clock-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
+        /* Clock specific styles that aren't in your theme */
         .analog-clock {
-            width: 200px;
-            height: 200px;
-            border: 8px solid #ff4757;
+            width: 120px;
+            height: 120px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             position: relative;
-            background: linear-gradient(135deg, #ffffff, #ffe6e6);
-            box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .clock-center {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 12px;
-            height: 12px;
-            background: #ff4757;
+            width: 8px;
+            height: 8px;
+            background: white;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
@@ -315,275 +52,353 @@
 
         .clock-hand {
             position: absolute;
-            background: #ff4757;
+            background: white;
             transform-origin: bottom center;
             border-radius: 2px;
-            transition: transform 0.1s ease-in-out;
         }
 
         .hour-hand {
-            width: 4px;
-            height: 60px;
-            top: 40px;
+            width: 3px;
+            height: 30px;
+            top: 20%;
             left: 50%;
-            margin-left: -2px;
+            margin-left: -1.5px;
+            transition: transform 0.5s ease-in-out;
         }
 
         .minute-hand {
-            width: 3px;
-            height: 80px;
-            top: 20px;
+            width: 2px;
+            height: 40px;
+            top: 15%;
             left: 50%;
-            margin-left: -1.5px;
+            margin-left: -1px;
+            transition: transform 0.5s ease-in-out;
         }
 
         .second-hand {
             width: 1px;
-            height: 90px;
-            top: 10px;
+            height: 45px;
+            top: 12.5%;
             left: 50%;
             margin-left: -0.5px;
-            background: #ff6b6b;
+            background: #ef4444;
+            transition: transform 0.1s ease-in-out;
         }
 
-        .digital-clock {
-            background: linear-gradient(135deg, #ff4757, #ff6b6b);
+        .clock-number {
+            position: absolute;
             color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(255, 75, 87, 0.3);
+            font-size: 12px;
+            font-weight: bold;
+            transform: translate(-50%, -50%);
         }
 
-        .digital-time {
-            font-size: 2.5rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .digital-date {
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            .clock-container {
-                flex-direction: column;
+        /* Responsive spacing */
+        @media (max-width: 640px) {
+            .main-dashboard-container {
+                padding-top: 1.5rem;
+                margin-top: 0.5rem;
             }
-
+            
             .analog-clock {
-                width: 150px;
-                height: 150px;
+                width: 80px;
+                height: 80px;
             }
+            
+            .hour-hand { height: 20px; top: 25%; }
+            .minute-hand { height: 25px; top: 20%; }
+            .second-hand { height: 30px; top: 17.5%; }
+            .clock-number { font-size: 10px; }
+        }
 
-            .digital-time {
-                font-size: 2rem;
-            }
-
-            #workTime {
-                font-size: 2rem;
+        @media (min-width: 1024px) {
+            .main-dashboard-container {
+                padding-top: 3rem;
+                margin-top: 1.5rem;
             }
         }
     </style>
 
-    <div class="dashboard-container">
-        <!-- Clock Section -->
-        <div class="card">
-            <h2 class="header-gradient">Current Time</h2>
-            <div class="clock-container">
-                <div class="analog-clock" id="analogClock">
-                    <div class="clock-center"></div>
-                    <div class="clock-hand hour-hand" id="hourHand"></div>
-                    <div class="clock-hand minute-hand" id="minuteHand"></div>
-                    <div class="clock-hand second-hand" id="secondHand"></div>
+    <!-- Main Dashboard Container with proper spacing -->
+    <div class="main-dashboard-container py-4 sm:py-6 lg:py-8 bg-gray-100 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-4 sm:gap-6">
+
+            <!-- Welcome Header with Clocks -->
+            <div class="bg-secondary-gradient text-primary p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg animate-fade-in relative overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white rounded-full translate-x-12 translate-y-12"></div>
                 </div>
-                <div class="digital-clock">
-                    <div class="digital-time" id="digitalTime">00:00:00</div>
-                    <div class="digital-date" id="digitalDate">Loading...</div>
+                
+                <div class="relative z-10">
+                    <!-- Welcome Message -->
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 welcome-text">Welcome, {{ Auth::user()->name }}!</h1>
+                        <p class="text-base sm:text-lg lg:text-xl opacity-90">Track your work hours and manage your day</p>
+                    </div>
+
+                    <!-- Clocks Section -->
+                    <div class="flex flex-col sm:flex-row lg:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+                        <!-- Analog Clock -->
+                        <div class="clock-container">
+                            <div class="analog-clock" id="analog-clock">
+                                <!-- Clock Numbers -->
+                                <div class="clock-number" style="top: 8px; left: 50%;">12</div>
+                                <div class="clock-number" style="top: 50%; right: 8px;">3</div>
+                                <div class="clock-number" style="bottom: 8px; left: 50%;">6</div>
+                                <div class="clock-number" style="top: 50%; left: 8px;">9</div>
+                                
+                                <!-- Clock Hands -->
+                                <div class="clock-hand hour-hand" id="hour-hand"></div>
+                                <div class="clock-hand minute-hand" id="minute-hand"></div>
+                                <div class="clock-hand second-hand" id="second-hand"></div>
+                                <div class="clock-center"></div>
+                            </div>
+                            <p class="text-center mt-2 text-sm opacity-75">Analog</p>
+                        </div>
+
+                        <!-- Digital Clock -->
+                        <div class="text-center">
+                            <div class="digital-clock">
+                                <div id="digital-time" class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2">00:00:00</div>
+                                <div id="digital-date" class="text-sm sm:text-base lg:text-lg opacity-90">Loading...</div>
+                                <div id="digital-ampm" class="text-xs sm:text-sm opacity-75 mt-1">AM</div>
+                            </div>
+                            <p class="text-center mt-2 text-sm opacity-75">Digital</p>
+                        </div>
+
+                        <!-- Time Zone Info -->
+                        <div class="text-center">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3 sm:p-4 backdrop-filter backdrop-blur-sm">
+                                <div class="text-xs sm:text-sm opacity-75 mb-1">Current Time Zone</div>
+                                <div id="timezone" class="font-semibold text-sm sm:text-base">Loading...</div>
+                                <div class="text-xs opacity-60 mt-2">
+                                    <div id="utc-offset">UTC+0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Work Status Section -->
-        <div class="card">
-            <h2 class="header-gradient">Work Status</h2>
-            <p>Track your work hours easily</p>
-            @if (session('success'))
-                <div>
-                    <p>Success! {{ session('success') }}</p>
+            <!-- Work Status Section -->
+            <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-100">
+                <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                    <h2 class="text-lg sm:text-xl font-semibold text-primary">⏰ Work Status</h2>
                 </div>
-            @endif
-            @if (session('error'))
-                <div>
-                    <p>Error! {{ session('error') }}</p>
-                </div>
-            @endif
-            <div class="work-time-display">
-                <div>Total Working Time:</div>
-                <div id="workTime">
-                    @if ($attendanceToday && $attendanceToday->punch_out)
-                        {{ $attendanceToday->total_working_hours ?? '00:00:00' }}
-                    @elseif ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
-                        00:00:00 {{-- This will be updated live by JavaScript --}}
+                
+                @if (session('success'))
+                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200 flex items-center gap-3">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Success! {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200 flex items-center gap-3">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        Error! {{ session('error') }}
+                    </div>
+                @endif
+
+                <!-- Work Time Display -->
+                <div class="bg-secondary-gradient text-primary p-6 rounded-xl mb-6 text-center">
+                    <div class="text-lg font-semibold mb-2 opacity-90">Total Working Time</div>
+                    <div id="workTime" class="text-4xl sm:text-5xl font-bold mb-4">
+                        @if ($attendanceToday && $attendanceToday->punch_out)
+                            {{ $attendanceToday->total_working_hours ?? '00:00:00' }}
+                        @elseif ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
+                            00:00:00 {{-- This will be updated live by JavaScript --}}
+                        @else
+                            00:00:00
+                        @endif
+                    </div>
+                    <div class="text-lg font-semibold mb-2 opacity-90">Total Extra Working Time</div>
+                    @if ($attendanceToday && $attendanceToday->punch_out_again)
+                        <div class="text-2xl font-bold">{{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}</div>
                     @else
-                        00:00:00
+                        <div id="extraWorkTime" class="text-2xl font-bold">00:00:00</div>
                     @endif
                 </div>
-                <div>Total Extra Working Time:</div>
-                @if ($attendanceToday && $attendanceToday->punch_out_again)
-                    {{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}
-                @else
-                    <div id="extraWorkTime"> 00:00:00 </div>
-                @endif
-            </div>
-            @if (!$attendanceToday)
-                {{-- First Punch In --}}
-                <form method="POST" action="{{ route('attendance.punchIn') }}" class="flex gap-4">
-                    @csrf
-                    <button type="submit" class="btn-punch-in w-48 flex-none">Punch In</button>
-                    <div class="w-32 flex-1">
-                        <label for="punch_in_remarks" class="block text-sm font-medium">Remarks (optional):</label>
-                        <input type="text" name="punch_in_remarks" id="punch_in_remarks" class="form-control w-64"
-                            placeholder="Late due to traffic.">
-                    </div>
-                </form>
-            @elseif (!$attendanceToday->punch_out)
-                {{-- First Punch Out --}}
-                <form method="POST" action="{{ route('attendance.punchOut') }}" class="flex gap-4">
-                    @csrf
-                    <button type="submit" class="btn-punch-out w-48 flex-none">Punch Out</button>
-                    <div class="w-64 flex-1">
-                        <label for="punch_out_remarks" class="block text-sm font-medium">Remarks (optional):</label>
-                        <input type="text" name="punch_out_remarks" id="punch_out_remarks" class="form-control w-64"
-                            placeholder="Leaving early for appointment.">
-                    </div>
-                </form>
-            @elseif ($attendanceToday->punch_in_again && !$attendanceToday->punch_out_again)
-                {{-- Punch Out Again --}}
-                <form method="POST" action="{{ route('attendance.punchOutAgain') }}" class="flex gap-4"
-                    id="punchOutAgainForm">
-                    @csrf
-                    <button type="submit" class="btn-punch-out w-48 flex-none" id="btnPunchOutAgain">Punch Out
-                        Again</button>
-                    <div>
-                        <label for="punch_out_again_remarks" class="block text-sm font-medium">Remarks
-                            (optional):</label>
-                        <input type="text" name="punch_out_again_remarks" id="punch_out_again_remarks"
-                            class="form-control w-64 mt-1" placeholder="Finished extra work.">
-                    </div>
-                </form>
-            @else
-                {{-- Punch In Again --}}
-                <form method="POST" action="{{ route('attendance.punchInAgain') }}" class="flex gap-4"
-                    id="punchInAgainForm">
-                    @csrf
-                    <button type="submit" class="btn-punch-in w-48 flex-none" id="btnPunchInAgain">Punch In
-                        Again</button>
-                    <div>
-                        <label for="punch_in_again_remarks" class="block text-sm font-medium">Remarks
-                            (optional):</label>
-                        <input type="text" name="punch_in_again_remarks" id="punch_in_again_remarks"
-                            class="form-control w-64 mt-1" placeholder="Some extra work.">
-                    </div>
-                </form>
-            @endif
 
-
-        </div>
-        <!-- Break Management -->
-        @if ($attendanceToday && !$attendanceToday->punch_out)
-            <div class="card">
-                <h2 class="header-gradient">Manage Breaks</h2>
-
-                @if (!$activeBreak)
-                    <form method="POST" action="{{ route('attendance.startBreak') }}">
+                <!-- Punch Actions -->
+                @if (!$attendanceToday)
+                    {{-- First Punch In --}}
+                    <form method="POST" action="{{ route('attendance.punchIn') }}" class="flex flex-col sm:flex-row gap-4 items-end">
                         @csrf
-                        <div class="break-buttons">
-                            <button type="submit" name="break_type" value="Morning Tea"
-                                class="btn-morning-tea {{ in_array('Morning Tea', $completedBreaks) ? 'btn' : '' }}"
-                                {{ in_array('Morning Tea', $completedBreaks) ? 'disabled' : '' }}>
-                                Start Morning Tea Break
-                            </button>
-                            <button type="submit" name="break_type" value="Lunch"
-                                class="btn-lunch {{ in_array('Lunch', $completedBreaks) ? 'btn' : '' }}"
-                                {{ in_array('Lunch', $completedBreaks) ? 'disabled' : '' }}>
-                                Start Lunch Break
-                            </button>
-                            <button type="submit" name="break_type" value="Evening Tea"
-                                class="btn-evening-tea {{ in_array('Evening Tea', $completedBreaks) ? 'btn' : '' }}"
-                                {{ in_array('Evening Tea', $completedBreaks) ? 'disabled' : '' }}>
-                                Start Evening Tea Break
-                            </button>
-                            <button type="submit" name="break_type" value="Custom"
-                                class="btn-custom {{ in_array('Custom', $completedBreaks) ? 'btn' : '' }}"
-                                {{ in_array('Custom', $completedBreaks) ? 'disabled' : '' }}>
-                                Start Custom Break
-                            </button>
+                        <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-shrink-0">
+                            🚀 Punch In
+                        </button>
+                        <div class="flex-1">
+                            <label for="punch_in_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <input type="text" name="punch_in_remarks" id="punch_in_remarks" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Late due to traffic...">
+                        </div>
+                    </form>
+                @elseif (!$attendanceToday->punch_out)
+                    {{-- First Punch Out --}}
+                    <form method="POST" action="{{ route('attendance.punchOut') }}" class="flex flex-col sm:flex-row gap-4 items-end">
+                        @csrf
+                        <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-shrink-0">
+                            🏁 Punch Out
+                        </button>
+                        <div class="flex-1">
+                            <label for="punch_out_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <input type="text" name="punch_out_remarks" id="punch_out_remarks" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Leaving early for appointment...">
+                        </div>
+                    </form>
+                @elseif ($attendanceToday->punch_in_again && !$attendanceToday->punch_out_again)
+                    {{-- Punch Out Again --}}
+                    <form method="POST" action="{{ route('attendance.punchOutAgain') }}" class="flex flex-col sm:flex-row gap-4 items-end" id="punchOutAgainForm">
+                        @csrf
+                        <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-shrink-0" id="btnPunchOutAgain">
+                            🏁 Punch Out Again
+                        </button>
+                        <div class="flex-1">
+                            <label for="punch_out_again_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <input type="text" name="punch_out_again_remarks" id="punch_out_again_remarks"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="Finished extra work...">
                         </div>
                     </form>
                 @else
-                    <div class="active-break">
-                        <div>On {{ $activeBreak->break_type }} break since
-                            {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
+                    {{-- Punch In Again --}}
+                    <form method="POST" action="{{ route('attendance.punchInAgain') }}" class="flex flex-col sm:flex-row gap-4 items-end" id="punchInAgainForm">
+                        @csrf
+                        <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-shrink-0" id="btnPunchInAgain">
+                            🚀 Punch In Again
+                        </button>
+                        <div class="flex-1">
+                            <label for="punch_in_again_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <input type="text" name="punch_in_again_remarks" id="punch_in_again_remarks"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="Some extra work...">
                         </div>
-                        <form method="POST" action="{{ route('attendance.endBreak') }}" style="margin-top: 1rem;">
-                            @csrf
-                            <button type="submit" class="btn-end-break">End Break</button>
-                        </form>
-                    </div>
+                    </form>
                 @endif
-
-                <div class="break-timer">
-                    <div>Break Timer:</div>
-                    <div id="breakTimer">00:00:00</div>
-                </div>
             </div>
-        @endif
+
+            <!-- Break Management -->
+            @if ($attendanceToday && !$attendanceToday->punch_out)
+                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-200">
+                    <div class="bg-primary p-3 sm:p-4 rounded-t-xl mb-4">
+                        <h2 class="text-lg sm:text-xl font-semibold text-primary">☕ Manage Breaks</h2>
+                    </div>
+
+                    @if (!$activeBreak)
+                        <form method="POST" action="{{ route('attendance.startBreak') }}">
+                            @csrf
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                <button type="submit" name="break_type" value="Morning Tea"
+                                    class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 {{ in_array('Morning Tea', $completedBreaks) ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                    {{ in_array('Morning Tea', $completedBreaks) ? 'disabled' : '' }}>
+                                    🌅 Morning Tea
+                                </button>
+                                <button type="submit" name="break_type" value="Lunch"
+                                    class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 {{ in_array('Lunch', $completedBreaks) ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                    {{ in_array('Lunch', $completedBreaks) ? 'disabled' : '' }}>
+                                    🍽️ Lunch Break
+                                </button>
+                                <button type="submit" name="break_type" value="Evening Tea"
+                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 {{ in_array('Evening Tea', $completedBreaks) ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                    {{ in_array('Evening Tea', $completedBreaks) ? 'disabled' : '' }}>
+                                    🌆 Evening Tea
+                                </button>
+                                <button type="submit" name="break_type" value="Custom"
+                                    class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 {{ in_array('Custom', $completedBreaks) ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                    {{ in_array('Custom', $completedBreaks) ? 'disabled' : '' }}>
+                                    ⚡ Custom Break
+                                </button>
+                            </div>
+                        </form>
+                    @else
+                        <div class="bg-secondary-gradient text-primary p-6 rounded-xl text-center mb-6">
+                            <div class="text-xl font-bold mb-4">
+                                🔄 On {{ $activeBreak->break_type }} break since
+                                {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
+                            </div>
+                            <form method="POST" action="{{ route('attendance.endBreak') }}">
+                                @csrf
+                                <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                    ⏹️ End Break
+                                </button>
+                            </form>
+                        </div>
+                    @endif
+
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="text-lg font-semibold text-gray-700 mb-2">Break Timer</div>
+                        <div id="breakTimer" class="text-3xl font-bold text-blue-600">00:00:00</div>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
 
     <!-- Clock JavaScript -->
     <script>
         function updateClocks() {
             const now = new Date();
-            const digitalTime = document.getElementById('digitalTime');
-            const digitalDate = document.getElementById('digitalDate');
-            const timeString = now.toLocaleTimeString('en-US', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            const dateString = now.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            if (digitalTime) digitalTime.textContent = timeString;
-            if (digitalDate) digitalDate.textContent = dateString;
+            
+            // Digital Clock
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert to 12-hour format
+            const displayHours = hours % 12 || 12;
+            
+            // Format with leading zeros
+            const formattedTime = 
+                displayHours.toString().padStart(2, '0') + ':' +
+                minutes.toString().padStart(2, '0') + ':' +
+                seconds.toString().padStart(2, '0');
+            
+            document.getElementById('digital-time').textContent = formattedTime;
+            document.getElementById('digital-ampm').textContent = ampm;
+            
+            // Date
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('digital-date').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Timezone
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.getElementById('timezone').textContent = timezone;
+            
+            const offset = -now.getTimezoneOffset() / 60;
+            const offsetString = `UTC${offset >= 0 ? '+' : ''}${offset}`;
+            document.getElementById('utc-offset').textContent = offsetString;
+
             // Analog Clock
-            const hourHand = document.getElementById('hourHand');
-            const minuteHand = document.getElementById('minuteHand');
-            const secondHand = document.getElementById('secondHand');
+            const hourAngle = (hours % 12) * 30 + minutes * 0.5;
+            const minuteAngle = minutes * 6;
+            const secondAngle = seconds * 6;
 
-            const hours = now.getHours() % 12;
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            const hourDegree = (hours * 30) + (minutes * 0.5);
-            const minuteDegree = minutes * 6;
-            const secondDegree = seconds * 6;
-
-            if (hourHand) hourHand.style.transform = `rotate(${hourDegree}deg)`;
-            if (minuteHand) minuteHand.style.transform = `rotate(${minuteDegree}deg)`;
-            if (secondHand) secondHand.style.transform = `rotate(${secondDegree}deg)`;
+            document.getElementById('hour-hand').style.transform = `rotate(${hourAngle}deg)`;
+            document.getElementById('minute-hand').style.transform = `rotate(${minuteAngle}deg)`;
+            document.getElementById('second-hand').style.transform = `rotate(${secondAngle}deg)`;
         }
-        // Update clocks immediately and then every second
-        updateClocks();
-        setInterval(updateClocks, 1000);
+
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClocks();
+            setInterval(updateClocks, 1000);
+        });
     </script>
+
     @if ($attendanceToday && $attendanceToday->punch_in && !$attendanceToday->punch_out)
         @php
             $completedBreakSeconds = $attendanceToday->breaks
@@ -600,10 +415,10 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const punchIn = new Date("{{ $attendanceToday->punch_in }}");
-                const punchOut =
-                    {{ $attendanceToday->punch_out ? "new Date('{$attendanceToday->punch_out}')" : 'null' }};
+                const punchOut = {{ $attendanceToday->punch_out ? "new Date('{$attendanceToday->punch_out}')" : 'null' }};
                 const activeBreakStart = {{ $activeBreakStart ? "new Date('{$activeBreakStart}')" : 'null' }};
                 const workTimeEl = document.getElementById("workTime");
+                
                 function updateWorkTimer() {
                     const now = new Date();
                     let activeBreakSeconds = 0;
@@ -626,13 +441,13 @@
             });
         </script>
     @endif
-    <!-- JS for Break Timer -->
+
     @if ($activeBreak)
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const breakStart = new Date(
-                    "{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
+                const breakStart = new Date("{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
                 const breakTimerEl = document.getElementById('breakTimer');
+                
                 function updateBreakTimer() {
                     const now = new Date();
                     const diff = Math.floor((now - breakStart) / 1000);
@@ -646,6 +461,7 @@
             });
         </script>
     @endif
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const punchInAgainStr = {!! json_encode(
@@ -661,6 +477,7 @@
             const punchInDate = punchInAgainStr ? new Date(punchInAgainStr) : null;
             const punchOutDate = punchOutAgainStr ? new Date(punchOutAgainStr) : null;
             const extraWorkTimeEl = document.getElementById("extraWorkTime");
+            
             function updateExtraWorkTimer() {
                 const now = new Date();
                 const effectiveEnd = punchOutDate ?? now;

@@ -1,28 +1,87 @@
 <x-app-layout>
-    <h2>Log Timesheet for Task: {{ $task->title }}</h2>
-    <form action="{{ route('tasks.timesheets.store', [$projectId, $task->id]) }}" method="POST">
-        @csrf
-        <input type="hidden" name="task_id" value="{{ $task->id }}">
-        <label class="block font-medium">Date</label>
-        <input type="date" name="date" value="{{ $today }}" readonly>
-        @if ($attendance)
-            <p>Attendance for:  {{ \Carbon\Carbon::parse($today)->format('d M, Y') }}:</p>
-            <p><strong>Punch In:</strong> {{ \Carbon\Carbon::parse($attendance->punch_in)->format('d M, Y h:i A') }}</p>
-            <p><strong>Punch Out:</strong> {{ $attendance->punch_out?\Carbon\Carbon::parse($attendance->punch_out)->format('d M, Y h:i A') : 'Not yet punched out.' }}</p>
-            <p><strong>Total Attendance Hours:</strong> {{ $attendance->total_working_hours ?? 'N/A' }}</p>
-        @else
-            <p>No attendance record found for today.</p>
-        @endif
-        <label for="hours_worked">Hours Worked</label>
-        <input type="number" name="hours_worked" id="hours_worked" step="0.01" min="0.01"
-            value="{{ old('hours_worked', $hoursWorked) }}" required />
-        <label>Work Description</label>
-        <textarea name="description" rows="4"></textarea>
-        <button type="submit">
-            Submit Timesheet
-        </button>
-        <a href="{{ route('tasks.timesheets.index', [$projectId, 'task' => $task->id]) }}">
-            Back to Timesheet
-        </a><br>
-    </form>
+    <x-slot name="header">
+        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-bg-light)] to-[var(--hover-bg)] dark:from-[var(--primary-border)] dark:to-[var(--primary-bg-light)] drop-shadow-lg animate-fade-in-down">
+            Log Timesheet
+        </h1>
+    </x-slot>
+
+    <div class="py-10 sm:px-6 lg:px-8 bg-gradient-to-br from-[var(--primary-bg-light)] via-[var(--primary-border)] to-[var(--secondary-bg)] dark:from-[var(--primary-bg)] dark:via-[var(--secondary-bg)] dark:to-[var(--primary-bg)] min-h-[calc(100vh-64px)] flex items-center justify-center">
+        <div class="bg-white dark:bg-[var(--secondary-bg)] overflow-hidden shadow-3xl rounded-2xl border border-gray-200 dark:border-[var(--primary-border)] p-6 md:p-8 w-full max-w-2xl
+                    transition-all duration-500 ease-in-out hover:shadow-4xl hover:scale-[1.005] transform origin-center animate-fade-in">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-[var(--secondary-text)] mb-6 text-center bg-gradient-to-r from-[var(--primary-bg-light)]/10 to-[var(--primary-bg)]/10 dark:from-[var(--primary-bg)]/50 dark:to-[var(--secondary-bg)]/50 py-3 rounded-lg shadow-sm">
+                Log Timesheet for Task: <span class="text-[var(--hover-bg)] dark:text-[var(--primary-border)]">{{ $task->title }}</span>
+            </h2>
+            <form action="{{ route('tasks.timesheets.store', [$projectId, $task->id]) }}" method="POST" class="space-y-6">
+                @csrf
+                <input type="hidden" name="task_id" value="{{ $task->id }}">
+
+                <div>
+                    <label for="date" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Date:</label>
+                    <input
+                        type="date"
+                        name="date"
+                        id="date"
+                        value="{{ $today }}"
+                        readonly
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
+                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
+                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] cursor-not-allowed opacity-80"
+                    >
+                </div>
+
+                @if ($attendance)
+                    <div class="bg-[var(--primary-bg-light)]/10 dark:bg-[var(--primary-bg)] p-4 rounded-lg shadow-inner border border-[var(--primary-border)] dark:border-[var(--primary-border)] animate-fade-in-up">
+                        <p class="text-lg font-semibold text-[var(--hover-bg)] dark:text-[var(--primary-border)] mb-2">Attendance for: <span class="font-bold">{{ \Carbon\Carbon::parse($today)->format('d M, Y') }}</span></p>
+                        <ul class="space-y-1 text-gray-700 dark:text-[var(--primary-text)]">
+                            <li><strong>Punch In:</strong> <span class="font-medium">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('d M, Y h:i A') }}</span></li>
+                            <li><strong>Punch Out:</strong> <span class="font-medium">{{ $attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('d M, Y h:i A') : 'Not yet punched out.' }}</span></li>
+                            <li><strong>Total Attendance Hours:</strong> <span class="font-medium text-green-700 dark:text-green-400">{{ $attendance->total_working_hours ?? 'N/A' }}</span></li>
+                        </ul>
+                    </div>
+                @else
+                    <div class="bg-yellow-50 dark:bg-[var(--primary-bg)] p-4 rounded-lg shadow-inner border border-yellow-200 dark:border-[var(--primary-border)] text-yellow-800 dark:text-yellow-300 animate-fade-in-up">
+                        <p class="font-semibold">No attendance record found for today.</p>
+                    </div>
+                @endif
+
+                <div>
+                    <label for="hours_worked" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Hours Worked:</label>
+                    <input
+                        type="number"
+                        name="hours_worked"
+                        id="hours_worked"
+                        step="0.01"
+                        min="0.01"
+                        value="{{ old('hours_worked', $hoursWorked) }}"
+                        required
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
+                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
+                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
+                    />
+                </div>
+
+                <div>
+                    <label for="description" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Work Description:</label>
+                    <textarea
+                        name="description"
+                        id="description"
+                        rows="4"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
+                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
+                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
+                    >{{ old('description') }}</textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4">
+                    <a href="{{ route('tasks.timesheets.index', [$projectId, 'task' => $task->id]) }}" class="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-[var(--primary-border)] text-base font-medium rounded-full shadow-md text-gray-700 dark:text-[var(--primary-text)] bg-white dark:bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-[var(--hover-bg)]/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-bg-light)] transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-105 transform origin-center">
+                        Cancel
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-xl text-white bg-gradient-to-r from-[var(--primary-bg-light)] to-[var(--hover-bg)] hover:from-[var(--hover-bg)] hover:to-[var(--primary-bg-light)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-bg-light)] transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 transform origin-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        Submit Timesheet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </x-app-layout>
