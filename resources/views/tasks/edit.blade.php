@@ -5,130 +5,491 @@
         </h1>
     </x-slot>
 
-    <div class="py-10 sm:px-6 lg:px-8 bg-gradient-to-br from-[var(--primary-bg-light)] via-[var(--primary-border)] to-[var(--secondary-bg)] dark:from-[var(--primary-bg)] dark:via-[var(--secondary-bg)] dark:to-[var(--primary-bg)] min-h-[calc(100vh-64px)] flex items-center justify-center">
-        <div class="bg-white dark:bg-[var(--secondary-bg)] overflow-hidden shadow-3xl rounded-2xl border border-gray-200 dark:border-[var(--primary-border)] p-6 md:p-8 w-full max-w-2xl
-                    transition-all duration-500 ease-in-out hover:shadow-4xl hover:scale-[1.005] transform origin-center animate-fade-in">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-[var(--secondary-text)] mb-6 text-center bg-gradient-to-r from-[var(--primary-bg-light)]/10 to-[var(--primary-bg)]/10 dark:from-[var(--primary-bg)]/50 dark:to-[var(--secondary-bg)]/50 py-3 rounded-lg shadow-sm">
-                Task Details
-            </h2>
-            <form method="POST" action="{{ route('projects.tasks.update', [$task->project_id, $task->id]) }}" class="space-y-6">
-                @csrf
-                @method('PUT')
+    <div class="py-12 sm:px-6 lg:px-8 bg-gray-100 min-h-[calc(100vh-64px)] theme-app flex items-center justify-center">
+        {{-- Custom animations and styles --}}
+        <style>
+            /* Define RGB values for primary colors for rgba usage */
+            :root {
+                --primary-rgb: 59, 31, 34; /* RGB for #3b1f22 */
+                --primary-bg-light-rgb: 244, 63, 94; /* RGB for #f43f5e */
+            }
 
-                <div>
-                    <label for="title" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Title:</label>
-                    <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        value="{{ $task->title }}"
-                        required
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
-                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
-                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
-                    >
+            /* Custom fade-in animation */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-fade-in {
+                animation: fadeIn 0.8s ease-out forwards;
+            }
+
+            /* Staggered animation delays */
+            .animate-delay-100 { animation-delay: 0.1s; }
+            .animate-delay-200 { animation-delay: 0.2s; }
+            .animate-delay-300 { animation-delay: 0.3s; }
+            .animate-delay-400 { animation-delay: 0.4s; }
+            .animate-delay-500 { animation-delay: 0.5s; }
+            .animate-delay-600 { animation-delay: 0.6s; }
+            .animate-delay-700 { animation-delay: 0.7s; }
+
+            /* Enhanced Form Container */
+            .form-container {
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+                border: 1px solid var(--primary-border);
+                background: white;
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease-in-out;
+            }
+
+            .form-container:hover {
+                box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.2), 0 15px 25px -5px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+            }
+
+            /* Enhanced Form Input Styles */
+            .form-input {
+                width: 100%;
+                padding: 1.25rem 1.5rem;
+                border: 2px solid #e5e7eb;
+                border-radius: 16px;
+                font-size: 1rem;
+                font-weight: 500;
+                background: linear-gradient(135deg, #ffffff, #fafafa);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                outline: none;
+                position: relative;
+            }
+
+            /* Dark mode for form inputs */
+            .dark .form-input {
+                background: var(--primary-bg);
+                border-color: var(--primary-border);
+                color: var(--primary-text);
+            }
+
+            /* Enhanced Focus Effects */
+            .form-input:focus {
+                border-color: var(--primary-border);
+                background: linear-gradient(135deg, #ffffff, #fef7f7);
+                box-shadow:
+                    0 0 0 4px rgba(var(--primary-bg-light-rgb), 0.1),
+                    0 8px 25px rgba(var(--primary-bg-light-rgb), 0.15),
+                    0 4px 12px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px) scale(1.01);
+            }
+
+            .dark .form-input:focus {
+                background: var(--primary-bg);
+                box-shadow:
+                    0 0 0 4px rgba(var(--primary-bg-light-rgb), 0.2),
+                    0 8px 25px rgba(var(--primary-bg-light-rgb), 0.25),
+                    0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Hover Effects for Inputs */
+            .form-input:hover:not(:focus) {
+                border-color: #d1d5db;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+                transform: translateY(-1px);
+            }
+
+            .dark .form-input:hover:not(:focus) {
+                border-color: var(--hover-bg);
+            }
+
+            /* Textarea Specific Styling */
+            textarea.form-input {
+                resize: vertical;
+                min-height: 140px;
+                line-height: 1.6;
+            }
+
+            /* Enhanced Label Styling */
+            .form-label {
+                display: block;
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: var(--primary-bg); /* Default color for light mode */
+                margin-bottom: 0.75rem;
+                transition: all 0.3s ease;
+            }
+
+            .dark .form-label {
+                color: var(--primary-text); /* Dark mode color */
+            }
+
+            .form-label .required {
+                color: var(--hover-bg);
+                margin-left: 0.25rem;
+                font-weight: 700;
+            }
+
+            /* Form Field Container */
+            .form-field {
+                margin-bottom: 2rem;
+                opacity: 0;
+                animation: fadeInField 0.6s ease-out forwards;
+            }
+
+            /* Input field staggered animations */
+            @keyframes fadeInField {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            .form-field:nth-child(1) { animation-delay: 0.1s; }
+            .form-field:nth-child(2) { animation-delay: 0.2s; }
+            .form-field:nth-child(3) { animation-delay: 0.3s; }
+            .form-field:nth-child(4) { animation-delay: 0.4s; }
+            .form-field:nth-child(5) { animation-delay: 0.5s; }
+            .form-field:nth-child(6) { animation-delay: 0.6s; }
+            .form-field:nth-child(7) { animation-delay: 0.7s; }
+
+            /* Enhanced Form Header */
+            .form-header {
+                background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+                border-bottom: 1px solid #e5e7eb;
+                padding: 2rem;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .dark .form-header {
+                background: linear-gradient(135deg, var(--secondary-bg), var(--primary-bg));
+                border-bottom-color: var(--primary-border);
+            }
+
+            .form-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--primary-border), var(--primary-bg-light), var(--primary-border));
+                background-size: 200% 100%;
+                animation: gradientShift 3s ease-in-out infinite;
+            }
+
+            @keyframes gradientShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+
+            /* Form Body Enhanced */
+            .form-body {
+                padding: 2.5rem;
+                background: linear-gradient(135deg, #ffffff, #fefefe);
+                transition: all 0.3s ease-in-out;
+            }
+
+            .dark .form-body {
+                background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+            }
+
+            /* Focus-within effects for form sections */
+            .form-field:focus-within .form-label {
+                color: var(--primary-border);
+                transform: translateY(-2px);
+            }
+
+            /* Checkbox styling */
+            .checkbox-container {
+                background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+                border: 2px solid #e5e7eb;
+                border-radius: 12px;
+                padding: 1rem;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .dark .checkbox-container {
+                background: var(--primary-bg);
+                border-color: var(--primary-border);
+            }
+
+            .checkbox-container:hover {
+                border-color: var(--primary-border);
+                background: linear-gradient(135deg, #ffffff, #f8fafc);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .dark .checkbox-container:hover {
+                background: var(--secondary-bg);
+                border-color: var(--hover-bg);
+            }
+
+            /* Checkbox checked state */
+            .checkbox-container.has-checked {
+                background: var(--primary-bg-light);
+                border-color: var(--primary-bg-light);
+                box-shadow: 0 6px 15px rgba(var(--primary-bg-light-rgb), 0.3);
+            }
+
+            .dark .checkbox-container.has-checked {
+                background: var(--hover-bg);
+                border-color: var(--hover-bg);
+                box-shadow: 0 6px 15px rgba(var(--primary-bg-light-rgb), 0.4);
+            }
+
+            .checkbox-container .peer-checked-bg {
+                background: var(--primary-bg-light);
+                border-color: var(--primary-bg-light);
+            }
+
+            .dark .checkbox-container .peer-checked-bg {
+                background: var(--hover-bg);
+                border-color: var(--hover-bg);
+            }
+
+            /* Submit button gradient */
+            .bg-secondary-gradient {
+                background: linear-gradient(90deg, var(--primary-bg-light), var(--hover-bg));
+            }
+
+            .bg-secondary-gradient:hover {
+                background: linear-gradient(90deg, var(--hover-bg), var(--primary-bg-light));
+            }
+
+            /* Cancel button styling */
+            .btn-cancel {
+                border: 1px solid var(--primary-border);
+                color: var(--primary-bg);
+                background: white;
+            }
+
+            .dark .btn-cancel {
+                color: var(--primary-text);
+                background: var(--primary-bg);
+                border-color: var(--primary-border);
+            }
+
+            .btn-cancel:hover {
+                background: var(--primary-bg-light);
+                color: white;
+                border-color: var(--primary-bg-light);
+            }
+
+            .dark .btn-cancel:hover {
+                background: var(--hover-bg);
+                color: white;
+                border-color: var(--hover-bg);
+            }
+
+
+            /* Mobile responsive adjustments */
+            @media (max-width: 768px) {
+                .form-input {
+                    padding: 1rem 1.25rem;
+                    font-size: 0.9375rem;
+                }
+
+                .form-body {
+                    padding: 1.5rem;
+                }
+
+                .form-header {
+                    padding: 1.5rem;
+                }
+
+                .form-field {
+                    margin-bottom: 1.5rem;
+                }
+            }
+        </style>
+
+        <div class="w-full max-w-3xl animate-fade-in animate-delay-200">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 transition-all duration-300 ease-in-out">Task Details</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Edit the details for this task</p>
                 </div>
+                <div class="form-body">
+                    <form method="POST" action="{{ route('projects.tasks.update', [$task->project_id, $task->id]) }}" class="space-y-0">
+                        @csrf
+                        @method('PUT')
 
-                <div>
-                    <label for="description" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Description:</label>
-                    <textarea
-                        name="description"
-                        id="description"
-                        rows="4"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
-                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
-                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
-                    >{{ $task->description }}</textarea>
-                </div>
+                        <!-- Task Title -->
+                        <div class="form-field">
+                            <label for="title" class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span>Task Title</span>
+                                    <span class="required">*</span>
+                                </div>
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                value="{{ $task->title }}"
+                                required
+                                placeholder="Enter task title..."
+                                class="form-input"
+                            >
+                        </div>
 
-                <div>
-                    <label for="priority" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Priority:</label>
-                    <select
-                        name="priority"
-                        id="priority"
-                        required
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
-                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
-                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
-                    >
-                        <option value="">---Select Priority---</option>
-                        @foreach (['Low', 'Medium', 'High', 'Urgent'] as $priority)
-                            <option value="{{ $priority }}" {{ $task->priority === $priority ? 'selected' : '' }}>{{ $priority }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <!-- Description -->
+                        <div class="form-field">
+                            <label for="description" class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                                    </svg>
+                                    <span>Description</span>
+                                </div>
+                            </label>
+                            <textarea
+                                name="description"
+                                id="description"
+                                rows="5"
+                                placeholder="Enter task description..."
+                                class="form-input"
+                            >{{ $task->description }}</textarea>
+                        </div>
 
-                <div>
-                    <label for="status" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Status:</label>
-                    <select
-                        name="status"
-                        id="status"
-                        required
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
-                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
-                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
-                    >
-                        <option value="">---Select Status---</option>
-                        @foreach (['To-Do', 'In Progress', 'On Hold', 'Done'] as $status)
-                            <option value="{{ $status }}" {{ $task->status === $status ? 'selected' : '' }}>{{ $status }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <!-- Priority -->
+                        <div class="form-field">
+                            <label for="priority" class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    <span>Priority</span>
+                                    <span class="required">*</span>
+                                </div>
+                            </label>
+                            <select
+                                name="priority"
+                                id="priority"
+                                required
+                                class="form-input"
+                            >
+                                <option value="">---Select Priority---</option>
+                                @foreach (['Low', 'Medium', 'High', 'Urgent'] as $priority)
+                                    <option value="{{ $priority }}" {{ $task->priority === $priority ? 'selected' : '' }}>{{ $priority }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                <div>
-                    <label for="due_date" class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-1">Due Date:</label>
-                    <input
-                        type="date"
-                        name="due_date"
-                        id="due_date"
-                        value="{{ $task->due_date }}"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-[var(--primary-border)] rounded-lg shadow-sm text-gray-900 dark:text-[var(--primary-text)] dark:bg-[var(--primary-bg)]
-                               focus:ring-[var(--primary-bg-light)] focus:border-[var(--primary-bg-light)] focus:ring-2 focus:shadow-lg focus:shadow-[var(--primary-bg-light)]/50 dark:focus:shadow-[var(--primary-bg-light)]/50
-                               transition-all duration-300 ease-in-out hover:border-[var(--hover-bg)] dark:hover:border-[var(--hover-bg)] hover:scale-[1.01] transform origin-center"
-                    >
-                </div>
+                        <!-- Status -->
+                        <div class="form-field">
+                            <label for="status" class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 2v-2m-6 10H6a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v11a2 2 0 01-2 2h-1.586a1 1 0 00-.707.293l-1.414 1.414a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 00-.707-.293H9z" />
+                                    </svg>
+                                    <span>Status</span>
+                                    <span class="required">*</span>
+                                </div>
+                            </label>
+                            <select
+                                name="status"
+                                id="status"
+                                required
+                                class="form-input"
+                            >
+                                <option value="">---Select Status---</option>
+                                @foreach (['To-Do', 'In Progress', 'On Hold', 'Done'] as $status)
+                                    <option value="{{ $status }}" {{ $task->status === $status ? 'selected' : '' }}>{{ $status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                <div>
-                    <label class="block text-base font-semibold text-gray-700 dark:text-[var(--primary-text)] mb-2">Assign to:</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        @foreach ($project->users as $user)
-                            <div class="relative flex items-center bg-gray-50 dark:bg-[var(--primary-bg)] p-3 rounded-lg shadow-sm
-                                        transition-all duration-200 ease-in-out hover:bg-[var(--primary-bg-light)]/20 dark:hover:bg-[var(--hover-bg)]/50 hover:shadow-md hover:scale-[1.02] transform origin-center
-                                        has-[input:checked]:bg-[var(--primary-bg-light)] has-[input:checked]:dark:bg-[var(--hover-bg)] has-[input:checked]:border-[var(--primary-bg-light)] has-[input:checked]:shadow-lg">
-                                <label for="assigned-user-{{ $user->id }}" class="flex items-center w-full cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        name="assigned_user_ids[]"
-                                        value="{{ $user->id }}"
-                                        id="assigned-user-{{ $user->id }}"
-                                        class="sr-only peer" {{-- Hidden visually, but functional and accessible --}}
-                                        {{ $task->assignedUsers->contains($user->id) ? 'checked' : '' }}
-                                    >
-                                    <div class="h-4 w-4 border-2 border-gray-300 dark:border-[var(--primary-border)] rounded flex items-center justify-center
-                                                peer-checked:bg-[var(--primary-bg-light)] peer-checked:border-[var(--primary-bg-light)] transition-all duration-200 ease-in-out">
-                                        <svg class="h-3 w-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                    <span class="ml-2 block text-sm text-gray-900 dark:text-[var(--primary-text)]">
-                                        {{ $user->name }}
-                                    </span>
-                                </label>
+                        <!-- Due Date -->
+                        <div class="form-field">
+                            <label for="due_date" class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h6m-6 0l-1 1m7-1l1 1m-1-1v4a2 2 0 01-2 2H9a2 2 0 01-2-2V8m8 0V9a2 2 0 01-2 2H9a2 2 0 01-2-2V8" />
+                                    </svg>
+                                    <span>Due Date</span>
+                                </div>
+                            </label>
+                            <input
+                                type="date"
+                                name="due_date"
+                                id="due_date"
+                                value="{{ $task->due_date }}"
+                                class="form-input"
+                            >
+                        </div>
+
+                        <!-- Assign Employees -->
+                        <div class="form-field">
+                            <label class="form-label">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <span>Assign Employees</span>
+                                </div>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                                @foreach ($project->users as $user)
+                                    <label for="assigned-user-{{ $user->id }}" class="checkbox-container flex items-center has-[input:checked]:checkbox-container-checked">
+                                        <input
+                                            type="checkbox"
+                                            name="assigned_user_ids[]"
+                                            value="{{ $user->id }}"
+                                            id="assigned-user-{{ $user->id }}"
+                                            class="sr-only peer"
+                                            {{ $task->assignedUsers->contains($user->id) ? 'checked' : '' }}
+                                        >
+                                        <div class="h-5 w-5 border-2 border-gray-300 rounded flex items-center justify-center mr-3
+                                                    peer-checked:bg-[var(--primary-bg-light)] peer-checked:border-[var(--primary-bg-light)] transition-all duration-200 ease-in-out">
+                                            <svg class="h-4 w-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-base text-gray-900 dark:text-gray-200 font-medium">
+                                            {{ $user->name }}
+                                        </span>
+                                    </label>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </div>
-                </div>
+                        </div>
 
-                <div class="flex justify-end gap-3 pt-4">
-                    <a href="{{ route('projects.show', ['project' => $project]) }}" class="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-[var(--primary-border)] text-base font-medium rounded-full shadow-md text-gray-700 dark:text-[var(--primary-text)] bg-white dark:bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-[var(--hover-bg)]/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-bg-light)] transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-105 transform origin-center">
-                        Cancel
-                    </a>
-                    <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-xl text-white bg-gradient-to-r from-[var(--primary-bg-light)] to-[var(--hover-bg)] hover:from-[var(--hover-bg)] hover:to-[var(--primary-bg-light)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-bg-light)] transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 transform origin-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        Update Task
-                    </button>
+                        <!-- Submit Buttons -->
+                        <div class="form-field">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-end pt-6 space-y-4 sm:space-y-0 sm:space-x-4">
+                                <a href="{{ route('projects.show', ['project' => $project]) }}" class="inline-flex items-center px-8 py-4 rounded-full shadow-md transition-all duration-300 ease-in-out hover:shadow-lg w-full sm:w-auto justify-center btn-cancel">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Cancel
+                                </a>
+                                <button type="submit" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-semibold rounded-full shadow-xl text-white bg-secondary-gradient hover:bg-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Update Task
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </x-app-layout>

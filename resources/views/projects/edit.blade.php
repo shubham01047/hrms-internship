@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-4xl font-extrabold text-primary drop-shadow-md">Edit Project</h1>
+        <h1 class="text-4xl font-extrabold text-[var(--secondary-text)] bg-[var(--secondary-bg)] px-6 py-4 rounded-lg drop-shadow-md">Edit Project</h1>
+
     </x-slot>
 
     <div class="py-12 sm:px-6 lg:px-8 bg-gray-100 min-h-[calc(100vh-64px)] theme-app flex items-center justify-center">
