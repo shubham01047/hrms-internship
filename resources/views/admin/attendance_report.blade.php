@@ -137,6 +137,50 @@
                                     </div>
                                 </div>
 
+                                <!-- Punch In Again -->
+                                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg">
+                                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-yellow-800">Punch In Again</p>
+                                            <p class="text-lg font-bold text-yellow-900">
+                                                {{ $attendance['punch_in_again'] ?? 'Not punched in again' }}
+                                            </p>
+                                            <p class="text-sm font-medium text-yellow-800">Remark:</p>
+                                            <p>{{ $attendance['punch_in_again_remarks'] ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Punch Out Again -->
+                                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-purple-100 p-2 rounded-lg">
+                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-purple-800">Punch Out Again</p>
+                                            <p class="text-lg font-bold text-purple-900">
+                                                {{ $attendance['punch_out_again'] ?? 'Not punched out again' }}
+                                            </p>
+                                            <p class="text-sm font-medium text-purple-800">Remark:</p>
+                                            <p>{{ $attendance['punch_out_again_remarks'] ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
                                 <!-- Total Hours -->
                                 <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                                     <div class="flex items-center space-x-3">
