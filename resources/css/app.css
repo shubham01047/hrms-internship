@@ -27,15 +27,16 @@
   }
 
    .theme-app {
-    --primary-bg: #3b1f22;         /* Deep cherry red (replaces black) */
---primary-bg-light: #f43f5e;   /* Rose-500 */
---primary-text: #fff1f2;       /* Rose-100 */
---primary-border: #fb7185;     /* Rose-400 */
---hover-bg: #e11d48;           /* Rose-600 */
+--primary-bg: #572626;           /* Royal Black (very dark background) */
+--primary-bg-light: #1e1e1ee0;     /* Slightly lighter black for cards/sections */
+--primary-text: #ffffff;         /* Pure white text */
+--primary-border: #ff4d67;       /* Rose/Red-400: soft accent border */
+--hover-bg: #ff1e42;             /* Red-600: hover highlight */
 
---secondary-bg: #502b31;       /* Muted crimson plum */
---secondary-text: #ffe4e6;     /* Soft blush white */
-  }
+--secondary-bg: #b91c1c;         /* Strong Red (like Rose-700) */
+--secondary-text: #ffffff;       /* White text on red */
+    /* White: for buttons/text over blue */
+   }
 
   .theme-app .bg-primary {
     background-color: var(--primary-bg);

@@ -107,8 +107,8 @@
                                             <p class="text-sm font-medium text-green-800">Punch In</p>
                                             <p class="text-lg font-bold text-green-900">{{ $attendance['punch_in'] }}</p>
                                             <p class="text-lg font-bold text-green-900">
-                                            <p class="text-sm font-medium text-green-800">Remark:</p>
-                                            {{ $attendance['punch_in_remarks'] ?? '-' }}
+                                                <p class="text-sm font-medium text-green-800">Remark:</p>
+                                                {{ $attendance->punch_in_remarks ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
@@ -130,12 +130,56 @@
                                             <p class="text-lg font-bold text-red-900">
                                                 {{ $attendance['punch_out'] ?: 'Not punched out' }}</p>
                                             <p>
-                                            <p class="text-sm font-medium text-red-800">Remark:</p>
-                                            {{ $attendance['punch_out_remarks'] ?? '-' }}
+                                                <p class="text-sm font-medium text-red-800">Remark:</p>
+                                                {{ $attendance->punch_out_remarks ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Punch In Again -->
+                                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg">
+                                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-yellow-800">Punch In Again</p>
+                                            <p class="text-lg font-bold text-yellow-900">
+                                                {{ $attendance['punch_in_again'] ?? 'Not punched in again' }}
+                                            </p>
+                                            <p class="text-sm font-medium text-yellow-800">Remark:</p>
+                                            <p>{{ $attendance['punch_in_again_remarks'] ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Punch Out Again -->
+                                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-purple-100 p-2 rounded-lg">
+                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-purple-800">Punch Out Again</p>
+                                            <p class="text-lg font-bold text-purple-900">
+                                                {{ $attendance['punch_out_again'] ?? 'Not punched out again' }}
+                                            </p>
+                                            <p class="text-sm font-medium text-purple-800">Remark:</p>
+                                            <p>{{ $attendance['punch_out_again_remarks'] ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
 
                                 <!-- Total Hours -->
                                 <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
@@ -149,71 +193,7 @@
                                         </div>
                                         <div>
                                             <p class="text-sm font-medium text-blue-800">Total Hours</p>
-                                            <p class="text-lg font-bold text-blue-900">
-                                                {{ $attendance['total_working_hours'] }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
-                                <!-- Punch In -->
-                                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-green-100 p-2 rounded-lg">
-                                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-medium text-green-800">Punch In Again</p>
-                                            <p class="text-lg font-bold text-green-900">{{ $attendance['punch_in_again'] }}</p>
-                                            <p class="text-lg font-bold text-green-900">
-                                            <p class="text-sm font-medium text-green-800">Remark:</p>
-                                            {{ $attendance['punch_in_again_remarks'] ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Punch Out -->
-                                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-red-100 p-2 rounded-lg">
-                                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-medium text-red-800">Punch Out Again</p>
-                                            <p class="text-lg font-bold text-red-900">
-                                                {{ $attendance['punch_out_again'] ?: 'Not punched out again' }}</p>
-                                            <p>
-                                            <p class="text-sm font-medium text-red-800">Remark:</p>
-                                            {{ $attendance['punch_out_again_remarks'] ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-blue-100 p-2 rounded-lg">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-medium text-blue-800">Overtime Working Hours</p>
-                                            <p class="text-lg font-bold text-blue-900">
-                                                {{ $attendance['overtime_working_hours'] }}</p>
+                                            <p class="text-lg font-bold text-blue-900">{{ $attendance['total_working_hours'] }}</p>
                                         </div>
                                     </div>
                                 </div>
