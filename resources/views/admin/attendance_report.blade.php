@@ -107,8 +107,8 @@
                                             <p class="text-sm font-medium text-green-800">Punch In</p>
                                             <p class="text-lg font-bold text-green-900">{{ $attendance['punch_in'] }}</p>
                                             <p class="text-lg font-bold text-green-900">
-                                                <p class="text-sm font-medium text-green-800">Remark:</p>
-                                                {{ $attendance->punch_in_remarks ?? '-' }}
+                                            <p class="text-sm font-medium text-green-800">Remark:</p>
+                                            {{ $attendance['punch_in_remarks'] ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
@@ -130,13 +130,29 @@
                                             <p class="text-lg font-bold text-red-900">
                                                 {{ $attendance['punch_out'] ?: 'Not punched out' }}</p>
                                             <p>
-                                                <p class="text-sm font-medium text-red-800">Remark:</p>
-                                                {{ $attendance->punch_out_remarks ?? '-' }}
+                                            <p class="text-sm font-medium text-red-800">Remark:</p>
+                                            {{ $attendance['punch_out_remarks'] ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- Total Hours -->
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-blue-100 p-2 rounded-lg">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-blue-800">Total Hours</p>
+                                            <p class="text-lg font-bold text-blue-900">
+                                                {{ $attendance['total_working_hours'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Punch In Again -->
                                 <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                                     <div class="flex items-center space-x-3">
@@ -179,7 +195,7 @@
                                     </div>
                                 </div>
 
-                                
+
 
                                 <!-- Total Hours -->
                                 <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
@@ -192,8 +208,9 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-blue-800">Total Hours</p>
-                                            <p class="text-lg font-bold text-blue-900">{{ $attendance['total_working_hours'] }}</p>
+                                            <p class="text-sm font-medium text-blue-800">Total Overtime Hours</p>
+                                            <p class="text-lg font-bold text-blue-900">
+                                                {{ $attendance['overtime_working_hours'] }}</p>
                                         </div>
                                     </div>
                                 </div>
