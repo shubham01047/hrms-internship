@@ -6,10 +6,12 @@ use App\Models\Attendance;
 use App\Models\BreakModel;
 use App\Models\Employee;
 use App\Models\Leave;
+use App\Models\Project;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-
+use Illuminate\Support\Facades\DB;
 class AdminDashboardController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
@@ -20,13 +22,51 @@ class AdminDashboardController extends Controller implements HasMiddleware
     }
     public function index()
     {
+        //all employee
         $employees = Employee::all();
+
+        //birthday tomorrow
         $tomorrow = Carbon::tomorrow();
         $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
+
+        //leaves    
         $pendingLeaves = Leave::where('status', 'pending')->count();
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves'));
+
+        //punch in today
+        $today = Carbon::today()->toDateString();
+        $todayPunchInCount = DB::table('attendance')
+            ->whereDate('date', $today)
+            ->where(function ($query) {
+                $query->whereNotNull('punch_in')
+                    ->orWhereNotNull('punch_in_again');
+            })
+            ->distinct('user_id')
+            ->count('user_id');
+
+        //absentee
+
+        $employeeCount = User::whereHas('employee')->count();
+        $absentees = $employeeCount - $todayPunchInCount;
+
+        //projects
+        $projectCount = Project::count();
+
+
+        //Late commer
+
+        //percentage
+        $attendancePercentage = 0;
+        if ($employeeCount > 0) {
+            $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
+        }
+
+
+
+        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage'));
+
+
     }
     public function showAttendanceReport()
     {

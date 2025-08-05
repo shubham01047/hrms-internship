@@ -488,19 +488,13 @@
                             <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
                             <p class="text-2xl sm:text-3xl font-bold">{{$employees->count()}}</p>
                         </a>
-                        <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                            bg-white text-green-600 border-primary border
-                            flex flex-col items-start gap-2 sm:gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                            <h3 class="text-xs sm:text-sm text-gray-500">Present Today</h3>
-                            <p class="text-2xl sm:text-3xl font-bold">98</p>
-                        </div>
+                        
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                             bg-white text-purple-600 border-primary border
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/><path d="M12 22c4.4 0 8-3.6 8-8V7h-4V3H8v4H4v7c0 4.4 3.6 8 8 8z"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Punch-In Users</h3>
-                            <p class="text-2xl sm:text-3xl font-bold">65</p>
+                            <p class="text-2xl sm:text-3xl font-bold">{{ $todayPunchInCount }}</p>
                         </div>
                         <div class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
                             bg-white text-yellow-500 border-primary border
@@ -514,7 +508,7 @@
                             flex flex-col items-start gap-2 sm:gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/></svg>
                             <h3 class="text-xs sm:text-sm text-gray-500">Active Projects</h3>
-                            <p class="text-2xl sm:text-3xl font-bold">08</p>
+                            <p class="text-2xl sm:text-3xl font-bold">{{ $projectCount }}</p>
                         </div>
                     </div>
                 </div>
@@ -711,7 +705,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                         <div class="p-3 sm:p-4 bg-blue-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Punch-in Today</h3>
-                            <p class="text-xl sm:text-2xl font-bold" style="color: var(--primary-bg);">98</p>
+                            <p class="text-xl sm:text-2xl font-bold" style="color: var(--primary-bg);">{{ $todayPunchInCount }}</p>
                         </div>
                         <div class="p-3 sm:p-4 bg-yellow-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Late Comers</h3>
@@ -719,11 +713,11 @@
                         </div>
                         <div class="p-3 sm:p-4 bg-red-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Absent</h3>
-                            <p class="text-xl sm:text-2xl font-bold text-red-500">10</p>
+                            <p class="text-xl sm:text-2xl font-bold text-red-500">{{ $absentees }}</p>
                         </div>
                         <div class="p-3 sm:p-4 bg-green-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                             <h3 class="text-gray-700 text-xs sm:text-sm">Compliance</h3>
-                            <p class="text-xl sm:text-2xl font-bold text-green-600">92%</p>
+                            <p class="text-xl sm:text-2xl font-bold text-green-600">{{ $attendancePercentage }}%</p>
                         </div>
                     </div>
                 </div>
