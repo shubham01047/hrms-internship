@@ -1,28 +1,47 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-4xl font-extrabold text-[var(--secondary-text)] bg-[var(--secondary-bg)] px-6 py-4 rounded-lg drop-shadow-md">Edit Project</h1>
-
+        {{-- Updated header to match the gradient and rounded-xl from leave_index.blade.php --}}
+        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-xl shadow-lg mb-8 animate-fade-in transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105">
+            <h1 class="text-3xl font-bold mb-2">Edit Project</h1>
+            <p class="text-red-100">Update the details for this project</p>
+        </div>
     </x-slot>
 
     <div class="py-12 sm:px-6 lg:px-8 bg-gray-100 min-h-[calc(100vh-64px)] theme-app flex items-center justify-center">
         {{-- Custom animations and styles --}}
         <style>
+            /* Define color variables to match the theme from leave_index.blade.php and index.blade.php */
+            :root {
+                --primary-rgb: 239, 68, 68; /* Red-500 RGB for shadows */
+                --primary-bg-light-rgb: 244, 63, 94; /* From index.blade.php */
+                --primary-bg: #3b1f22; /* From index.blade.php */
+                --secondary-bg: #5a3a3d; /* From index.blade.php */
+                --primary-border: #e5e7eb; /* From index.blade.php */
+                --hover-bg: #f43f5e; /* From index.blade.php */
+
+                /* Action button gradients, aligned with red theme */
+                --action-gradient-from: #ef4444; /* red-500 */
+                --action-gradient-to: #dc2626; /* red-600 */
+                --action-gradient-hover-from: #b91c1c; /* red-700 */
+                --action-gradient-hover-to: #991b1b; /* red-800 */
+            }
+
             /* Custom fade-in animation */
             @keyframes fadeIn {
-                from { 
-                    opacity: 0; 
-                    transform: translateY(30px); 
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
                 }
-                to { 
-                    opacity: 1; 
-                    transform: translateY(0); 
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
                 }
             }
-            
+
             .animate-fade-in {
                 animation: fadeIn 0.8s ease-out forwards;
             }
-            
+
             /* Staggered animation delays */
             .animate-delay-100 { animation-delay: 0.1s; }
             .animate-delay-200 { animation-delay: 0.2s; }
@@ -31,7 +50,7 @@
             .animate-delay-500 { animation-delay: 0.5s; }
             .animate-delay-600 { animation-delay: 0.6s; }
             .animate-delay-700 { animation-delay: 0.7s; }
-            
+
             /* Enhanced Form Container */
             .form-container {
                 border-radius: 20px;
@@ -42,12 +61,12 @@
                 backdrop-filter: blur(10px);
                 transition: all 0.3s ease-in-out;
             }
-            
+
             .form-container:hover {
                 box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.2), 0 15px 25px -5px rgba(0, 0, 0, 0.15);
                 transform: translateY(-2px);
             }
-            
+
             /* Enhanced Form Input Styles */
             .form-input {
                 width: 100%;
@@ -62,32 +81,32 @@
                 outline: none;
                 position: relative;
             }
-            
+
             /* Enhanced Focus Effects */
             .form-input:focus {
                 border-color: var(--primary-border);
                 background: linear-gradient(135deg, #ffffff, #fef7f7);
-                box-shadow: 
+                box-shadow:
                     0 0 0 4px rgba(var(--primary-rgb), 0.1),
                     0 8px 25px rgba(var(--primary-rgb), 0.15),
                     0 4px 12px rgba(0, 0, 0, 0.1);
                 transform: translateY(-2px) scale(1.01);
             }
-            
+
             /* Hover Effects for Inputs */
             .form-input:hover:not(:focus) {
                 border-color: #d1d5db;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
                 transform: translateY(-1px);
             }
-            
+
             /* Textarea Specific Styling */
             textarea.form-input {
                 resize: vertical;
                 min-height: 140px;
                 line-height: 1.6;
             }
-            
+
             /* Enhanced Label Styling */
             .form-label {
                 display: block;
@@ -97,20 +116,20 @@
                 margin-bottom: 0.75rem;
                 transition: all 0.3s ease;
             }
-            
+
             .form-label .required {
                 color: var(--hover-bg);
                 margin-left: 0.25rem;
                 font-weight: 700;
             }
-            
+
             /* Form Field Container */
             .form-field {
                 margin-bottom: 2rem;
                 opacity: 0;
                 animation: fadeInField 0.6s ease-out forwards;
             }
-            
+
             /* Input field staggered animations */
             @keyframes fadeInField {
                 from {
@@ -122,7 +141,7 @@
                     transform: translateY(0) scale(1);
                 }
             }
-            
+
             .form-field:nth-child(1) { animation-delay: 0.1s; }
             .form-field:nth-child(2) { animation-delay: 0.2s; }
             .form-field:nth-child(3) { animation-delay: 0.3s; }
@@ -130,17 +149,18 @@
             .form-field:nth-child(5) { animation-delay: 0.5s; }
             .form-field:nth-child(6) { animation-delay: 0.6s; }
             .form-field:nth-child(7) { animation-delay: 0.7s; }
-            
+
             /* Enhanced Form Header */
             .form-header {
-                background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-                border-bottom: 1px solid #e5e7eb;
+                /* Changed to match the red gradient theme */
+                background: linear-gradient(135deg, #fef2f2, #fecaca); /* Light red gradient */
+                border-bottom: 1px solid #fca5a5; /* Red-300 */
                 padding: 2rem;
                 position: relative;
                 overflow: hidden;
                 transition: all 0.3s ease-in-out;
             }
-            
+
             .form-header::before {
                 content: '';
                 position: absolute;
@@ -148,29 +168,30 @@
                 left: 0;
                 right: 0;
                 height: 4px;
-                background: linear-gradient(90deg, var(--primary-border), var(--primary-bg-light), var(--primary-border));
+                /* Adjusted gradientShift to use red tones */
+                background: linear-gradient(90deg, #fca5a5, #ef4444, #fca5a5);
                 background-size: 200% 100%;
                 animation: gradientShift 3s ease-in-out infinite;
             }
-            
+
             @keyframes gradientShift {
                 0%, 100% { background-position: 0% 50%; }
                 50% { background-position: 100% 50%; }
             }
-            
+
             /* Form Body Enhanced */
             .form-body {
                 padding: 2.5rem;
                 background: linear-gradient(135deg, #ffffff, #fefefe);
                 transition: all 0.3s ease-in-out;
             }
-            
+
             /* Focus-within effects for form sections */
             .form-field:focus-within .form-label {
                 color: var(--primary-border);
                 transform: translateY(-2px);
             }
-            
+
             /* Checkbox styling */
             .checkbox-container {
                 background: linear-gradient(135deg, #f9fafb, #f3f4f6);
@@ -180,29 +201,29 @@
                 cursor: pointer;
                 transition: all 0.3s ease-in-out;
             }
-            
+
             .checkbox-container:hover {
                 border-color: var(--primary-border);
                 background: linear-gradient(135deg, #ffffff, #f8fafc);
                 transform: translateY(-1px);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             }
-            
+
             /* Mobile responsive adjustments */
             @media (max-width: 768px) {
                 .form-input {
                     padding: 1rem 1.25rem;
                     font-size: 0.9375rem;
                 }
-                
+
                 .form-body {
                     padding: 1.5rem;
                 }
-                
+
                 .form-header {
                     padding: 1.5rem;
                 }
-                
+
                 .form-field {
                     margin-bottom: 1.5rem;
                 }
@@ -365,7 +386,8 @@
                                     </svg>
                                     Cancel
                                 </a>
-                                <button type="submit" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-semibold rounded-full shadow-xl text-white bg-secondary-gradient hover:bg-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto justify-center">
+                                {{-- Updated submit button to match the red theme and animation style --}}
+                                <button type="submit" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-semibold rounded-full shadow-xl text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>

@@ -27,16 +27,16 @@
   }
 
    .theme-app {
---primary-bg: #572626;           /* Royal Black (very dark background) */
---primary-bg-light: #1e1e1ee0;     /* Slightly lighter black for cards/sections */
---primary-text: #ffffff;         /* Pure white text */
---primary-border: #ff4d67;       /* Rose/Red-400: soft accent border */
---hover-bg: #ff1e42;             /* Red-600: hover highlight */
+  --primary-bg: #1e293b;           /* Slate-800 - Dark base (main bg) */
+  --primary-bg-light: #334155;     /* Slate-700 - Sections or containers */
+  --primary-text: #f1f5f9;         /* Slate-100 - Text on dark bg */
+  --primary-border: #475569;       /* Slate-600 - Borders and dividers */
+  --hover-bg: #6366f1;             /* Indigo-500 - Hover buttons/elements */
 
---secondary-bg: #b91c1c;         /* Strong Red (like Rose-700) */
---secondary-text: #ffffff;       /* White text on red */
-    /* White: for buttons/text over blue */
-   }
+  --secondary-bg: #0f172a;         /* Darker Slate-900 - Nav/sidebar */
+  --secondary-text: #e2e8f0;       /* Slate-200 - Text in side areas */
+}
+
 
   .theme-app .bg-primary {
     background-color: var(--primary-bg);
