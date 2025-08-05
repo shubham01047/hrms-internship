@@ -175,26 +175,29 @@
             @endif
 
             {{-- Grid container for project cards --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in animate-delay-300">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in animate-delay-300 items-stretch">
                 @foreach ($projects as $index => $project)
-                    <div class="bg-white rounded-xl shadow-lg p-6 relative transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $project->title }}</h2>
-                        {{-- Deadline tag positioned top-right --}}
-                        <span class="absolute top-6 right-6 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 transition-colors duration-200">
-                            {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}
-                        </span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Client: {{ $project->client_name }}</p>
-                        <p class="text-gray-700 dark:text-gray-400 text-sm mb-4 line-clamp-3">{{ $project->description }}</p>
+                    {{-- Added flex-col and justify-between to make cards same height and push buttons to bottom --}}
+                    <div class="bg-white rounded-xl shadow-lg p-6 relative transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between">
+                        <div> {{-- Wrapper for top content to allow flex-grow on description/members --}}
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $project->title }}</h2>
+                            {{-- Deadline tag positioned top-right --}}
+                            <span class="absolute top-6 right-6 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 transition-colors duration-200">
+                                {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}
+                            </span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Client: {{ $project->client_name }}</p>
+                            <p class="text-gray-700 dark:text-gray-400 text-sm mb-4 line-clamp-3 flex-grow">{{ $project->description }}</p>
 
-                        <div class="mt-4 mb-6">
-                            <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2">Members:</h3>
-                            <ul class="flex flex-wrap gap-2">
-                                @foreach ($project->members as $member)
-                                    <li class="member-tag px-3 py-1 rounded-full text-xs font-medium" title="{{ $member->name }}">
-                                        {{ $member->name }}
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <div class="mt-4 mb-6">
+                                <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2">Members:</h3>
+                                <ul class="flex flex-wrap gap-2">
+                                    @foreach ($project->members as $member)
+                                        <li class="member-tag px-3 py-1 rounded-full text-xs font-medium" title="{{ $member->name }}">
+                                            {{ $member->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
 
                         {{-- Action buttons at the bottom of the card --}}
