@@ -63,8 +63,11 @@ class AdminDashboardController extends Controller implements HasMiddleware
         }
 
 
+        //timesheet
+        $projects = Project::with(['tasks.assignedUsers'])->get();
 
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage'));
+
+        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
 
 
     }

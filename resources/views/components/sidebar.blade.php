@@ -69,9 +69,7 @@
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-clock"></i> Attendance
             </div>
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                <i class="fas fa-calendar-check"></i> Mark Attendance
-            </a>
+            
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
                     <i class="fas fa-chart-bar"></i> Reports
@@ -109,11 +107,6 @@
             <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index')}}">
                 <i class="fas fa-calendar"></i> View Holidays
             </a>
-            @can('create holiday')
-                <a href="{{ route('holidays.create') }}" class="{{ $isActive('holidays.create') }}">
-                    <i class="fas fa-plus"></i> Create Holiday
-                </a>
-            @endcan
         </div>
 
         <!-- Projects -->
