@@ -77,56 +77,47 @@
             <!-- Projects Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach ($projects as $index => $project)
-                    @php
-                        $cardBackgrounds = [
-                            'background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);', // Light blue
-                            'background: linear-gradient(135deg, #fef2f2 0%, #fce7e7 100%);', // Light red
-                            'background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);', // Light yellow
-                            'background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);', // Light green
-                            'background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);', // Light purple
-                            'background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);', // Light pink
-                            'background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);', // Light teal
-                            'background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);', // Light orange
-                            'background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);', // Light gray
-                            'background: linear-gradient(135deg, #ecfdf5 0%, #bbf7d0 100%);', // Light emerald
-                            'background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);', // Light sky
-                            'background: linear-gradient(135deg, #fefce8 0%, #ecfccb 100%);', // Light lime
-                        ];
-                        
-                        $badgeColors = ['bg-orange-500', 'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 'bg-teal-500', 'bg-amber-500', 'bg-gray-500', 'bg-emerald-500', 'bg-sky-500', 'bg-lime-500'];
-                        $statusColors = ['bg-gray-500', 'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 'bg-teal-500', 'bg-amber-500', 'bg-slate-500', 'bg-emerald-500', 'bg-sky-500', 'bg-lime-500'];
-                        $badges = ['NEW', 'URGENT', 'In Progress', 'In Progress', 'Planning', 'Review', 'Testing', 'Deploy', 'Maintenance', 'Active', 'Pending', 'Complete'];
-                        $statuses = ['In Progress', 'Critical', 'In Progress', 'In Progress', 'Planning', 'Review', 'Testing', 'Deploy', 'Maintenance', 'Active', 'Pending', 'Complete'];
-                        
-                        $cardBg = $cardBackgrounds[$index % 12];
-                        $badgeColor = $badgeColors[$index % 12];
-                        $statusColor = $statusColors[$index % 12];
-                        $badge = $badges[$index % 12];
-                        $status = $statuses[$index % 12];
-                    @endphp
-                    
-                    <div class="theme-app rounded-xl shadow-lg p-6 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between" 
-                         style="{{$cardBg}}">
-                        <div>
-                            <div class="flex items-start justify-between mb-4">
-                                <div class="flex items-center space-x-3 flex-wrap">
-                                    <h2 class="text-xl font-bold" style="color: var(--primary-bg);">{{ $project->title }}</h2>
-                                    <span class="{{$badgeColor}} text-white px-2 py-1 rounded text-xs font-bold">{{$badge}}</span>
-                                    <span class="{{$statusColor}} text-white px-2 py-1 rounded text-xs">{{$status}}</span>
-                                </div>
-                            </div>
+            @php
+    $cardBackgrounds = [
+        'background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);',
+        'background: linear-gradient(135deg, #fef2f2 0%, #fce7e7 100%);',
+        'background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);',
+        'background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);',
+        'background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);',
+        'background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);',
+        'background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);',
+        'background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);',
+        'background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);',
+        'background: linear-gradient(135deg, #ecfdf5 0%, #bbf7d0 100%);',
+        'background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);',
+        'background: linear-gradient(135deg, #fefce8 0%, #ecfccb 100%);',
+    ];
+    $cardBg = $cardBackgrounds[$index % 12];
+@endphp
+
+<div class="theme-app rounded-xl shadow-lg p-6 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between" 
+     style="{{ $cardBg }}">
+    <div>
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center flex-wrap">
+                <h2 class="text-xl font-bold" style="color: var(--primary-bg);">
+                    {{ $project->title }}
+                </h2>
+            </div>
+        </div>
+
+        <p class="text-sm mb-3" style="color: var(--secondary-bg);">
+            <span class="font-medium">👤 Client:</span> {{ $project->client_name ?: 'Not specified' }}
+        </p>
+
+        @if($project->budget)
+            <p class="text-sm mb-3" style="color: var(--secondary-bg);">
+                <span class="font-medium">💰 Budget:</span> 
+                <span class="font-bold" style="color: var(--hover-bg);">₹{{ number_format($project->budget, 2) }}</span>
+            </p>
+        @endif
+
                             
-                            <p class="text-sm mb-3" style="color: var(--secondary-bg);">
-                                <span class="font-medium">👤 Client:</span> {{ $project->client_name ?: 'Not specified' }}
-                            </p>
-                            
-                            @if($project->budget)
-                                <p class="text-sm mb-3" style="color: var(--secondary-bg);">
-                                    <span class="font-medium">💰 Budget:</span> <span class="font-bold" style="color: var(--hover-bg);">₹{{ number_format($project->budget, 2) }}</span>
-                                </p>
-                            @endif
-                            
-                            <!-- Removed Progress Bar Section -->
                             
                             <!-- Project Description -->
                             <div class="mb-4">
