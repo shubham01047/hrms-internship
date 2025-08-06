@@ -1,18 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="mr-24 flex justify-between items-center bg-gradient-to-r from-blue-800 to-blue-900 p-6 rounded-lg shadow-sm">
+        <div class="theme-app mr-24 flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
             <div class="flex items-center space-x-3">
-                <div class="p-2 bg-white/20 rounded-lg shadow-md">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                    <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                     </svg>
                 </div>
-                <h2 class="font-bold text-2xl text-white leading-tight">
+                <h2 class="font-bold text-2xl leading-tight" style="color: var(--primary-text);">
                     Edit Permission
                 </h2>
             </div>
             <a href="{{ route('permissions.index') }}" 
-               class="inline-flex items-center px-6 py-3 bg-white text-blue-800 font-semibold rounded-lg shadow-lg hover:bg-blue-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+               class="inline-flex items-center px-6 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+               style="background-color: var(--hover-bg); color: var(--primary-text);"
+               onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+               onmouseout="this.style.backgroundColor='var(--hover-bg)'">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -26,8 +29,8 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
                 <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-blue-600 rounded-lg shadow-sm">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="theme-app p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
+                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </div>
@@ -91,7 +94,10 @@
                                 Cancel
                             </a>
                             <button type="submit"
-                                    class="inline-flex items-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                    class="theme-app inline-flex items-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                    style="background-color: var(--hover-bg); color: var(--primary-text);"
+                                    onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
