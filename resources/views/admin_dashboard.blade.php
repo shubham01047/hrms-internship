@@ -567,135 +567,91 @@
                 </div>
 
                 <!-- Dynamic Gantt Chart Section -->
-                <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-600">
-                    <div class="gantt-container">
-                        <!-- Gantt Header -->
-                        <div class="gantt-header">
-                            <div>
-                                <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Project Timeline</h2>
-                                <p class="text-sm text-gray-600">Track project progress and deadlines</p>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="gantt-view-toggle">
-                                    <button class="active" onclick="setTimelineView('weeks')">Weeks</button>
-                                    <button onclick="setTimelineView('months')">Months</button>
-                                    <button onclick="setTimelineView('days')">Days</button>
-                                </div>
-                                <button class="px-3 py-1 bg-primary text-primary text-sm font-medium rounded hover:bg-hover transition-colors">
-                                    Add Task
-                                </button>
-                            </div>
-                        </div>
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md text-sm">
+        <thead>
+            <tr class="bg-gray-100 text-gray-600 uppercase text-xs leading-normal">
+                <th class="py-3 px-4 text-left">Project</th>
+                <th class="py-3 px-4 text-left">Task</th>
+                <th class="py-3 px-4 text-left">Assigned To</th>
+                <th class="py-3 px-4 text-left">Priority</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-left">Timeline</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            @forelse($projects as $project)
+                @foreach($project->tasks as $task)
+                    @php
+                        $start = \Carbon\Carbon::parse($task->created_at);
+                        $end = \Carbon\Carbon::parse($task->due_date ?? now()->addDays(1));
+                        $today = \Carbon\Carbon::now();
 
-                        <!-- Project Statistics -->
-                        <div class="p-4 bg-gray-50 border-b border-gray-200">
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div class="text-center">
-                                    <div class="text-lg font-bold text-green-600">3</div>
-                                    <div class="text-xs text-gray-600">Completed</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-lg font-bold" style="color: var(--primary-bg);">5</div>
-                                    <div class="text-xs text-gray-600">In Progress</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-lg font-bold text-yellow-600">2</div>
-                                    <div class="text-xs text-gray-600">Planning</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-lg font-bold text-red-600">1</div>
-                                    <div class="text-xs text-gray-600">On Hold</div>
-                                </div>
-                            </div>
-                        </div>
+                        $totalDuration = $start->diffInSeconds($end);
+                        $elapsedDuration = $start->diffInSeconds(min($today, $end));
+                        $progressPercent = $totalDuration > 0 ? min(100, round(($elapsedDuration / $totalDuration) * 100)) : 0;
 
-                        <!-- Gantt Main Content -->
-                        <div class="gantt-main">
-                            <!-- Task List -->
-                            <div class="gantt-task-list">
-                                <div class="gantt-task-list-header">
-                                    Task Name
-                                </div>
-                                <div class="gantt-task-item" data-task="1">
-                                    <div class="status-dot completed"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">E-Commerce Platform</div>
-                                        <div class="text-xs text-gray-500">Alice Johnson</div>
-                                    </div>
-                                </div>
-                                <div class="gantt-task-item" data-task="2">
-                                    <div class="status-dot completed"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">Mobile App Redesign</div>
-                                        <div class="text-xs text-gray-500">Bob Williams</div>
-                                    </div>
-                                </div>
-                                <div class="gantt-task-item" data-task="3">
-                                    <div class="status-dot planning"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">CRM Integration</div>
-                                        <div class="text-xs text-gray-500">Charlie Brown</div>
-                                    </div>
-                                </div>
-                                <div class="gantt-task-item" data-task="4">
-                                    <div class="status-dot in-progress"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">Data Analytics Dashboard</div>
-                                        <div class="text-xs text-gray-500">Diana Prince</div>
-                                    </div>
-                                </div>
-                                <div class="gantt-task-item" data-task="5">
-                                    <div class="status-dot on-hold"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">Security Audit</div>
-                                        <div class="text-xs text-gray-500">Eve Adams</div>
-                                    </div>
-                                </div>
-                                <div class="gantt-task-item" data-task="6">
-                                    <div class="status-dot in-progress"></div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-800 truncate">API Documentation</div>
-                                        <div class="text-xs text-gray-500">Frank Miller</div>
-                                    </div>
-                                </div>
-                            </div>
+                        $isOverdue = $today->gt($end) && $task->status !== 'Done';
 
-                            <!-- Timeline -->
-                            <div class="gantt-timeline">
-                                <div class="gantt-timeline-header" id="timeline-header">
-                                    <!-- Timeline headers will be generated by JavaScript -->
-                                </div>
-                                <div class="gantt-timeline-body" id="timeline-body">
-                                    <!-- Timeline content will be generated by JavaScript -->
-                                </div>
-                            </div>
-                        </div>
+                        $statusColors = [
+                            'To-Do' => '#2563eb',
+                            'In Progress' => '#facc15',
+                            'Done' => '#22c55e',
+                            'On Hold' => '#a855f7',
+                            'Blocked' => '#ef4444',
+                        ];
+                        $barColor = $isOverdue ? '#dc2626' : ($statusColors[$task->status] ?? '#6b7280');
 
-                        <!-- Task Details Panel -->
-                        <div class="gantt-task-details" id="task-details" style="display: none;">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div class="status-dot" id="detail-status-dot"></div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800" id="detail-task-name"></h4>
-                                        <p class="text-sm text-gray-600" id="detail-task-dates"></p>
-                                    </div>
+                        $priorityColors = [
+                            'Low' => 'bg-green-100 text-green-800',
+                            'Medium' => 'bg-yellow-100 text-yellow-800',
+                            'High' => 'bg-red-100 text-red-800',
+                        ];
+                        $priorityClass = $priorityColors[$task->priority] ?? 'bg-gray-100 text-gray-800';
+                    @endphp
+
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-4">{{ $project->title }}</td>
+                        <td class="py-3 px-4">{{ $task->title }}</td>
+                        <td class="py-3 px-4">
+                            @foreach($task->assignedUsers as $user)
+                                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                                    {{ $user->name }}
+                                </span>
+                            @endforeach
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded {{ $priorityClass }}">
+                                {{ $task->priority }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full"
+                                style="background-color: {{ $barColor }}20; color: {{ $barColor }}">
+                                {{ $task->status }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 min-w-[250px]">
+                            <div class="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                                <div class="h-full rounded-full transition-all duration-500"
+                                    style="width: {{ $progressPercent }}%; background-color: {{ $barColor }};">
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="text-sm text-gray-600">
-                                        <span class="font-medium">Assignee:</span> <span id="detail-assignee"></span>
-                                    </div>
-                                    <div class="text-sm text-gray-600">
-                                        <span class="font-medium">Progress:</span> <span id="detail-progress"></span>%
-                                    </div>
-                                    <button class="px-3 py-1 bg-primary text-primary text-sm rounded hover:bg-hover transition-colors">
-                                        Edit
-                                    </button>
+                                <div class="absolute inset-0 flex justify-center items-center text-[11px] text-gray-800 font-medium">
+                                    {{ $start->format('d M') }} - {{ $end->format('d M') }}
+                                    ({{ $progressPercent }}%)
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center py-6 text-gray-500">No projects or tasks available.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
                 <!-- Attendance Overview -->
                 <div class="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow p-4 sm:p-6 border-primary border animate-fade-in animate-delay-700">
