@@ -1,17 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-bg-light)] to-[var(--hover-bg)] dark:from-[var(--primary-border)] dark:to-[var(--primary-bg-light)] drop-shadow-lg animate-fade-in-down">
-            Log Timesheet
-        </h1>
+        {{-- Updated header to match the gradient and rounded-xl from leave_index.blade.php --}}
+        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-xl shadow-lg mb-8 animate-fade-in transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105">
+            <h1 class="text-3xl font-bold mb-2">Log Timesheet</h1>
+            <p class="text-red-100">Log your work hours for task: <span class="text-white">{{ $task->title }}</span></p>
+        </div>
     </x-slot>
 
     <div class="py-12 sm:px-6 lg:px-8 bg-gray-100 min-h-[calc(100vh-64px)] theme-app flex items-center justify-center">
         {{-- Custom animations and styles --}}
         <style>
-            /* Define RGB values for primary colors for rgba usage */
+            /* Define color variables to match the theme from leave_index.blade.php and index.blade.php */
             :root {
-                --primary-rgb: 59, 31, 34; /* RGB for #3b1f22 */
-                --primary-bg-light-rgb: 244, 63, 94; /* RGB for #f43f5e */
+                --primary-rgb: 239, 68, 68; /* Red-500 RGB for shadows */
+                --primary-bg-light-rgb: 244, 63, 94; /* From index.blade.php */
+                --primary-bg: #3b1f22; /* From index.blade.php */
+                --secondary-bg: #5a3a3d; /* From index.blade.php */
+                --primary-border: #e5e7eb; /* From index.blade.php */
+                --hover-bg: #f43f5e; /* From index.blade.php */
+
+                /* Action button gradients, aligned with red theme */
+                --action-gradient-from: #ef4444; /* red-500 */
+                --action-gradient-to: #dc2626; /* red-600 */
+                --action-gradient-hover-from: #b91c1c; /* red-700 */
+                --action-gradient-hover-to: #991b1b; /* red-800 */
             }
 
             /* Custom fade-in animation */
@@ -74,7 +86,7 @@
             .dark .form-input {
                 background: var(--primary-bg);
                 border-color: var(--primary-border);
-                color: var(--primary-text);
+                color: white; /* Changed to white for better contrast in dark mode */
             }
 
             /* Enhanced Focus Effects */
@@ -82,8 +94,8 @@
                 border-color: var(--primary-border);
                 background: linear-gradient(135deg, #ffffff, #fef7f7);
                 box-shadow:
-                    0 0 0 4px rgba(var(--primary-bg-light-rgb), 0.1),
-                    0 8px 25px rgba(var(--primary-bg-light-rgb), 0.15),
+                    0 0 0 4px rgba(var(--primary-rgb), 0.1), /* Changed to primary-rgb for red focus */
+                    0 8px 25px rgba(var(--primary-rgb), 0.15),
                     0 4px 12px rgba(0, 0, 0, 0.1);
                 transform: translateY(-2px) scale(1.01);
             }
@@ -91,8 +103,8 @@
             .dark .form-input:focus {
                 background: var(--primary-bg);
                 box-shadow:
-                    0 0 0 4px rgba(var(--primary-bg-light-rgb), 0.2),
-                    0 8px 25px rgba(var(--primary-bg-light-rgb), 0.25),
+                    0 0 0 4px rgba(var(--primary-rgb), 0.2), /* Changed to primary-rgb for red focus */
+                    0 8px 25px rgba(var(--primary-rgb), 0.25),
                     0 4px 12px rgba(0, 0, 0, 0.2);
             }
 
@@ -125,7 +137,7 @@
             }
 
             .dark .form-label {
-                color: var(--primary-text); /* Dark mode color */
+                color: white; /* Changed to white for better contrast in dark mode */
             }
 
             .form-label .required {
@@ -163,8 +175,9 @@
 
             /* Enhanced Form Header */
             .form-header {
-                background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-                border-bottom: 1px solid #e5e7eb;
+                /* Changed to match the red gradient theme */
+                background: linear-gradient(135deg, #fef2f2, #fecaca); /* Light red gradient */
+                border-bottom: 1px solid #fca5a5; /* Red-300 */
                 padding: 2rem;
                 position: relative;
                 overflow: hidden;
@@ -183,7 +196,8 @@
                 left: 0;
                 right: 0;
                 height: 4px;
-                background: linear-gradient(90deg, var(--primary-border), var(--primary-bg-light), var(--primary-border));
+                /* Adjusted gradientShift to use red tones */
+                background: linear-gradient(90deg, #fca5a5, #ef4444, #fca5a5);
                 background-size: 200% 100%;
                 animation: gradientShift 3s ease-in-out infinite;
             }
@@ -239,15 +253,15 @@
 
             /* Checkbox checked state */
             .checkbox-container.has-checked {
-                background: var(--primary-bg-light);
-                border-color: var(--primary-bg-light);
-                box-shadow: 0 6px 15px rgba(var(--primary-bg-light-rgb), 0.3);
+                background: linear-gradient(135deg, #fef3c7, #fde68a); /* Yellow gradient for checked state */
+                border-color: #f59e0b; /* Yellow-500 */
+                box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
             }
 
             .dark .checkbox-container.has-checked {
-                background: var(--hover-bg);
-                border-color: var(--hover-bg);
-                box-shadow: 0 6px 15px rgba(var(--primary-bg-light-rgb), 0.4);
+                background: linear-gradient(135deg, #92400e, #b45309); /* Darker yellow gradient */
+                border-color: #d97706; /* Yellow-700 */
+                box-shadow: 0 6px 15px rgba(217, 119, 6, 0.4);
             }
 
             .checkbox-container .peer-checked-bg {
@@ -262,11 +276,11 @@
 
             /* Submit button gradient */
             .bg-secondary-gradient {
-                background: linear-gradient(90deg, var(--primary-bg-light), var(--hover-bg));
+                background: linear-gradient(90deg, var(--action-gradient-from), var(--action-gradient-to));
             }
 
             .bg-secondary-gradient:hover {
-                background: linear-gradient(90deg, var(--hover-bg), var(--primary-bg-light));
+                background: linear-gradient(90deg, var(--action-gradient-hover-from), var(--action-gradient-hover-to));
             }
 
             /* Cancel button styling */
@@ -277,21 +291,21 @@
             }
 
             .dark .btn-cancel {
-                color: var(--primary-text);
+                color: white; /* Changed to white for better contrast in dark mode */
                 background: var(--primary-bg);
                 border-color: var(--primary-border);
             }
 
             .btn-cancel:hover {
-                background: var(--primary-bg-light);
+                background: var(--action-gradient-from); /* Use red gradient for hover */
                 color: white;
-                border-color: var(--primary-bg-light);
+                border-color: var(--action-gradient-from);
             }
 
             .dark .btn-cancel:hover {
-                background: var(--hover-bg);
+                background: var(--action-gradient-hover-from); /* Darker red gradient for hover */
                 color: white;
-                border-color: var(--hover-bg);
+                border-color: var(--action-gradient-hover-from);
             }
 
 
@@ -320,7 +334,7 @@
             <div class="form-container">
                 <div class="form-header">
                     <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 transition-all duration-300 ease-in-out">Log Timesheet</h2>
-                    <p class="text-gray-600 dark:text-gray-300">Log your work hours for task: <span class="text-[var(--hover-bg)] dark:text-[var(--primary-border)]">{{ $task->title }}</span></p>
+                    <p class="text-gray-600 dark:text-gray-300">Log your work hours for task: <span class="text-[var(--hover-bg)] dark:text-white">{{ $task->title }}</span></p>
                 </div>
                 <div class="form-body">
                     <form action="{{ route('tasks.timesheets.store', [$projectId, $task->id]) }}" method="POST" class="space-y-0">
@@ -350,8 +364,8 @@
                         @if ($attendance)
                             <div class="form-field animate-delay-300">
                                 <div class="bg-[var(--primary-bg-light)]/10 dark:bg-[var(--primary-bg)] p-4 rounded-lg shadow-inner border border-[var(--primary-border)] dark:border-[var(--primary-border)]">
-                                    <p class="text-lg font-semibold text-[var(--hover-bg)] dark:text-[var(--primary-border)] mb-2">Attendance for: <span class="font-bold">{{ \Carbon\Carbon::parse($today)->format('d M, Y') }}</span></p>
-                                    <ul class="space-y-1 text-gray-700 dark:text-[var(--primary-text)]">
+                                    <p class="text-lg font-semibold text-[var(--hover-bg)] dark:text-white mb-2">Attendance for: <span class="font-bold">{{ \Carbon\Carbon::parse($today)->format('d M, Y') }}</span></p>
+                                    <ul class="space-y-1 text-gray-700 dark:text-gray-200">
                                         <li><strong>Punch In:</strong> <span class="font-medium">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('d M, Y h:i A') }}</span></li>
                                         <li><strong>Punch Out:</strong> <span class="font-medium">{{ $attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('d M, Y h:i A') : 'Not yet punched out.' }}</span></li>
                                         <li><strong>Total Attendance Hours:</strong> <span class="font-medium text-green-700 dark:text-green-400">{{ $attendance->total_working_hours ?? 'N/A' }}</span></li>

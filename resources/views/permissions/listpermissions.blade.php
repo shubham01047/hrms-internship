@@ -1,24 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-lg shadow-sm">
+        <div class="theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
             <div class="flex items-center space-x-3">
-                <div class="p-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                    <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                     </svg>
                 </div>
-                <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                <h2 class="font-bold text-2xl leading-tight" style="color: var(--primary-text);">
                     {{ __('Permissions Management') }}
                 </h2>
             </div>
             @can('create permissions')
-                <a href="{{ route('permissions.create') }}" 
-                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-300">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Create Permission
-                </a>
+                <div class="mr-24">
+                    <a href="{{ route('permissions.create') }}" 
+                       class="inline-flex items-center px-6 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                       style="background-color: var(--hover-bg); color: var(--primary-text);"
+                       onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                       onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Create Permission
+                    </a>
+                </div>
             @endcan
         </div>
     </x-slot>
@@ -29,7 +34,7 @@
             
             <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
                 <!-- Search Bar Section -->
-                <div class="p-6 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <div class="p-6 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
                         <div class="relative flex-1 max-w-md">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -40,12 +45,15 @@
                             <input type="text" 
                                    id="searchInput"
                                    placeholder="Search permissions..." 
-                                   class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 ease-in-out shadow-sm">
+                                   class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out shadow-sm">
                         </div>
                         
                         <div class="flex items-center space-x-3">
                             <button id="clearSearch" 
-                                    class="hidden inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                                    class="theme-app hidden inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                                    style="background-color: var(--primary-border); color: var(--primary-text);"
+                                    onmouseover="this.style.backgroundColor='var(--hover-bg)'"
+                                    onmouseout="this.style.backgroundColor='var(--primary-border)'">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
@@ -64,14 +72,14 @@
                 <div class="p-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gradient-to-r from-red-600 to-red-700">
+                            <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tl-lg">
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider rounded-tl-lg" style="color: var(--primary-text);">
                                         <div class="flex items-center space-x-2">
                                             <span>#</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                         <div class="flex items-center space-x-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
@@ -79,7 +87,7 @@
                                             <span>Name</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                         <div class="flex items-center space-x-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
@@ -87,7 +95,7 @@
                                             <span>Created</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider rounded-tr-lg">
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider rounded-tr-lg" style="color: var(--primary-text);">
                                         <div class="flex items-center space-x-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
@@ -100,20 +108,20 @@
                             <tbody id="permissionsTableBody" class="bg-white divide-y divide-gray-200">
                                 @if ($permissions->isNotEmpty())
                                     @foreach ($permissions as $index => $permission)
-                                        <tr class="permission-row hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 ease-in-out transform hover:scale-[1.01]" 
+                                        <tr class="permission-row hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 ease-in-out transform hover:scale-[1.01]" 
                                             data-permission-name="{{ strtolower($permission->name) }}"
                                             data-permission-id="{{ $permission->id }}">
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-sm font-semibold text-gray-700">
+                                                <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-sm font-semibold text-blue-800">
                                                     {{ $index + 1 }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 h-10 w-10">
-                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
                                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
                                                             </svg>
                                                         </div>
                                                     </div>
@@ -139,14 +147,17 @@
                                                 <div class="flex items-center space-x-3">
                                                     @can('edit permissions')
                                                         <a href="{{ route('permissions.edit', $permission->id) }}"
-                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                                           class="theme-app inline-flex items-center px-4 py-2 text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                                           style="background-color: var(--hover-bg); color: var(--primary-text);"
+                                                           onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                                           onmouseout="this.style.backgroundColor='var(--hover-bg)'">
                                                             <x-pencil class="w-3 h-3 mr-1"/>
                                                             Edit
                                                         </a>
                                                     @endcan
                                                     @can('delete permissions')
                                                         <a href="javascript:void(0);" onclick="deletePermission({{ $permission->id }})"
-                                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-semibold rounded-lg shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
+                                                           class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
                                                             <x-trashcan class="w-3 h-3 mr-1"/>
                                                             Delete
                                                         </a>
@@ -168,7 +179,7 @@
                                             </div>
                                             <div class="text-lg font-medium text-gray-900">No permissions found</div>
                                             <div class="text-sm text-gray-500">
-                                                Try adjusting your search terms or <button onclick="clearSearch()" class="text-red-600 hover:text-red-500 underline">clear the search</button>.
+                                                Try adjusting your search terms or <button onclick="clearSearch()" class="text-blue-600 hover:text-blue-500 underline">clear the search</button>.
                                             </div>
                                         </div>
                                     </td>
@@ -288,7 +299,7 @@
                 permissionTextElement.textContent = count === 1 ? 'permission' : 'permissions';
                 
                 if (searchTerm) {
-                    searchContextElement.innerHTML = ` found for "<span class="font-medium text-red-600">${searchTerm}</span>"`;
+                    searchContextElement.innerHTML = ` found for "<span class="font-medium text-blue-600">${searchTerm}</span>"`;
                 } else {
                     searchContextElement.textContent = '';
                 }

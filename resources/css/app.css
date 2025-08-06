@@ -26,17 +26,17 @@
     @apply text-white bg-gray-600 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
   }
 
-   .theme-app {
---primary-bg: #572626;           /* Royal Black (very dark background) */
---primary-bg-light: #1e1e1ee0;     /* Slightly lighter black for cards/sections */
---primary-text: #ffffff;         /* Pure white text */
---primary-border: #ff4d67;       /* Rose/Red-400: soft accent border */
---hover-bg: #ff1e42;             /* Red-600: hover highlight */
+.theme-app {
+  --primary-bg: #0b1f3a;           /* Navy-950 – Deep corporate blue */
+  --primary-bg-light: #102c4e;     /* Navy-900 – Slightly lighter for cards/sections */
+  --primary-text: #f8fafc;         /* Light Steel – High contrast text */
+  --primary-border: #1e3a5f;       /* Muted steel blue border */
+  --hover-bg: #2563eb;             /* Blue-600 – Primary action hover */
 
---secondary-bg: #b91c1c;         /* Strong Red (like Rose-700) */
---secondary-text: #ffffff;       /* White text on red */
-    /* White: for buttons/text over blue */
-   }
+  --secondary-bg: #2c4e9c;         /* Slate-900 – For sidebar/nav */
+  --secondary-text: #cbd5e1;       /* Slate-300 – Softer text */
+}
+
 
   .theme-app .bg-primary {
     background-color: var(--primary-bg);
