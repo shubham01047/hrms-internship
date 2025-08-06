@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+        <div class="mr-24 theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
             <div class="flex items-center space-x-3">
                 <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
                     <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">

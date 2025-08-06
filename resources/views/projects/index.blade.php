@@ -79,7 +79,7 @@
                             
                             @if($project->budget)
                                 <p class="text-gray-600 text-sm mb-3">
-                                    <span class="font-medium">Budget:</span> ${{ number_format($project->budget, 2) }}
+                                    <span class="font-medium">Budget:</span> ₹{{ number_format($project->budget, 2) }}
                                 </p>
                             @endif
                             
