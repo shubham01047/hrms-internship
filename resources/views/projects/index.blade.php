@@ -3,7 +3,7 @@
         {{-- Updated header to match the image: "Project" in dark, "Management" in red gradient --}}
         <div class="flex justify-between items-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pr-24">
             <h1 class="text-4xl font-extrabold drop-shadow-lg animate-fade-in-down">
-                <span class="text-gray-900 dark:text-gray-100">Project</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-border)] to-[var(--hover-bg)] ml-2">Project</span>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-border)] to-[var(--hover-bg)] ml-2">Management</span>
             </h1>
             @can('create project')

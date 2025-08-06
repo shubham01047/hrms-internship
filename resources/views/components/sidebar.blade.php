@@ -88,10 +88,10 @@
 
         <!-- Projects -->
         @can('view project')
-            <div class="border-b border-[#ff6969] pb-2 mb-2">
-                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-red-200">Projects</div>
+            <div class="border-b border-primary pb-2 mb-2">
+                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Projects</div>
                 <a href="{{ route('projects.index') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-[#ff2626] hover:scale-105 transition-all duration-300">📁
+                    class="{{ $isActive('projects.index') }}">📁
                     View Projects</a>
             </div>
         @endcan
