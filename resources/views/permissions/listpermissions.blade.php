@@ -1,42 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
-            <div class="flex items-center space-x-3">
-                <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
-                    <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                </div>
-                <h2 class="font-bold text-2xl leading-tight" style="color: var(--primary-text);">
-                    {{ __('Permissions Management') }}
-                </h2>
-            </div>
-            @can('create permissions')
-                <div class="mr-24">
-                    <a href="{{ route('permissions.create') }}" 
-                       class="inline-flex items-center px-6 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
-                       style="background-color: var(--hover-bg); color: var(--primary-text);"
-                       onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                       onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        <div class="theme-app flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+            {{-- Added lg:mr-24 to create space for the dropdown on larger screens --}}
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 w-full lg:mr-24">
+                <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
+                    <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                         </svg>
-                        Create Permission
-                    </a>
+                    </div>
+                    {{-- Reduced heading size for larger screens --}}
+                    <h2 class="font-bold text-xl sm:text-xl lg:text-2xl leading-tight" style="color: var(--primary-text);">
+                        {{ __('Permissions Management') }}
+                    </h2>
                 </div>
-            @endcan
+                @can('create permissions')
+                    <div class="w-full sm:w-auto">
+                        <a href="{{ route('permissions.create') }}" 
+                           class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                           style="background-color: var(--hover-bg); color: var(--primary-text);"
+                           onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                           onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Create Permission
+                        </a>
+                    </div>
+                @endcan
+            </div>
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 sm:py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <x-message></x-message>
             
             <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
                 <!-- Search Bar Section -->
-                <div class="p-6 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
-                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                        <div class="relative flex-1 max-w-md">
+                <div class="p-4 sm:p-6 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between">
+                        <div class="relative flex-1 w-full sm:max-w-md">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -45,12 +49,12 @@
                             <input type="text" 
                                    id="searchInput"
                                    placeholder="Search permissions..." 
-                                   class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out shadow-sm">
+                                   class="block w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out shadow-sm text-sm">
                         </div>
                         
-                        <div class="flex items-center space-x-3">
+                        <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                             <button id="clearSearch" 
-                                    class="theme-app hidden inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                                    class="theme-app hidden inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
                                     style="background-color: var(--primary-border); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--hover-bg)'"
                                     onmouseout="this.style.backgroundColor='var(--primary-border)'">
@@ -60,7 +64,7 @@
                                 Clear
                             </button>
                             
-                            <div id="resultsCounter" class="text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div id="resultsCounter" class="text-xs sm:text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border border-gray-200 w-full sm:w-auto text-center">
                                 <span class="font-semibold" id="totalCount">{{ $permissions->count() }}</span> 
                                 <span id="permissionText">{{ Str::plural('permission', $permissions->count()) }}</span>
                                 <span id="searchContext"></span>
@@ -69,35 +73,35 @@
                     </div>
                 </div>
 
-                <div class="p-6">
+                <div class="p-4 sm:p-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider rounded-tl-lg" style="color: var(--primary-text);">
-                                        <div class="flex items-center space-x-2">
+                                    <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider rounded-tl-lg" style="color: var(--primary-text);">
+                                        <div class="flex items-center space-x-1 sm:space-x-2">
                                             <span>#</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                        <div class="flex items-center space-x-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                        <div class="flex items-center space-x-1 sm:space-x-2">
+                                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                                             </svg>
                                             <span>Name</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                        <div class="flex items-center space-x-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                        <div class="flex items-center space-x-1 sm:space-x-2">
+                                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                             </svg>
                                             <span>Created</span>
                                         </div>
                                     </th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider rounded-tr-lg" style="color: var(--primary-text);">
-                                        <div class="flex items-center space-x-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider rounded-tr-lg" style="color: var(--primary-text);">
+                                        <div class="flex items-center space-x-1 sm:space-x-2">
+                                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                                             </svg>
                                             <span>Actions</span>
@@ -111,43 +115,43 @@
                                         <tr class="permission-row hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 ease-in-out transform hover:scale-[1.01]" 
                                             data-permission-name="{{ strtolower($permission->name) }}"
                                             data-permission-id="{{ $permission->id }}">
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-sm font-semibold text-blue-800">
+                                            <td class="px-4 py-3 whitespace-nowrap">
+                                                <div class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-xs sm:text-sm font-semibold text-blue-800">
                                                     {{ $index + 1 }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <div class="flex-shrink-0 h-10 w-10">
-                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
-                                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                                        <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
                                                             </svg>
                                                         </div>
                                                     </div>
-                                                    <div class="ml-4">
+                                                    <div class="ml-2 sm:ml-4">
                                                         <div class="text-sm font-semibold text-gray-900 permission-name">
                                                             {{ ucwords($permission->name) }}
                                                         </div>
-                                                        <div class="text-sm text-gray-500">Permission</div>
+                                                        <div class="text-xs text-gray-500">Permission</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                                     </svg>
-                                                    <span class="text-sm text-gray-900 font-medium">
+                                                    <span class="text-xs sm:text-sm text-gray-900 font-medium">
                                                         {{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center space-x-3">
+                                            <td class="px-4 py-3 whitespace-nowrap">
+                                                <div class="flex items-center space-x-2 sm:space-x-3">
                                                     @can('edit permissions')
                                                         <a href="{{ route('permissions.edit', $permission->id) }}"
-                                                           class="theme-app inline-flex items-center px-4 py-2 text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                                           class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                                                            style="background-color: var(--hover-bg); color: var(--primary-text);"
                                                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                                            onmouseout="this.style.backgroundColor='var(--hover-bg)'">
@@ -157,7 +161,7 @@
                                                     @endcan
                                                     @can('delete permissions')
                                                         <a href="javascript:void(0);" onclick="deletePermission({{ $permission->id }})"
-                                                           class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
+                                                           class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
                                                             <x-trashcan class="w-3 h-3 mr-1"/>
                                                             Delete
                                                         </a>
@@ -207,9 +211,9 @@
                 </div>
                 
                 @if ($permissions->hasPages())
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-xl">
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200 rounded-b-xl">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700">
                                 Showing {{ $permissions->firstItem() }} to {{ $permissions->lastItem() }} of {{ $permissions->total() }} results
                             </div>
                             <div class="pagination-wrapper">

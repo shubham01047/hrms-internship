@@ -1,35 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 3rem 2rem; border-radius: 0;">
+        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 1.5rem 1rem; sm:padding: 3rem 2rem; border-radius: 0;">
             <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
                     <div class="flex items-center space-x-4">
-                        <div class="p-3 rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
-                            <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-4xl font-bold leading-tight" style="color: var(--primary-text);">
+                            <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--primary-text);">
                                 Employee Management
                             </h1>
-                            <p class="text-lg mt-1" style="color: var(--secondary-text);">
+                            <p class="text-sm sm:text-lg mt-1" style="color: var(--secondary-text);">
                                 Manage your team members and their information
                             </p>
                         </div>
                     </div>
-                    {{-- @can('create employee')
+                    @can('create employee')
                         <a href="{{ route('employees.create') }}" 
-                           class="theme-app inline-flex items-center px-8 py-4 font-semibold rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-lg"
+                           class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-base sm:text-lg"
                            style="background-color: var(--hover-bg); color: var(--primary-text);"
                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                            onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                             Add Employee
                         </a>
-                    @endcan --}}
+                    @endcan
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         <input type="text" 
                                id="searchInput"
                                placeholder="Search employees by name, email, or phone..." 
-                               class="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-base">
+                               class="block w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-4 border border-gray-200 rounded-lg sm:rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-sm sm:text-base">
                     </div>
                     
                     <div class="flex items-center space-x-4">
@@ -66,7 +66,7 @@
                             Clear
                         </button>
                         
-                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-4 py-3 rounded-xl">
+                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
@@ -84,12 +84,12 @@
                     <table class="min-w-full">
                         <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                             <tr>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <span>#</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -97,7 +97,7 @@
                                         <span>Employee</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
@@ -105,7 +105,7 @@
                                         <span>Email</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -113,7 +113,7 @@
                                         <span>Phone</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -121,7 +121,7 @@
                                         <span>Status</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <span>Actions</span>
                                 </th>
                             </tr>
@@ -132,47 +132,47 @@
                                     data-employee-name="{{ strtolower($employee->name ?? '') }}" 
                                     data-employee-email="{{ strtolower($employee->email ?? '') }}"
                                     data-employee-phone="{{ strtolower($employee->phone ?? '') }}">
-                                    <td class="px-8 py-6 whitespace-nowrap">
-                                        <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-sm font-semibold text-blue-800 row-number">
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
+                                        <div class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-xs sm:text-sm font-semibold text-blue-800 row-number">
                                             {{ $loop->iteration }}
                                         </div>
                                     </td>
-                                    <td class="px-8 py-6 whitespace-nowrap">
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0">
-                                                <div class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background-color: var(--hover-bg);">
+                                                <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg" style="background-color: var(--hover-bg);">
                                                     {{ strtoupper(substr($employee->name ?? 'N', 0, 1)) }}
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="text-base font-semibold text-gray-900 employee-name">
+                                                <div class="text-sm sm:text-base font-semibold text-gray-900 employee-name">
                                                     {{ $employee->name ?? '-' }}
                                                 </div>
-                                                <div class="text-sm text-gray-500">ID: #{{ str_pad($employee->id ?? 0, 4, '0', STR_PAD_LEFT) }}</div>
+                                                <div class="text-xs text-gray-500">ID: #{{ str_pad($employee->id ?? 0, 4, '0', STR_PAD_LEFT) }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-8 py-6 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900 employee-email">{{ $employee->email ?? '-' }}</div>
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
+                                        <div class="text-xs sm:text-sm text-gray-900 employee-email">{{ $employee->email ?? '-' }}</div>
                                     </td>
-                                    <td class="px-8 py-6 whitespace-nowrap">
-                                        <div class="text-sm text-gray-500 employee-phone">{{ $employee->phone ?? '-' }}</div>
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
+                                        <div class="text-xs sm:text-sm text-gray-500 employee-phone">{{ $employee->phone ?? '-' }}</div>
                                     </td>
-                                    <td class="px-8 py-6 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium
                                             @if($employee->status === 'active') bg-green-100 text-green-800
                                             @elseif($employee->status === 'inactive') bg-yellow-100 text-yellow-800
                                             @else bg-red-100 text-red-800 @endif">
                                             {{ ucfirst($employee->status) ?? 'N/A' }}
                                         </span>
                                     </td>
-                                    <td class="px-8 py-6 whitespace-nowrap">
+                                    <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                         <a href="{{ route('employees.edit', $employee->id) }}" 
-                                           class="theme-app inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                                           class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
                                            style="background-color: var(--hover-bg); color: var(--primary-text);"
                                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                            onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
                                             Edit
@@ -214,9 +214,9 @@
                 </div>
                 
                 @if ($employees->hasPages())
-                    <div class="bg-gray-50 px-8 py-4 border-t border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-700 font-medium">
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 font-medium">
                                 Showing {{ $employees->firstItem() }} to {{ $employees->lastItem() }} of {{ $employees->total() }} results
                             </div>
                             <div class="pagination-wrapper">
