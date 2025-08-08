@@ -18,7 +18,7 @@
                             </p>
                         </div>
                     </div>
-                    @can('create employee')
+                    {{-- @can('create employee')
                         <a href="{{ route('employees.create') }}" 
                            class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-base sm:text-lg"
                            style="background-color: var(--hover-bg); color: var(--primary-text);"
@@ -29,7 +29,7 @@
                             </svg>
                             Add Employee
                         </a>
-                    @endcan
+                    @endcan --}}
                 </div>
             </div>
         </div>

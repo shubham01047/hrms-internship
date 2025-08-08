@@ -91,7 +91,7 @@
 
     @can('attendance report')
         <x-slot name="header">
-            <div class="theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+            <div class="theme-app flex justify-between items-center p-4 sm:p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                 <div class="flex items-center space-x-3">
                     <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
                         <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,16 +101,16 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="font-bold text-2xl leading-tight" style="color: var(--primary-text);">
+                        <h2 class="font-bold text-xl sm:text-2xl leading-tight" style="color: var(--primary-text);">
                             Attendance Report
                         </h2>
-                        <p class="text-sm" style="color: var(--secondary-text);">Daily attendance tracking and break management</p>
+                        <p class="text-xs sm:text-sm" style="color: var(--secondary-text);">Daily attendance tracking and break management</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
                     <div class="text-right">
-                        <div class="text-sm" style="color: var(--secondary-text);">{{ date('F j, Y') }}</div>
-                        <div class="font-semibold" style="color: var(--primary-text);">{{ count($attendances) }} Records</div>
+                        <div class="text-xs sm:text-sm" style="color: var(--secondary-text);">{{ date('F j, Y') }}</div>
+                        <div class="text-sm sm:font-semibold" style="color: var(--primary-text);">{{ count($attendances) }} Records</div>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
         <div class="py-8 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             <div class="w-full px-4 sm:px-6 lg:px-8 space-y-8">
                 <!-- Today's Attendance Header Card -->
-                <div class="attendance-card p-6 animate-fade-in animate-delay-100">
+                <div class="attendance-card p-4 sm:p-6 animate-fade-in animate-delay-100">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
                             <div class="theme-app p-3 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
@@ -128,11 +128,11 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-900">Today's Attendance Overview</h3>
-                                <p class="text-sm text-gray-600">Complete attendance tracking for all employees</p>
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">Today's Attendance Overview</h3>
+                                <p class="text-xs sm:text-sm text-gray-600">Complete attendance tracking for all employees</p>
                             </div>
                         </div>
-                        <div class="theme-app px-4 py-2 rounded-full shadow-sm" style="background-color: var(--hover-bg);">
+                        <div class="theme-app px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-sm" style="background-color: var(--hover-bg);">
                             <span class="font-medium" style="color: var(--primary-text);">{{ count($attendances) }} Active Records</span>
                         </div>
                     </div>
@@ -142,15 +142,15 @@
                 @forelse ($attendances as $index => $attendance)
                     <div class="attendance-card animate-fade-in animate-delay-200">
                         <!-- Employee Header -->
-                        <div class="theme-app p-6 border-b border-gray-100" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                        <div class="theme-app p-4 sm:p-6 border-b border-gray-100" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-4">
                                     <div class="avatar-circle" style="background: linear-gradient(135deg, var(--hover-bg), var(--primary-bg));">
                                         <span>{{ strtoupper(substr($attendance['name'], 0, 2)) }}</span>
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-semibold" style="color: var(--primary-text);">{{ $attendance['name'] }}</h3>
-                                        <p class="text-sm" style="color: var(--secondary-text);">Employee ID: EMP{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</p>
+                                        <h3 class="text-lg sm:text-xl font-semibold" style="color: var(--primary-text);">{{ $attendance['name'] }}</h3>
+                                        <p class="text-xs sm:text-sm" style="color: var(--secondary-text);">Employee ID: EMP{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</p>
                                     </div>
                                 </div>
 
@@ -176,7 +176,7 @@
                         </div>
 
                         <!-- Time Information Grid -->
-                        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             <!-- Punch In -->
                             <div class="grid-item bg-green-50 border-green-200 animate-fade-in animate-delay-300">
                                 <div class="flex items-center space-x-3 mb-2">
@@ -187,7 +187,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-green-700">Punch In</p>
                                 </div>
-                                <p class="text-2xl font-bold text-green-800">{{ \Carbon\Carbon::parse($attendance['punch_in'])->format('h:i A') }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-green-800">{{ \Carbon\Carbon::parse($attendance['punch_in'])->format('h:i A') }}</p>
                                 <p class="text-xs text-green-600 mt-1">Remark: {{ $attendance['punch_in_remarks'] ?? '-' }}</p>
                             </div>
 
@@ -201,7 +201,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-red-700">Punch Out</p>
                                 </div>
-                                <p class="text-2xl font-bold text-red-800">{{ $attendance['punch_out'] ? \Carbon\Carbon::parse($attendance['punch_out'])->format('h:i A') : 'Not punched out' }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-red-800">{{ $attendance['punch_out'] ? \Carbon\Carbon::parse($attendance['punch_out'])->format('h:i A') : 'Not punched out' }}</p>
                                 <p class="text-xs text-red-600 mt-1">Remark: {{ $attendance['punch_out_remarks'] ?? '-' }}</p>
                             </div>
 
@@ -215,7 +215,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-blue-700">Total Hours</p>
                                 </div>
-                                <p class="text-2xl font-bold text-blue-800">{{ $attendance['total_working_hours'] }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-blue-800">{{ $attendance['total_working_hours'] }}</p>
                                 <p class="text-xs text-blue-600 mt-1">Daily total work duration</p>
                             </div>
 
@@ -229,7 +229,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-yellow-700">Punch In Again</p>
                                 </div>
-                                <p class="text-2xl font-bold text-yellow-800">{{ $attendance['punch_in_again'] ? \Carbon\Carbon::parse($attendance['punch_in_again'])->format('h:i A') : 'Not punched in again' }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-yellow-800">{{ $attendance['punch_in_again'] ? \Carbon\Carbon::parse($attendance['punch_in_again'])->format('h:i A') : 'Not punched in again' }}</p>
                                 <p class="text-xs text-yellow-600 mt-1">Remark: {{ $attendance['punch_in_again_remarks'] ?? '-' }}</p>
                             </div>
 
@@ -243,7 +243,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-purple-700">Punch Out Again</p>
                                 </div>
-                                <p class="text-2xl font-bold text-purple-800">{{ $attendance['punch_out_again'] ? \Carbon\Carbon::parse($attendance['punch_out_again'])->format('h:i A') : 'Not punched out again' }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-purple-800">{{ $attendance['punch_out_again'] ? \Carbon\Carbon::parse($attendance['punch_out_again'])->format('h:i A') : 'Not punched out again' }}</p>
                                 <p class="text-xs text-purple-600 mt-1">Remark: {{ $attendance['punch_out_again_remarks'] ?? '-' }}</p>
                             </div>
 
@@ -257,7 +257,7 @@
                                     </div>
                                     <p class="text-sm font-medium text-indigo-700">Total Overtime Hours</p>
                                 </div>
-                                <p class="text-2xl font-bold text-indigo-800">{{ $attendance['overtime_working_hours'] }}</p>
+                                <p class="text-xl sm:text-2xl font-bold text-indigo-800">{{ $attendance['overtime_working_hours'] }}</p>
                                 <p class="text-xs text-indigo-600 mt-1">Additional hours worked</p>
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                                 </div>
 
                                 @if (!empty($attendance['breaks']) && count($attendance['breaks']) > 0)
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                         @foreach ($attendance['breaks'] as $break)
                                             @php
                                                 $breakType = strtolower($break['type'] ?? 'custom');
@@ -329,10 +329,10 @@
                         <div class="bg-gray-100 p-4 rounded-full mx-auto mb-4 w-fit">
                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-            </svg>
+                            </svg>
                         </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">No Attendance Records</h3>
-                        <p class="text-gray-500">No attendance records found for today.</p>
+                        <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">No Attendance Records</h3>
+                        <p class="text-sm text-gray-500">No attendance records found for today.</p>
                     </div>
                 @endforelse
             </div>
