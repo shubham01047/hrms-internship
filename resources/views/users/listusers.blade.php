@@ -219,7 +219,7 @@
                                 @endforeach
                             @endif
                             
-                             No Results Row (Hidden by default) 
+                             {{-- No Results Row (Hidden by default)  --}}
                             <tr id="noResultsRow" class="hidden">
                                 <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
@@ -236,7 +236,7 @@
                                 </td>
                             </tr>
 
-                             Empty State Row (Show when no users at all) 
+                             {{-- Empty State Row (Show when no users at all)  --}}
                             @if ($users->isEmpty())
                                 <tr id="emptyStateRow">
                                     <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">

@@ -6,7 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        {{ $company->name ?? 'Company' }} |
+        {{ ucwords(str_replace(['-', '.'], ' ', Route::currentRouteName() ?? 'Dashboard')) }}
+    </title>
+{{-- company logo --}}
+    @if(isset($company) && $company->logo)
+    <link rel="icon" type="image/png"  href="{{ asset( $company->logo) }}">
+@else
+    <link rel="icon" type="image/png" href="{{ asset('default-favicon.png') }}">
+@endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,13 +29,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body 
-    class="theme-app font-sans antialiased bg-secondary-bg text-primary"
-    x-data="{ sidebarOpen: window.innerWidth >= 768 }"
+<body class="theme-app font-sans antialiased bg-secondary-bg text-primary" x-data="{ sidebarOpen: window.innerWidth >= 768 }"
     x-init="$watch('sidebarOpen', value => {
         if (window.innerWidth >= 768) sidebarOpen = true;
-    })"
->
+    })">
 
     <div class="flex-1 flex flex-col min-h-screen ml-0 md:ml-64 transition-all duration-300 ease-in-out">
         <!-- Sidebar Component -->
@@ -37,11 +43,11 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col min-h-screen ">
             <!-- Toggle Button for mobile -->
-            <button @click="sidebarOpen = !sidebarOpen" class="md:hidden px-4 py-2 focus:outline-none sticky top-0 z-50">
+            <button @click="sidebarOpen = !sidebarOpen"
+                class="md:hidden px-4 py-2 focus:outline-none sticky top-0 z-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 primary-text" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16" />
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
 
