@@ -163,7 +163,7 @@
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-chart-pie"></i> Reports
             </div>
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+            <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
                 <i class="fas fa-clipboard-list"></i> Summary Reports
             </a>
         </div>

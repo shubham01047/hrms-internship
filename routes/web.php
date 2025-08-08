@@ -127,6 +127,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/timesheets/{timesheet}/approve', [TimesheetController::class, 'approve'])->name('timesheets.approve');
     Route::put('/timesheets/{timesheet}/reject', [TimesheetController::class, 'reject'])->name('timesheets.reject');
 
+    Route::get('/reports', [AdminDashboardController::class, 'attendanceChart'])->name('reports.report');
+
 });
 
 require __DIR__ . '/auth.php';
