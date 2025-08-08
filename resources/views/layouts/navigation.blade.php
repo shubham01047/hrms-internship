@@ -19,9 +19,9 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route($routeName) }}" :active="request()->routeIs($routeName)"
-                        class="relative flex items-center px-4 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
+                        class="relative flex items-center px-6 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
                         <i class="fas fa-home w-4 h-4 mr-2"></i>
                         <span class="relative z-10">{{ __('Dashboard') }}</span>
                         <div class="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -29,7 +29,7 @@
 
                     @can('view permissions')
                         <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')"
-                            class="relative flex items-center px-4 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
+                            class="relative flex items-center px-6 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
                             <i class="fas fa-key w-4 h-4 mr-2"></i>
                             <span class="relative z-10">{{ __('Permissions') }}</span>
                             <div class="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -38,7 +38,7 @@
 
                     @can('view roles')
                         <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')"
-                            class="relative flex items-center px-4 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
+                            class="relative flex items-center px-6 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
                             <i class="fas fa-user-tag w-4 h-4 mr-2"></i>
                             <span class="relative z-10">{{ __('Roles') }}</span>
                             <div class="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -47,7 +47,7 @@
 
                     @can('view employee')
                         <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')"
-                            class="relative flex items-center px-4 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
+                            class="relative flex items-center px-6 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
                             <i class="fas fa-users w-4 h-4 mr-2"></i>
                             <span class="relative z-10">{{ __('Employees') }}</span>
                             <div class="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -56,7 +56,7 @@
 
                     @can('view users')
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
-                            class="relative flex items-center px-4 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
+                            class="relative flex items-center px-6 py-2 text-primary hover:text-white font-medium transition-all duration-300 rounded-lg hover:bg-primary/10 group">
                             <i class="fas fa-user-friends w-4 h-4 mr-2"></i>
                             <span class="relative z-10">{{ __('Users') }}</span>
                             <div class="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -132,7 +132,7 @@
         x-transition:leave-start="transform opacity-100 translate-y-0"
         x-transition:leave-end="transform opacity-0 -translate-y-full">
         
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-3 space-y-2">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
                 class="flex items-center text-primary hover:text-white font-semibold px-4 py-3 rounded-lg mx-2 transition-all duration-200 hover:bg-primary/10">
                 <i class="fas fa-home w-4 h-4 mr-3"></i>
@@ -179,7 +179,7 @@
                 <div class="font-medium text-sm text-primary/80">{{ Auth::user()->email }}</div>
             </div>
 
-            <div class="mt-3 space-y-1">
+            <div class="mt-3 space-y-2">
                 <x-responsive-nav-link :href="route('profile.edit')" 
                     class="flex items-center text-primary hover:text-white px-4 py-3 rounded-lg mx-2 transition-all duration-200 hover:bg-primary/10">
                     <i class="fas fa-user w-4 h-4 mr-3"></i>

@@ -1,30 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 3rem 2rem; border-radius: 0;">
+        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 1.5rem 1rem; sm:padding: 3rem 2rem; border-radius: 0;">
             <div class="max-w-7xl mx-auto">
-                <div class="mr-24 flex justify-between items-center">
-                    <div class="flex items-center space-x-4">
-                        <div class="p-3 rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
-                            <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {{-- Added lg:mr-24 to create space for the dropdown on larger screens --}}
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
+                    <div class="flex items-center space-x-3 sm:space-x-4 text-center sm:text-left">
+                        <div class="p-2 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-4xl font-bold leading-tight" style="color: var(--primary-text);">
+                            {{-- Reduced heading size for larger screens --}}
+                            <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--primary-text);">
                                 {{ __('Roles Management') }}
                             </h1>
-                            <p class="text-lg mt-1" style="color: var(--secondary-text);">
+                            <p class="text-sm sm:text-lg mt-1" style="color: var(--secondary-text);">
                                 Manage user roles and permissions across your organization
                             </p>
                         </div>
                     </div>
                     @can('create roles')
                         <a href="{{ route('roles.create') }}" 
-                           class="theme-app inline-flex items-center px-8 py-4 font-semibold rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-lg"
+                           class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-base sm:text-lg"
                            style="background-color: var(--hover-bg); color: var(--primary-text);"
                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                            onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                             Create Role
@@ -35,15 +37,15 @@
         </div>
     </x-slot>
 
-    <div class="py-8" style="background-color: #f8fafc; min-height: 100vh;">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 sm:py-8" style="background-color: #f8fafc; min-height: 100vh;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <x-message></x-message>
             
             <!-- Search Section -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 p-6">
-                <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                    <div class="relative flex-1 max-w-md">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 mb-4 sm:mb-6 p-4 sm:p-6">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between">
+                    <div class="relative flex-1 w-full sm:max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
@@ -51,12 +53,12 @@
                         <input type="text" 
                                id="searchInput"
                                placeholder="Search roles..." 
-                               class="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-base">
+                               class="block w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-4 border border-gray-200 rounded-lg sm:rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-sm sm:text-base">
                     </div>
                     
-                    <div class="flex items-center space-x-4">
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                         <button id="clearSearch" 
-                                class="theme-app hidden inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                                class="theme-app hidden inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
                                 style="background-color: var(--primary-border); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--hover-bg)'"
                                 onmouseout="this.style.backgroundColor='var(--primary-border)'">
@@ -66,7 +68,7 @@
                             Clear
                         </button>
                         
-                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-4 py-3 rounded-xl">
+                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
@@ -79,36 +81,36 @@
             </div>
             
             <!-- Table Section -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                             <tr>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                         </svg>
                                         <span>Role Name</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                         </svg>
                                         <span>Permissions</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                         </svg>
                                         <span>Created</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <span>Actions</span>
                                 </th>
                             </tr>
@@ -120,35 +122,35 @@
                                         data-role-name="{{ strtolower($role->name) }}"
                                         data-role-permissions="{{ strtolower($role->permissions->pluck('name')->implode(' ')) }}"
                                         data-role-id="{{ $role->id }}">
-                                        <td class="px-8 py-6">
-                                            <div class="flex items-center space-x-4">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6">
+                                            <div class="flex items-center space-x-2 sm:space-x-4">
                                                 <div class="flex-shrink-0">
-                                                    <div class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background-color: var(--hover-bg);">
+                                                    <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg" style="background-color: var(--hover-bg);">
                                                         {{ strtoupper(substr($role->name, 0, 1)) }}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="text-base font-semibold text-gray-900 role-name">
+                                                    <div class="text-sm sm:text-base font-semibold text-gray-900 role-name">
                                                         {{ ucwords($role->name) }}
                                                     </div>
-                                                    <div class="text-sm text-gray-500 uppercase tracking-wide font-medium">Role</div>
+                                                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Role</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="max-w-xs role-permissions">
                                                 @if($role->permissions->isNotEmpty())
                                                     <div class="permissions-container" data-role-index="{{ $index }}">
                                                         <!-- Initially visible permissions (first 3) -->
-                                                        <div class="flex flex-wrap gap-2 visible-permissions">
+                                                        <div class="flex flex-wrap gap-1.5 sm:gap-2 visible-permissions">
                                                             @foreach($role->permissions->take(3) as $permission)
-                                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 permission-badge">
+                                                                <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 permission-badge">
                                                                     {{ $permission->name }}
                                                                 </span>
                                                             @endforeach
                                                             @if($role->permissions->count() > 3)
                                                                 <button onclick="togglePermissions({{ $index }})" 
-                                                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-200 cursor-pointer expand-btn">
+                                                                        class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-200 cursor-pointer expand-btn">
                                                                     +{{ $role->permissions->count() - 3 }} more
                                                                 </button>
                                                             @endif
@@ -157,14 +159,14 @@
                                                         <!-- Hidden permissions (initially hidden) -->
                                                         @if($role->permissions->count() > 3)
                                                             <div class="hidden-permissions hidden">
-                                                                <div class="flex flex-wrap gap-2 mt-2">
+                                                                <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
                                                                     @foreach($role->permissions as $permission)
-                                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 permission-badge">
+                                                                        <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 permission-badge">
                                                                             {{ $permission->name }}
                                                                         </span>
                                                                     @endforeach
                                                                     <button onclick="togglePermissions({{ $index }})" 
-                                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-200 cursor-pointer collapse-btn">
+                                                                            class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-200 cursor-pointer collapse-btn">
                                                                         Show less
                                                                     </button>
                                                                 </div>
@@ -172,29 +174,29 @@
                                                         @endif
                                                     </div>
                                                 @else
-                                                    <span class="text-sm text-gray-400 italic">No permissions assigned</span>
+                                                    <span class="text-xs sm:text-sm text-gray-400 italic">No permissions assigned</span>
                                                 @endif
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="flex items-center text-gray-600">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                                 </svg>
-                                                <span class="text-sm font-medium">
+                                                <span class="text-xs sm:text-sm font-medium">
                                                     {{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6">
-                                            <div class="flex items-center space-x-3">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6">
+                                            <div class="flex items-center space-x-2 sm:space-x-3">
                                                 @can('edit roles')
-                                                    <button class="theme-app inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                                                    <button class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
                                                             style="background-color: var(--hover-bg); color: var(--primary-text);"
                                                             onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                                             onmouseout="this.style.backgroundColor='var(--hover-bg)'"
                                                             onclick="window.location.href='{{ route('roles.edit', $role->id) }}'">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                                         </svg>
                                                         Edit
@@ -202,8 +204,8 @@
                                                 @endcan
                                                 @can('delete roles')
                                                     <button onclick="deleteRole({{ $role->id }})"
-                                                            class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105">
+                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                         </svg>
                                                         Delete
@@ -217,7 +219,7 @@
                             
                             <!-- No Results Row (Hidden by default) -->
                             <tr id="noResultsRow" class="hidden">
-                                <td colspan="4" class="px-8 py-16 text-center">
+                                <td colspan="4" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-4">
                                         <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +237,7 @@
                             <!-- Empty State Row (Show when no roles at all) -->
                             @if ($roles->isEmpty())
                                 <tr id="emptyStateRow">
-                                    <td colspan="4" class="px-8 py-16 text-center">
+                                    <td colspan="4" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-4">
                                             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                                                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,9 +256,9 @@
             </div>
             
             @if ($roles->hasPages())
-                <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-4">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
+                <div class="mt-4 sm:mt-6 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 px-4 py-3 sm:px-6 sm:py-4">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <div class="text-xs sm:text-sm text-gray-700">
                             Showing {{ $roles->firstItem() }} to {{ $roles->lastItem() }} of {{ $roles->total() }} results
                         </div>
                         <div class="pagination-wrapper">
