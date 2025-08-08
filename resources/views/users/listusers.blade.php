@@ -2,15 +2,15 @@
     <x-slot name="header">
         <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 1.5rem 1rem; sm:padding: 3rem 2rem; border-radius: 0;">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-                    <div class="flex items-center space-x-3 sm:space-x-4 text-center sm:text-left">
-                        <div class="p-2 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-3 rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
+                            <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight" style="color: var(--primary-text);">
+                            <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--primary-text);">
                                 {{ __('User Management') }}
                             </h1>
                             <p class="text-sm sm:text-lg mt-1" style="color: var(--secondary-text);">
@@ -18,7 +18,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
+                    <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-xl text-xs sm:text-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                         </svg>
@@ -30,15 +30,15 @@
         </div>
     </x-slot>
 
-    <div class="py-6 sm:py-8" style="background-color: #f8fafc; min-height: 100vh;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-8" style="background-color: #f8fafc; min-height: 100vh;">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
             
-             Search Section 
-            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 mb-4 sm:mb-6 p-4 sm:p-6">
-                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between">
-                    <div class="relative flex-1 w-full sm:max-w-md">
-                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
+            <!-- Search Section -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 p-6">
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <div class="relative flex-1 max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
@@ -46,12 +46,12 @@
                         <input type="text" 
                                id="searchInput"
                                placeholder="Search users by name, email, or role..." 
-                               class="block w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-4 border border-gray-200 rounded-lg sm:rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-sm sm:text-base">
+                               class="block w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-4 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-sm sm:text-base">
                     </div>
                     
-                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                    <div class="flex items-center space-x-4">
                         <button id="clearSearch" 
-                                class="theme-app hidden inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                                class="theme-app hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-200"
                                 style="background-color: var(--primary-border); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--hover-bg)'"
                                 onmouseout="this.style.backgroundColor='var(--primary-border)'">
@@ -61,7 +61,7 @@
                             Clear
                         </button>
                         
-                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
+                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                             </svg>
@@ -73,52 +73,52 @@
                 </div>
             </div>
             
-             Table Section 
-            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Table Section -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                             <tr>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                    <div class="flex items-center space-x-2">
                                         <span>#</span>
                                     </div>
                                 </th>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                         </svg>
                                         <span>User</span>
                                     </div>
                                 </th>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                         </svg>
                                         <span>Email</span>
                                     </div>
                                 </th>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                         </svg>
                                         <span>Roles</span>
                                     </div>
                                 </th>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                         </svg>
                                         <span>Joined</span>
                                     </div>
                                 </th>
                                 <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
-                                    <div class="flex items-center space-x-1 sm:space-x-2">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                                         </svg>
                                         <span>Actions</span>
@@ -140,7 +140,7 @@
                                             </div>
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
-                                            <div class="flex items-center space-x-2 sm:space-x-4">
+                                            <div class="flex items-center space-x-4">
                                                 <div class="flex-shrink-0">
                                                     <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg" style="background-color: var(--hover-bg);">
                                                         {{ strtoupper(substr($user->name, 0, 1)) }}
@@ -148,13 +148,13 @@
                                                 </div>
                                                 <div>
                                                     <div class="text-sm sm:text-base font-semibold text-gray-900 user-name">{{ $user->name }}</div>
-                                                    <div class="text-xs text-gray-500">System User</div>
+                                                    <div class="text-sm text-gray-500">System User</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                 </svg>
                                                 <span class="text-xs sm:text-sm text-gray-900 user-email">{{ $user->email }}</span>
@@ -163,20 +163,20 @@
                                         <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="max-w-xs user-roles">
                                                 @if($user->roles->isNotEmpty())
-                                                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                                                    <div class="flex flex-wrap gap-1">
                                                         @foreach($user->roles->take(2) as $role)
-                                                            <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 role-badge">
+                                                            <span class="inline-flex items-center px-2 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 role-badge">
                                                                 {{ $role->name }}
                                                             </span>
                                                         @endforeach
                                                         @if($user->roles->count() > 2)
-                                                            <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                                                                 +{{ $user->roles->count() - 2 }} more
                                                             </span>
                                                         @endif
                                                     </div>
                                                 @else
-                                                    <span class="inline-flex items-center px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
                                                         No roles assigned
                                                     </span>
                                                 @endif
@@ -184,7 +184,7 @@
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                                 </svg>
                                                 <span class="text-xs sm:text-sm text-gray-900 font-medium">
@@ -193,7 +193,7 @@
                                             </div>
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
-                                            <div class="flex items-center space-x-2 sm:space-x-3">
+                                            <div class="flex items-center space-x-3">
                                                 @can('edit users')
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                        class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
@@ -207,7 +207,7 @@
                                                 {{-- 
                                                 @can('delete users')
                                                     <a href="javascript:void(0);" onclick="deleteUser({{ $user->id }})"
-                                                       class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
+                                                       class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
                                                         <x-trashcan class="w-3 h-3 mr-1"/>
                                                         Delete
                                                     </a>
@@ -219,35 +219,35 @@
                                 @endforeach
                             @endif
                             
-                             {{-- No Results Row (Hidden by default)  --}}
+                            <!-- No Results Row (Hidden by default) -->
                             <tr id="noResultsRow" class="hidden">
                                 <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
-                                    <div class="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
-                                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                                            <svg class="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex flex-col items-center justify-center space-y-4">
+                                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                             </svg>
                                         </div>
-                                        <div class="text-base sm:text-lg font-medium text-gray-900">No users found</div>
-                                        <div class="text-xs sm:text-sm text-gray-500">
+                                        <div class="text-lg font-medium text-gray-900">No users found</div>
+                                        <div class="text-sm text-gray-500">
                                             Try adjusting your search terms or <button onclick="clearSearch()" class="text-indigo-600 hover:text-indigo-500 underline">clear the search</button>.
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
-                             {{-- Empty State Row (Show when no users at all)  --}}
+                            <!-- Empty State Row (Show when no users at all) -->
                             @if ($users->isEmpty())
                                 <tr id="emptyStateRow">
                                     <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
-                                        <div class="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
-                                            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                                                <svg class="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="flex flex-col items-center justify-center space-y-4">
+                                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                                                 </svg>
                                             </div>
-                                            <div class="text-base sm:text-lg font-medium text-gray-900">No users found</div>
-                                            <div class="text-xs sm:text-sm text-gray-500">Users will appear here once they are registered.</div>
+                                            <div class="text-lg font-medium text-gray-900">No users found</div>
+                                            <div class="text-sm text-gray-500">Users will appear here once they are registered.</div>
                                         </div>
                                     </td>
                                 </tr>
@@ -257,7 +257,7 @@
                 </div>
                 
                 @if ($users->hasPages())
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200 rounded-b-xl">
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200">
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                             <div class="text-xs sm:text-sm text-gray-700 font-medium">
                                 Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} results
@@ -319,7 +319,7 @@
                         numberCell.textContent = visibleCount;
                         
                         // Highlight search term in user name
-                        if (searchTerm !== '') {
+                        if (searchTerm !== '' && matchesName) {
                             const highlightedName = highlightSearchTerm(originalUser.name || '', searchTerm);
                             nameElement.innerHTML = highlightedName;
                         } else {
@@ -327,7 +327,7 @@
                         }
 
                         // Highlight search term in email
-                        if (searchTerm !== '') {
+                        if (searchTerm !== '' && matchesEmail) {
                             const highlightedEmail = highlightSearchTerm(originalUser.email || '', searchTerm);
                             emailElement.innerHTML = highlightedEmail;
                         } else {
@@ -335,7 +335,7 @@
                         }
 
                         // Highlight search term in roles
-                        if (searchTerm !== '') {
+                        if (searchTerm !== '' && matchesRoles) {
                             roleElements.forEach((element, roleIndex) => {
                                 const originalRole = originalUser.roles?.[roleIndex]?.name || element.textContent;
                                 if (originalRole.toLowerCase().includes(searchTerm)) {

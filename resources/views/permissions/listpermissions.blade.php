@@ -1,34 +1,30 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="theme-app flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
-            {{-- Added lg:mr-24 to create space for the dropdown on larger screens --}}
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 w-full lg:mr-24">
-                <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
-                    <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                    {{-- Reduced heading size for larger screens --}}
-                    <h2 class="font-bold text-xl sm:text-xl lg:text-2xl leading-tight" style="color: var(--primary-text);">
-                        {{ __('Permissions Management') }}
-                    </h2>
+            <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
+                <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
                 </div>
-                @can('create permissions')
-                    <div class="w-full sm:w-auto">
-                        <a href="{{ route('permissions.create') }}" 
-                           class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
-                           style="background-color: var(--hover-bg); color: var(--primary-text);"
-                           onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                           onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Create Permission
-                        </a>
-                    </div>
-                @endcan
+                <h2 class="font-bold text-xl sm:text-2xl leading-tight" style="color: var(--primary-text);">
+                    {{ __('Permissions Management') }}
+                </h2>
             </div>
+            @can('create permissions')
+                <div class="w-full sm:w-auto">
+                    <a href="{{ route('permissions.create') }}" 
+                       class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                       style="background-color: var(--hover-bg); color: var(--primary-text);"
+                       onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                       onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Create Permission
+                    </a>
+                </div>
+            @endcan
         </div>
     </x-slot>
 
@@ -139,7 +135,7 @@
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                                     </svg>
                                                     <span class="text-xs sm:text-sm text-gray-900 font-medium">

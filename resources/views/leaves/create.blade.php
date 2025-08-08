@@ -1,30 +1,34 @@
 <x-app-layout>
     @can('apply leave')
         <x-slot name="header">
-            <div class="mr-24 theme-app flex justify-between items-center p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
-                        <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-2xl leading-tight" style="color: var(--primary-text);">
+{{-- Updated header for responsiveness and consistent styling --}}
+            <div class="theme-app flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                {{-- Added lg:mr-24 to create space for the dropdown on larger screens --}}
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 w-full lg:mr-24">
+                    <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
+                        <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                        </div>
+                        {{-- Adjusted heading size for responsiveness --}}
+                        <h2 class="font-bold text-xl sm:text-xl lg:text-2xl leading-tight" style="color: var(--primary-text);">
                             Apply for Leave
                         </h2>
-                        <p class="text-sm" style="color: var(--secondary-text);">Submit your leave application for approval</p>
+                    </div>
+                    <div class="w-full sm:w-auto">
+                        <a href="{{ route('leaves.index') }}" 
+                           class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                           style="background-color: var(--hover-bg); color: var(--primary-text);"
+                           onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                           onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Back to Leaves
+                        </a>
                     </div>
                 </div>
-                <a href="{{ route('leaves.index') }}" 
-                   class="inline-flex items-center px-6 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
-                   style="background-color: var(--hover-bg); color: var(--primary-text);"
-                   onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                   onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to Leaves
-                </a>
             </div>
         </x-slot>
 
