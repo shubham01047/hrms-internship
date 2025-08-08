@@ -638,15 +638,39 @@
                             </div>
                         </div>
 
-                        <!-- Top Performer of the Month Box -->
-                        <div class="bg-white rounded-xl shadow p-4 sm:p-6 border-gray-200 border hover:shadow-xl transition-all duration-200 hover:scale-[1.01] text-center">
-                            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
-                            <div class="flex flex-col items-center justify-center gap-3">
-                                <img src="{{ asset('images/top-performer.png') }}" alt="Top Performer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-green-400 shadow-md">
-                                <p class="text-xl sm:text-2xl font-bold text-green-600">Deepan Gain</p>
-                                <p class="text-base sm:text-lg text-gray-700">Productivity Score: <span class="font-bold">92%</span></p>
-                            </div>
-                        </div>
+                     <!-- Top Performer of the Month Box -->
+@if($topPerformer && $topPerformer->user)
+    <div class="bg-white rounded-xl shadow p-4 sm:p-6 border-gray-200 border hover:shadow-xl transition-all duration-200 hover:scale-[1.01] text-center">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Performer of the Month</h2>
+        <div class="flex flex-col items-center justify-center gap-3">
+            <div id="initials-circle" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-100 text-green-700 font-bold text-xl sm:text-2xl flex items-center justify-center shadow-md">
+                <!-- Initials will be injected by JS -->
+            </div>
+            <p class="text-xl sm:text-2xl font-bold text-green-600">{{ $topPerformer->user->name }}</p>
+            <p class="text-base sm:text-lg text-gray-700">
+                Total Hours:
+                <span class="font-bold">{{ $topPerformer->total_hours }}</span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fullName = @json($topPerformer->user->name);
+            const initials = fullName
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join('')
+                .slice(0, 2); // only first 2 letters
+
+            document.getElementById('initials-circle').textContent = initials;
+        });
+    </script>
+@else
+    <div class="bg-white rounded-xl shadow p-4 sm:p-6 border-gray-200 border text-center">
+        <p class="text-gray-500">No top performer data available.</p>
+    </div>
+@endif
 
                         <!-- Upcoming Deadlines Section -->
                         <div class="bg-white rounded-xl shadow p-4 sm:p-6 border-gray-200 border">

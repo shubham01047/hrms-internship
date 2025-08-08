@@ -57,6 +57,14 @@ class AdminDashboardController extends Controller implements HasMiddleware
 
         //Late commer
 
+        //top peformer
+        $topPerformer = Attendance::select('user_id', DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))) as total_hours'))
+    ->groupBy('user_id')
+    ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
+    ->with('user') // assuming attendance has user() relationship
+    ->first();
+
+
         //percentage
         $attendancePercentage = 0;
         if ($employeeCount > 0) {
@@ -68,7 +76,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
         $projects = Project::with(['tasks.assignedUsers'])->get();
 
 
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
+        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer'));
 
 
     }
