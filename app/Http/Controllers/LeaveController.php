@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\LeaveApprovedMail;
+use App\Mail\LeaveRejectedMail;
 use Illuminate\Http\Request;
 use App\Models\Leave;
 use App\Models\LeaveType;
@@ -31,7 +32,8 @@ class LeaveController extends Controller implements HasMiddleware
     public function create()
     {
         $leaveTypes = LeaveType::all();
-        return view('leaves.create', compact('leaveTypes'));
+        $leaveBalance = auth()->user()->leave_balance;
+        return view('leaves.create', compact('leaveTypes', 'leaveBalance'));
     }
     public function store(Request $request)
     {
@@ -63,7 +65,7 @@ class LeaveController extends Controller implements HasMiddleware
         $leaveDays = Carbon::parse($leave->start_date)->diffInDays(Carbon::parse($leave->end_date)) + 1;
         $user = $leave->user;
         if ($user->leave_balance < $leaveDays) {
-            return response()->json(['error' => 'User does not have enough leave balance.'], 400);
+            return redirect()->back()->with('error', 'User does not have enough leave balance.');
         }
         $user->leave_balance -= $leaveDays;
         $user->save();
@@ -81,6 +83,7 @@ class LeaveController extends Controller implements HasMiddleware
             'status' => 'rejected',
             'approved_by' => auth()->id(),
         ]);
-        return redirect()->back()->with('error', 'Leave rejected.');
+        Mail::to($leave->user->email)->send(new LeaveRejectedMail($leave));
+        return redirect()->back()->with('error', 'Leave rejected and email sent successfully.');
     }
 }

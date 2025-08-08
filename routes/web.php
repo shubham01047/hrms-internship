@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\LeaveTypesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskCommentController;
@@ -91,6 +92,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
     Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
 
+    //Manage Leave Types
+    Route::resource('leave-types', LeaveTypesController::class);
+
     //Attendance Report
     Route::get('/admin/attendance-report', [AdminDashboardController::class, 'showAttendanceReport'])->name('admin.attendance.report');
 
@@ -121,11 +125,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/timesheets', [TimesheetController::class, 'index'])->name('tasks.timesheets.index');
         Route::get('/timesheets/{timesheet}/edit', [TimesheetController::class, 'edit'])->name('tasks.timesheets.edit');
         Route::put('/timesheets/{timesheet}', [TimesheetController::class, 'update'])->name('tasks.timesheets.update');
-
     });
     Route::get('/projects/{project}/tasks/{task?}', [ProjectController::class, 'show'])->name('tasks.show');
     Route::put('/timesheets/{timesheet}/approve', [TimesheetController::class, 'approve'])->name('timesheets.approve');
     Route::put('/timesheets/{timesheet}/reject', [TimesheetController::class, 'reject'])->name('timesheets.reject');
+    // Export Timesheet Report
+    Route::get('/projects/{project}/tasks/{task}/timesheet-report', [TimesheetController::class, 'reportForm'])->name('timesheets.report.form');
+    Route::post('/projects/{project}/tasks/{task}/timesheet-report/download', [TimesheetController::class, 'downloadReport'])->name('timesheets.report.download');
+Route::get('/timesheet/export/csv/{project}/{task}', [TimesheetController::class, 'downloadCsvReport']);
 
 });
 

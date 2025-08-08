@@ -31,10 +31,10 @@ class User extends Authenticatable
     ];
 
 
-public function employee()
-{
-    return $this->hasOne(Employee::class, 'user_id');
-}
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -73,5 +73,9 @@ public function employee()
     public function timesheets()
     {
         return $this->hasMany(Timesheet::class);
+    }
+    public function leaveTypes()
+    {
+        return $this->hasMany(LeaveType::class);
     }
 }
