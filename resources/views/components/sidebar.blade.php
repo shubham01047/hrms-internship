@@ -67,14 +67,19 @@
         <!-- Attendance -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
-                <i class="fas fa-clock"></i> Attendance
+                <i class="fas fa-clock"></i> Reports
             </div>
             
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-chart-bar"></i> Reports
+                    <i class="fas fa-chart-bar"></i> Attendance Reports
                 </a>
             @endcan
+
+             <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-clipboard-list"></i> Summary Reports
+            </a>
+            
         </div>
 
         <!-- Leave -->
@@ -146,16 +151,5 @@
                 <i class="fas fa-bell"></i> Alerts
             </a>
         </div>
-
-        <!-- Reports -->
-        <div>
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
-                <i class="fas fa-chart-pie"></i> Reports
-            </div>
-            <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                <i class="fas fa-clipboard-list"></i> Summary Reports
-            </a>
-        </div>
-
     </nav>
 </aside>
