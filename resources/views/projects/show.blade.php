@@ -81,7 +81,7 @@
                         <p><strong class="font-semibold text-gray-900">Client:</strong> {{ $project->client_name ?: 'Not specified' }}</p>
                         <p><strong class="font-semibold text-gray-900">Deadline:</strong> {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}</p>
                         @if($project->budget)
-                            <p><strong class="font-semibold text-gray-900">Budget:</strong> ${{ number_format($project->budget, 2) }}</p>
+                            <p><strong class="font-semibold text-gray-900">Budget:</strong> ₹{{ number_format($project->budget, 2) }}</p>
                         @endif
                         <div class="md:col-span-2">
                             <strong class="font-semibold text-gray-900 block mb-2">Description:</strong>
