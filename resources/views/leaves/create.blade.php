@@ -1,26 +1,49 @@
 <x-app-layout>
     @can('apply leave')
-        <!-- Professional Header -->
-        <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-8">
-            <div class="flex items-center space-x-4 text-white">
-                <div class="p-3 bg-white/20 rounded-lg">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                        </path>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-3xl font-bold">Apply for Leave</h1>
-                    <p class="text-blue-100 mt-1">Submit your leave application for approval</p>
+        <x-slot name="header">
+            {{-- Updated header for responsiveness and consistent styling --}}
+            <div class="theme-app flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 rounded-lg shadow-sm"
+                style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                {{-- Added lg:mr-24 to create space for the dropdown on larger screens --}}
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 w-full lg:mr-24">
+                    <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
+                        <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                        </div>
+                        {{-- Adjusted heading size for responsiveness --}}
+                        <h2 class="font-bold text-xl sm:text-xl lg:text-2xl leading-tight"
+                            style="color: var(--primary-text);">
+                            Apply for Leave
+                        </h2>
+                    </div>
+                    @can('view leave type')
+                        <div class="w-full sm:w-auto">
+                            <a href="{{ route('leave-types.index') }}"
+                                class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                style="background-color: var(--hover-bg); color: var(--primary-text);"
+                                onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Add leave
+                            </a>
+                        </div>
+                    @endcan
                 </div>
             </div>
-        </div>
+        </x-slot>
 
-        <!-- Main Content -->
-        <div class="min-h-screen bg-gray-50 p-6">
-            <div class="max-w-4xl mx-auto">
+        <div class="py-8 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+            <div class="w-full px-4 sm:px-6 lg:px-8 space-y-8">
                 <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div
                         class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center">
@@ -72,26 +95,24 @@
                     </div>
                 </div>
                 <!-- Form Card -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                     @if (session('success'))
-                    {{ session('success') }}
-                @endif
-
-                @if (session('error'))
-                    {{ session('error') }}
-                @endif
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
                     <!-- Card Header -->
-                    <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-6 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-900">Leave Application Form</h2>
-                                <p class="text-sm text-gray-600 mt-1">Please fill in all required information</p>
-                            </div>
-                            <div class="p-2 bg-blue-600 rounded-lg">
-                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="theme-app px-6 py-4 border-b border-gray-200"
+                        style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
+                                <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2M7 9h10">
+                                    </path>
                                 </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold" style="color: var(--primary-text);">Leave Application Form
+                                </h3>
+                                <p class="text-sm" style="color: var(--secondary-text);">Please fill in all required
+                                    information</p>
                             </div>
                         </div>
                     </div>
@@ -104,80 +125,131 @@
                             Leave Balance:<Br>
                             <strong>{{ $leaveBalance }} Day(s)</strong>
                             <div class="space-y-2">
-                                <label for="leave_type_id" class="flex items-center text-sm font-medium text-gray-700">
-                                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                                        </path>
-                                    </svg>
-                                    LEAVE TYPE <span class="text-red-500 ml-1">*</span>
+                                <label for="leave_type_id" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                            </path>
+                                        </svg>
+                                        <span>Leave Type</span>
+                                        <span class="text-red-500">*</span>
+                                    </div>
                                 </label>
                                 <select name="leave_type_id" id="leave_type_id" required
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
                                     <option value="">Select Leave Type</option>
                                     @foreach ($leaveTypes as $type)
                                         <option value="{{ $type->id }}" title="{{ $type->description }}">
                                             {{ $type->name }}</option>
                                     @endforeach
                                 </select>
-                                <p class="text-xs text-gray-500">Choose the appropriate leave type for your request</p>
+                                @error('leave_type_id')
+                                    <div
+                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
+                                    </div>
+                                @enderror
                             </div>
 
                             <!-- Date Range -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Start Date -->
                                 <div class="space-y-2">
-                                    <label for="start_date" class="flex items-center text-sm font-medium text-gray-700">
-                                        <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                            </path>
-                                        </svg>
-                                        START DATE <span class="text-red-500 ml-1">*</span>
+                                    <label for="start_date" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                            <span>Start Date</span>
+                                            <span class="text-red-500">*</span>
+                                        </div>
                                     </label>
                                     <input type="date" name="start_date" id="start_date" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                    <p class="text-xs text-gray-500">Select the first day of your leave</p>
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                                    @error('start_date')
+                                        <div
+                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <!-- End Date -->
                                 <div class="space-y-2">
-                                    <label for="end_date" class="flex items-center text-sm font-medium text-gray-700">
-                                        <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                            </path>
-                                        </svg>
-                                        END DATE <span class="text-red-500 ml-1">*</span>
+                                    <label for="end_date" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                            <span>End Date</span>
+                                            <span class="text-red-500">*</span>
+                                        </div>
                                     </label>
                                     <input type="date" name="end_date" id="end_date" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                    <p class="text-xs text-gray-500">Select the last day of your leave</p>
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                                    @error('end_date')
+                                        <div
+                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- Reason -->
                             <div class="space-y-2">
-                                <label for="reason" class="flex items-center text-sm font-medium text-gray-700">
-                                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                        </path>
-                                    </svg>
-                                    REASON FOR LEAVE <span class="text-red-500 ml-1">*</span>
+                                <label for="reason" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                        <span>Reason for Leave</span>
+                                        <span class="text-red-500">*</span>
+                                    </div>
                                 </label>
                                 <textarea name="reason" id="reason" required rows="4"
                                     placeholder="Please provide a detailed reason for your leave request..."
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"></textarea>
-                                <p class="text-xs text-gray-500">Provide a clear and detailed explanation for your leave
-                                    request</p>
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none"></textarea>
+                                @error('reason')
+                                    <div
+                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
+                                    </div>
+                                @enderror
                             </div>
 
-                            <!-- Leave Types Information -->
+                            <!-- Application Guidelines -->
                             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
@@ -201,26 +273,27 @@
                                 </div>
                             </div>
 
-                            <!-- Form Actions -->
-                            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
-                                <div class="text-sm text-gray-500">
-                                    <span class="text-red-500">*</span> Required fields
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <a href="{{ route('leaves.index') }}"
-                                        class="inline-flex items-center px-6 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                        Cancel
-                                    </a>
-                                    <button type="submit"
-                                        class="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                        </svg>
-                                        Submit Application
-                                    </button>
-                                </div>
+                            <!-- Submit Buttons -->
+                            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                <a href="{{ route('leaves.index') }}"
+                                    class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                    Cancel
+                                </a>
+                                <button type="submit"
+                                    class="theme-app inline-flex items-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                    style="background-color: var(--hover-bg); color: var(--primary-text);"
+                                    onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                    </svg>
+                                    Submit Application
+                                </button>
                             </div>
                         </form>
                     </div>

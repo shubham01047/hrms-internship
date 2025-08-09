@@ -7,8 +7,10 @@
     $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
 @endphp
 
-<aside
-    class="bg-secondary-gradient fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<aside class="bg-secondary-gradient fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
            bg-gradient-to-br from-[var(--primary-bg)] to-[var(--primary-bg-light)] text-primary
            transition-transform duration-300 ease-in-out
            md:translate-x-0 transform"
@@ -21,10 +23,7 @@
     <!-- Mobile Toggle -->
     <button @click="sidebarOpen = !sidebarOpen"
         class="md:hidden px-4 py-2 focus:outline-none sticky top-0 z-40 text-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        <i class="fas fa-bars h-6 w-6"></i>
     </button>
 
     <!-- Sidebar Header -->
@@ -37,106 +36,119 @@
 
         <!-- Dashboard -->
         <div class="border-b border-primary pb-2 mb-2">
-            <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">🏠 Dashboard</a>
+            <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
         </div>
 
         <!-- User Management -->
         <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">User Management</div>
-            <a href="{{ route('profile.edit') }}" class="{{ $isActive('profile.edit') }}">👥 Profiles</a>
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-users"></i> User Management
+            </div>
+            <a href="{{ route('profile.edit') }}" class="{{ $isActive('profile.edit') }}">
+                <i class="fas fa-user-circle"></i> Profiles
+            </a>
             @can('create roles')
-                <a href="{{ route('roles.index') }}" class="{{ $isActive('roles.index') }}">🔐 Roles</a>
+                <a href="{{ route('roles.index') }}" class="{{ $isActive('roles.index') }}">
+                    <i class="fas fa-user-tag"></i> Roles
+                </a>
             @endcan
             @can('create permissions')
-                <a href="{{ route('permissions.index') }}" class="{{ $isActive('permissions.index') }}">🔐 Permissions</a>
+                <a href="{{ route('permissions.index') }}" class="{{ $isActive('permissions.index') }}">
+                    <i class="fas fa-key"></i> Permissions
+                </a>
             @endcan
-
         </div>
 
         <!-- Attendance -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Attendance</div>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📅
-                Mark Attendance</a>
+           
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📊
-                    Reports</a>
+                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300"><i class="fas fa-user-clock"></i> Attendance Reports
+                    </a>
             @endcan
+
+             <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-clipboard-list"></i> Summary Reports
+            </a>
+            
         </div>
 
         <!-- Leave -->
         <div class="border-b border-primary pb-2 mb-2">
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-calendar-alt"></i> Leave
+            </div>
             @can('apply leave')
-                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Leave</div>
-                <a href="{{ route('leaves.create') }}" class="{{ $isActive('leaves.create') }}">📝 Apply for Leave</a>
+                <a href="{{ route('leaves.create') }}" class="{{ $isActive('leaves.create') }}">
+                    <i class="fas fa-plus-circle"></i> Apply for Leave
+                </a>
             @endcan
             @can('view all leaves')
-                <a href="{{ route('leaves.index') }}" class="{{ $isActive('leaves.index') }}">✅ Leave Status</a>
+                <a href="{{ route('leaves.index') }}" class="{{ $isActive('leaves.index') }}">
+                    <i class="fas fa-list-alt"></i> Leave Status
+                </a>
             @endcan
             @can('approve leave')
-                <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">📊 Manage Leave</a>
+                <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">
+                    <i class="fas fa-tasks"></i> 
+                    Manage Leave
+                </a>
             @endcan
             @can('view leave type')
-                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}">📝 Manage Leave Types</a>
+                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i class="fas fa-calendar-check"></i> Add Leave</a>
             @endcan
         </div>
 
         <!-- Holidays -->
         <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Holidays</div>
-            <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index') }}">📅 View Holidays</a>
-            @can('create holiday')
-                <a href="{{ route('holidays.create') }}" class="{{ $isActive('holidays.create') }}">📝 Create Holiday</a>
-            @endcan
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-calendar-day"></i> Holidays
+            </div>
+            <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index')}}">
+                <i class="fas fa-calendar"></i> View Holidays
+            </a>
         </div>
 
         <!-- Projects -->
         @can('view project')
             <div class="border-b border-primary pb-2 mb-2">
-                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Projects</div>
-                <a href="{{ route('projects.index') }}" class="{{ $isActive('projects.index') }}">📁
-                    View Projects</a>
+                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                    <i class="fas fa-project-diagram"></i> Projects
+                </div>
+                <a href="{{ route('projects.index') }}"
+                    class="{{ $isActive('projects.index') }}">
+                    <i class="fas fa-folder-open"></i> View Projects
+                </a>
             </div>
         @endcan
-        <!-- Timesheets -->
-        <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Timesheets</div>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">🕒
-                Log Work</a>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📈
-                Timesheet Reports</a>
-        </div>
+
+     
 
         <!-- Payroll -->
         <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Payroll</div>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">💸
-                Salary Slips</a>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">⚙️
-                Process Payroll</a>
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-money-bill-wave"></i> Payroll
+            </div>
+            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-file-invoice-dollar"></i> Salary Slips
+            </a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-cogs"></i> Process Payroll
+            </a>
         </div>
 
         <!-- Notifications -->
         <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Notifications</div>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">🔔
-                Alerts</a>
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-bell"></i> Notifications
+            </div>
+            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-bell"></i> Alerts
+            </a>
         </div>
-
-        <!-- Reports -->
-        <div>
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Reports</div>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📋
-                Summary Reports</a>
-        </div>
-
     </nav>
 </aside>

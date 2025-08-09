@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 3rem 2rem; border-radius: 0;">
+        <div class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 1.5rem 1rem; sm:padding: 3rem 2rem; border-radius: 0;">
             <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
                     <div class="flex items-center space-x-4">
                         <div class="p-3 rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
                             <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,15 +10,15 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-4xl font-bold leading-tight" style="color: var(--primary-text);">
+                            <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--primary-text);">
                                 {{ __('User Management') }}
                             </h1>
-                            <p class="text-lg mt-1" style="color: var(--secondary-text);">
+                            <p class="text-sm sm:text-lg mt-1" style="color: var(--secondary-text);">
                                 Manage system users and their access permissions
                             </p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-4 py-3 rounded-xl">
+                    <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-xl text-xs sm:text-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                         </svg>
@@ -46,12 +46,12 @@
                         <input type="text" 
                                id="searchInput"
                                placeholder="Search users by name, email, or role..." 
-                               class="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-base">
+                               class="block w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-4 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-300 ease-in-out text-sm sm:text-base">
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <button id="clearSearch" 
-                                class="theme-app hidden inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                                class="theme-app hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-200"
                                 style="background-color: var(--primary-border); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--hover-bg)'"
                                 onmouseout="this.style.backgroundColor='var(--primary-border)'">
@@ -61,7 +61,7 @@
                             Clear
                         </button>
                         
-                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-4 py-3 rounded-xl">
+                        <div class="flex items-center space-x-2 text-gray-600 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 rounded-xl text-xs sm:text-sm w-full sm:w-auto justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                             </svg>
@@ -79,12 +79,12 @@
                     <table class="min-w-full">
                         <thead class="theme-app" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                             <tr>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <span>#</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -92,7 +92,7 @@
                                         <span>User</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -100,7 +100,7 @@
                                         <span>Email</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -108,7 +108,7 @@
                                         <span>Roles</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
@@ -116,7 +116,7 @@
                                         <span>Joined</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
+                                <th class="px-4 py-3 sm:px-8 sm:py-6 text-left text-xs sm:text-sm font-bold uppercase tracking-wider" style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
@@ -134,38 +134,38 @@
                                         data-user-email="{{ strtolower($user->email) }}"
                                         data-user-roles="{{ strtolower($user->roles->pluck('name')->implode(' ')) }}"
                                         data-user-id="{{ $user->id }}">
-                                        <td class="px-8 py-6 whitespace-nowrap">
-                                            <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-sm font-semibold text-blue-800">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
+                                            <div class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full text-xs sm:text-sm font-semibold text-blue-800">
                                                 {{ $index + 1 }}
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6 whitespace-nowrap">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center space-x-4">
                                                 <div class="flex-shrink-0">
-                                                    <div class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background-color: var(--hover-bg);">
+                                                    <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg" style="background-color: var(--hover-bg);">
                                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="text-base font-semibold text-gray-900 user-name">{{ $user->name }}</div>
+                                                    <div class="text-sm sm:text-base font-semibold text-gray-900 user-name">{{ $user->name }}</div>
                                                     <div class="text-sm text-gray-500">System User</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6 whitespace-nowrap">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                 </svg>
-                                                <span class="text-sm text-gray-900 user-email">{{ $user->email }}</span>
+                                                <span class="text-xs sm:text-sm text-gray-900 user-email">{{ $user->email }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="max-w-xs user-roles">
                                                 @if($user->roles->isNotEmpty())
                                                     <div class="flex flex-wrap gap-1">
                                                         @foreach($user->roles->take(2) as $role)
-                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 role-badge">
+                                                            <span class="inline-flex items-center px-2 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 role-badge">
                                                                 {{ $role->name }}
                                                             </span>
                                                         @endforeach
@@ -182,21 +182,21 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6 whitespace-nowrap">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 6v6m-4-6h8"></path>
                                                 </svg>
-                                                <span class="text-sm text-gray-900 font-medium">
+                                                <span class="text-xs sm:text-sm text-gray-900 font-medium">
                                                     {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6 whitespace-nowrap">
+                                        <td class="px-4 py-3 sm:px-8 sm:py-6 whitespace-nowrap">
                                             <div class="flex items-center space-x-3">
                                                 @can('edit users')
                                                     <a href="{{ route('users.edit', $user->id) }}"
-                                                       class="theme-app inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                                                       class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
                                                        style="background-color: var(--hover-bg); color: var(--primary-text);"
                                                        onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                                        onmouseout="this.style.backgroundColor='var(--hover-bg)'">
@@ -221,7 +221,7 @@
                             
                             <!-- No Results Row (Hidden by default) -->
                             <tr id="noResultsRow" class="hidden">
-                                <td colspan="6" class="px-8 py-16 text-center">
+                                <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-4">
                                         <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@
                             <!-- Empty State Row (Show when no users at all) -->
                             @if ($users->isEmpty())
                                 <tr id="emptyStateRow">
-                                    <td colspan="6" class="px-8 py-16 text-center">
+                                    <td colspan="6" class="px-4 py-8 sm:px-8 sm:py-16 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-4">
                                             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                                                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,9 +257,9 @@
                 </div>
                 
                 @if ($users->hasPages())
-                    <div class="bg-gray-50 px-8 py-4 border-t border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-700 font-medium">
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 font-medium">
                                 Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} results
                             </div>
                             <div class="pagination-wrapper">

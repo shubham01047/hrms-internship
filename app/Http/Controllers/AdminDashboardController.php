@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakModel;
 use App\Models\Employee;
@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller implements HasMiddleware
 {
@@ -26,13 +25,16 @@ class AdminDashboardController extends Controller implements HasMiddleware
     {
         //all employee
         $employees = Employee::all();
+
         //birthday tomorrow
         $tomorrow = Carbon::tomorrow();
         $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
+
         //leaves    
         $pendingLeaves = Leave::where('status', 'pending')->count();
+
         //punch in today
         $today = Carbon::today()->toDateString();
         $todayPunchInCount = DB::table('attendance')
@@ -43,53 +45,84 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
+
+        //absentee
+
         $employeeCount = User::whereHas('employee')->count();
         $absentees = $employeeCount - $todayPunchInCount;
+
         //projects
         $projectCount = Project::count();
+
+
+        //Late commer
+
+        //top peformer
+        $topPerformer = Attendance::select('user_id', DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))) as total_hours'))
+    ->groupBy('user_id')
+    ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
+    ->with('user') // assuming attendance has user() relationship
+    ->first();
+
+
         //percentage
         $attendancePercentage = 0;
         if ($employeeCount > 0) {
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage'));
+
+
+        //timesheet
+        $projects = Project::with(['tasks.assignedUsers'])->get();
+
+
+        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer'));
+
+
     }
-    public function showAttendanceReport(Request $request)
-    {
-        $fromDate = $request->input('from_date', now()->toDateString());
-        $toDate = $request->input('to_date', now()->toDateString());
-        if ($toDate < $fromDate) {
-            [$fromDate, $toDate] = [$toDate, $fromDate];
-        }
-        $attendances = Attendance::with('user')
-            ->whereBetween('date', [$fromDate, $toDate])
-            ->get()
-            ->map(function ($attendance) {
-                $breaks = BreakModel::where('attendance_id', $attendance->id)->get();
-                $breakDetails = [];
-                $totalBreakSeconds = 0;
-                foreach ($breaks as $break) {
-                    if (
-                        $break->break_end &&
-                        $break->total_break_time &&
-                        preg_match('/^\d{2}:\d{2}:\d{2}$/', $break->total_break_time)
-                    ) {
-                        [$h, $m, $s] = explode(':', $break->total_break_time);
-                        $durationInSeconds = ($h * 3600) + ($m * 60) + $s;
-                        $totalBreakSeconds += $durationInSeconds;
-                        $breakDetails[] = [
-                            'type' => $break->break_type,
-                            'duration' => $break->total_break_time,
-                        ];
-                    } elseif ($break->break_start && !$break->break_end) {
-                        $breakDetails[] = [
-                            'type' => $break->break_type,
-                            'duration' => 'In Progress',
-                        ];
-                    }
+  public function showAttendanceReport(Request $request)
+{
+    $fromDate = $request->input('from_date', now()->toDateString());
+    $toDate = $request->input('to_date', now()->toDateString());
+
+    // Ensure correct order
+    if ($toDate < $fromDate) {
+        [$fromDate, $toDate] = [$toDate, $fromDate];
+    }
+
+    $attendances = Attendance::with('user')
+        ->whereBetween('date', [$fromDate, $toDate])
+        ->get()
+        ->map(function ($attendance) {
+            $breaks = BreakModel::where('attendance_id', $attendance->id)->get();
+            $breakDetails = [];
+            $totalBreakSeconds = 0;
+
+            foreach ($breaks as $break) {
+                if (
+                    $break->break_end &&
+                    $break->total_break_time &&
+                    preg_match('/^\d{2}:\d{2}:\d{2}$/', $break->total_break_time)
+                ) {
+                    // Safely convert HH:MM:SS to seconds
+                    [$h, $m, $s] = explode(':', $break->total_break_time);
+                    $durationInSeconds = ($h * 3600) + ($m * 60) + $s;
+                    $totalBreakSeconds += $durationInSeconds;
+
+                    $breakDetails[] = [
+                        'type' => $break->break_type,
+                        'duration' => $break->total_break_time,
+                    ];
+                } elseif ($break->break_start && !$break->break_end) {
+                    $breakDetails[] = [
+                        'type' => $break->break_type,
+                        'duration' => 'In Progress',
+                    ];
                 }
-                return [
-                    'name' => $attendance->user->name ?? 'Unknown',
+            }
+
+            return [
+                'name' => $attendance->user->name ?? 'Unknown',
 
                     'punch_in' => $attendance->punch_in
                         ? Carbon::parse($attendance->punch_in)->format('h:i A')
@@ -108,15 +141,18 @@ class AdminDashboardController extends Controller implements HasMiddleware
                         : null,
                     'punch_in_again_remarks' => $attendance->punch_in_again_remarks ?? null,
 
-                    'punch_out_again' => $attendance->punch_out_again
-                        ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
-                        : null,
-                    'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
-                    'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
-                    'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
-                    'breaks' => $breakDetails,
-                ];
-            });
-        return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
-    }
+                'punch_out_again' => $attendance->punch_out_again
+                    ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
+                    : null,
+                'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
+
+                'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
+
+                'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
+                'breaks' => $breakDetails,
+            ];
+        });
+
+    return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
+}
 }

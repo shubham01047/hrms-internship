@@ -134,6 +134,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects/{project}/tasks/{task}/timesheet-report/download', [TimesheetController::class, 'downloadReport'])->name('timesheets.report.download');
 Route::get('/timesheet/export/csv/{project}/{task}', [TimesheetController::class, 'downloadCsvReport']);
 
+    Route::get('/reports', [AdminDashboardController::class, 'attendanceChart'])->name('reports.report');
+
 });
 
 require __DIR__ . '/auth.php';
