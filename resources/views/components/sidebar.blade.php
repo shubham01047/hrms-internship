@@ -67,8 +67,8 @@
            
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📊
-                    Reports</a>
+                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300"><i class="fas fa-user-clock"></i> Attendance Reports
+                    </a>
             @endcan
 
              <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
@@ -98,7 +98,7 @@
                 </a>
             @endcan
             @can('view leave type')
-                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}">📝 Manage Leave Types</a>
+                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i class="fas fa-calendar-check"></i> Manage Leave</a>
             @endcan
         </div>
 
