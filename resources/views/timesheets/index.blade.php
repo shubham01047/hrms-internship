@@ -210,8 +210,9 @@
                     <strong class="font-bold">Error!</strong>
                     <span class="block sm:inline ml-2">{{ session('error') }}</span>
                 </div>
-            </div>
-            <div class="mr-24 flex items-center space-x-4">
+            @endif
+
+            <div class="mb-10 flex flex-col sm:flex-row justify-end gap-4 animate-fade-in animate-delay-200">
                 @can('create timesheet')
                     <a href="{{ route('tasks.timesheets.create', [$task->project_id, $task->id]) }}"
                         class="inline-flex items-center px-8 py-4 border border-transparent text-base font-semibold rounded-full shadow-xl text-white bg-action-gradient hover:bg-action-gradient focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-bg-light)] transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto justify-center">
@@ -248,7 +249,7 @@
                 @if ($timesheets->count() > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="theme-app" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
+                            <thead class="table-header text-white shadow-md">
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider rounded-tl-xl">
@@ -287,7 +288,8 @@
                                                 class="px-3 py-1 rounded-full text-xs font-semibold
                                                 @if ($timesheet->status === 'Approved') bg-green-100 text-green-800
                                                 @elseif($timesheet->status === 'Rejected') bg-red-100 text-red-800
-                                                @else bg-yellow-100 text-yellow-800 @endif">
+                                                @else bg-yellow-100 text-yellow-800 @endif
+                                                transition-colors duration-200">
                                                 {{ ucfirst($timesheet->status) }}
                                             </span>
                                         </td>
@@ -375,5 +377,4 @@
                 @endif
             </div>
         </div>
-    </div>
 </x-app-layout>
