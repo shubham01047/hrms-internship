@@ -94,11 +94,12 @@
             @endcan
             @can('approve leave')
                 <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">
-                    <i class="fas fa-tasks"></i> Manage Leave
+                    <i class="fas fa-tasks"></i> 
+                    Manage Leave
                 </a>
             @endcan
             @can('view leave type')
-                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i class="fas fa-calendar-check"></i> Manage Leave</a>
+                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i class="fas fa-calendar-check"></i> Add Leave</a>
             @endcan
         </div>
 
