@@ -56,7 +56,8 @@
             <div class="max-w-7xl mx-auto">
                 <!-- Statistics Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Pending Review</p>
@@ -68,11 +69,13 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Urgent Reviews</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $leaves->where('created_at', '>=', now()->subDays(3))->count() }}</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">
+                                    {{ $leaves->where('created_at', '>=', now()->subDays(3))->count() }}</p>
                             </div>
                             <div class="p-3 bg-red-100 rounded-lg">
                                 <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
@@ -80,11 +83,13 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">This Week</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $leaves->where('created_at', '>=', now()->startOfWeek())->count() }}</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">
+                                    {{ $leaves->where('created_at', '>=', now()->startOfWeek())->count() }}</p>
                             </div>
                             <div class="p-3 bg-blue-100 rounded-lg">
                                 <i class="fas fa-calendar-week text-blue-600 text-xl"></i>
@@ -92,7 +97,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Main Content Card -->
                 <div class="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
                     <!-- Header Section -->
@@ -140,16 +144,19 @@
                             <!-- Table Body -->
                             <div class="bg-white divide-y divide-gray-200">
                                 @foreach ($leaves as $index => $leave)
-                                    <div class="grid grid-cols-5 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
+                                    <div
+                                        class="grid grid-cols-5 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
                                         <!-- Employee -->
                                         <div class="flex items-center space-x-3">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <div class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                                                <div
+                                                    class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
                                                     {{ substr($leave->user->name, 0, 1) }}
                                                 </div>
                                             </div>
                                             <div class="min-w-0 flex-1">
-                                                <div class="text-sm font-semibold text-gray-900 truncate">{{ $leave->user->name }}</div>
+                                                <div class="text-sm font-semibold text-gray-900 truncate">
+                                                    {{ $leave->user->name }}</div>
                                                 <div class="text-sm text-gray-500">ID: #{{ $leave->user->id }}</div>
                                             </div>
                                         </div>
@@ -162,7 +169,8 @@
                                                 </div>
                                             </div>
                                             <div class="min-w-0 flex-1">
-                                                <div class="text-sm font-semibold text-gray-900 truncate">{{ $leave->leaveType->name }}</div>
+                                                <div class="text-sm font-semibold text-gray-900 truncate">
+                                                    {{ $leave->leaveType->name }}</div>
                                                 <div class="text-sm text-gray-500">Leave Request</div>
                                             </div>
                                         </div>
@@ -170,22 +178,27 @@
                                         <!-- Start Date -->
                                         <div class="flex items-center">
                                             <div>
-                                                <div class="text-sm font-medium text-gray-900">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</div>
-                                                <div class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($leave->start_date)->format('l') }}</div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</div>
+                                                <div class="text-sm text-gray-500">
+                                                    {{ \Carbon\Carbon::parse($leave->start_date)->format('l') }}</div>
                                             </div>
                                         </div>
 
                                         <!-- End Date -->
                                         <div class="flex items-center">
                                             <div>
-                                                <div class="text-sm font-medium text-gray-900">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</div>
-                                                <div class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($leave->end_date)->format('l') }}</div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</div>
+                                                <div class="text-sm text-gray-500">
+                                                    {{ \Carbon\Carbon::parse($leave->end_date)->format('l') }}</div>
                                             </div>
                                         </div>
 
                                         <!-- Actions -->
                                         <div class="flex items-center space-x-2">
-                                            <form method="POST" action="{{ route('leaves.approve', $leave->id) }}" class="inline">
+                                            <form method="POST" action="{{ route('leaves.approve', $leave->id) }}"
+                                                class="inline">
                                                 @csrf
                                                 <button type="submit"
                                                     class="inline-flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-300 hover:scale-105 transform">
@@ -193,7 +206,8 @@
                                                     Approve
                                                 </button>
                                             </form>
-                                            <form method="POST" action="{{ route('leaves.reject', $leave->id) }}" class="inline">
+                                            <form method="POST" action="{{ route('leaves.reject', $leave->id) }}"
+                                                class="inline">
                                                 @csrf
                                                 <button type="submit"
                                                     class="inline-flex items-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300 hover:scale-105 transform">
@@ -213,7 +227,8 @@
                                 <i class="fas fa-check-circle text-4xl text-gray-400"></i>
                             </div>
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">No Pending Requests</h3>
-                            <p class="text-gray-500 max-w-sm mx-auto">All leave requests have been processed. New requests will appear here for your review.</p>
+                            <p class="text-gray-500 max-w-sm mx-auto">All leave requests have been processed. New requests
+                                will appear here for your review.</p>
                         </div>
                     @endif
                 </div>

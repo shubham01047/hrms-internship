@@ -80,19 +80,28 @@ class AdminDashboardController extends Controller implements HasMiddleware
 
 
     }
-    public function showAttendanceReport()
+  public function showAttendanceReport(Request $request)
     {
-        $today = now()->toDateString();
+        $fromDate = $request->input('from_date', now()->toDateString());
+        $toDate = $request->input('to_date', now()->toDateString());
+        if ($toDate < $fromDate) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
         $attendances = Attendance::with('user')
-            ->whereDate('date', $today)
+            ->whereBetween('date', [$fromDate, $toDate])
             ->get()
             ->map(function ($attendance) {
                 $breaks = BreakModel::where('attendance_id', $attendance->id)->get();
                 $breakDetails = [];
                 $totalBreakSeconds = 0;
                 foreach ($breaks as $break) {
-                    if ($break->break_end && $break->total_break_time) {
-                        $durationInSeconds = strtotime($break->total_break_time) - strtotime('TODAY');
+                    if (
+                        $break->break_end &&
+                        $break->total_break_time &&
+                        preg_match('/^\d{2}:\d{2}:\d{2}$/', $break->total_break_time)
+                    ) {
+                        [$h, $m, $s] = explode(':', $break->total_break_time);
+                        $durationInSeconds = ($h * 3600) + ($m * 60) + $s;
                         $totalBreakSeconds += $durationInSeconds;
                         $breakDetails[] = [
                             'type' => $break->break_type,
@@ -106,25 +115,35 @@ class AdminDashboardController extends Controller implements HasMiddleware
                     }
                 }
                 return [
-                    //pUnchin/Punchout Displaying
-                    'name' => $attendance->user->name,
-                    'punch_in' => $attendance->punch_in ? Carbon::parse($attendance->punch_in)->format('h:i A') : '-',
-                    'punch_in_remarks' => $attendance->punch_in_remarks,
-                    'punch_out' => $attendance->punch_out ? Carbon::parse($attendance->punch_out)->format('h:i A') : '-',
-                    'punch_out_remarks' => $attendance->punch_out_remarks,
+                    'name' => $attendance->user->name ?? 'Unknown',
+
+                    'punch_in' => $attendance->punch_in
+                        ? Carbon::parse($attendance->punch_in)->format('h:i A')
+                        : null,
+                    'punch_in_remarks' => $attendance->punch_in_remarks ?? null,
+
+                    'punch_out' => $attendance->punch_out
+                        ? Carbon::parse($attendance->punch_out)->format('h:i A')
+                        : null,
+                    'punch_out_remarks' => $attendance->punch_out_remarks ?? null,
+
                     'total_working_hours' => $attendance->total_working_hours ?? '00:00:00',
-                    //Extra Punchin/punchoyt Displaying
-                    'punch_in_again' => $attendance->punch_in_again ? Carbon::parse($attendance->punch_in_again)->format('h:i A') : '-',
-                    'punch_in_again_remarks' => $attendance->punch_in_again_remarks,
-                    'punch_out_again' => $attendance->punch_out_again ? Carbon::parse($attendance->punch_out_again)->format('h:i A') : '-',
-                    'punch_out_again_remarks' => $attendance->punch_out_again_remarks,
+
+                    'punch_in_again' => $attendance->punch_in_again
+                        ? Carbon::parse($attendance->punch_in_again)->format('h:i A')
+                        : null,
+                    'punch_in_again_remarks' => $attendance->punch_in_again_remarks ?? null,
+
+                    'punch_out_again' => $attendance->punch_out_again
+                        ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
+                        : null,
+                    'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
                     'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
-                    //Breaks displaying
                     'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
                     'breaks' => $breakDetails,
                 ];
             });
-        return view('admin.attendance_report', compact('attendances'));
+        return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
     }
 
     // Reports

@@ -14,7 +14,10 @@ class Timesheet extends Model
         'description',
         'status',
     ];
-    // protected $dates = ['date', 'created_at', 'updated_at', 'deleted_at'];
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

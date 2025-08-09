@@ -14,14 +14,11 @@
            bg-gradient-to-br from-[var(--primary-bg)] to-[var(--primary-bg-light)] text-primary
            transition-transform duration-300 ease-in-out
            md:translate-x-0 transform"
-       :class="{ '-translate-x-full': !sidebarOpen }"
-       x-show="sidebarOpen"
-       x-transition:enter="transition ease-out duration-300"
-       x-transition:enter-start="opacity-0 transform -translate-x-full"
-       x-transition:enter-end="opacity-100 transform translate-x-0"
-       x-transition:leave="transition ease-in duration-300"
-       x-transition:leave-start="opacity-100 transform translate-x-0"
-       x-transition:leave-end="opacity-0 transform -translate-x-full">
+    :class="{ '-translate-x-full': !sidebarOpen }" x-show="sidebarOpen"
+    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-x-full"
+    x-transition:enter-end="opacity-100 transform translate-x-0" x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-100 transform translate-x-0"
+    x-transition:leave-end="opacity-0 transform -translate-x-full">
 
     <!-- Mobile Toggle -->
     <button @click="sidebarOpen = !sidebarOpen"
@@ -66,14 +63,12 @@
 
         <!-- Attendance -->
         <div class="border-b border-primary pb-2 mb-2">
-            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
-                <i class="fas fa-clock"></i> Reports
-            </div>
-            
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Attendance</div>
+           
             @can('attendance report')
-                <a href="{{ route('admin.attendance.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-chart-bar"></i> Attendance Reports
-                </a>
+                <a href="{{ route('admin.attendance.report') }}"
+                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">📊
+                    Reports</a>
             @endcan
 
              <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
@@ -101,6 +96,9 @@
                 <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">
                     <i class="fas fa-tasks"></i> Manage Leave
                 </a>
+            @endcan
+            @can('view leave type')
+                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}">📝 Manage Leave Types</a>
             @endcan
         </div>
 

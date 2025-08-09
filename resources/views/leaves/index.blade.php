@@ -188,7 +188,9 @@
                                                     'approved' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'icon' => 'fas fa-check-circle'],
                                                     'rejected' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'icon' => 'fas fa-times-circle']
                                                 ];
-                                                $config = $statusConfig[strtolower($leave->status)] ?? $statusConfig['pending'];
+                                                $config =
+                                                    $statusConfig[strtolower($leave->status)] ??
+                                                    $statusConfig['pending'];
                                             @endphp
                                             <span class="inline-flex items-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium {{ $config['bg'] }} {{ $config['text'] }}">
                                                 <i class="{{ $config['icon'] }} mr-1 text-xs sm:text-sm"></i>

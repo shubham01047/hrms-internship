@@ -40,7 +40,8 @@
                         <div class="flex items-center">
                             <div class="p-3 bg-blue-100 rounded-lg mr-4">
                                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
@@ -49,12 +50,15 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center">
                             <div class="p-3 bg-green-100 rounded-lg mr-4">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
@@ -63,12 +67,15 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                         <div class="flex items-center">
                             <div class="p-3 bg-purple-100 rounded-lg mr-4">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
@@ -78,7 +85,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Form Card -->
                 <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
                     <!-- Card Header -->
@@ -100,8 +106,9 @@
                     <div class="p-6">
                         <form action="{{ route('leaves.store') }}" method="POST" class="space-y-6">
                             @csrf
-                            
                             <!-- Leave Type -->
+                            Leave Balance:<Br>
+                            <strong>{{ $leaveBalance }} Day(s)</strong>
                             <div class="space-y-2">
                                 <label for="leave_type_id" class="block text-sm font-semibold text-gray-700 mb-2">
                                     <div class="flex items-center space-x-2">
@@ -118,7 +125,8 @@
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
                                     <option value="">Select Leave Type</option>
                                     @foreach ($leaveTypes as $type)
-                                        <option value="{{ $type->id }}" title="{{ $type->description }}">{{ $type->name }}</option>
+                                        <option value="{{ $type->id }}" title="{{ $type->description }}">
+                                            {{ $type->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('leave_type_id')
@@ -217,8 +225,10 @@
                             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
-                                        <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                     </div>
                                     <div class="ml-3">

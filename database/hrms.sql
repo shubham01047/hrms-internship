@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2025 at 09:32 PM
+-- Generation Time: Aug 08, 2025 at 02:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,7 +54,9 @@ INSERT INTO `attendance` (`id`, `user_id`, `date`, `punch_in`, `punch_in_remarks
 (44, 7, '2025-07-31', '2025-07-31 19:04:20', NULL, NULL, NULL, NULL, '2025-07-31 19:04:20', '2025-07-31 19:04:20', NULL, NULL, NULL, NULL, NULL, '00:00:00'),
 (45, 7, '2025-08-01', '2025-08-01 14:01:27', NULL, '2025-08-01 14:17:28', NULL, '00:16:01', '2025-08-01 14:01:27', '2025-08-01 14:17:28', NULL, NULL, NULL, NULL, NULL, '00:00:00'),
 (69, 8, '2025-08-01', '2025-08-01 20:22:37', NULL, '2025-08-01 20:22:55', 'out', '00:00:18', '2025-08-01 20:22:37', '2025-08-01 20:30:46', NULL, '2025-08-01 20:30:41', NULL, '2025-08-01 20:30:46', 'aaaa', '00:00:05'),
-(80, 7, '2025-08-02', '2025-08-02 16:25:15', 'punch in', '2025-08-02 16:25:29', 'punchout', '00:00:14', '2025-08-02 16:25:15', '2025-08-02 16:26:36', NULL, '2025-08-02 16:26:33', NULL, '2025-08-02 16:26:36', NULL, '00:00:36');
+(80, 7, '2025-08-02', '2025-08-02 16:25:15', 'punch in', '2025-08-02 16:25:29', 'punchout', '00:00:14', '2025-08-02 16:25:15', '2025-08-02 16:26:36', NULL, '2025-08-02 16:26:33', NULL, '2025-08-02 16:26:36', NULL, '00:00:36'),
+(82, 7, '2025-08-04', '2025-08-04 22:12:27', 'Got up late...', '2025-08-04 22:13:15', 'Finished my work', '00:00:48', '2025-08-04 22:12:27', '2025-08-08 17:38:56', NULL, '2025-08-04 22:14:21', 'Another bug', '2025-08-04 22:14:34', 'Done for day', '00:00:47'),
+(83, 7, '2025-08-08', '2025-08-08 17:39:08', 'Punchin', '2025-08-08 18:08:49', 'out', '00:29:41', '2025-08-08 17:39:08', '2025-08-08 18:08:49', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -126,7 +128,15 @@ INSERT INTO `breaks` (`id`, `attendance_id`, `break_type`, `break_start`, `break
 (86, NULL, 'Morning Tea', '13:09:55', '13:10:02', '00:00:07', '2025-08-02 13:09:55', '2025-08-02 13:10:02', NULL),
 (87, NULL, 'Morning Tea', '16:14:31', '16:14:39', '00:00:08', '2025-08-02 16:14:31', '2025-08-02 16:14:39', NULL),
 (88, NULL, 'Lunch', '16:16:28', '16:16:35', '00:00:07', '2025-08-02 16:16:28', '2025-08-02 16:16:35', NULL),
-(89, NULL, 'Morning Tea', '16:22:25', '16:22:30', '00:00:05', '2025-08-02 16:22:25', '2025-08-02 16:22:30', NULL);
+(89, NULL, 'Morning Tea', '16:22:25', '16:22:30', '00:00:05', '2025-08-02 16:22:25', '2025-08-02 16:22:30', NULL),
+(90, NULL, 'Morning Tea', '18:03:48', '18:03:57', '00:00:09', '2025-08-04 18:03:48', '2025-08-04 18:03:57', NULL),
+(91, NULL, 'Lunch', '18:04:02', '18:04:10', '00:00:08', '2025-08-04 18:04:02', '2025-08-04 18:04:10', NULL),
+(92, NULL, 'Evening Tea', '18:04:15', '18:04:27', '00:00:12', '2025-08-04 18:04:15', '2025-08-04 18:04:27', NULL),
+(93, 82, 'Evening Tea', '22:12:50', '22:12:57', '00:00:07', '2025-08-04 22:12:50', '2025-08-04 22:12:57', NULL),
+(94, 83, 'Morning Tea', '17:56:25', '17:56:35', '00:00:10', '2025-08-08 17:56:25', '2025-08-08 17:56:35', NULL),
+(95, 83, 'Lunch', '17:56:39', '17:56:48', '00:00:09', '2025-08-08 17:56:39', '2025-08-08 17:56:48', NULL),
+(96, 83, 'Evening Tea', '17:56:54', '17:57:00', '00:00:06', '2025-08-08 17:56:54', '2025-08-08 17:57:00', NULL),
+(97, 83, 'Custom', '17:57:05', '18:08:41', '00:11:36', '2025-08-08 17:57:05', '2025-08-08 18:08:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -145,7 +155,7 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:32:{i:0;a:4:{s:1:\"a\";i:3;s:1:\"b\";s:15:\"create employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:1;a:4:{s:1:\"a\";i:7;s:1:\"b\";s:15:\"delete employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:2;a:4:{s:1:\"a\";i:8;s:1:\"b\";s:13:\"view employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:3;a:4:{s:1:\"a\";i:9;s:1:\"b\";s:10:\"view roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:4;a:4:{s:1:\"a\";i:10;s:1:\"b\";s:12:\"create roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:5;a:4:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"delete roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:6;a:4:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"edit roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:7;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:13:\"edit employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:8;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:10:\"view users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:9;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:10:\"edit users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:10;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:16:\"view permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:11;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:18:\"create permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:12;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:16:\"edit permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:18:\"delete permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:14;a:4:{s:1:\"a\";i:23;s:1:\"b\";s:11:\"apply leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:15;a:4:{s:1:\"a\";i:24;s:1:\"b\";s:15:\"view all leaves\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:16;a:4:{s:1:\"a\";i:25;s:1:\"b\";s:13:\"approve leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:17;a:4:{s:1:\"a\";i:26;s:1:\"b\";s:17:\"attendance report\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:18;a:4:{s:1:\"a\";i:27;s:1:\"b\";s:14:\"create holiday\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:19;a:4:{s:1:\"a\";i:28;s:1:\"b\";s:14:\"delete holiday\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:20;a:4:{s:1:\"a\";i:29;s:1:\"b\";s:14:\"create project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:21;a:4:{s:1:\"a\";i:30;s:1:\"b\";s:12:\"view project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:22;a:4:{s:1:\"a\";i:31;s:1:\"b\";s:12:\"edit project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:23;a:4:{s:1:\"a\";i:32;s:1:\"b\";s:14:\"delete project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:24;a:4:{s:1:\"a\";i:33;s:1:\"b\";s:11:\"create task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:25;a:4:{s:1:\"a\";i:34;s:1:\"b\";s:11:\"delete task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:26;a:4:{s:1:\"a\";i:35;s:1:\"b\";s:9:\"edit task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:27;a:4:{s:1:\"a\";i:36;s:1:\"b\";s:17:\"approve timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:28;a:4:{s:1:\"a\";i:37;s:1:\"b\";s:16:\"reject timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:29;a:4:{s:1:\"a\";i:38;s:1:\"b\";s:16:\"create timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:30;a:4:{s:1:\"a\";i:39;s:1:\"b\";s:14:\"edit timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:31;a:4:{s:1:\"a\";i:40;s:1:\"b\";s:14:\"view timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}}s:5:\"roles\";a:2:{i:0;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:5:\"Admin\";s:1:\"c\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:8:\"Employee\";s:1:\"c\";s:3:\"web\";}}}', 1754205053);
+('demergsystemsgoaindia-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:36:{i:0;a:4:{s:1:\"a\";i:3;s:1:\"b\";s:15:\"create employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:1;a:4:{s:1:\"a\";i:7;s:1:\"b\";s:15:\"delete employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:2;a:4:{s:1:\"a\";i:8;s:1:\"b\";s:13:\"view employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:3;a:4:{s:1:\"a\";i:9;s:1:\"b\";s:10:\"view roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:4;a:4:{s:1:\"a\";i:10;s:1:\"b\";s:12:\"create roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:5;a:4:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"delete roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:6;a:4:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"edit roles\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:7;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:13:\"edit employee\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:8;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:10:\"view users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:9;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:10:\"edit users\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:10;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:16:\"view permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:11;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:18:\"create permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:12;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:16:\"edit permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:18:\"delete permissions\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:14;a:4:{s:1:\"a\";i:23;s:1:\"b\";s:11:\"apply leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:15;a:4:{s:1:\"a\";i:24;s:1:\"b\";s:15:\"view all leaves\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:16;a:4:{s:1:\"a\";i:25;s:1:\"b\";s:13:\"approve leave\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:17;a:4:{s:1:\"a\";i:26;s:1:\"b\";s:17:\"attendance report\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:18;a:4:{s:1:\"a\";i:27;s:1:\"b\";s:14:\"create holiday\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:19;a:4:{s:1:\"a\";i:28;s:1:\"b\";s:14:\"delete holiday\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:20;a:4:{s:1:\"a\";i:29;s:1:\"b\";s:14:\"create project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:21;a:4:{s:1:\"a\";i:30;s:1:\"b\";s:12:\"view project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:22;a:4:{s:1:\"a\";i:31;s:1:\"b\";s:12:\"edit project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:23;a:4:{s:1:\"a\";i:32;s:1:\"b\";s:14:\"delete project\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:24;a:4:{s:1:\"a\";i:33;s:1:\"b\";s:11:\"create task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:25;a:4:{s:1:\"a\";i:34;s:1:\"b\";s:11:\"delete task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:26;a:4:{s:1:\"a\";i:35;s:1:\"b\";s:9:\"edit task\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:27;a:4:{s:1:\"a\";i:36;s:1:\"b\";s:17:\"approve timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:28;a:4:{s:1:\"a\";i:37;s:1:\"b\";s:16:\"reject timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:29;a:4:{s:1:\"a\";i:38;s:1:\"b\";s:16:\"create timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:30;a:4:{s:1:\"a\";i:39;s:1:\"b\";s:14:\"edit timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:31;a:4:{s:1:\"a\";i:40;s:1:\"b\";s:14:\"view timesheet\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:4;i:1;i:6;}}i:32;a:4:{s:1:\"a\";i:41;s:1:\"b\";s:17:\"create leave type\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:33;a:4:{s:1:\"a\";i:42;s:1:\"b\";s:15:\"edit leave type\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:34;a:4:{s:1:\"a\";i:43;s:1:\"b\";s:15:\"view leave type\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}i:35;a:4:{s:1:\"a\";i:44;s:1:\"b\";s:17:\"delete leave type\";s:1:\"c\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:4;}}}s:5:\"roles\";a:2:{i:0;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:5:\"Admin\";s:1:\"c\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:8:\"Employee\";s:1:\"c\";s:3:\"web\";}}}', 1754726617);
 
 -- --------------------------------------------------------
 
@@ -277,7 +287,6 @@ CREATE TABLE `holidays` (
 
 INSERT INTO `holidays` (`id`, `title`, `date`, `type`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Casually', '2025-07-28', 'company', 'Enjoy bro', '2025-07-27 19:22:13', '2025-07-28 10:46:34', NULL),
-(3, 'qw', '2025-07-29', 'national', NULL, '2025-07-28 10:30:13', '2025-07-28 10:30:13', NULL),
 (6, 'Addidtioin', '2025-08-05', 'national', NULL, '2025-08-02 12:47:10', '2025-08-02 12:47:10', NULL);
 
 -- --------------------------------------------------------
@@ -351,7 +360,15 @@ INSERT INTO `leaves` (`id`, `user_id`, `leave_type_id`, `start_date`, `end_date`
 (8, 6, 1, '2025-08-01', '2025-08-03', 'Vacation', 'Approved', '2025-07-27 18:15:24', 6, '2025-07-27 18:15:24', '2025-07-27 18:49:19', NULL),
 (9, 6, 2, '2025-08-05', '2025-08-06', 'Marriage', 'Rejected', '2025-07-27 18:16:14', 6, '2025-07-27 18:16:14', '2025-07-27 18:29:23', NULL),
 (10, 6, 1, '2025-08-08', '2025-08-09', 'NOt feeling well...', 'Approved', '2025-08-02 12:52:12', 6, '2025-08-02 12:52:12', '2025-08-02 12:54:50', NULL),
-(11, 6, 2, '2025-08-09', '2025-08-09', 'Casually', 'Rejected', '2025-08-02 12:54:11', 6, '2025-08-02 12:54:11', '2025-08-02 12:55:19', NULL);
+(11, 6, 2, '2025-08-09', '2025-08-09', 'Casually', 'Rejected', '2025-08-02 12:54:11', 6, '2025-08-02 12:54:11', '2025-08-02 12:55:19', NULL),
+(12, 6, 1, '2025-08-09', '2025-08-09', 'Not feeling well,wont be ablee to work.', 'Approved', '2025-08-08 12:54:03', 6, '2025-08-08 12:54:03', '2025-08-08 13:11:30', NULL),
+(13, 6, 3, '2025-08-09', '2025-08-11', 'sss', 'Rejected', '2025-08-08 13:04:29', 6, '2025-08-08 13:04:29', '2025-08-08 13:15:12', NULL),
+(14, 6, 3, '2025-08-09', '2025-08-09', 'sss', 'Approved', '2025-08-08 13:22:09', 6, '2025-08-08 13:22:09', '2025-08-08 13:22:14', NULL),
+(15, 6, 2, '2025-08-16', '2025-08-16', 'ssssssssssss', 'Approved', '2025-08-08 13:23:08', 6, '2025-08-08 13:23:08', '2025-08-08 13:23:14', NULL),
+(16, 6, 2, '2025-08-16', '2025-08-16', 'ukftukftui', 'Approved', '2025-08-08 13:27:20', 6, '2025-08-08 13:27:20', '2025-08-08 13:27:28', NULL),
+(17, 6, 2, '2025-08-09', '2025-08-09', 'yjr', 'Approved', '2025-08-08 13:33:58', 6, '2025-08-08 13:33:58', '2025-08-08 13:34:06', NULL),
+(18, 6, 6, '2025-08-09', '2025-08-09', 'sa', 'Approved', '2025-08-08 13:35:08', 6, '2025-08-08 13:35:08', '2025-08-08 13:35:13', NULL),
+(19, 6, 6, '2025-08-11', '2025-08-15', 'sssssssssssssssssssssss', 'Rejected', '2025-08-08 13:35:54', 6, '2025-08-08 13:35:54', '2025-08-08 13:36:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -379,7 +396,10 @@ INSERT INTO `leave_types` (`id`, `name`, `description`, `created_at`, `updated_a
 (4, 'Bereavement Leave', 'For family loss/funeral', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
 (5, 'Unpaid Leave', 'Without salary', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
 (6, 'Marriage Leave', 'For personal wedding', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL),
-(7, 'Study Leave', 'For exams or education', '2025-07-23 07:26:41', '2025-07-23 07:26:41', NULL);
+(7, 'Study Leave', 'For exams or education.', '2025-07-23 07:26:41', '2025-08-08 12:42:27', NULL),
+(9, 'aa', 'aa', '2025-08-06 15:36:11', '2025-08-06 15:38:30', '2025-08-06 15:38:30'),
+(10, '//', NULL, '2025-08-08 12:31:50', '2025-08-08 12:31:56', '2025-08-08 12:31:56'),
+(11, 'temp', 'tempfxvbdf', '2025-08-08 12:43:49', '2025-08-08 12:44:05', '2025-08-08 12:44:05');
 
 -- --------------------------------------------------------
 
@@ -539,7 +559,11 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (37, 'reject timesheet', 'web', '2025-07-31 14:11:58', '2025-07-31 14:11:58'),
 (38, 'create timesheet', 'web', '2025-08-01 07:42:46', '2025-08-01 07:42:46'),
 (39, 'edit timesheet', 'web', '2025-08-01 07:42:59', '2025-08-01 07:42:59'),
-(40, 'view timesheet', 'web', '2025-08-01 07:51:52', '2025-08-01 07:51:52');
+(40, 'view timesheet', 'web', '2025-08-01 07:51:52', '2025-08-01 07:51:52'),
+(41, 'create leave type', 'web', '2025-08-06 10:13:38', '2025-08-06 10:13:38'),
+(42, 'edit leave type', 'web', '2025-08-06 10:13:49', '2025-08-06 10:13:49'),
+(43, 'view leave type', 'web', '2025-08-06 10:13:59', '2025-08-06 10:13:59'),
+(44, 'delete leave type', 'web', '2025-08-06 10:14:12', '2025-08-06 10:14:12');
 
 -- --------------------------------------------------------
 
@@ -600,7 +624,8 @@ INSERT INTO `projects` (`id`, `title`, `client_name`, `budget`, `deadline`, `des
 (10, 'temp', 'temp', 323232.00, '2025-07-31', 'temptemptemptemptempsssdxghdfhgfdgh', '2025-07-30 19:18:55', '2025-08-02 12:58:34', NULL),
 (11, 'aaaaa', 'aaa', 454545.00, '2025-08-08', 'aaaaaaaaaaaa', '2025-07-30 19:20:08', '2025-07-30 19:37:26', '2025-07-30 19:37:26'),
 (12, 'shivam', 'shivam', 2121212.00, '2025-08-09', 'shivamshivamshivamshivamshivamshivamshivam', '2025-07-30 19:23:43', '2025-07-30 19:36:14', '2025-07-30 19:36:14'),
-(14, 'hsdgh', 'sdtfgsd', 34.00, '2025-09-06', 'fydyjy', '2025-08-02 12:59:01', '2025-08-02 12:59:07', '2025-08-02 12:59:07');
+(14, 'hsdgh', 'sdtfgsd', 34.00, '2025-09-06', 'fydyjy', '2025-08-02 12:59:01', '2025-08-02 12:59:07', '2025-08-02 12:59:07'),
+(15, 'test project', 'Demerg', 70000.00, '2025-09-06', 'Demo Projecta', '2025-08-04 22:02:20', '2025-08-04 22:04:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -621,7 +646,9 @@ CREATE TABLE `project_members` (
 --
 
 INSERT INTO `project_members` (`project_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(9, 6, '2025-07-30 15:39:36', '2025-07-30 15:39:36', NULL),
+(9, 7, '2025-08-04 22:10:42', '2025-08-04 22:10:42', NULL),
+(9, 8, '2025-08-04 22:10:42', '2025-08-04 22:10:42', NULL),
+(9, 10, '2025-08-04 22:10:52', '2025-08-04 22:10:52', NULL),
 (10, 6, '2025-07-30 19:18:55', '2025-07-30 19:18:55', NULL),
 (10, 7, '2025-07-30 19:37:34', '2025-07-30 19:37:34', NULL),
 (10, 8, '2025-07-30 19:37:34', '2025-07-30 19:37:34', NULL),
@@ -632,7 +659,8 @@ INSERT INTO `project_members` (`project_id`, `user_id`, `created_at`, `updated_a
 (12, 12, '2025-07-30 19:23:43', '2025-07-30 19:23:43', NULL),
 (12, 13, '2025-07-30 19:23:43', '2025-07-30 19:23:43', NULL),
 (13, 6, '2025-07-30 19:24:44', '2025-07-30 19:24:44', NULL),
-(14, 9, '2025-08-02 12:59:01', '2025-08-02 12:59:01', NULL);
+(14, 9, '2025-08-02 12:59:01', '2025-08-02 12:59:01', NULL),
+(15, 7, '2025-08-04 22:04:45', '2025-08-04 22:04:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -713,7 +741,11 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (39, 4),
 (39, 6),
 (40, 4),
-(40, 6);
+(40, 6),
+(41, 4),
+(42, 4),
+(43, 4),
+(44, 4);
 
 -- --------------------------------------------------------
 
@@ -735,7 +767,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('bfLjGpM1GOb4vhMZwAYSli2htKsl7m9cP07bWGrW', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieUdlWFFMQ2Fsemt6eGREd0hlQ0VVQ1dvNzZoWDlWVGRsNURXVVV0OCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9qZWN0cyI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1754159375);
+('0n4b9ChdQyqBujpLUHqDDk8SUELUuewylVJWzkpd', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoid096Q1BFWmJyS0lENFMyMFFkb0R2ZUtVRTVlY2U4d2tKMjRHOUNITiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sZWF2ZXMvbWFuYWdlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Njt9', 1754639854),
+('a0pAgFinO3Axg2LOwHgr2IkwUIeyPoUwjTScZ9gB', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTUlvcVdEa2k0cEc4QnZiS0tIRTFWdlg5TlI1b3Jrc3pPMHVFSENRYiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo2O30=', 1754656986);
 
 -- --------------------------------------------------------
 
@@ -810,7 +843,6 @@ CREATE TABLE `task_comments` (
 INSERT INTO `task_comments` (`id`, `task_id`, `user_id`, `comment`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 13, 6, 'Create using Laravel Breeze.', '2025-07-30 17:49:43', '2025-07-30 17:49:43', NULL),
 (2, 13, 6, 'ok', '2025-07-30 17:51:01', '2025-07-30 17:51:01', NULL),
-(3, 13, 6, '////////////', '2025-07-30 18:05:27', '2025-07-30 18:05:27', NULL),
 (4, 13, 7, 'Dwepam', '2025-07-31 19:29:35', '2025-07-31 19:29:35', NULL),
 (5, 13, 7, 'Done with user authentication', '2025-07-31 19:39:36', '2025-07-31 19:39:36', NULL),
 (6, 13, 6, 'ok ill check...', '2025-07-31 19:39:57', '2025-07-31 19:39:57', NULL),
@@ -832,14 +864,6 @@ CREATE TABLE `task_members` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `task_members`
---
-
-INSERT INTO `task_members` (`id`, `task_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(12, 13, 6, NULL, NULL),
-(16, 17, 6, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -850,6 +874,7 @@ CREATE TABLE `timesheets` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED DEFAULT NULL,
   `task_id` int(10) UNSIGNED DEFAULT NULL,
+  `project_id` int(10) UNSIGNED DEFAULT NULL,
   `date` date DEFAULT NULL,
   `hours_worked` decimal(5,2) DEFAULT NULL,
   `description` text DEFAULT NULL,
@@ -863,16 +888,17 @@ CREATE TABLE `timesheets` (
 -- Dumping data for table `timesheets`
 --
 
-INSERT INTO `timesheets` (`id`, `user_id`, `task_id`, `date`, `hours_worked`, `description`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 6, 13, '2025-07-30', 3.00, 'Finding....', 'Rejected', '2025-07-30 18:41:51', '2025-08-02 13:00:24', NULL),
-(2, 6, 13, '2025-07-30', 2.00, 'fsdfdf', 'Rejected', '2025-07-30 18:45:47', '2025-07-30 18:48:23', NULL),
-(3, 6, 13, '2025-07-31', 0.02, '22sdfsdf', 'Submitted', '2025-07-31 18:10:47', '2025-07-31 18:17:47', NULL),
-(4, 7, 13, '2025-07-31', 2.02, 'sss', 'Submitted', '2025-07-31 18:24:10', '2025-07-31 18:24:10', NULL),
-(5, 7, 13, '2025-07-31', 1.28, 'sss', 'Submitted', '2025-07-31 18:25:24', '2025-07-31 18:25:24', NULL),
-(6, 7, 13, '2025-07-31', 0.03, 'ss', 'Submitted', '2025-07-31 18:29:18', '2025-07-31 18:29:18', NULL),
-(7, 7, 13, '2025-07-31', 1.03, 'ss', 'Submitted', '2025-07-31 19:03:06', '2025-07-31 19:03:06', NULL),
-(8, 7, 13, '2025-07-31', 0.03, 's', 'Submitted', '2025-07-31 19:03:42', '2025-07-31 19:03:42', NULL),
-(9, 7, 13, '2025-07-31', 12.00, 'sdcsdfgrerrrrrrrrrrrrrsfg', 'Approved', '2025-07-31 19:04:39', '2025-07-31 19:11:49', NULL);
+INSERT INTO `timesheets` (`id`, `user_id`, `task_id`, `project_id`, `date`, `hours_worked`, `description`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 6, 13, 9, '2025-07-30', 3.00, 'Finding....', 'Rejected', '2025-07-30 18:41:51', '2025-08-08 16:24:21', NULL),
+(2, 6, 13, 9, '2025-07-30', 2.00, 'fsdfdf', 'Rejected', '2025-07-30 18:45:47', '2025-08-08 16:24:26', NULL),
+(3, 6, 13, 9, '2025-07-31', 0.02, '22sdfsdf', 'Submitted', '2025-07-31 18:10:47', '2025-08-08 16:24:36', NULL),
+(4, 7, 13, 9, '2025-07-31', 2.02, 'sss', 'Submitted', '2025-07-31 18:24:10', '2025-08-08 16:24:39', NULL),
+(5, 7, 13, 9, '2025-07-31', 1.28, 'sss', 'Submitted', '2025-07-31 18:25:24', '2025-08-08 16:24:41', NULL),
+(6, 7, 13, 9, '2025-07-31', 0.03, 'ss', 'Submitted', '2025-07-31 18:29:18', '2025-08-08 16:24:28', NULL),
+(7, 7, 13, 9, '2025-07-31', 1.03, 'ss', 'Submitted', '2025-07-31 19:03:06', '2025-08-08 16:24:44', NULL),
+(8, 7, 13, 9, '2025-07-31', 0.03, 's', 'Approved', '2025-07-31 19:03:42', '2025-08-08 16:24:46', NULL),
+(9, 7, 13, 9, '2025-07-31', 12.00, 'sdcsdfgrerrrrrrrrrrrrrsfg', 'Approved', '2025-07-31 19:04:39', '2025-08-08 16:24:48', NULL),
+(10, 6, 17, 9, '2025-08-04', 12.00, 'Done for today...', 'Rejected', '2025-08-04 22:06:30', '2025-08-08 16:24:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -902,12 +928,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `leave_balance`, `google_id`, `google_token`, `google_refresh_token`, `google_avatar`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(6, 'Shivam Bandekar', 'admin@example.com', NULL, '$2y$12$DF9IP9X0wcgKuw1ru6IleOgAnjdH4copZ//q5njgbmarjessYoFq2', 8, NULL, NULL, NULL, NULL, NULL, '2025-07-19 00:50:59', '2025-08-02 07:24:50', NULL),
+(6, 'Shivam Bandekar', 'shivambandekar44@gmail.com', NULL, '$2y$12$DF9IP9X0wcgKuw1ru6IleOgAnjdH4copZ//q5njgbmarjessYoFq2', 1, NULL, NULL, NULL, NULL, NULL, '2025-07-19 00:50:59', '2025-08-08 08:05:13', NULL),
 (7, 'Shubham Chodankar', 'employee01@example.com', NULL, '$2y$12$/RghM8b7qNTgra/BXnYquO7aiy2J9OtNnzOvqm4NFonRpg9SktD0O', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-20 07:20:43', '2025-07-20 07:20:43', NULL),
 (8, 'Viren Viren', 'employee03@example.com', NULL, '$2y$12$U9XsQLYIx3u9mgs/ENoYReDPJWuEzVn4O4y.pIKgeowfmuuQPs3hG', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:33:25', '2025-08-01 09:11:38', NULL),
 (9, 'Dwepam Gain', 'manager@example.com', NULL, '$2y$12$z61E7b5gyzxRbsbgIEjlR.GhcIOV6c.ofRZ1gIdr7lnLf/XVlRQFG', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-21 05:34:03', '2025-07-21 05:34:03', NULL),
 (10, 'Shivam Bandekar', 'employee02@example.com', NULL, '$2y$12$ElO9XjycCuF8LCd3g39xiOq8y42Q4ic/jNN59tU7Dh3HeFTF0KqvC', 12, '103688976084377817309', 'ya29.A0AS3H6NwAhNbn7fxqHP6lyLfm2OFO3O3ENg6cXwvufC959LWj3E1jioe101DVvhjhAeY1m8eP5HAabNvnB3lgSWvEBtHWvEPrXfgL2WGsu9o2ezsS4ZKJIIVvd6uq79oIX-XryzPun9oyFXMDGyhTRKDK6X2M4iAQPSJvYtLql0yUhAXUTOOy7tGIJsxqQyHUhZ4xAv4laCgYKAS4SARUSFQHGX2MibzOf-CDnuRclyhbVrJ5-2w0207', NULL, 'https://lh3.googleusercontent.com/a/ACg8ocLSbFnq3HvKOw6HR3a96o58cTQpBq14QjKg_CtyYshr1dAAgAA=s96-c', NULL, '2025-07-25 00:43:38', '2025-07-26 07:28:10', NULL),
-(11, 'Shivam Bandekar', 'shivambandekar44@gmail.com', NULL, '$2y$12$RXbwYWBA77sQzrOCy3Y2ze2o.7403N9fjRhayIS.FAGeW32zq4SN2', 12, NULL, NULL, NULL, NULL, 'ujjN0AuVOTQa2ccX4bhDzwDXQjgXgn7swpeIIP1E0Ip3QkrXB3OzBSd0xaM1', '2025-07-26 07:31:45', '2025-07-26 07:40:32', NULL),
 (12, 'test updated', 'test@example.com', NULL, '$2y$12$JL.hBkbMdijwOWmC80/wA.aP5/jM/6PZzPsWO4x5pesfZdIirUNFe', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-26 13:40:20', '2025-07-26 13:43:26', '2025-07-26 19:13:26'),
 (13, 'updateTest postmanapi', 'postman@example.com', NULL, '$2y$12$8eCgbTIeXcOuv4Wk.XsStu6AZaKrowcp2.qPP98/5d768kuICFhz.', 12, NULL, NULL, NULL, NULL, NULL, '2025-07-27 12:05:59', '2025-07-27 12:10:05', '2025-07-27 17:40:05');
 
@@ -1120,7 +1145,8 @@ ALTER TABLE `task_members`
 ALTER TABLE `timesheets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `timesheets_user_id_index` (`user_id`),
-  ADD KEY `timesheets_task_id_index` (`task_id`);
+  ADD KEY `timesheets_task_id_index` (`task_id`),
+  ADD KEY `project_id` (`project_id`);
 
 --
 -- Indexes for table `users`
@@ -1137,13 +1163,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `breaks`
 --
 ALTER TABLE `breaks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `companies`
@@ -1185,13 +1211,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `leave_types`
 --
 ALTER TABLE `leave_types`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1209,7 +1235,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1221,7 +1247,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -1251,13 +1277,13 @@ ALTER TABLE `task_comments`
 -- AUTO_INCREMENT for table `task_members`
 --
 ALTER TABLE `task_members`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `timesheets`
 --
 ALTER TABLE `timesheets`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1305,6 +1331,12 @@ ALTER TABLE `model_has_roles`
 ALTER TABLE `role_has_permissions`
   ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `timesheets`
+--
+ALTER TABLE `timesheets`
+  ADD CONSTRAINT `timesheets_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

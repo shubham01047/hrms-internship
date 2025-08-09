@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TimesheetReportExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 class TimesheetController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
@@ -32,7 +34,7 @@ class TimesheetController extends Controller implements HasMiddleware
         $hoursWorked = null;
         if ($punch && $punch->punch_out) {
             $rawHours = (strtotime($punch->punch_out) - strtotime($punch->punch_in)) / 3600;
-            $hoursWorked = number_format($rawHours, 2, '.', ''); // ensures it's a proper decimal like "0.02"
+            $hoursWorked = number_format($rawHours, 2, '.', '');
         }
         return view('timesheets.create', compact('task', 'projectId', 'hoursWorked', 'today'))->with('attendance', $punch);
     }
@@ -104,5 +106,60 @@ class TimesheetController extends Controller implements HasMiddleware
             'project' => $timesheet->task->project_id,
             'task' => $timesheet->task_id
         ])->with('error', 'Timesheet rejected.');
+    }
+    public function reportForm(Project $project, Task $task)
+    {
+        return view('timesheets.report_form', compact('project', 'task'));
+    }
+    public function downloadReport(Request $request, Project $project, Task $task)
+    {
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date',
+            'type' => 'required|in:pdf,excel',
+        ]);
+        $timesheets = Timesheet::where('project_id', $project->id)
+            ->where('task_id', $task->id)
+            ->whereBetween('date', [$request->from, $request->to])
+            ->with('user')
+            ->get();
+        if ($timesheets->isEmpty()) {
+            return back()->with('error', 'No records found for selected range.');
+        }
+        if ($request->type === 'excel') {
+            $filename = 'timesheet_report.csv';
+            $headers = [
+                "Content-Type" => "text/csv",
+                "Content-Disposition" => "attachment; filename={$filename}",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            ];
+            $columns = ['Date', 'User', 'Hours Worked'];
+            $callback = function () use ($timesheets, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns);
+                foreach ($timesheets as $sheet) {
+                    fputcsv($file, [
+                        $sheet->date,
+                        $sheet->user->name ?? 'N/A',
+                        $sheet->hours_worked,
+                    ]);
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+        if ($request->type === 'pdf') {
+            $pdf = PDF::loadView('timesheets.report_pdf', [
+                'timesheets' => $timesheets,
+                'project' => $project,
+                'task' => $task,
+                'from' => $request->from,
+                'to' => $request->to,
+            ]);
+            return $pdf->download('timesheet_report.pdf');
+        }
+        return back()->with('error', 'Invalid export type');
     }
 }
