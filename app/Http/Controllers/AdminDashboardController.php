@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Holiday;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakModel;
@@ -75,8 +76,24 @@ class AdminDashboardController extends Controller implements HasMiddleware
         //timesheet
         $projects = Project::with(['tasks.assignedUsers'])->get();
 
+        //deadline
+        $projectsThisWeek = Project::with(['tasks.assignedUsers'])
+    ->whereBetween('deadline', [
+        Carbon::now()->startOfWeek(),
+        Carbon::now()->endOfWeek()
+    ])
+    ->get();
 
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer'));
+    //holidays
+     $holidaysThisWeek = Holiday::whereBetween('date', [
+        Carbon::now(), // today onwards
+        Carbon::now()->endOfWeek()
+    ])
+    ->orderBy('date', 'asc')
+    ->get();
+
+
+        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer','projectsThisWeek','holidaysThisWeek'));
 
 
     }
