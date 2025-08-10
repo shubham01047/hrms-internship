@@ -462,75 +462,72 @@
                         </div>
 
                         <!-- Quick Stats -->
-                        <div class="overflow-x-auto pb-4">
-                            <div
-                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
-                                <a href="{{ route('employees.index') }}"
-                                    class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                    bg-white border border-gray-200
-                                    flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                        <circle cx="9" cy="7" r="4" />
-                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                                    </svg>
-                                    <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
-                                    <p class="text-2xl sm:text-3xl font-bold text-red-600">{{ $employees->count() }}</p>
-                                </a>
+                       <div class="overflow-x-auto pb-4">
+    <div class="flex flex-wrap gap-3 sm:gap-4 lg:gap-6 px-4">
+        
+        <!-- Card 1 -->
+        <a href="{{ route('employees.index') }}"
+            class="flex-1 min-w-[200px] p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
+            bg-white border border-gray-200 flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <h3 class="text-xs sm:text-sm text-gray-500">Total Employees</h3>
+            <p class="text-2xl sm:text-3xl font-bold text-red-600">{{ $employees->count() }}</p>
+        </a>
 
-                                <div
-                                    class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                    bg-white border border-gray-200 text-purple-600
-                                    flex flex-col items-start gap-2 sm:gap-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6 sm:h-7 sm:w-7 text-purple-600" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12" />
-                                        <path d="M12 22c4.4 0 8-3.6 8-8V7h-4V3H8v4H4v7c0 4.4 3.6 8 8 8z" />
-                                    </svg>
-                                    <h3 class="text-xs sm:text-sm text-gray-500">Punch-In Users</h3>
-                                    <p class="text-2xl sm:text-3xl font-bold text-purple-600">{{ $todayPunchInCount }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                    bg-white border border-gray-200 text-orange-500
-                                    flex flex-col items-start gap-2 sm:gap-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6 sm:h-7 sm:w-7 text-orange-500" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                                        <polyline points="14 2 14 8 20 8" />
-                                        <line x1="16" x2="8" y1="13" y2="13" />
-                                        <line x1="16" x2="8" y1="17" y2="17" />
-                                        <line x1="10" x2="8" y1="9" y2="9" />
-                                    </svg>
-                                    <h3 class="text-xs sm:text-sm text-gray-500">Pending Leaves</h3>
-                                    <p class="text-2xl sm:text-3xl font-bold text-orange-500">{{ $pendingLeaves }}</p>
-                                </div>
-                                <div
-                                    class="p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
-                                    bg-white border border-gray-200 text-green-600
-                                    flex flex-col items-start gap-2 sm:gap-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6 sm:h-7 sm:w-7 text-green-600" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" />
-                                        <line x1="12" x2="12" y1="10" y2="16" />
-                                        <line x1="9" x2="15" y1="13" y2="13" />
-                                    </svg>
-                                    <h3 class="text-xs sm:text-sm text-gray-500">Active Projects</h3>
-                                    <p class="text-2xl sm:text-3xl font-bold text-green-600">{{ $projectCount }}</p>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Card 2 -->
+        <div class="flex-1 min-w-[200px] p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
+            bg-white border border-gray-200 text-purple-600 flex flex-col items-start gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 sm:h-7 sm:w-7 text-purple-600" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+                <path d="M12 22c4.4 0 8-3.6 8-8V7h-4V3H8v4H4v7c0 4.4 3.6 8 8 8z" />
+            </svg>
+            <h3 class="text-xs sm:text-sm text-gray-500">Punch-In Users</h3>
+            <p class="text-2xl sm:text-3xl font-bold text-purple-600">{{ $todayPunchInCount }}</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="flex-1 min-w-[200px] p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
+            bg-white border border-gray-200 text-orange-500 flex flex-col items-start gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 sm:h-7 sm:w-7 text-orange-500" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" x2="8" y1="13" y2="13" />
+                <line x1="16" x2="8" y1="17" y2="17" />
+                <line x1="10" x2="8" y1="9" y2="9" />
+            </svg>
+            <h3 class="text-xs sm:text-sm text-gray-500">Pending Leaves</h3>
+            <p class="text-2xl sm:text-3xl font-bold text-orange-500">{{ $pendingLeaves }}</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="flex-1 min-w-[200px] p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
+            bg-white border border-gray-200 text-green-600 flex flex-col items-start gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 sm:h-7 sm:w-7 text-green-600" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 4.32 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" />
+                <line x1="12" x2="12" y1="10" y2="16" />
+                <line x1="9" x2="15" y1="13" y2="13" />
+            </svg>
+            <h3 class="text-xs sm:text-sm text-gray-500">Active Projects</h3>
+            <p class="text-2xl sm:text-3xl font-bold text-green-600">{{ $projectCount }}</p>
+        </div>
+    </div>
+</div>
+
 
                         <!-- Notifications and Quick Actions Wrapper -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
@@ -1024,7 +1021,7 @@
                         <div class="bg-white rounded-xl shadow p-4 sm:p-6 border-gray-200 border">
                             <div class="p-3 sm:p-4 rounded-t-xl mb-4 text-white"
                                 style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));">
-                                <h2 class="text-lg sm:text-xl font-semibold">This Week's Holidays</h2>
+                                <h2 class="text-lg sm:text-xl font-semibold">Upcoming Holidays</h2>
                             </div>
 
                             @if ($holidaysThisWeek->count())
@@ -1061,7 +1058,7 @@
                                 </div>
                             @else
                                 <div class="text-center text-gray-500 text-sm py-4">
-                                    🎉 No holidays this week.
+                                    🎉 No holidays later this week.
                                 </div>
                             @endif
                         </div>
