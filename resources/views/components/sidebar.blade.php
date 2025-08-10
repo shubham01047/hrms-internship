@@ -27,8 +27,9 @@
     </button>
 
     <!-- Sidebar Header -->
-    <div class="p-4 text-center font-bold text-2xl bg-primary/50 text-primary">
-        {{ $company->system_title }}
+        <div class="theme-app px-4 py-3 text-center border-b border-primary bg-primary-light backdrop-blur-sm">
+        <h1 class="font-bold text-xl text-primary tracking-wide">{{ $company->system_title }}</h1>
+        <div class="w-16 h-0 bg-primary mx-auto mt-3 rounded-full"></div>
     </div>
 
     <!-- Navigation Menu -->
