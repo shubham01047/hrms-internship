@@ -279,6 +279,13 @@
                         transform: translate(-50%, -50%);
                     }
 
+                    #digital-time {
+                        min-width: 8ch; /* Enough for "12:59:59" */
+                        font-family: 'Poppins', 'Consolas', 'monospace', sans-serif;
+                        display: inline-block;
+                        text-align: center;
+                    }
+
                     /* Responsive Design for Clocks */
                     @media (min-width: 640px) { /* sm breakpoint */
                         .analog-clock-wrapper {
