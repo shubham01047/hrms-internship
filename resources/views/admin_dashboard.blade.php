@@ -595,7 +595,7 @@
                                         </svg>
                                         <span class="font-semibold text-sm sm:text-base">Add Employee</span>
                                     </a>
-                                    <a href="#"
+                                    <a href="{{ route('holidays.create') }}"
                                         class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
                                                       shadow-md
                                                       hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out"
@@ -612,7 +612,7 @@
                                         </svg>
                                         <span class="font-semibold text-sm sm:text-base">Add Holiday</span>
                                     </a>
-                                    <a href="#"
+                                    <a href="{{route('projects.create')}}"
                                         class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
                                                       shadow-md
                                                       hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out"
