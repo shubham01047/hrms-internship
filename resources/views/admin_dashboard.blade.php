@@ -279,6 +279,13 @@
                         transform: translate(-50%, -50%);
                     }
 
+                    #digital-time {
+                        min-width: 8ch; /* Enough for "12:59:59" */
+                        font-family: 'Poppins', 'Consolas', 'monospace', sans-serif;
+                        display: inline-block;
+                        text-align: center;
+                    }
+
                     /* Responsive Design for Clocks */
                     @media (min-width: 640px) { /* sm breakpoint */
                         .analog-clock-wrapper {
@@ -339,8 +346,8 @@
                                 <!-- Clocks Section - Now using Grid for stability -->
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-center justify-items-center w-full lg:w-auto">
                                     <!-- Analog Clock Wrapper -->
-                                    <div class="analog-clock-wrapper">
-                                        <div class="analog-clock" id="analog-clock">
+                                    <div class="analog-clock-wrapper ">
+                                        <div class="analog-clock " id="analog-clock">
                                             <!-- Clock Numbers -->
                                             <div class="clock-number" style="top: 8px; left: 50%;">12</div>
                                             <div class="clock-number" style="top: 50%; right: 8px;">3</div>
@@ -353,7 +360,7 @@
                                             <div class="clock-hand second-hand" id="second-hand"></div>
                                             <div class="clock-center"></div>
                                         </div>
-                                        <p class="text-center mt-2 text-sm opacity-75">Analog</p>
+                                        <p class="text-center mt-2 text-sm opacity-75  ">Analog</p>
                                     </div>
 
                                     <!-- Digital Clock -->

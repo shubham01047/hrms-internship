@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="theme-app relative overflow-hidden rounded-lg shadow-sm p-4 sm:p-6"
-            style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+         <div class="theme-app rounded-lg " style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg)); padding: 1.5rem 1rem; sm:padding: 3rem 2rem">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
                 <div class="flex items-center gap-3">
                     <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
                         <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor"
