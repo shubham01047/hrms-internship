@@ -66,22 +66,29 @@
     </style>
 
     @can('attendance report')
-        <x-slot name="header">
-            <div class="theme-app">
-                <div class="bg-secondary-gradient rounded-xl p-4 sm:p-6 shadow-sm animate-fade-in">
-                    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-                            </svg>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl text-primary font-bold">Attendance Report</h2>
-                        </div>
-                        <p class="text-secondary text-sm">Daily attendance tracking and break management</p>
-                    </div>
-                </div>
+       <x-slot name="header">
+    <div
+        class="theme-app flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 rounded-lg shadow-sm"
+        style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+        
+        <div class="flex items-center space-x-3">
+            <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
+                <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                </svg>
             </div>
-        </x-slot>
+            <div class="min-w-0">
+                <h2 class="font-bold text-xl sm:text-2xl leading-tight truncate" style="color: var(--primary-text);">
+                    Attendance Report
+                </h2>
+                <p class="text-xs sm:text-sm" style="color: var(--secondary-text);">
+                    Daily attendance tracking and break management
+                </p>
+            </div>
+        </div>
+    </div>
+</x-slot>
 
         <div class="theme-app py-6 sm:px-4 lg:px-8 bg-white">
             <div class="w-full max-w-6xl mx-auto space-y-6">

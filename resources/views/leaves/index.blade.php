@@ -31,6 +31,8 @@
     </div>
 </div>
 
+
+
         @if (session('success'))
             <div class="mx-4 mt-4 sm:mx-6 sm:mt-6 bg-green-50 border-l-4 border-green-400 p-3 sm:p-4 rounded-r-lg shadow-sm">
                 <div class="flex items-center">
