@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         } elseif ($roles->contains('Employee')) {
             return redirect()->route('employee.dashboard');
         }
-        return redirect('/dashboard'); 
+        return redirect('/admin.dashboard'); 
     }
 
     /**
