@@ -67,11 +67,11 @@
            
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300"><i class="fas fa-user-clock"></i> Attendance Reports
+                    class="{{ $isActive('admin.attendance.report') }}"><i class="fas fa-user-clock"></i> Attendance Reports
                     </a>
             @endcan
 
-             <a href="{{ route('reports.report') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+             <a href="{{ route('reports.report') }}" class="{{ $isActive('reports.report') }}">
                 <i class="fas fa-clipboard-list"></i> Summary Reports
             </a>
             

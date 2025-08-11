@@ -12,18 +12,21 @@
                 </h2>
             </div>
             @can('create permissions')
-                <div class="w-full sm:w-auto">
+                <div class="w-full sm:w-auto lg:mr-24">
                     <a href="{{ route('permissions.create') }}" 
-                       class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
-                       style="background-color: var(--hover-bg); color: var(--primary-text);"
-                       onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                       onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                    class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                    style="background-color: var(--hover-bg); color: var(--primary-text);"
+                    onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                            </path>
                         </svg>
                         Create Permission
                     </a>
                 </div>
+
             @endcan
         </div>
     </x-slot>
