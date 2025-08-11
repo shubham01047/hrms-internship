@@ -8,7 +8,8 @@
                      alt="Company Logo"
                      class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 p-2">
                 <h3 class="text-primary text-2xl font-bold">{{ $company->system_title ?? 'HRMS Portal' }}</h3>
-                <p class="text-primary text-sm font-medium">{{ $company->company_description ?? 'Create Your Account' }}</p>
+                <!-- Updated header text to match login page style -->
+                <p class="text-primary text-sm font-medium">Create your account</p>
             </div>
 
             <!-- Form Section -->
@@ -82,27 +83,25 @@
         </div>
     </div>
 
+    <!-- Updated styles to match login page exactly -->
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg), var(--primary-bg));
             background-size: 300% 300%;
             animation: gradientMove 8s ease infinite;
         }
-
         @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        @keyframes fade-in {
+        @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .fade-in {
-            animation: fade-in 0.8s ease-in-out;
-        }
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        input:focus { box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1); }
+        button:focus { outline: none; }
     </style>
 
     <script>
