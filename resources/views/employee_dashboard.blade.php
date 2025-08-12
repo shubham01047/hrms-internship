@@ -175,6 +175,7 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -186,16 +187,30 @@
                 padding-top: 1rem;
                 margin-top: 0.25rem;
             }
-            
+
             .analog-clock {
                 width: 60px;
                 height: 60px;
             }
-            
-            .hour-hand { height: 15px; top: 30%; }
-            .minute-hand { height: 18px; top: 25%; }
-            .second-hand { height: 22px; top: 22%; }
-            .clock-number { font-size: 8px; }
+
+            .hour-hand {
+                height: 15px;
+                top: 30%;
+            }
+
+            .minute-hand {
+                height: 18px;
+                top: 25%;
+            }
+
+            .second-hand {
+                height: 22px;
+                top: 22%;
+            }
+
+            .clock-number {
+                font-size: 8px;
+            }
         }
     </style>
 
@@ -204,7 +219,8 @@
 
             <div class="bg-secondary-gradient text-primary p-3 sm:p-4 lg:p-5 rounded-lg shadow-lg animate-fade-in">
                 <div class="text-center mb-3 sm:mb-4">
-                    <h1 class="text-lg sm:text-xl lg:text-2xl font-bold mb-1 text-primary">Welcome, {{ Auth::user()->name }}!</h1>
+                    <h1 class="text-lg sm:text-xl lg:text-2xl font-bold mb-1 text-primary">Welcome,
+                        {{ Auth::user()->name }}!</h1>
                     <p class="text-sm sm:text-base text-secondary">Track your work hours professionally</p>
                 </div>
 
@@ -215,7 +231,7 @@
                             <div class="clock-number" style="top: 50%; right: 6px;">3</div>
                             <div class="clock-number" style="bottom: 6px; left: 50%;">6</div>
                             <div class="clock-number" style="top: 50%; left: 6px;">9</div>
-                            
+
                             <div class="clock-hand hour-hand" id="hour-hand"></div>
                             <div class="clock-hand minute-hand" id="minute-hand"></div>
                             <div class="clock-hand second-hand" id="second-hand"></div>
@@ -225,14 +241,16 @@
                     </div>
 
                     <div class="text-center">
-                        <div id="digital-time" class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 text-primary">00:00:00</div>
+                        <div id="digital-time" class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 text-primary">
+                            00:00:00</div>
                         <div id="digital-date" class="text-xs sm:text-sm text-secondary">Loading...</div>
                         <div id="digital-ampm" class="text-xs text-secondary">AM</div>
                         <p class="text-xs text-secondary mt-1">Digital</p>
                     </div>
 
                     <div class="text-center">
-                        <div class="bg-white bg-opacity-20 rounded-md p-2 sm:p-3 backdrop-filter backdrop-blur-sm border border-primary">
+                        <div
+                            class="bg-white bg-opacity-20 rounded-md p-2 sm:p-3 backdrop-filter backdrop-blur-sm border border-primary">
                             <div class="text-xs text-secondary mb-1">Time Zone</div>
                             <div id="timezone" class="font-semibold text-xs sm:text-sm text-primary">Loading...</div>
                             <div id="utc-offset" class="text-xs text-secondary mt-1">UTC+0</div>
@@ -247,19 +265,25 @@
                         <span class="text-lg">⏰</span> Work Status
                     </h2>
                 </div>
-                
+
                 @if (session('success'))
-                    <div class="p-3 mb-3 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2">
+                    <div
+                        class="p-3 mb-3 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
                         </svg>
                         Success! {{ session('success') }}
                     </div>
                 @endif
                 @if (session('error'))
-                    <div class="p-3 mb-3 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2">
+                    <div
+                        class="p-3 mb-3 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
                         </svg>
                         Error! {{ session('error') }}
                     </div>
@@ -282,63 +306,89 @@
                         <div>
                             <div class="text-sm font-medium text-secondary mb-1">Extra Working Time</div>
                             @if ($attendanceToday && $attendanceToday->punch_out_again)
-                                <div class="text-2xl sm:text-3xl font-bold text-primary">{{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}</div>
+                                <div class="text-2xl sm:text-3xl font-bold text-primary">
+                                    {{ $attendanceToday->overtime_working_hours ?? '00:00:00' }}</div>
                             @else
-                                <div id="extraWorkTime" class="text-2xl sm:text-3xl font-bold text-primary">00:00:00</div>
+                                <div id="extraWorkTime" class="text-2xl sm:text-3xl font-bold text-primary">00:00:00
+                                </div>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 @if (!$attendanceToday)
-                    <form method="POST" action="{{ route('attendance.punchIn') }}" class="flex flex-col sm:flex-row gap-3 items-end">
-                        @csrf
-                        <button type="submit" class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0">
+                    
+                        <button type="submit" id="punchInBtn"
+                            class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0">
                             🚀 Punch In
                         </button>
+                        <form method="POST" id="punchInForm" action="{{ route('attendance.punchIn') }}"
+                        class="flex flex-col sm:flex-row gap-3 items-end">
+                        @csrf
                         <div class="flex-1">
-                            <label for="punch_in_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
-                            <input type="text" name="punch_in_remarks" id="punch_in_remarks" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            <label for="punch_in_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks
+                                (optional)</label>
+                            <input type="text" name="punch_in_remarks" id="punch_in_remarks"
+                                class="w-80 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                                 placeholder="Late due to traffic...">
+                            <label for="geo">Select loc:*</label>
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
+                            <select name="location_type" id="location_type" required>
+                                <option value="">Select Location</option>
+                                <option value="Home">Home</option>
+                                <option value="Company">Company</option>
+                            </select>
                         </div>
                     </form>
                 @elseif (!$attendanceToday->punch_out)
-                    <form method="POST" action="{{ route('attendance.punchOut') }}" class="flex flex-col sm:flex-row gap-3 items-end">
+                    <form method="POST" action="{{ route('attendance.punchOut') }}"
+                        class="flex flex-col sm:flex-row gap-3 items-end">
                         @csrf
-                        <button type="submit" class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0">
+                        <button type="submit"
+                            class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0">
                             🏁 Punch Out
                         </button>
                         <div class="flex-1">
-                            <label for="punch_out_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
-                            <input type="text" name="punch_out_remarks" id="punch_out_remarks" 
+                            <label for="punch_out_remarks"
+                                class="block text-sm font-medium text-gray-700 mb-1">Remarks
+                                (optional)</label>
+                            <input type="text" name="punch_out_remarks" id="punch_out_remarks"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                                 placeholder="Leaving early for appointment...">
                         </div>
                     </form>
                 @elseif ($attendanceToday->punch_in_again && !$attendanceToday->punch_out_again)
-                    <form method="POST" action="{{ route('attendance.punchOutAgain') }}" class="flex flex-col sm:flex-row gap-3 items-end" id="punchOutAgainForm">
+                    <form method="POST" action="{{ route('attendance.punchOutAgain') }}"
+                        class="flex flex-col sm:flex-row gap-3 items-end" id="punchOutAgainForm">
                         @csrf
-                        <button type="submit" class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0" id="btnPunchOutAgain">
+                        <button type="submit"
+                            class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0"
+                            id="btnPunchOutAgain">
                             🏁 Punch Out Again
                         </button>
                         <div class="flex-1">
-                            <label for="punch_out_again_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <label for="punch_out_again_remarks"
+                                class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
                             <input type="text" name="punch_out_again_remarks" id="punch_out_again_remarks"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                                 placeholder="Finished extra work...">
                         </div>
                     </form>
                 @else
-                    <form method="POST" action="{{ route('attendance.punchInAgain') }}" class="flex flex-col sm:flex-row gap-3 items-end" id="punchInAgainForm">
+                    <form method="POST" action="{{ route('attendance.punchInAgain') }}"
+                        class="flex flex-col sm:flex-row gap-3 items-end" id="punchInAgainForm">
                         @csrf
-                        <button type="submit" class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0" id="btnPunchInAgain">
+                        <button type="submit"
+                            class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0"
+                            id="btnPunchInAgain">
                             🚀 Punch In Again
                         </button>
                         <div class="flex-1">
-                            <label for="punch_in_again_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
+                            <label for="punch_in_again_remarks"
+                                class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
                             <input type="text" name="punch_in_again_remarks" id="punch_in_again_remarks"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                                 placeholder="Some extra work...">
                         </div>
                     </form>
@@ -387,7 +437,8 @@
                             </div>
                             <form method="POST" action="{{ route('attendance.endBreak') }}">
                                 @csrf
-                                <button type="submit" class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg">
+                                <button type="submit"
+                                    class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg">
                                     ⏹️ End Break
                                 </button>
                             </form>
@@ -406,33 +457,33 @@
     <script>
         function updateClocks() {
             const now = new Date();
-            
+
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
             const ampm = hours >= 12 ? 'PM' : 'AM';
 
             const displayHours = hours % 12 || 12;
-            
-            const formattedTime = 
+
+            const formattedTime =
                 displayHours.toString().padStart(2, '0') + ':' +
                 minutes.toString().padStart(2, '0') + ':' +
                 seconds.toString().padStart(2, '0');
-            
+
             document.getElementById('digital-time').textContent = formattedTime;
             document.getElementById('digital-ampm').textContent = ampm;
-            
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             };
             document.getElementById('digital-date').textContent = now.toLocaleDateString('en-US', options);
-            
+
             const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             document.getElementById('timezone').textContent = timezone;
-            
+
             const offset = -now.getTimezoneOffset() / 60;
             const offsetString = `UTC${offset >= 0 ? '+' : ''}${offset}`;
             document.getElementById('utc-offset').textContent = offsetString;
@@ -468,10 +519,11 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const punchIn = new Date("{{ $attendanceToday->punch_in }}");
-                const punchOut = {{ $attendanceToday->punch_out ? "new Date('{$attendanceToday->punch_out}')" : 'null' }};
+                const punchOut =
+                    {{ $attendanceToday->punch_out ? "new Date('{$attendanceToday->punch_out}')" : 'null' }};
                 const activeBreakStart = {{ $activeBreakStart ? "new Date('{$activeBreakStart}')" : 'null' }};
                 const workTimeEl = document.getElementById("workTime");
-                
+
                 function updateWorkTimer() {
                     const now = new Date();
                     let activeBreakSeconds = 0;
@@ -498,9 +550,10 @@
     @if ($activeBreak)
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const breakStart = new Date("{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
+                const breakStart = new Date(
+                    "{{ \Carbon\Carbon::parse($activeBreak->break_start)->format('Y-m-d H:i:s') }}");
                 const breakTimerEl = document.getElementById('breakTimer');
-                
+
                 function updateBreakTimer() {
                     const now = new Date();
                     const diff = Math.floor((now - breakStart) / 1000);
@@ -530,7 +583,7 @@
             const punchInDate = punchInAgainStr ? new Date(punchInAgainStr) : null;
             const punchOutDate = punchOutAgainStr ? new Date(punchOutAgainStr) : null;
             const extraWorkTimeEl = document.getElementById("extraWorkTime");
-            
+
             function updateExtraWorkTimer() {
                 const now = new Date();
                 const effectiveEnd = punchOutDate ?? now;
@@ -545,10 +598,32 @@
                 }
             }
             if (punchInDate && !punchOutDate) {
-                updateExtraWorkTimer(); 
-                setInterval(updateExtraWorkTimer, 1000); 
+                updateExtraWorkTimer();
+                setInterval(updateExtraWorkTimer, 1000);
             } else if (punchInDate && punchOutDate) {
-                updateExtraWorkTimer(); 
+                updateExtraWorkTimer();
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('punchInBtn').addEventListener('click', function(e) {
+            const locationType = document.getElementById('location_type').value;
+
+            if (!locationType) {
+                alert("Please select your location (Home or Company).");
+                return;
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                    document.getElementById('punchInForm').submit();
+                }, function(error) {
+                    alert("Unable to get your location. Please enable GPS.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
             }
         });
     </script>

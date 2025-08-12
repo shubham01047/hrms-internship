@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Holiday;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakModel;
@@ -24,19 +25,13 @@ class AdminDashboardController extends Controller implements HasMiddleware
     }
     public function index()
     {
-        //all employee
+        $user = auth()->user();
         $employees = Employee::all();
-
-        //birthday tomorrow
         $tomorrow = Carbon::tomorrow();
         $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
-
-        //leaves    
         $pendingLeaves = Leave::where('status', 'pending')->count();
-
-        //punch in today
         $today = Carbon::today()->toDateString();
         $todayPunchInCount = DB::table('attendance')
             ->whereDate('date', $today)
@@ -46,130 +41,160 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
-
-        //absentee
-
         $employeeCount = User::whereHas('employee')->count();
         $absentees = $employeeCount - $todayPunchInCount;
-
-        //projects
         $projectCount = Project::count();
-
-
-        //Late commer
-
-        //top peformer
         $topPerformer = Attendance::select('user_id', DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))) as total_hours'))
-    ->groupBy('user_id')
-    ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
-    ->with('user') // assuming attendance has user() relationship
-    ->first();
-
-
-        //percentage
+            ->groupBy('user_id')
+            ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
+            ->with('user')
+            ->first();
         $attendancePercentage = 0;
         if ($employeeCount > 0) {
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
-
-
-        //timesheet
         $projects = Project::with(['tasks.assignedUsers'])->get();
-
-        //deadline
         $projectsThisWeek = Project::with(['tasks.assignedUsers'])
-    ->whereBetween('deadline', [
-        Carbon::now()->startOfWeek(),
-        Carbon::now()->endOfWeek()
-    ])
-    ->get();
-
-    //holidays
-     $holidaysThisWeek = Holiday::whereBetween('date', [
-        Carbon::now(), // today onwards
-        Carbon::now()->endOfWeek()
-    ])
-    ->orderBy('date', 'asc')
-    ->get();
-
-
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer','projectsThisWeek','holidaysThisWeek'));
-
-
+            ->whereBetween('deadline', [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ])
+            ->get();
+        $holidaysThisWeek = Holiday::whereBetween('date', [
+            Carbon::now(),
+            Carbon::now()->endOfWeek()
+        ])
+            ->orderBy('date', 'asc')
+            ->get();
+        return view('admin_dashboard', compact( 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
     }
-  public function showAttendanceReport(Request $request)
-{
-    $fromDate = $request->input('from_date', now()->toDateString());
-    $toDate = $request->input('to_date', now()->toDateString());
-
-    // Ensure correct order
-    if ($toDate < $fromDate) {
-        [$fromDate, $toDate] = [$toDate, $fromDate];
-    }
-
-    $attendances = Attendance::with('user')
-        ->whereBetween('date', [$fromDate, $toDate])
-        ->get()
-        ->map(function ($attendance) {
-            $breaks = BreakModel::where('attendance_id', $attendance->id)->get();
-            $breakDetails = [];
-            $totalBreakSeconds = 0;
-
-            foreach ($breaks as $break) {
-                if (
-                    $break->break_end &&
-                    $break->total_break_time &&
-                    preg_match('/^\d{2}:\d{2}:\d{2}$/', $break->total_break_time)
-                ) {
-                    // Safely convert HH:MM:SS to seconds
-                    [$h, $m, $s] = explode(':', $break->total_break_time);
-                    $durationInSeconds = ($h * 3600) + ($m * 60) + $s;
-                    $totalBreakSeconds += $durationInSeconds;
-
-                    $breakDetails[] = [
-                        'type' => $break->break_type,
-                        'duration' => $break->total_break_time,
-                    ];
-                } elseif ($break->break_start && !$break->break_end) {
-                    $breakDetails[] = [
-                        'type' => $break->break_type,
-                        'duration' => 'In Progress',
-                    ];
+    public function showAttendanceReport(Request $request)
+    {
+        $fromDate = $request->input('from_date', now()->toDateString());
+        $toDate = $request->input('to_date', now()->toDateString());
+        if ($toDate < $fromDate) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
+        $attendances = Attendance::with('user')
+            ->whereBetween('date', [$fromDate, $toDate])
+            ->get()
+            ->map(function ($attendance) {
+                $breaks = BreakModel::where('attendance_id', $attendance->id)->get();
+                $breakDetails = [];
+                $totalBreakSeconds = 0;
+                foreach ($breaks as $break) {
+                    if (
+                        $break->break_end &&
+                        $break->total_break_time &&
+                        preg_match('/^\d{2}:\d{2}:\d{2}$/', $break->total_break_time)
+                    ) {
+                        [$h, $m, $s] = explode(':', $break->total_break_time);
+                        $durationInSeconds = ($h * 3600) + ($m * 60) + $s;
+                        $totalBreakSeconds += $durationInSeconds;
+                        $breakDetails[] = [
+                            'type' => $break->break_type,
+                            'duration' => $break->total_break_time,
+                        ];
+                    } elseif ($break->break_start && !$break->break_end) {
+                        $breakDetails[] = [
+                            'type' => $break->break_type,
+                            'duration' => 'In Progress',
+                        ];
+                    }
                 }
-            }
-
-            return [
-                'name' => $attendance->user->name ?? 'Unknown',
-
+                return [
+                    'name' => $attendance->user->name ?? 'Unknown',
                     'punch_in' => $attendance->punch_in
                         ? Carbon::parse($attendance->punch_in)->format('h:i A')
                         : null,
                     'punch_in_remarks' => $attendance->punch_in_remarks ?? null,
-
                     'punch_out' => $attendance->punch_out
                         ? Carbon::parse($attendance->punch_out)->format('h:i A')
                         : null,
                     'punch_out_remarks' => $attendance->punch_out_remarks ?? null,
-
                     'total_working_hours' => $attendance->total_working_hours ?? '00:00:00',
-
                     'punch_in_again' => $attendance->punch_in_again
                         ? Carbon::parse($attendance->punch_in_again)->format('h:i A')
                         : null,
                     'punch_in_again_remarks' => $attendance->punch_in_again_remarks ?? null,
+                    'punch_out_again' => $attendance->punch_out_again
+                        ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
+                        : null,
+                    'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
 
-                'punch_out_again' => $attendance->punch_out_again
-                    ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
-                    : null,
-                'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
+                    'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
 
-                'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
-
-                'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
-                'breaks' => $breakDetails,
+                    'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
+                    'breaks' => $breakDetails,
+                ];
+            });
+        return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
+    }
+    public function reportForm()
+    {
+        return view('admin.report_form');
+    }
+    public function downloadReport(Request $request)
+    {
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date',
+            'type' => 'required|in:pdf,excel',
+        ]);
+        $attendance = Attendance::whereBetween('date', [$request->from, $request->to])
+            ->with('user')
+            ->get();
+        if ($attendance->isEmpty()) {
+            return back()->with('error', 'No records found for selected range.');
+        }
+        if ($request->type === 'excel') {
+            $filename = 'attendance_report.csv';
+            $headers = [
+                "Content-Type" => "text/csv",
+                "Content-Disposition" => "attachment; filename={$filename}",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
             ];
-        });
-
-    return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
-}
+            $columns = [
+                'Date',
+                'User',
+                'Punch-In',
+                'Punch-Out',
+                'Total Working Hours',
+                'Punch-In-Again',
+                'Punch-Out-Again',
+                'Total Overtime Working Hours',
+                'Location'
+            ];
+            $callback = function () use ($attendance, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns);
+                foreach ($attendance as $sheet) {
+                    fputcsv($file, [
+                        $sheet->date ? $sheet->date->format('Y-m-d') : '',
+                        $sheet->user->name ? $sheet->user->name : 'N/A',
+                        $sheet->punch_in ? $sheet->punch_in->format('H:i:s') : '',
+                        $sheet->punch_out ? $sheet->punch_out->format('H:i:s') : '',
+                        $sheet->total_working_hours ? $sheet->total_working_hours : 'N/A',
+                        $sheet->punch_in_again ? $sheet->punch_in_again->format('H:i:s') : 'N/A',
+                        $sheet->punch_out_again ? $sheet->punch_out_again->format('H:i:s') : 'N/a',
+                        $sheet->overtime_working_hours ? $sheet->overtime_working_hours : 'N/A',
+                        $sheet->location_type ? $sheet->location_type : 'N/A',
+                    ]);
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+        if ($request->type === 'pdf') {
+            $pdf = Pdf::loadView('admin.report_pdf', [
+                'attendance' => $attendance,
+                'from' => $request->from,
+                'to' => $request->to,
+            ]);
+            return $pdf->download('attendance_report.pdf');
+        }
+        return back()->with('error', 'Invalid export type');
+    }
 }
