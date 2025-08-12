@@ -92,6 +92,23 @@
                                 <h4 class="theme-app text-base sm:text-lg font-semibold" style="color: var(--primary-text);">Assign Permissions</h4>
                             </div>
                             
+                            <!-- Added Select All Permissions option -->
+                            <div class="bg-white rounded-lg p-3 sm:p-4 border-2 border-blue-300 mb-4 sm:mb-6">
+                                <label for="select-all-permissions" class="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
+                                    <input type="checkbox" 
+                                           id="select-all-permissions"
+                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
+                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
+                                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-green-100 to-green-200 rounded-full flex items-center justify-center">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-bold text-gray-900">Select All Permissions</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
                             @if ($permissions->isNotEmpty())
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                                     @foreach ($permissions as $permission)
@@ -151,4 +168,38 @@
             </div>
         </div>
     </div>
+
+    <!-- Added JavaScript for Select All functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('select-all-permissions');
+            const permissionCheckboxes = document.querySelectorAll('input[name="permission[]"]');
+            
+            // Handle Select All checkbox click
+            selectAllCheckbox.addEventListener('change', function() {
+                permissionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            // Handle individual permission checkbox changes
+            permissionCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checkedCount = document.querySelectorAll('input[name="permission[]"]:checked').length;
+                    const totalCount = permissionCheckboxes.length;
+                    
+                    if (checkedCount === 0) {
+                        selectAllCheckbox.checked = false;
+                        selectAllCheckbox.indeterminate = false;
+                    } else if (checkedCount === totalCount) {
+                        selectAllCheckbox.checked = true;
+                        selectAllCheckbox.indeterminate = false;
+                    } else {
+                        selectAllCheckbox.checked = false;
+                        selectAllCheckbox.indeterminate = true;
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

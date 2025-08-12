@@ -134,7 +134,11 @@
                     @if (!$leaves->isEmpty())
                         <div class="overflow-x-auto">
                             <div class="theme-app" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);">
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                                <div class="grid grid-cols-3 sm:grid-cols-5 gap-4 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
+                                        <i class="fas fa-hashtag text-sm sm:text-base"></i>
+                                        <span>No.</span>
+                                    </div>
                                     <div class="flex items-center space-x-1.5 sm:space-x-2">
                                         <i class="fas fa-tag text-sm sm:text-base"></i>
                                         <span>Leave Type</span>
@@ -156,7 +160,15 @@
 
                             <div class="bg-white divide-y divide-gray-200">
                                 @foreach ($leaves as $index => $leave)
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 px-4 py-3 sm:px-6 sm:py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
+                                    <div class="grid grid-cols-3 sm:grid-cols-5 gap-4 px-4 py-3 sm:px-6 sm:py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                                <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                    <span class="text-sm sm:text-base font-bold text-gray-700">{{ $index + 1 }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="flex items-center space-x-2 sm:space-x-3">
                                             <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
                                                 <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-blue-100 flex items-center justify-center">
