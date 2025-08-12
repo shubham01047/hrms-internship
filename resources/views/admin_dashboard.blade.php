@@ -423,7 +423,7 @@
                         </div>
 
                         <!-- Recent Activities / Updates Section -->
-                        <div class="bg-white rounded-xl shadow p-4 sm:p-6 border border-gray-200">
+                        {{-- <div class="bg-white rounded-xl shadow p-4 sm:p-6 border border-gray-200">
                             <div class="p-3 sm:p-4 rounded-t-xl mb-4 text-white"
                                 style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));">
                                 <h2 class="text-lg sm:text-xl font-semibold">Recent Activities / Updates</h2>
@@ -458,7 +458,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Quick Stats -->
                         <div class="overflow-x-auto pb-4">
@@ -537,10 +537,10 @@
                         <!-- Notifications and Quick Actions Wrapper -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                             <!-- Notifications Section -->
-                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-gray-200 border">
+                            {{-- <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-gray-200 border">
                                 <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
                                
-                            </div>
+                            </div> --}}
 
                             <!-- Quick Actions Section -->
                             <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-gray-200 border">
