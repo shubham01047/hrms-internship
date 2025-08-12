@@ -25,21 +25,34 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
-        // 👇 Add dynamic redirect logic here
-        $roles = Auth::user()->roles->pluck('name');
-        //dd(Auth::user()->roles->pluck('name')->toArray());
-        if ($roles->contains('Admin')) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($roles->contains('Human Resource')) {
-            return redirect()->route('hr.dashboard');
-        } elseif ($roles->contains('Manager')) {
-            return redirect()->route('manager.dashboard');
-        } elseif ($roles->contains('Employee')) {
-            return redirect()->route('employee.dashboard');
+        if (Auth::check()) {
+            $roles = Auth::user()->roles->pluck('name');
+            if (Auth::check()) {
+                $roles = Auth::user()->roles->pluck('name');
+                if ($roles->contains('Employee')) {
+                    return redirect()->route('employee.dashboard');
+                } else {
+                    if ($roles->contains('Human Resource')) {
+                        return redirect()->route('hr.dashboard');
+                    } elseif ($roles->contains('Manager')) {
+                        return redirect()->route('manager.dashboard');
+                    } elseif ($roles->contains('Admin')) {
+                        return redirect()->route('admin.dashboard');
+                    } else {
+                        // fallback for any other roles
+                        return redirect()->route('dashboard');
+                    }
+                }
+            } else {
+                return redirect()->route('login');
+            }
+
+        } else {
+            return redirect()->route('login');
         }
-        return redirect('/dashboard'); 
+
+
     }
 
     /**

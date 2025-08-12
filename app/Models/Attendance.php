@@ -20,6 +20,9 @@ class Attendance extends Model
     'punch_out_again',
     'punch_out_again_remarks',
     'overtime_working_hours',
+    'latitude',
+    'longitude',
+    'location_type',
 ];
 
     public function breaks()
@@ -35,6 +38,8 @@ class Attendance extends Model
         'date' => 'date',
         'punch_in' => 'datetime',
         'punch_out' => 'datetime',
+        'punch_in_again' => 'datetime',
+        'punch_out_again' => 'datetime',
     ];
 
 }

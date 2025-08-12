@@ -23,6 +23,9 @@ class AttendanceController extends Controller
     {
         $request->validate([
             'punch_in_remarks' => 'nullable|string|max:255',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'location_type' => 'required|in:Home,Company',
         ]);
         $user = auth()->user();
         $today = now()->toDateString();
@@ -31,6 +34,9 @@ class AttendanceController extends Controller
             [
                 'punch_in' => now()->format('H:i:s'),
                 'punch_in_remarks' => $request->input('punch_in_remarks'),
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'location_type' => $request->location_type,
             ]
         );
         return redirect()->back()->with('success', 'Punched in successfully.');
@@ -171,4 +177,5 @@ class AttendanceController extends Controller
         ]);
         return redirect()->back()->with('success', 'Punched out again successfully.');
     }
+
 }
