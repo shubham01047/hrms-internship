@@ -3,14 +3,28 @@
         ? 'flex items-center gap-2 px-4 py-2 rounded bg-primary border-l-4 border-white hover:scale-105 hover:bg-hover transition-all duration-300 ease-in-out'
         : 'flex items-center gap-2 px-4 py-2 rounded hover:scale-105 hover:bg-hover transition-all duration-300 ease-in-out';
 
-    $role = Auth::user()->roles->pluck('name')->first();
-    $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
+    $role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
+
+    if ($role === 'Human Resource') {
+        $routeName = 'hr.dashboard';
+    } elseif ($role === 'Admin') {
+        $routeName = 'admin.dashboard';
+    } elseif ($role === 'Manager') {
+        $routeName = 'manager.dashboard';
+    } elseif ($role === 'Employee') {
+        $routeName = 'employee.dashboard';
+    } else {
+        $routeName = 'dashboard'; 
+    }
+
 @endphp
+
 
 <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<aside class="bg-secondary-gradient fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
+<aside
+    class="bg-secondary-gradient fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
            bg-gradient-to-br from-[var(--primary-bg)] to-[var(--primary-bg-light)] text-primary
            transition-transform duration-300 ease-in-out
            md:translate-x-0 transform"
@@ -36,7 +50,7 @@
 
         <!-- Dashboard -->
         <div class="border-b border-primary pb-2 mb-2">
-            <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">
+            <a href="{{ route($routeName) }}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
         </div>
@@ -64,17 +78,17 @@
         <!-- Attendance -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Attendance</div>
-           
+
             @can('attendance report')
-                <a href="{{ route('admin.attendance.report') }}"
-                    class="{{ $isActive('admin.attendance.report') }}"><i class="fas fa-user-clock"></i> Attendance Reports
-                    </a>
+                <a href="{{ route('admin.attendance.report') }}" class="{{ $isActive('admin.attendance.report') }}"><i
+                        class="fas fa-user-clock"></i> Attendance Reports
+                </a>
             @endcan
 
-             <a href="{{ route('reports.report') }}" class="{{ $isActive('reports.report') }}">
+            <a href="{{ route('reports.report') }}" class="{{ $isActive('reports.report') }}">
                 <i class="fas fa-clipboard-list"></i> Summary Reports
             </a>
-            
+
         </div>
 
         <!-- Leave -->
@@ -94,12 +108,13 @@
             @endcan
             @can('approve leave')
                 <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">
-                    <i class="fas fa-tasks"></i> 
+                    <i class="fas fa-tasks"></i>
                     Manage Leave
                 </a>
             @endcan
             @can('view leave type')
-                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i class="fas fa-calendar-check"></i> Add Leave</a>
+                <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i
+                        class="fas fa-calendar-check"></i> Add Leave</a>
             @endcan
         </div>
 
@@ -108,7 +123,7 @@
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-calendar-day"></i> Holidays
             </div>
-            <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index')}}">
+            <a href="{{ route('holidays.index') }}" class="{{ $isActive('holidays.index') }}">
                 <i class="fas fa-calendar"></i> View Holidays
             </a>
         </div>
@@ -119,25 +134,27 @@
                 <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                     <i class="fas fa-project-diagram"></i> Projects
                 </div>
-                <a href="{{ route('projects.index') }}"
-                    class="{{ $isActive('projects.index') }}">
+                <a href="{{ route('projects.index') }}" class="{{ $isActive('projects.index') }}">
                     <i class="fas fa-folder-open"></i> View Projects
                 </a>
             </div>
         @endcan
 
-     
+
 
         <!-- Payroll -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
-                <i class="fas fa-money-bill-wave"></i> Payroll
+                <i class="fas fa-money-bill-wave"></i> Salary & Payroll
             </div>
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                <i class="fas fa-file-invoice-dollar"></i> Salary Slips
+            <a href="{{ route('salary.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                Salary Structures
             </a>
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                <i class="fas fa-cogs"></i> Process Payroll
+
+            <a href="{{ route('payrolls.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                Payrolls
             </a>
         </div>
 
@@ -146,7 +163,8 @@
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-bell"></i> Notifications
             </div>
-            <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
                 <i class="fas fa-bell"></i> Alerts
             </a>
         </div>

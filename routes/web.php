@@ -5,8 +5,11 @@ use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LeaveTypesController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SalaryStructureController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TimesheetController;
@@ -63,16 +66,14 @@ Route::middleware('auth')->group(function () {
 
     //Users Route
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    // Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-    // Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
-    // Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     //Redirection of Admin, HR, Manager and Employee
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard'); // fallback
 
     //Punchin/Punchout & Breaks routes
     Route::view('/employee/dashboard', 'employee_dashboard')->name('employee.dashboard');
@@ -96,7 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('leave-types', LeaveTypesController::class);
 
     //Attendance Report
-    Route::get('/admin/attendance-report', [AdminDashboardController::class, 'showAttendanceReport'])->name('admin.attendance.report');
+    Route::get('/admin/attendance_report', [AdminDashboardController::class, 'showAttendanceReport'])->name('admin.attendance.report');
 
     //Holidays Routes WEB
     Route::get('/holidays', [HolidayController::class, 'index'])->name('holidays.index');
@@ -132,9 +133,26 @@ Route::middleware('auth')->group(function () {
     // Export Timesheet Report
     Route::get('/projects/{project}/tasks/{task}/timesheet-report', [TimesheetController::class, 'reportForm'])->name('timesheets.report.form');
     Route::post('/projects/{project}/tasks/{task}/timesheet-report/download', [TimesheetController::class, 'downloadReport'])->name('timesheets.report.download');
-Route::get('/timesheet/export/csv/{project}/{task}', [TimesheetController::class, 'downloadCsvReport']);
-
+    Route::get('/timesheet/export/csv/{project}/{task}', [TimesheetController::class, 'downloadCsvReport']);
     Route::get('/reports', [AdminDashboardController::class, 'attendanceChart'])->name('reports.report');
+
+    Route::get('/admin/attendance-report', [AdminDashboardController::class, 'reportForm'])->name('admin.report.form');
+    Route::post('/admin/attendance-report/download', [AdminDashboardController::class, 'downloadReport'])->name('attendance.report.download');
+    Route::get('/admin/attendance/export/csv/', [AdminDashboardController::class, 'downloadCsvReport']);
+
+    // Salary Structures
+    Route::resource('salary', SalaryStructureController::class);
+
+    // Payroll
+    Route::get('/payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
+    Route::get('/payrolls/generate/{user_id}/{month}', [PayrollController::class, 'generate'])->name('payrolls.generate');
+    Route::get('/payrolls/{payroll}/slip', [PayrollController::class, 'payslip'])->name('payrolls.slip');
+    Route::get('/payrolls/generate-all/{month}', [PayrollController::class, 'generateAll'])->name('payrolls.generateAll');
+    // Soft delete single payroll
+    Route::delete('/payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
+
+    // Soft delete all payrolls
+    Route::delete('/payrolls', [PayrollController::class, 'destroyAll'])->name('payrolls.destroyAll');
 
 });
 

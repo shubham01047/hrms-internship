@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(LeaveType::class);
     }
+    public function salaryStructure()
+    {
+        return $this->hasOne(SalaryStructure::class);
+    }
+
 }

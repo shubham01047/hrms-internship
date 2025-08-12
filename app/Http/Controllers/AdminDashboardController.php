@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Holiday;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakModel;
@@ -24,19 +25,13 @@ class AdminDashboardController extends Controller implements HasMiddleware
     }
     public function index()
     {
-        //all employee
+        $user = auth()->user();
         $employees = Employee::all();
-
-        //birthday tomorrow
         $tomorrow = Carbon::tomorrow();
         $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
-
-        //leaves    
         $pendingLeaves = Leave::where('status', 'pending')->count();
-
-        //punch in today
         $today = Carbon::today()->toDateString();
         $todayPunchInCount = DB::table('attendance')
             ->whereDate('date', $today)
@@ -46,58 +41,34 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
-
-        //absentee
-
         $employeeCount = User::whereHas('employee')->count();
         $absentees = $employeeCount - $todayPunchInCount;
-
-        //projects
         $projectCount = Project::count();
-
-
-        //Late commer
-
-        //top peformer
         $topPerformer = Attendance::select('user_id', DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))) as total_hours'))
-    ->groupBy('user_id')
-    ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
-    ->with('user') // assuming attendance has user() relationship
-    ->first();
-
-
-        //percentage
+            ->groupBy('user_id')
+            ->orderByDesc(DB::raw('SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))'))
+            ->with('user')
+            ->first();
         $attendancePercentage = 0;
         if ($employeeCount > 0) {
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
-
-
-        //timesheet
         $projects = Project::with(['tasks.assignedUsers'])->get();
-
-        //deadline
         $projectsThisWeek = Project::with(['tasks.assignedUsers'])
-    ->whereBetween('deadline', [
-        Carbon::now()->startOfWeek(),
-        Carbon::now()->endOfWeek()
-    ])
-    ->get();
-
-    //holidays
-     $holidaysThisWeek = Holiday::whereBetween('date', [
-        Carbon::now(), // today onwards
-        Carbon::now()->endOfWeek()
-    ])
-    ->orderBy('date', 'asc')
-    ->get();
-
-
-        return view('admin_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects','topPerformer','projectsThisWeek','holidaysThisWeek'));
-
-
+            ->whereBetween('deadline', [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ])
+            ->get();
+        $holidaysThisWeek = Holiday::whereBetween('date', [
+            Carbon::now(),
+            Carbon::now()->endOfWeek()
+        ])
+            ->orderBy('date', 'asc')
+            ->get();
+        return view('admin_dashboard', compact( 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
     }
-  public function showAttendanceReport(Request $request)
+    public function showAttendanceReport(Request $request)
     {
         $fromDate = $request->input('from_date', now()->toDateString());
         $toDate = $request->input('to_date', now()->toDateString());
@@ -133,112 +104,97 @@ class AdminDashboardController extends Controller implements HasMiddleware
                 }
                 return [
                     'name' => $attendance->user->name ?? 'Unknown',
-
                     'punch_in' => $attendance->punch_in
                         ? Carbon::parse($attendance->punch_in)->format('h:i A')
                         : null,
                     'punch_in_remarks' => $attendance->punch_in_remarks ?? null,
-
                     'punch_out' => $attendance->punch_out
                         ? Carbon::parse($attendance->punch_out)->format('h:i A')
                         : null,
                     'punch_out_remarks' => $attendance->punch_out_remarks ?? null,
-
                     'total_working_hours' => $attendance->total_working_hours ?? '00:00:00',
-
                     'punch_in_again' => $attendance->punch_in_again
                         ? Carbon::parse($attendance->punch_in_again)->format('h:i A')
                         : null,
                     'punch_in_again_remarks' => $attendance->punch_in_again_remarks ?? null,
-
                     'punch_out_again' => $attendance->punch_out_again
                         ? Carbon::parse($attendance->punch_out_again)->format('h:i A')
                         : null,
                     'punch_out_again_remarks' => $attendance->punch_out_again_remarks ?? null,
+
                     'overtime_working_hours' => $attendance->overtime_working_hours ?? '00:00:00',
+
                     'total_break_time' => gmdate('H:i:s', $totalBreakSeconds),
                     'breaks' => $breakDetails,
                 ];
             });
         return view('admin.attendance_report', compact('attendances', 'fromDate', 'toDate'));
     }
-
-    // Reports
-public function attendanceChart(Request $request)
-{
-    // Step 1: Get all years for dropdown
-    $years = Attendance::selectRaw('YEAR(date) as year')
-        ->distinct()
-        ->orderByDesc('year')
-        ->pluck('year');
-
-    // Step 2: Use selected year or current year by default
-    $selectedYear = $request->input('year', now()->year);
-
-    // Step 3: Get present days per month for that year
-    $monthlyData = Attendance::selectRaw('MONTH(date) as month, COUNT(DISTINCT date) as present_days')
-        ->whereYear('date', $selectedYear)
-        ->whereNotNull('punch_in')
-        ->groupByRaw('MONTH(date)')
-        ->get()
-        ->pluck('present_days', 'month');
-
-    // Step 4: Calculate attendance percentage
-    $monthlyAttendance = [];
-    for ($i = 1; $i <= 12; $i++) {
-        $present = $monthlyData[$i] ?? 0;
-        $workingDays = 22; // You can change to dynamic if needed
-        $percentage = ($workingDays > 0) ? round(($present / $workingDays) * 100, 2) : 0;
-        $monthlyAttendance[] = $percentage;
+    public function reportForm()
+    {
+        return view('admin.report_form');
     }
-
-     //all employee
-        $employees = Employee::all();
-
-        //birthday tomorrow
-        $tomorrow = Carbon::tomorrow();
-        $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
-            ->whereDay('date_of_birth', $tomorrow->day)
+    public function downloadReport(Request $request)
+    {
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date',
+            'type' => 'required|in:pdf,excel',
+        ]);
+        $attendance = Attendance::whereBetween('date', [$request->from, $request->to])
+            ->with('user')
             ->get();
-
-        //leaves    
-        $pendingLeaves = Leave::where('status', 'pending')->count();
-
-        //punch in today
-        $today = Carbon::today()->toDateString();
-        $todayPunchInCount = DB::table('attendance')
-            ->whereDate('date', $today)
-            ->where(function ($query) {
-                $query->whereNotNull('punch_in')
-                    ->orWhereNotNull('punch_in_again');
-            })
-            ->distinct('user_id')
-            ->count('user_id');
-
-        //absentee
-
-        $employeeCount = User::whereHas('employee')->count();
-        $absentees = $employeeCount - $todayPunchInCount;
-
-        //projects
-        $projectCount = Project::count();
-
-
-        //Late commer
-
-        //percentage
-        $attendancePercentage = 0;
-        if ($employeeCount > 0) {
-            $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
+        if ($attendance->isEmpty()) {
+            return back()->with('error', 'No records found for selected range.');
         }
-
-
-        //timesheet
-        $projects = Project::with(['tasks.assignedUsers'])->get();
-
-
-    // Step 5: Send to Blade view
-    return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear','employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
-}
-
+        if ($request->type === 'excel') {
+            $filename = 'attendance_report.csv';
+            $headers = [
+                "Content-Type" => "text/csv",
+                "Content-Disposition" => "attachment; filename={$filename}",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            ];
+            $columns = [
+                'Date',
+                'User',
+                'Punch-In',
+                'Punch-Out',
+                'Total Working Hours',
+                'Punch-In-Again',
+                'Punch-Out-Again',
+                'Total Overtime Working Hours',
+                'Location'
+            ];
+            $callback = function () use ($attendance, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns);
+                foreach ($attendance as $sheet) {
+                    fputcsv($file, [
+                        $sheet->date ? $sheet->date->format('Y-m-d') : '',
+                        $sheet->user->name ? $sheet->user->name : 'N/A',
+                        $sheet->punch_in ? $sheet->punch_in->format('H:i:s') : '',
+                        $sheet->punch_out ? $sheet->punch_out->format('H:i:s') : '',
+                        $sheet->total_working_hours ? $sheet->total_working_hours : 'N/A',
+                        $sheet->punch_in_again ? $sheet->punch_in_again->format('H:i:s') : 'N/A',
+                        $sheet->punch_out_again ? $sheet->punch_out_again->format('H:i:s') : 'N/a',
+                        $sheet->overtime_working_hours ? $sheet->overtime_working_hours : 'N/A',
+                        $sheet->location_type ? $sheet->location_type : 'N/A',
+                    ]);
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+        if ($request->type === 'pdf') {
+            $pdf = Pdf::loadView('admin.report_pdf', [
+                'attendance' => $attendance,
+                'from' => $request->from,
+                'to' => $request->to,
+            ]);
+            return $pdf->download('attendance_report.pdf');
+        }
+        return back()->with('error', 'Invalid export type');
+    }
 }
