@@ -150,12 +150,12 @@
             </div>
             <a href="{{ route('salary.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                Salary Structures
+                <i class="fas fa-dollar-sign"></i> Salary Structures
             </a>
 
             <a href="{{ route('payrolls.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
-                Payrolls
+                <i class="fas fa-file-invoice-dollar"></i> Payrolls
             </a>
         </div>
 
