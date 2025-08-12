@@ -169,5 +169,20 @@
                 <i class="fas fa-bell"></i> Alerts
             </a>
         </div>
+
+        <!-- AI Tools -->
+        <div class="border-b border-primary pb-2 mb-2">
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-robot"></i> AI Tools
+            </div>
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-brain"></i> SkillLens
+            </a>
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-magic"></i> RootCauseX
+            </a>
+        </div>
     </nav>
 </aside>
