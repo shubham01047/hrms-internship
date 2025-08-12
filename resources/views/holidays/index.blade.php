@@ -99,6 +99,11 @@
                     <div class="overflow-x-auto">
                         <div class="theme-app min-w-[880px]" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
                             <div class="grid grid-cols-12 gap-4 px-4 sm:px-6 py-3 sm:py-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+                               
+                                <div class="col-span-1 flex items-center space-x-2" style="color: var(--primary-text);">
+                                    <i class="fas fa-hashtag text-sm sm:text-base"></i>
+                                    <span>No.</span>
+                                </div>
                                 <div class="col-span-3 flex items-center space-x-2" style="color: var(--primary-text);">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -117,15 +122,22 @@
                                     </svg>
                                     <span>Type</span>
                                 </div>
-                                <div class="col-span-3" style="color: var(--primary-text);">Description</div>
+                                <div class="col-span-2" style="color: var(--primary-text);">Description</div>
                                 <div class="col-span-2" style="color: var(--primary-text);">Actions</div>
                             </div>
                         </div>
 
                         <div class="bg-white">
-                            @foreach ($holidays as $holiday)
+                            @foreach ($holidays as $index => $holiday)
                                 <div class="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <div class="col-span-12 sm:col-span-3 flex items-center space-x-3">
+                                    {{-- Added numbering column to match the header --}}
+                                    <div class="col-span-1 flex items-center">
+                                        <div class="theme-app w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: var(--hover-bg); color: var(--primary-text);">
+                                            {{ $index + 1 }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-3 flex items-center space-x-3">
                                         <div class="theme-app p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
                                             <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -137,7 +149,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-span-12 sm:col-span-2 flex items-center space-x-3">
+                                    <div class="col-span-2 flex items-center space-x-3">
                                         <div class="p-2 bg-blue-100 rounded-lg">
                                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -149,7 +161,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-span-12 sm:col-span-2 flex items-center">
+                                    <div class="col-span-2 flex items-center">
                                         @php
                                             $typeConfig = [
                                                 'national' => ['bg' => 'bg-gray-100', 'text' => 'text-gray-800', 'icon' => '🏛️'],
@@ -165,11 +177,11 @@
                                         </span>
                                     </div>
 
-                                    <div class="col-span-12 sm:col-span-3 flex items-center">
+                                    <div class="col-span-2 flex items-center">
                                         <span class="text-gray-900">{{ $holiday->description ?: 'No description provided' }}</span>
                                     </div>
 
-                                    <div class="col-span-12 sm:col-span-2 flex items-center">
+                                    <div class="col-span-2 flex items-center">
                                         @can('delete holiday')
                                             <form action="{{ route('holidays.destroy', $holiday->id) }}" method="POST"
                                                   onsubmit="return confirm('Are you sure you want to delete this holiday?')" class="inline">

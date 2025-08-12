@@ -83,6 +83,25 @@
                                         </div>
                                     @enderror
                                 </div>
+
+                                <!-- Added Select All option below role name -->
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <div class="bg-white rounded-lg p-3 sm:p-4 border border-blue-200 hover:border-blue-300 transition-all duration-300">
+                                        <label for="select-all" class="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
+                                            <input type="checkbox" 
+                                                   id="select-all"
+                                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
+                                            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                                                <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-green-100 to-green-200 rounded-full flex items-center justify-center">
+                                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <span class="text-sm font-medium text-gray-900">Select All Permissions</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -122,7 +141,7 @@
                                 <div class="text-center py-6 sm:py-8">
                                     <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                                         <svg class="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
                                         </svg>
                                     </div>
                                     <p class="text-sm sm:text-base text-gray-500">No permissions available to assign.</p>
@@ -157,7 +176,8 @@
                                     class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-base sm:text-lg"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'"
+                                    onclick="return confirmUpdate()">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
@@ -169,4 +189,63 @@
             </div>
         </div>
     </div>
+
+    <!-- Added JavaScript for select all functionality -->
+    <script>
+        function confirmUpdate() {
+            return confirm('Are you sure? All permissions will be removed from it.');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const permissionCheckboxes = document.querySelectorAll('input[name="permission[]"]');
+            
+            // Handle select all checkbox change
+            selectAllCheckbox.addEventListener('change', function() {
+                permissionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                    // Trigger visual updates for the permission boxes
+                    updatePermissionBoxStyle(checkbox);
+                });
+            });
+            
+            // Handle individual permission checkbox changes
+            permissionCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updatePermissionBoxStyle(this);
+                    updateSelectAllState();
+                });
+            });
+            
+            // Update the visual style of permission boxes
+            function updatePermissionBoxStyle(checkbox) {
+                const parentDiv = checkbox.closest('.bg-white');
+                if (checkbox.checked) {
+                    parentDiv.classList.add('ring-2', 'ring-blue-200', 'bg-blue-50');
+                } else {
+                    parentDiv.classList.remove('ring-2', 'ring-blue-200', 'bg-blue-50');
+                }
+            }
+            
+            // Update select all checkbox state based on individual checkboxes
+            function updateSelectAllState() {
+                const checkedCount = document.querySelectorAll('input[name="permission[]"]:checked').length;
+                const totalCount = permissionCheckboxes.length;
+                
+                if (checkedCount === 0) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (checkedCount === totalCount) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = true;
+                }
+            }
+            
+            // Initialize the select all state on page load
+            updateSelectAllState();
+        });
+    </script>
 </x-app-layout>
