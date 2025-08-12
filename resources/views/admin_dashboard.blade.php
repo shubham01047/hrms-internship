@@ -535,7 +535,7 @@
 
 
                         <!-- Notifications and Quick Actions Wrapper -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
                             <!-- Notifications Section -->
                             {{-- <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-gray-200 border">
                                 <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Notifications</h2>
@@ -549,7 +549,7 @@
                                     <h2 class="text-lg sm:text-xl font-semibold">Quick Actions</h2>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                    <a href="#"
+                                    <a href="{{ route('leaves.manage') }}"
                                         class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
                                                       shadow-md
                                                       hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out"
@@ -562,7 +562,7 @@
                                             <line x1="19" x2="19" y1="8" y2="14" />
                                             <line x1="22" x2="16" y1="11" y2="11" />
                                         </svg>
-                                        <span class="font-semibold text-sm sm:text-base">Add Employee</span>
+                                        <span class="font-semibold text-sm sm:text-base">Approve Leaves</span>
                                     </a>
                                     <a href="{{ route('holidays.create') }}"
                                         class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
@@ -596,22 +596,18 @@
                                         </svg>
                                         <span class="font-semibold text-sm sm:text-base">Create Project</span>
                                     </a>
-                                    <a href="#"
+                                    <a href="{{ route('salary.create') }}"
                                         class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl text-white text-center
                                                       shadow-md
                                                       hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out"
                                         style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8 mb-2"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path
-                                                d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                            <line x1="16" x2="8" y1="13" y2="13" />
-                                            <line x1="16" x2="8" y1="17" y2="17" />
-                                            <line x1="10" x2="8" y1="9" y2="9" />
+                                        <svg class="w-6 h-6 sm:w-8 sm:h-8" style="color: var(--primary-text);"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
                                         </svg>
-                                        <span class="font-semibold text-sm sm:text-base">Generate Report</span>
+                                        <span class="font-semibold text-sm sm:text-base">Add Salary</span>
                                     </a>
                                 </div>
                             </div>

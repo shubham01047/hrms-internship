@@ -62,7 +62,7 @@
                 <i class="fas fa-users"></i> User Management
             </div>
             <a href="{{ route('profile.edit') }}" class="{{ $isActive('profile.edit') }}">
-                <i class="fas fa-user-circle"></i> Profiles
+                <i class="fas fa-user-circle"></i>Edit Profile
             </a>
             @can('create roles')
                 <a href="{{ route('roles.index') }}" class="{{ $isActive('roles.index') }}">
@@ -160,7 +160,7 @@
         </div>
 
         <!-- Notifications -->
-        <div class="border-b border-primary pb-2 mb-2">
+        {{-- <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-bell"></i> Notifications
             </div>
@@ -168,6 +168,6 @@
                 class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
                 <i class="fas fa-bell"></i> Alerts
             </a>
-        </div>
+        </div> --}}
     </nav>
 </aside>
