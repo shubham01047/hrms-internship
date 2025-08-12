@@ -83,25 +83,6 @@
                                         </div>
                                     @enderror
                                 </div>
-
-                                <!-- Added Select All option below role name -->
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <div class="bg-white rounded-lg p-3 sm:p-4 border border-blue-200 hover:border-blue-300 transition-all duration-300">
-                                        <label for="select-all" class="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
-                                            <input type="checkbox" 
-                                                   id="select-all"
-                                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
-                                            <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                                <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-green-100 to-green-200 rounded-full flex items-center justify-center">
-                                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                    </svg>
-                                                </div>
-                                                <span class="text-sm font-medium text-gray-900">Select All Permissions</span>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -114,17 +95,53 @@
                                 <h4 class="theme-app text-base sm:text-lg font-semibold" style="color: var(--primary-text);">Update Permissions</h4>
                             </div>
                             
+                            <!-- Search Bar -->
+                            <div class="mb-4 sm:mb-6">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" 
+                                           id="permission-search"
+                                           placeholder="Search permissions..."
+                                           class="w-full pl-10 pr-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-white text-sm">
+                                </div>
+                                <!-- Search Results Counter -->
+                                <div class="mt-2 text-xs sm:text-sm text-gray-600">
+                                    <span id="search-results-count">{{ $permissions->count() }}</span> permissions found
+                                </div>
+                            </div>
+                            
+                            <!-- Select All option -->
+                            <div class="bg-white rounded-lg p-3 sm:p-4 border border-blue-200 hover:border-blue-300 transition-all duration-300 mb-4 sm:mb-6">
+                                <label for="select-all" class="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
+                                    <input type="checkbox" 
+                                           id="select-all"
+                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
+                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
+                                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-green-100 to-green-200 rounded-full flex items-center justify-center">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">Select All Visible Permissions</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
                             @if ($permissions->isNotEmpty())
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                                <div id="permissions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                                     @foreach ($permissions as $permission)
-                                        <div class="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 ease-in-out transform hover:scale-[1.01] {{ $hasPermissions->contains($permission->name) ? 'ring-2 ring-blue-200 bg-blue-50' : '' }}">
+                                        <div class="permission-item bg-white rounded-lg p-3 sm:p-4 border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 ease-in-out transform hover:scale-[1.01] {{ $hasPermissions->contains($permission->name) ? 'ring-2 ring-blue-200 bg-blue-50' : '' }}" data-permission-name="{{ strtolower($permission->name) }}">
                                             <label for="permission-{{ $permission->id }}" class="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
                                                 <input type="checkbox" 
                                                        name="permission[]" 
                                                        value="{{ $permission->name }}"
                                                        id="permission-{{ $permission->id }}"
                                                        {{ $hasPermissions->contains($permission->name) ? 'checked' : '' }}
-                                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
+                                                       class="permission-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
                                                 <div class="flex items-center space-x-1.5 sm:space-x-2">
                                                     <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
                                                         <svg class="w-3.5 h-3.5 sm:w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,6 +153,17 @@
                                             </label>
                                         </div>
                                     @endforeach
+                                </div>
+                                
+                                <!-- No Results Message -->
+                                <div id="no-results-message" class="hidden text-center py-6 sm:py-8">
+                                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm sm:text-base text-gray-500">No permissions found matching your search.</p>
+                                    <button type="button" onclick="clearSearch()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium">Clear search</button>
                                 </div>
                             @else
                                 <div class="text-center py-6 sm:py-8">
@@ -190,7 +218,7 @@
         </div>
     </div>
 
-    <!-- Added JavaScript for select all functionality -->
+    <!-- Enhanced JavaScript for select all functionality and Search -->
     <script>
         function confirmUpdate() {
             return confirm('Are you sure? All permissions will be removed from it.');
@@ -198,11 +226,52 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             const selectAllCheckbox = document.getElementById('select-all');
-            const permissionCheckboxes = document.querySelectorAll('input[name="permission[]"]');
+            const searchInput = document.getElementById('permission-search');
+            const permissionsGrid = document.getElementById('permissions-grid');
+            const noResultsMessage = document.getElementById('no-results-message');
+            const searchResultsCount = document.getElementById('search-results-count');
+            
+            // Get all permission items and checkboxes
+            const permissionItems = document.querySelectorAll('.permission-item');
+            const permissionCheckboxes = document.querySelectorAll('.permission-checkbox');
+            
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                let visibleCount = 0;
+                
+                permissionItems.forEach(item => {
+                    const permissionName = item.getAttribute('data-permission-name');
+                    const isVisible = permissionName.includes(searchTerm);
+                    
+                    if (isVisible) {
+                        item.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Update results count
+                searchResultsCount.textContent = visibleCount;
+                
+                // Show/hide no results message
+                if (visibleCount === 0 && searchTerm !== '') {
+                    permissionsGrid.style.display = 'none';
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    permissionsGrid.style.display = 'grid';
+                    noResultsMessage.classList.add('hidden');
+                }
+                
+                // Update select all state after search
+                updateSelectAllState();
+            });
             
             // Handle select all checkbox change
             selectAllCheckbox.addEventListener('change', function() {
-                permissionCheckboxes.forEach(checkbox => {
+                const visibleCheckboxes = getVisibleCheckboxes();
+                visibleCheckboxes.forEach(checkbox => {
                     checkbox.checked = this.checked;
                     // Trigger visual updates for the permission boxes
                     updatePermissionBoxStyle(checkbox);
@@ -217,9 +286,17 @@
                 });
             });
             
+            // Get only visible checkboxes
+            function getVisibleCheckboxes() {
+                return Array.from(permissionCheckboxes).filter(checkbox => {
+                    const item = checkbox.closest('.permission-item');
+                    return item.style.display !== 'none';
+                });
+            }
+            
             // Update the visual style of permission boxes
             function updatePermissionBoxStyle(checkbox) {
-                const parentDiv = checkbox.closest('.bg-white');
+                const parentDiv = checkbox.closest('.permission-item');
                 if (checkbox.checked) {
                     parentDiv.classList.add('ring-2', 'ring-blue-200', 'bg-blue-50');
                 } else {
@@ -229,13 +306,17 @@
             
             // Update select all checkbox state based on individual checkboxes
             function updateSelectAllState() {
-                const checkedCount = document.querySelectorAll('input[name="permission[]"]:checked').length;
-                const totalCount = permissionCheckboxes.length;
+                const visibleCheckboxes = getVisibleCheckboxes();
+                const checkedVisibleCount = visibleCheckboxes.filter(cb => cb.checked).length;
+                const totalVisibleCount = visibleCheckboxes.length;
                 
-                if (checkedCount === 0) {
+                if (totalVisibleCount === 0) {
                     selectAllCheckbox.checked = false;
                     selectAllCheckbox.indeterminate = false;
-                } else if (checkedCount === totalCount) {
+                } else if (checkedVisibleCount === 0) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (checkedVisibleCount === totalVisibleCount) {
                     selectAllCheckbox.checked = true;
                     selectAllCheckbox.indeterminate = false;
                 } else {
@@ -247,5 +328,12 @@
             // Initialize the select all state on page load
             updateSelectAllState();
         });
+        
+        // Clear search function
+        function clearSearch() {
+            const searchInput = document.getElementById('permission-search');
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input'));
+        }
     </script>
 </x-app-layout>
