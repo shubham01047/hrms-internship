@@ -50,10 +50,11 @@
 
         <!-- Dashboard -->
         <div class="border-b border-primary pb-2 mb-2">
-            <a href="{{ route($routeName) }}">
+            <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
         </div>
+
 
         <!-- User Management -->
         <div class="border-b border-primary pb-2 mb-2">
