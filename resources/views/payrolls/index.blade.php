@@ -1,42 +1,44 @@
 <x-app-layout>
     <div class="theme-app min-h-screen relative z-0" style="background-color: #f8fafc; color: var(--primary-text);">
         <!-- Header Section -->
-        <div class="relative overflow-hidden" style="background: linear-gradient(135deg, var(--primary-bg-light) 0%, var(--secondary-bg) 100%);">
-            <div class="absolute inset-0 opacity-10">
-                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 20% 50%, var(--hover-bg) 0%, transparent 50%), radial-gradient(circle at 80% 20%, var(--secondary-bg) 0%, transparent 50%);"></div>
-            </div>
-            <div class="relative px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                <div class="max-w-7xl mx-auto">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="p-3 rounded-xl" style="background-color: var(--hover-bg);">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold" style="color: var(--primary-text);">
-                                    Payroll Management
-                                </h1>
-                                <p class="text-sm sm:text-base mt-2" style="color: var(--secondary-text);">
-                                    Generate and manage employee payrolls for {{ now()->format('M, Y') }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-3 lg:mr-24">
-                            <a href="{{ route('payrolls.generateAll', now()->format('M, Y')) }}" 
-                               class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                               style="background-color: var(--hover-bg);">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                Generate All ({{ now()->format('M, Y') }})
-                            </a>
-                        </div>
-                    </div>
+<!-- Header Section -->
+<div class="theme-app" style="background: linear-gradient(135deg, var(--primary-bg-light) 0%, var(--secondary-bg) 100%); padding: 1.5rem 1rem; sm:padding: 3rem 2rem; border-radius: 0;">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
+            
+            <!-- Left Section -->
+            <div class="flex items-center space-x-3 sm:space-x-4 text-center sm:text-left">
+                <div class="p-2 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg" style="background-color: var(--hover-bg);">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--primary-text);">
+                        Payroll Management
+                    </h1>
+                    <p class="text-sm sm:text-lg mt-1" style="color: var(--secondary-text);">
+                        Generate and manage employee payrolls for {{ now()->format('M, Y') }}
+                    </p>
                 </div>
             </div>
+
+            <!-- Right Section -->
+            <a href="{{ route('payrolls.generateAll', now()->format('M, Y')) }}" 
+               class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none text-base sm:text-lg"
+               style="background-color: var(--hover-bg); color: var(--primary-text);"
+               onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+               onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Generate All ({{ now()->format('M, Y') }})
+            </a>
+
         </div>
+    </div>
+</div>
+
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <!-- Success/Error Messages -->
