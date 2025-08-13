@@ -1,27 +1,21 @@
 <x-guest-layout>
 <div class="theme-app min-h-screen flex items-center justify-center p-2 sm:p-4 relative overflow-hidden">
-    <!-- Reduced padding for better window fit -->
     <!-- Animated Background Elements -->
     <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-20 left-10 w-32 h-32 rounded-full opacity-10 animate-float-slow" 
-             style="background: var(--hover-bg);"></div>
-        <div class="absolute top-40 right-20 w-24 h-24 rounded-full opacity-15 animate-float-medium" 
-             style="background: var(--secondary-bg);"></div>
-        <div class="absolute bottom-32 left-1/4 w-40 h-40 rounded-full opacity-8 animate-float-fast" 
-             style="background: var(--primary-border);"></div>
-        <div class="absolute bottom-20 right-10 w-28 h-28 rounded-full opacity-12 animate-float-slow" 
-             style="background: var(--hover-bg);"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-5 animate-pulse-slow" 
-             style="background: radial-gradient(circle, var(--secondary-bg), transparent);"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 rounded-full opacity-10 animate-float-slow" style="background: var(--hover-bg);"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 rounded-full opacity-15 animate-float-medium" style="background: var(--secondary-bg);"></div>
+        <div class="absolute bottom-32 left-1/4 w-40 h-40 rounded-full opacity-8 animate-float-fast" style="background: var(--primary-border);"></div>
+        <div class="absolute bottom-20 right-10 w-28 h-28 rounded-full opacity-12 animate-float-slow" style="background: var(--hover-bg);"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-5 animate-pulse-slow" style="background: radial-gradient(circle, var(--secondary-bg), transparent);"></div>
     </div>
 
     <!-- Gradient Background -->
     <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"></div>
-    
+
     <!-- Backdrop Blur Overlay -->
     <div class="absolute inset-0 backdrop-blur-sm bg-white/30"></div>
 
-    <!-- Updated form width to max-w-lg for better window fit -->
+    <!-- Login Card -->
     <div class="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-white/20 hover:shadow-3xl transition-all duration-500">
         
         <!-- Header Section -->
@@ -30,7 +24,6 @@
             <img src="{{ asset($company->company_logo ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') }}"
                  alt="Company Logo"
                  class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-white/20 p-2 relative z-10">
-            <!-- Reduced header text sizes for better fit -->
             <h3 class="text-xl sm:text-2xl font-bold mb-2 relative z-10" style="color: var(--primary-text);">
                 {{ $company->system_title ?? 'HRMS Portal' }}
             </h3>
@@ -79,8 +72,7 @@
                 <!-- Remember Me -->
                 <div class="flex items-center justify-between">
                     <label class="flex items-center text-xs sm:text-sm" style="color: var(--secondary-text);">
-                        <input type="checkbox" name="remember" class="mr-2 rounded border-gray-300 focus:ring-2"
-                               style="accent-color: var(--hover-bg);">
+                        <input type="checkbox" name="remember" class="mr-2 rounded border-gray-300 focus:ring-2" style="accent-color: var(--hover-bg);">
                         Remember Me
                     </label>
                     @if (Route::has('password.request'))
