@@ -152,14 +152,6 @@
     </div>
 
     <style>
-        .theme-app {
-            --primary-bg: #0b1f3a;
-            --secondary-bg: #2c4e9c;
-            --primary-text: #f8fafc;
-            --secondary-text: #cbd5e1;
-            --primary-border: #1e3a5f;
-            --hover-bg: #2563eb;
-        }
         @keyframes float-slow {0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}} 
         @keyframes float-medium {0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}} 
         @keyframes float-fast {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
