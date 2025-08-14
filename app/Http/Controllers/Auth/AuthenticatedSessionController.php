@@ -33,26 +33,14 @@ class AuthenticatedSessionController extends Controller
                 if ($roles->contains('Employee')) {
                     return redirect()->route('employee.dashboard');
                 } else {
-                    if ($roles->contains('Human Resource')) {
-                        return redirect()->route('hr.dashboard');
-                    } elseif ($roles->contains('Manager')) {
-                        return redirect()->route('manager.dashboard');
-                    } elseif ($roles->contains('Admin')) {
-                        return redirect()->route('admin.dashboard');
-                    } else {
-                        // fallback for any other roles
-                        return redirect()->route('dashboard');
-                    }
+                    return redirect()->route('default.dashboard');
                 }
             } else {
                 return redirect()->route('login');
             }
-
         } else {
             return redirect()->route('login');
         }
-
-
     }
 
     /**

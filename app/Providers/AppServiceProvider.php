@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;        // ✅ Required to use View::share
 use App\Models\Company;                     // ✅ Required to access Company model
@@ -25,14 +26,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Superadmin') ? true : null;
+        });
         // Optional: Prevent error if table doesn't exist during migration
         if (Schema::hasTable('companies')) {
             $company = Company::first();
             View::share('company', $company);
         }
 
-         if (\Schema::hasTable('users')) {
-        User::observe(UserObserver::class);
-    }
+        if (\Schema::hasTable('users')) {
+            User::observe(UserObserver::class);
+        }
     }
 }

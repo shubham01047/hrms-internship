@@ -1,6 +1,11 @@
 @php
-    $role = strtolower(Auth::user()->roles->pluck('name')->first());
-    $routeName = $role === 'human resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
+$role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
+
+    if ($role === 'Employee') {
+        $routeName = 'employee.dashboard';
+    } else {
+        $routeName = 'default.dashboard'; 
+    }
 @endphp
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

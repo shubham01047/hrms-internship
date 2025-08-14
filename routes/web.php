@@ -66,11 +66,14 @@ Route::middleware('auth')->group(function () {
 
     //Users Route
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users', [UserController::class, 'destroy'])->name('users.destroy');
 
     //Redirection of Admin, HR, Manager and Employee
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/default/dashboard', [AdminDashboardController::class, 'index'])->name('default.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
     Route::view('/dashboard', 'dashboard')->name('dashboard'); // fallback
