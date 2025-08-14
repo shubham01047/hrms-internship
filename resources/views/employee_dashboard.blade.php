@@ -317,79 +317,142 @@
                 </div>
 
                 @if (!$attendanceToday)
-                    
-                        <button type="submit" id="punchInBtn"
-                            class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0">
-                            🚀 Punch In
-                        </button>
-                        <form method="POST" id="punchInForm" action="{{ route('attendance.punchIn') }}"
-                        class="flex flex-col sm:flex-row gap-3 items-end">
+                    <form method="POST" id="punchInForm" action="{{ route('attendance.punchIn') }}"
+                        class="space-y-4">
                         @csrf
-                        <div class="flex-1">
-                            <label for="punch_in_remarks" class="block text-sm font-medium text-gray-700 mb-1">Remarks
-                                (optional)</label>
-                            <input type="text" name="punch_in_remarks" id="punch_in_remarks"
-                                class="w-80 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                placeholder="Late due to traffic...">
-                            <label for="geo">Select loc:*</label>
-                            <input type="hidden" name="latitude" id="latitude">
-                            <input type="hidden" name="longitude" id="longitude">
-                            <select name="location_type" id="location_type" required>
-                                <option value="">Select Location</option>
-                                <option value="Home">Home</option>
-                                <option value="Company">Company</option>
-                            </select>
+                        
+                        <!-- Enhanced remarks and location selection GUI -->
+                        <div class="bg-gray-50 p-4 rounded-lg border space-y-4">
+                            <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <span class="text-blue-500">📝</span> Punch In Details
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Remarks Section -->
+                                <div class="space-y-2">
+                                    <label for="punch_in_remarks" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <span class="text-orange-500">💬</span> Remarks (Optional)
+                                    </label>
+                                    <textarea name="punch_in_remarks" id="punch_in_remarks" rows="3"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                        placeholder="Enter any remarks (e.g., Late due to traffic, Working from home today...)"></textarea>
+                                </div>
+                                
+                                <!-- Location Selection -->
+                                <div class="space-y-2">
+                                    <label for="location_type" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <span class="text-green-500">📍</span> Work Location <span class="text-red-500">*</span>
+                                    </label>
+                                    <select name="location_type" id="location_type" required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <option value="">🏢 Select Your Location</option>
+                                        <option value="Home">🏠 Home</option>
+                                        <option value="Company">🏢 Company Office</option>
+                                    </select>
+                                    
+                                    <!-- GPS Status Indicator -->
+                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                        <span class="text-blue-500">🌐</span>
+                                        <span id="gps-status">GPS location will be captured automatically</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="button" id="punchInBtn"
+                                class="punch-button px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300">
+                                <span class="text-lg">🚀</span> Punch In
+                            </button>
+                        </div>
+                        
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
                     </form>
                 @elseif (!$attendanceToday->punch_out)
                     <form method="POST" action="{{ route('attendance.punchOut') }}"
-                        class="flex flex-col sm:flex-row gap-3 items-end">
+                        class="space-y-4">
                         @csrf
-                        <button type="submit"
-                            class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0">
-                            🏁 Punch Out
-                        </button>
-                        <div class="flex-1">
-                            <label for="punch_out_remarks"
-                                class="block text-sm font-medium text-gray-700 mb-1">Remarks
-                                (optional)</label>
-                            <input type="text" name="punch_out_remarks" id="punch_out_remarks"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                placeholder="Leaving early for appointment...">
+                        
+                        <!-- Enhanced punch out remarks GUI -->
+                        <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
+                            <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <span class="text-red-500">🏁</span> Punch Out Details
+                            </h3>
+                            
+                            <div class="space-y-2">
+                                <label for="punch_out_remarks" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                </label>
+                                <textarea name="punch_out_remarks" id="punch_out_remarks" rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                    placeholder="Enter any remarks (e.g., Leaving early for appointment, Completed all tasks...)"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit"
+                                class="punch-button px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300">
+                                <span class="text-lg">🏁</span> Punch Out
+                            </button>
                         </div>
                     </form>
                 @elseif ($attendanceToday->punch_in_again && !$attendanceToday->punch_out_again)
                     <form method="POST" action="{{ route('attendance.punchOutAgain') }}"
-                        class="flex flex-col sm:flex-row gap-3 items-end" id="punchOutAgainForm">
+                        class="space-y-4" id="punchOutAgainForm">
                         @csrf
-                        <button type="submit"
-                            class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex-shrink-0"
-                            id="btnPunchOutAgain">
-                            🏁 Punch Out Again
-                        </button>
-                        <div class="flex-1">
-                            <label for="punch_out_again_remarks"
-                                class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
-                            <input type="text" name="punch_out_again_remarks" id="punch_out_again_remarks"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                placeholder="Finished extra work...">
+                        
+                        <!-- Enhanced punch out again remarks GUI -->
+                        <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
+                            <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <span class="text-red-500">🏁</span> End Extra Work Details
+                            </h3>
+                            
+                            <div class="space-y-2">
+                                <label for="punch_out_again_remarks" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                </label>
+                                <textarea name="punch_out_again_remarks" id="punch_out_again_remarks" rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                    placeholder="Enter any remarks (e.g., Finished extra work, Completed urgent task...)"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit"
+                                class="punch-button px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300"
+                                id="btnPunchOutAgain">
+                                <span class="text-lg">🏁</span> Punch Out Again
+                            </button>
                         </div>
                     </form>
                 @else
                     <form method="POST" action="{{ route('attendance.punchInAgain') }}"
-                        class="flex flex-col sm:flex-row gap-3 items-end" id="punchInAgainForm">
+                        class="space-y-4" id="punchInAgainForm">
                         @csrf
-                        <button type="submit"
-                            class="punch-button px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex-shrink-0"
-                            id="btnPunchInAgain">
-                            🚀 Punch In Again
-                        </button>
-                        <div class="flex-1">
-                            <label for="punch_in_again_remarks"
-                                class="block text-sm font-medium text-gray-700 mb-1">Remarks (optional)</label>
-                            <input type="text" name="punch_in_again_remarks" id="punch_in_again_remarks"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                placeholder="Some extra work...">
+                        
+                        <!-- Enhanced punch in again remarks GUI -->
+                        <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
+                            <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <span class="text-green-500">🚀</span> Extra Work Details
+                            </h3>
+                            
+                            <div class="space-y-2">
+                                <label for="punch_in_again_remarks" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                </label>
+                                <textarea name="punch_in_again_remarks" id="punch_in_again_remarks" rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                    placeholder="Enter any remarks (e.g., Some extra work, Urgent project completion...)"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit"
+                                class="punch-button px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300"
+                                id="btnPunchInAgain">
+                                <span class="text-lg">🚀</span> Punch In Again
+                            </button>
                         </div>
                     </form>
                 @endif
@@ -608,21 +671,36 @@
     <script>
         document.getElementById('punchInBtn').addEventListener('click', function(e) {
             const locationType = document.getElementById('location_type').value;
+            const gpsStatus = document.getElementById('gps-status');
 
             if (!locationType) {
-                alert("Please select your location (Home or Company).");
+                alert("Please select your work location (Home or Company).");
+                document.getElementById('location_type').focus();
                 return;
             }
+
+            gpsStatus.innerHTML = '<span class="text-blue-500">🔄</span> Getting your location...';
+            gpsStatus.className = 'flex items-center gap-2 text-xs text-blue-600';
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     document.getElementById('latitude').value = position.coords.latitude;
                     document.getElementById('longitude').value = position.coords.longitude;
-                    document.getElementById('punchInForm').submit();
+                    
+                    gpsStatus.innerHTML = '<span class="text-green-500">✅</span> Location captured successfully!';
+                    gpsStatus.className = 'flex items-center gap-2 text-xs text-green-600';
+                    
+                    setTimeout(() => {
+                        document.getElementById('punchInForm').submit();
+                    }, 500);
                 }, function(error) {
-                    alert("Unable to get your location. Please enable GPS.");
+                    gpsStatus.innerHTML = '<span class="text-red-500">❌</span> Unable to get location. Please enable GPS.';
+                    gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
+                    alert("Unable to get your location. Please enable GPS and try again.");
                 });
             } else {
+                gpsStatus.innerHTML = '<span class="text-red-500">❌</span> Geolocation not supported.';
+                gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
                 alert("Geolocation is not supported by this browser.");
             }
         });
