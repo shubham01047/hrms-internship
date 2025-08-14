@@ -10,304 +10,154 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body class="antialiased bg-primary text-primary h-screen overflow-hidden font-['Poppins'] theme-app">
+<body class="antialiased font-['Poppins'] theme-app">
+    <div class="min-h-screen relative overflow-hidden">
 
-    <!-- Professional Corporate Welcome Layout -->
-    <div class="h-screen flex flex-col bg-primary">
-        
-        <!-- Compact Header Section -->
-        <header class="w-full py-2 sm:py-3 px-3 sm:px-4 lg:px-6 bg-primary-light border-b border-primary">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-secondary-gradient rounded-xl shadow-lg p-1.5 sm:p-2 flex items-center justify-center">
-                            <img 
-                                src="{{ url('images/logo.png') }}" 
-                                alt="{{ $company->name }} Logo" 
-                                class="max-w-full max-h-full object-contain"
-                                onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'"
-                            >
-                        </div>
-                        <span class="text-sm sm:text-base font-semibold text-primary">{{ $company->system_title }}</span>
+        <!-- Background Gradient + Overlay -->
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="absolute inset-0 backdrop-blur-sm"></div>
+
+        <!-- Floating Shapes -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-32 h-32 rounded-full opacity-10 animate-float-slow" style="background: var(--hover-bg);"></div>
+            <div class="absolute top-40 right-20 w-24 h-24 rounded-full opacity-15 animate-float-medium" style="background: var(--secondary-bg);"></div>
+            <div class="absolute bottom-32 left-1/4 w-40 h-40 rounded-full opacity-8 animate-float-fast" style="background: var(--primary-border);"></div>
+            <div class="absolute bottom-20 right-10 w-28 h-28 rounded-full opacity-12 animate-float-slow" style="background: var(--hover-bg);"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="relative z-10 w-full py-6 sm:py-8 px-4 lg:px-6">
+            <div class="max-w-7xl mx-auto relative z-10 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 p-2 flex items-center justify-center">
+                        <img src="{{ url('images/logo.png') }}" alt="{{ $company->name }} Logo"
+                             class="max-w-full max-h-full object-contain filter brightness-0 invert"
+                             onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'">
                     </div>
-                    
-                    @auth
-                        @php
-                            $role = Auth::user()->roles->pluck('name')->first();
-                            $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
-                        @endphp
-                        <a href="{{ route($routeName) }}"
-                            class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary-light text-primary rounded-lg hover:bg-hover hover:scale-105 transition-all duration-300 font-medium border border-primary text-sm">
-                            <i class="fas fa-tachometer-alt w-3 h-3"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary-light text-primary rounded-lg hover:bg-hover hover:scale-105 transition-all duration-300 font-medium border border-primary text-sm">
-                            <i class="fas fa-sign-in-alt w-3 h-3"></i>
-                            <span>Sign In</span>
-                        </a>
-                    @endauth
+                    <span class="text-lg sm:text-xl font-bold" style="color: var(--primary-text);">
+                        {{ $company->system_title }}
+                    </span>
                 </div>
+                @auth
+                    @php
+                        $role = Auth::user()->roles->pluck('name')->first();
+                        $routeName = $role === 'Human Resource' ? 'hr.dashboard' : strtolower($role) . '.dashboard';
+                    @endphp
+                    <a href="{{ route($routeName) }}"
+                       class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 font-medium text-sm shadow-md"
+                       style="background: var(--primary-bg); color: var(--primary-text);"
+                       onmouseover="this.style.background='var(--hover-bg)'"
+                       onmouseout="this.style.background='var(--primary-bg)'">
+                        <i class="fas fa-tachometer-alt w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}"
+                       class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 font-medium text-sm shadow-md"
+                       style="background: var(--primary-bg); color: var(--primary-text);"
+                       onmouseover="this.style.background='var(--hover-bg)'"
+                       onmouseout="this.style.background='var(--primary-bg)'">
+                        <i class="fas fa-sign-in-alt w-4 h-4"></i>
+                        <span>Sign In</span>
+                    </a>
+                @endauth
             </div>
         </header>
 
-        <!-- Optimized Main Content Section -->
-        <main class="flex-1 flex items-center justify-center px-3 sm:px-4 lg:px-6 py-2 sm:py-4 bg-primary overflow-y-auto">
-            <div class="max-w-6xl mx-auto w-full">
-                
-                <!-- Compact Hero Section -->
-                <div class="text-center mb-4 sm:mb-6 lg:mb-8">
-                    <!-- Logo and Title Section -->
-                    <div class="flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4 lg:gap-8 mb-4 sm:mb-6">
-                        <!-- Professional Logo Container -->
-                        <div class="relative group">
-                            <div class="absolute -inset-1 sm:-inset-2 bg-secondary-gradient rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
-                            <div class="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-secondary-gradient rounded-2xl shadow-xl p-3 sm:p-4 md:p-5 flex items-center justify-center transform group-hover:scale-105 transition-all duration-500 border border-primary">
-                                <img 
-                                    src="{{ url('images/logo.png') }}" 
-                                    alt="{{ $company->name }} Logo" 
-                                    class="max-w-full max-h-full object-contain drop-shadow-2xl filter brightness-110"
-                                    onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'"
-                                >
-                            </div>
-                        </div>
-                        
-                        <!-- Corporate Title Section -->
-                        <div class="text-center lg:text-left">
-                            <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-primary leading-tight mb-1 sm:mb-2">
-                                Welcome to
-                            </h1>
-                            <h2 class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
-                                <span class="bg-secondary-gradient bg-clip-text text-primary animate-gradient">
-                                    {{ $company->name }}
-                                </span>
-                            </h2>
-                        </div>
+        <!-- Main -->
+        <main class="relative z-10 flex flex-col items-center justify-center px-4 lg:px-6 py-12">
+            <!-- Hero -->
+            <div class="text-center max-w-4xl mx-auto mb-12">
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 mb-8">
+                    <div class="relative w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full bg-white/20 p-4 flex items-center justify-center">
+                        <img src="{{ url('images/logo.png') }}" alt="{{ $company->name }} Logo"
+                             class="max-w-full max-h-full object-contain filter brightness-0 invert"
+                             onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'">
                     </div>
-
-                    <!-- Compact Company Description -->
-                    <div class="max-w-4xl mx-auto mb-3 sm:mb-4 lg:mb-6">
-                        <p class="text-xs sm:text-sm md:text-base lg:text-lg text-secondary leading-relaxed font-light px-2 sm:px-0">
-                            {{ $company->description }}
-                        </p>
-                    </div>
-
-                    <!-- Professional Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center mb-4 sm:mb-6 px-2 sm:px-0">
-                        @auth
-                            <a href="{{ route($routeName) }}"
-                                class="group relative inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-secondary-gradient text-primary text-xs sm:text-sm font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 transform w-full sm:w-auto sm:min-w-[140px] lg:min-w-[160px] overflow-hidden hover:bg-hover border border-primary">
-                                <div class="absolute inset-0 bg-hover opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                <i class="fas fa-tachometer-alt w-3 h-3 sm:w-4 sm:h-4 relative z-10"></i>
-                                <span class="relative z-10">Go to Dashboard</span>
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}"
-                                class="group relative inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-secondary-gradient text-primary text-xs sm:text-sm font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 transform w-full sm:w-auto sm:min-w-[140px] lg:min-w-[160px] overflow-hidden hover:bg-hover border border-primary">
-                                <div class="absolute inset-0 bg-hover opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                <i class="fas fa-sign-in-alt w-3 h-3 sm:w-4 sm:h-4 relative z-10"></i>
-                                <span class="relative z-10">Sign In</span>
-                            </a>
-                        @endauth
-                        
-                        <!-- Secondary Action -->
-                        <a href="#features" 
-                            class="group inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary-light text-primary text-xs sm:text-sm font-bold rounded-xl border border-primary hover:bg-hover hover:scale-105 transition-all duration-300 transform w-full sm:w-auto sm:min-w-[140px] lg:min-w-[160px]">
-                            <i class="fas fa-info-circle w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-12 transition-transform duration-300"></i>
-                            <span>Learn More</span>
-                        </a>
+                    <div class="text-center lg:text-left">
+                        <h1 class="text-3xl lg:text-5xl font-bold mb-2" style="color: var(--primary-text);">
+                            Welcome to
+                        </h1>
+                        <h2 class="text-2xl lg:text-4xl font-bold" style="color: var(--secondary-text);">
+                            {{ $company->name }}
+                        </h2>
                     </div>
                 </div>
+                <p class="text-base lg:text-lg font-light mb-8" style="color: var(--secondary-text);">
+                    {{ $company->description }}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    @auth
+                        <a href="{{ route($routeName) }}"
+                           class="px-6 py-3 rounded-xl font-bold shadow-lg transition-all duration-300"
+                           style="background: var(--primary-bg); color: var(--primary-text);"
+                           onmouseover="this.style.background='var(--hover-bg)'"
+                           onmouseout="this.style.background='var(--primary-bg)'">
+                            Go to Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="px-6 py-3 rounded-xl font-bold shadow-lg transition-all duration-300"
+                           style="background: var(--primary-bg); color: var(--primary-text);"
+                           onmouseover="this.style.background='var(--hover-bg)'"
+                           onmouseout="this.style.background='var(--primary-bg)'">
+                            Sign In
+                        </a>
+                    @endauth
+                    <a href="#features"
+                       class="px-6 py-3 rounded-xl shadow-md bg-white/90 text-gray-700 border border-white/20 hover:bg-white transition-all duration-300">
+                        Learn More
+                    </a>
+                </div>
+            </div>
 
-                <!-- Equal Height Features Section -->
-                <div id="features" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6 lg:mb-8 px-2 sm:px-0">
-                    <div class="group bg-primary-light rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 transform border border-primary h-full flex flex-col">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-secondary-gradient rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-shield-alt text-primary text-sm sm:text-base"></i>
-                        </div>
-                        <h3 class="text-sm sm:text-base font-bold text-primary mb-1 sm:mb-2">Secure & Reliable</h3>
-                        <p class="text-xs sm:text-sm text-secondary leading-relaxed flex-1">Enterprise-grade security with reliable performance for your business operations.</p>
+            <!-- Features -->
+            <div id="features" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/20 rounded-2xl p-6 shadow-lg hover:scale-105 transition-all duration-300 border border-white/30">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: var(--primary-bg);">
+                        <i class="fas fa-shield-alt text-lg" style="color: var(--primary-text);"></i>
                     </div>
-                    
-                    <div class="group bg-primary-light rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 transform border border-primary h-full flex flex-col">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-secondary-gradient rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-users text-primary text-sm sm:text-base"></i>
-                        </div>
-                        <h3 class="text-sm sm:text-base font-bold text-primary mb-1 sm:mb-2">User-Friendly</h3>
-                        <p class="text-xs sm:text-sm text-secondary leading-relaxed flex-1">Intuitive interface designed for seamless user experience across all devices.</p>
+                    <h3 class="text-lg font-bold mb-3" style="color: var(--primary-text);">Secure & Reliable</h3>
+                    <p class="text-sm" style="color: var(--secondary-text);">Enterprise-grade security with reliable performance for your business operations.</p>
+                </div>
+                <div class="bg-white/20 rounded-2xl p-6 shadow-lg hover:scale-105 transition-all duration-300 border border-white/30">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: var(--primary-bg);">
+                        <i class="fas fa-users text-lg" style="color: var(--primary-text);"></i>
                     </div>
-                    
-                    <div class="group bg-primary-light rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 transform border border-primary h-full flex flex-col sm:col-span-2 lg:col-span-1">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-secondary-gradient rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-chart-line text-primary text-sm sm:text-base"></i>
-                        </div>
-                        <h3 class="text-sm sm:text-base font-bold text-primary mb-1 sm:mb-2">Analytics & Insights</h3>
-                        <p class="text-xs sm:text-sm text-secondary leading-relaxed flex-1">Comprehensive reporting and analytics to drive informed business decisions.</p>
+                    <h3 class="text-lg font-bold mb-3" style="color: var(--primary-text);">User-Friendly</h3>
+                    <p class="text-sm" style="color: var(--secondary-text);">Intuitive interface designed for seamless user experience across all devices.</p>
+                </div>
+                <div class="bg-white/20 rounded-2xl p-6 shadow-lg hover:scale-105 transition-all duration-300 border border-white/30">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background: var(--primary-bg);">
+                        <i class="fas fa-chart-line text-lg" style="color: var(--primary-text);"></i>
                     </div>
+                    <h3 class="text-lg font-bold mb-3" style="color: var(--primary-text);">Analytics & Insights</h3>
+                    <p class="text-sm" style="color: var(--secondary-text);">Comprehensive reporting and analytics to drive informed business decisions.</p>
                 </div>
             </div>
         </main>
 
-        <!-- Compact Footer Section -->
-        <footer class="w-full py-2 sm:py-3 px-3 sm:px-4 lg:px-6 bg-primary-light border-t border-primary">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <div class="flex items-center">
-                        <span class="text-xs text-secondary text-center sm:text-left">&copy; {{ date('Y') }} {{ $company->name }}. All rights reserved.</span>
-                    </div>
-                    
-                    <div class="flex items-center space-x-4">
-                        <a href="#" class="text-secondary hover:text-primary hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-twitter text-sm"></i>
-                        </a>
-                        <a href="#" class="text-secondary hover:text-primary hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-linkedin text-sm"></i>
-                        </a>
-                        <a href="#" class="text-secondary hover:text-primary hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-facebook text-sm"></i>
-                        </a>
-                    </div>
+        <!-- Footer -->
+        <footer class="relative z-10 w-full py-4 px-4 lg:px-6 mt-12">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+                <span class="text-sm" style="color: var(--secondary-text);">&copy; {{ date('Y') }} {{ $company->name }}. All rights reserved.</span>
+                <div class="flex items-center space-x-6">
+                    <a href="#" style="color: var(--secondary-text);" class="hover:scale-110 transition-all duration-300"><i class="fab fa-twitter text-lg"></i></a>
+                    <a href="#" style="color: var(--secondary-text);" class="hover:scale-110 transition-all duration-300"><i class="fab fa-linkedin text-lg"></i></a>
+                    <a href="#" style="color: var(--secondary-text);" class="hover:scale-110 transition-all duration-300"><i class="fab fa-facebook text-lg"></i></a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Minimal Professional Styles -->
     <style>
-        /* Gradient animation */
-        @keyframes gradient {
-            0%, 100% {
-                background-size: 200% 200%;
-                background-position: left center;
-            }
-            50% {
-                background-size: 200% 200%;
-                background-position: right center;
-            }
-        }
-
-        .animate-gradient {
-            background-size: 200% 200%;
-            animation: gradient 3s ease infinite;
-        }
-
-        /* Enhanced gradient text support */
-        .bg-clip-text {
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        /* Prevent scrolling on desktop, allow on mobile */
-        html, body {
-            height: 100%;
-        }
-
-        @media (min-width: 640px) {
-            html, body {
-                overflow: hidden;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Enhanced shadows */
-        .shadow-2xl {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-
-        /* Enhanced drop shadow */
-        .drop-shadow-2xl {
-            filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15));
-        }
-
-        /* Corporate smooth transitions */
-        * {
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Professional hover effects */
-        .group:hover .group-hover\:scale-110 {
-            transform: scale(1.1);
-        }
-
-        .group:hover .group-hover\:rotate-12 {
-            transform: rotate(12deg);
-        }
-
-        /* Equal height flex cards */
-        .h-full.flex.flex-col {
-            min-height: 100%;
-        }
-
-        .flex-1 {
-            flex: 1;
-        }
-
-        /* Corporate button hover effects */
-        .hover\:scale-105:hover {
-            transform: scale(1.05);
-        }
-
-        /* Professional shadow enhancements */
-        .hover\:shadow-xl:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        /* Enhanced button animations */
-        .transform:hover {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        /* Mobile specific optimizations */
-        @media (max-width: 639px) {
-            /* Allow vertical scrolling on mobile if needed */
-            .overflow-y-auto {
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            /* Ensure buttons are touch-friendly */
-            .group {
-                min-height: 44px;
-            }
-            
-            /* Better mobile spacing */
-            .px-2 {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-        }
-
-        /* Tablet optimizations */
-        @media (min-width: 640px) and (max-width: 1023px) {
-            /* 2-column grid on tablets */
-            .sm\:grid-cols-2 {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            
-            /* Last card spans full width on tablet when 3 cards */
-            .sm\:col-span-2 {
-                grid-column: span 2 / span 2;
-            }
-        }
-
-        /* Desktop optimizations */
-        @media (min-width: 1024px) {
-            /* 3-column grid on desktop */
-            .lg\:grid-cols-3 {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-            
-            /* Reset column span on desktop */
-            .lg\:col-span-1 {
-                grid-column: span 1 / span 1;
-            }
-        }
+        @keyframes float-slow {0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}} 
+        @keyframes float-medium {0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}} 
+        @keyframes float-fast {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .animate-float-slow {animation: float-slow 6s ease-in-out infinite;}
+        .animate-float-medium {animation: float-medium 4s ease-in-out infinite;}
+        .animate-float-fast {animation: float-fast 3s ease-in-out infinite;}
     </style>
 </body>
-
 </html>

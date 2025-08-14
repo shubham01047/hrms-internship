@@ -164,7 +164,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
                 'Total Working Hours',
                 'Punch-In-Again',
                 'Punch-Out-Again',
-                'Total Overtime Working Hours',
+                'Total Overtime Working Hours', 
                 'Location'
             ];
             $callback = function () use ($attendance, $columns) {
@@ -241,6 +241,10 @@ class AdminDashboardController extends Controller implements HasMiddleware
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
         $projects = Project::with(['tasks.assignedUsers'])->get();
-        return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear', 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects'));
-    }
+
+
+    // Step 5: Send to Blade view
+    return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear','employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
+}
+
 }

@@ -56,7 +56,7 @@
                 <i class="fas fa-users"></i> User Management
             </div>
             <a href="{{ route('profile.edit') }}" class="{{ $isActive('profile.edit') }}">
-                <i class="fas fa-user-circle"></i>Edit Profile
+                <i class="fas fa-user-circle"></i> Profiles
             </a>
             @can('create roles')
                 <a href="{{ route('roles.index') }}" class="{{ $isActive('roles.index') }}">
@@ -143,12 +143,12 @@
                 <i class="fas fa-money-bill-wave"></i> Salary & Payroll
             </div>
             <a href="{{ route('salary.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                class="{{ $isActive('salary.index') }}">
                 <i class="fas fa-dollar-sign"></i> Salary Structures
             </a>
 
             <a href="{{ route('payrolls.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                class="{{ $isActive('payrolls.index') }}">
                 <i class="fas fa-file-invoice-dollar"></i> Payrolls
             </a>
         </div>
@@ -163,5 +163,20 @@
                 <i class="fas fa-bell"></i> Alerts
             </a>
         </div> --}}
+
+        <!-- AI Tools -->
+        <div class="border-b border-primary pb-2 mb-2">
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                <i class="fas fa-robot"></i> AI Tools
+            </div>
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-brain"></i> SkillLens
+            </a>
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded hover:bg-hover hover:scale-105 transition-all duration-300">
+                <i class="fas fa-magic"></i> RootCauseX
+            </a>
+        </div>
     </nav>
 </aside>
