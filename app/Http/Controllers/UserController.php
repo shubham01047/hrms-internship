@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
@@ -16,8 +17,8 @@ class UserController extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view users', only: ['index']),
             new Middleware('permission:edit users', only: ['edit']),
-            // new Middleware('permission:view create', only: ['create']),
-            // new Middleware('permission:view delete', only: ['destroy']),
+            new Middleware('permission:create users', only: ['create']),
+            new Middleware('permission:delete users', only: ['destroy']),
         ];
     }
     /**
@@ -36,7 +37,11 @@ class UserController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        //
+        $roles = Role::orderBy('name', 'ASC')->get();
+        return view('users.create', [
+            'roles' => $roles,
+        ]);
+        
     }
 
     /**
@@ -44,15 +49,30 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|same:confirm_password',
+            'confirm_password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('users.create')->withInput()->withErrors($validator);
+        }
+        $users = new User();
+        $users->name = $request->name;
+        $users->email = $request->email;
+        $users->password = Hash::make($request->password);
+        $users->save();
+        $users->syncRoles($request->role);
+        return redirect()->route('users.index')->with('success', 'Users added successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -98,8 +118,19 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $user = User::find($request->id);
+        if ($user == null) {
+            session()->flash('error', 'User not found');
+            return response()->json([
+                'status' => false
+            ]);
+        }
+        $user->delete();
+        session()->flash('success', 'User Deleted successfully');
+        return response()->json([
+            'status' => true
+        ]);
     }
 }

@@ -66,7 +66,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
         ])
             ->orderBy('date', 'asc')
             ->get();
-        return view('admin_dashboard', compact( 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
+        return view('default_dashboard', compact( 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
     }
     public function showAttendanceReport(Request $request)
     {

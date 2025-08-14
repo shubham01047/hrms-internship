@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Mail\LeaveApprovedMail;
+use App\Mail\LeaveRejectedMail;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\User;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
-class LeaveController extends Controller
+class LeaveApiController extends Controller
 {
     public function store(Request $request)
     {
@@ -60,7 +61,7 @@ class LeaveController extends Controller
         $leave->approved_by = Auth::id();
         $leave->save();
         Mail::to($leave->user->email)->send(new LeaveApprovedMail($leave));
-        return response()->json(['message' => 'Leave approved successfully.']);
+        return response()->json(['message' => 'Leave approved successfully and mail sent.']);
     }
     public function reject($id)
     {
@@ -72,7 +73,8 @@ class LeaveController extends Controller
             'status' => 'rejected',
             'approved_by' => Auth::id(),
         ]);
-        return response()->json(['message' => 'Leave rejected.']);
+        Mail::to($leave->user->email)->send(new LeaveRejectedMail($leave));
+        return response()->json(['message' => 'Leave rejected and mail sent.']);
     }
     public function report()
     {

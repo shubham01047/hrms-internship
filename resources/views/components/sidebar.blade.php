@@ -5,16 +5,10 @@
 
     $role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
 
-    if ($role === 'Human Resource') {
-        $routeName = 'hr.dashboard';
-    } elseif ($role === 'Admin') {
-        $routeName = 'admin.dashboard';
-    } elseif ($role === 'Manager') {
-        $routeName = 'manager.dashboard';
-    } elseif ($role === 'Employee') {
+     if ($role === 'Employee') {
         $routeName = 'employee.dashboard';
     } else {
-        $routeName = 'dashboard'; 
+        $routeName = 'default.dashboard'; 
     }
 
 @endphp
@@ -115,7 +109,7 @@
             @endcan
             @can('view leave type')
                 <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i
-                        class="fas fa-calendar-check"></i> Add Leave</a>
+                        class="fas fa-calendar-check"></i> Add Leave Type</a>
             @endcan
         </div>
 
