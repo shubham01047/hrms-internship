@@ -33,9 +33,11 @@
     </x-slot>
 
     <div class="py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"> {{-- Added back px- for form content --}}
+        <!-- Increased max-width from max-w-6xl to max-w-7xl and reduced horizontal padding -->
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-4">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
-                <div class="theme-app px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                <!-- Reduced header section padding -->
+                <div class="theme-app px-2 py-3 sm:px-3 sm:py-4 border-b border-gray-200" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <div class="p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +51,8 @@
                     </div>
                 </div>
                 
-                <div class="p-4 sm:p-8">
+                <!-- Reduced form content padding from p-4 sm:p-8 to p-2 sm:p-4 -->
+                <div class="p-2 sm:p-4">
                     <form action="{{ route('users.update', $users->id) }}" method="POST" class="space-y-4 sm:space-y-8">
                         @csrf
                         
