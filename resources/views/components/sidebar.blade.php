@@ -5,10 +5,10 @@
 
     $role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
 
-     if ($role === 'Employee') {
+    if ($role === 'Employee') {
         $routeName = 'employee.dashboard';
     } else {
-        $routeName = 'default.dashboard'; 
+        $routeName = 'default.dashboard';
     }
 
 @endphp
@@ -49,6 +49,17 @@
             </a>
         </div>
 
+        {{-- Company Management --}}
+        @can('edit company')
+            <div class="border-b border-primary pb-2 mb-2">
+                <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+                    <i class="fas fa-users"></i> Company Management
+                </div>
+                <a href="{{ route('company.edit', $company->id) }}" class="{{ $isActive('company.edit') }}">
+                    <i class="fas fa-user-tag"></i> Edit Company Details
+                </a>
+            </div>
+        @endcan
 
         <!-- User Management -->
         <div class="border-b border-primary pb-2 mb-2">
@@ -142,13 +153,12 @@
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
                 <i class="fas fa-money-bill-wave"></i> Salary & Payroll
             </div>
-            <a href="{{ route('salary.index') }}"
-                class="{{ $isActive('salary.index') }}">
-                <i class="fas fa-dollar-sign"></i> Salary Structures
-            </a>
-
-            <a href="{{ route('payrolls.index') }}"
-                class="{{ $isActive('payrolls.index') }}">
+            @can('view salary structure')
+                <a href="{{ route('salary.index') }}" class="{{ $isActive('salary.index') }}">
+                    <i class="fas fa-dollar-sign"></i> Salary Structures
+                </a>
+            @endcan
+            <a href="{{ route('payrolls.index') }}" class="{{ $isActive('payrolls.index') }}">
                 <i class="fas fa-file-invoice-dollar"></i> Payrolls
             </a>
         </div>

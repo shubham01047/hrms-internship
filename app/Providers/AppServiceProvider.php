@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole('Superadmin') ? true : null;
         });
         // Optional: Prevent error if table doesn't exist during migration
-        if (Schema::hasTable('companies')) {
+        if (Schema::hasTable('company_profile')) {
             $company = Company::first();
             View::share('company', $company);
         }
