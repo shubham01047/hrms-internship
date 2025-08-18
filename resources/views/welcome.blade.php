@@ -38,9 +38,9 @@
                 <div class="flex items-center space-x-3">
                     <div
                         class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 p-2 flex items-center justify-center">
-                        <img src="{{ url('images/logo.png') }}" alt="{{ $company->name }} Logo"
+                        <img src="{{ url('images/' . $company->company_logo) }}" alt="{{ $company->company_name }} Logo"
                             class="max-w-full max-h-full object-contain filter brightness-0 invert"
-                            onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'">
+                            onerror="this.onerror=null; this.src='{{ asset('images/' . $company->company_logo) }}'">
                     </div>
                     <span class="text-lg sm:text-xl font-bold" style="color: var(--primary-text);">
                         {{ $company->system_title }}
@@ -85,7 +85,7 @@
                         class="relative w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full bg-white/20 p-4 flex items-center justify-center">
                         <img src="{{ url('images/logo.png') }}" alt="{{ $company->name }} Logo"
                             class="max-w-full max-h-full object-contain filter brightness-0 invert"
-                            onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}'">
+                            onerror="this.onerror=null; this.src='{{ asset('images/' . $company->company_logo) }}'">
                     </div>
                     <div class="text-center lg:text-left">
                         <h1 class="text-3xl lg:text-5xl font-bold mb-2" style="color: var(--primary-text);">
