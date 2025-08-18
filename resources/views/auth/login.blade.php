@@ -18,7 +18,9 @@
         <!-- Header -->
         <div class="text-center p-6 sm:p-8 relative" style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));">
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-            <x-application-logo/>
+           <x-application-logo/>
+
+            <h3 class="text-xl sm:text-2xl font-bold mb-2 relative z-10" style="color: var(--primary-text);">
                 {{ $company->system_title ?? 'HRMS Portal' }}
             </h3>
             <p class="text-xs sm:text-sm font-medium relative z-10" style="color: var(--secondary-text);">
