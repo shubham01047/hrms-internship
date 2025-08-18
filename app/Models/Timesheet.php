@@ -9,6 +9,7 @@ class Timesheet extends Model
     protected $fillable = [
         'user_id',
         'task_id',
+         'project_id',
         'date',
         'hours_worked',
         'description',

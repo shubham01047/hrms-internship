@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/default/dashboard', [AdminDashboardController::class, 'index'])->name('default.dashboard');
     Route::view('/hr/dashboard', 'hr_dashboard')->name('hr.dashboard');
     Route::view('/manager/dashboard', 'manager_dashboard')->name('manager.dashboard');
-    Route::view('/dashboard', 'dashboard')->name('dashboard'); // fallback
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     //Punchin/Punchout & Breaks routes
     Route::view('/employee/dashboard', 'employee_dashboard')->name('employee.dashboard');
@@ -151,16 +151,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/payrolls/generate/{user_id}/{month}', [PayrollController::class, 'generate'])->name('payrolls.generate');
     Route::get('/payrolls/{payroll}/slip', [PayrollController::class, 'payslip'])->name('payrolls.slip');
     Route::get('/payrolls/generate-all/{month}', [PayrollController::class, 'generateAll'])->name('payrolls.generateAll');
-    // Soft delete single payroll
     Route::delete('/payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
-
-    // Soft delete all payrolls
     Route::delete('/payrolls', [PayrollController::class, 'destroyAll'])->name('payrolls.destroyAll');
+
+    //Company Routes
+   Route::get('company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
+Route::put('company/{id}', [CompanyController::class, 'update'])->name('company.update');
 
 });
 
 require __DIR__ . '/auth.php';
-
-// routes/web.php
-Route::get('/admin/company', [CompanyController::class, 'edit'])->name('company.edit');
-Route::put('/admin/company', [CompanyController::class, 'update'])->name('company.update');

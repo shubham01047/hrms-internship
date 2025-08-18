@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+    'guards' => [
+        'web',
+        'api',
+    ],
     'models' => [
 
         /*

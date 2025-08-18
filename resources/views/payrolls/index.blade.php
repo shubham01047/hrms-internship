@@ -29,22 +29,23 @@
                     </div>
 
                     {{-- Right: Button --}}
-                    <div class="w-full sm:w-auto">
-                        <a href="{{ route('payrolls.generateAll', now()->format('M, Y')) }}"
-                            class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
-                            style="background-color: var(--hover-bg); color: white;"
-                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                            onmouseout="this.style.backgroundColor='var(--hover-bg)'">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                                </path>
-                            </svg>
-                            Generate All ({{ now()->format('M, Y') }})
-                        </a>
-                    </div>
-
+                    @can('generate all payrolls')
+                        <div class="w-full sm:w-auto">
+                            <a href="{{ route('payrolls.generateAll', now()->format('M, Y')) }}"
+                                class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                style="background-color: var(--hover-bg); color: white;"
+                                onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                                    </path>
+                                </svg>
+                                Generate All ({{ now()->format('M, Y') }})
+                            </a>
+                        </div>
+                    @endcan
                 </div>
             </div>
         </x-slot>
@@ -81,36 +82,38 @@
             @endif
 
             <!-- Danger Zone -->
-            <div class="mb-8 p-4 sm:p-6 rounded-xl border-2 border-red-500/20" style="background-color: #ffffff;">
-                <div class="flex flex-col sm:flex-row sm:items-center mb-4 gap-3">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
-                            </path>
-                        </svg>
-                        <h3 class="text-lg font-semibold text-red-500">Danger Zone</h3>
+            @can('delete all payrolls')
+                <div class="mb-8 p-4 sm:p-6 rounded-xl border-2 border-red-500/20" style="background-color: #ffffff;">
+                    <div class="flex flex-col sm:flex-row sm:items-center mb-4 gap-3">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+                                </path>
+                            </svg>
+                            <h3 class="text-lg font-semibold text-red-500">Danger Zone</h3>
+                        </div>
                     </div>
+                    <p class="text-sm mb-4" style="color: var(--secondary-text);">
+                        This action will permanently delete all payroll records. This cannot be undone.
+                    </p>
+                    <form method="POST" action="{{ route('payrolls.destroyAll') }}"
+                        onsubmit="return confirm('Delete ALL payrolls? This action cannot be undone!')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            Delete All Payrolls
+                        </button>
+                    </form>
                 </div>
-                <p class="text-sm mb-4" style="color: var(--secondary-text);">
-                    This action will permanently delete all payroll records. This cannot be undone.
-                </p>
-                <form method="POST" action="{{ route('payrolls.destroyAll') }}"
-                    onsubmit="return confirm('Delete ALL payrolls? This action cannot be undone!')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                            </path>
-                        </svg>
-                        Delete All Payrolls
-                    </button>
-                </form>
-            </div>
+            @endcan
 
             <!-- Existing Payrolls Section -->
             <div class="mb-8">
@@ -171,22 +174,24 @@
                                             </svg>
                                             Download
                                         </a>
-                                        <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
-                                            onsubmit="return confirm('Delete this payroll?')" class="flex-1">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="w-full inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                    </path>
-                                                </svg>
-                                                Delete
-                                            </button>
-                                        </form>
+                                        @can('delete payroll')
+                                            <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
+                                                onsubmit="return confirm('Delete this payroll?')" class="flex-1">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="w-full inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                        </path>
+                                                    </svg>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </div>
                             @empty
@@ -257,7 +262,8 @@
                                                     </svg>
                                                     Download
                                                 </a>
-                                                <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
+                                                @can('delete payroll')
+                                                    <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
                                                     onsubmit="return confirm('Delete this payroll?')" class="inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -273,6 +279,7 @@
                                                         Delete
                                                     </button>
                                                 </form>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
@@ -301,7 +308,8 @@
             </div>
 
             <!-- Generate Individual Payrolls Section -->
-            <div class="rounded-xl shadow-lg overflow-hidden"
+            @can('generate payroll')
+                <div class="rounded-xl shadow-lg overflow-hidden"
                 style="background-color: #ffffff; border: 1px solid #e2e8f0;">
                 <div class="px-4 sm:px-6 py-4 border-b"
                     style="border-color: #e2e8f0; background-color: var(--primary-bg-light);">
@@ -397,6 +405,7 @@
                     </table>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 </x-app-layout>
