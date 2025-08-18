@@ -83,7 +83,7 @@
                 <div class="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 mb-8">
                     <div
                         class="relative w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full bg-white/20 p-4 flex items-center justify-center">
-                        <img src="{{ url('images/logo.png') }}" alt="{{ $company->name }} Logo"
+                        <img src="{{ url('images/logo.png') }}" alt="{{ $company->company_name }} Logo"
                             class="max-w-full max-h-full object-contain filter brightness-0 invert"
                             onerror="this.onerror=null; this.src='{{ asset('images/' . $company->company_logo) }}'">
                     </div>
@@ -92,7 +92,7 @@
                             Welcome to
                         </h1>
                         <h2 class="text-2xl lg:text-4xl font-bold" style="color: var(--secondary-text);">
-                            {{ $company->name }}
+                            {{ $company->company_name }}
                         </h2>
                     </div>
                 </div>
