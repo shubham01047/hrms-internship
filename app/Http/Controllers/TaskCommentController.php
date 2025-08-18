@@ -25,11 +25,10 @@ class TaskCommentController extends Controller
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
     public function index($projectId, Task $task)
-{
-    $project = Project::findOrFail($projectId);
-    // Load comments for the task, optionally eager load users if needed
-    $comments = $task->comments()->with('user')->orderBy('created_at', 'desc')->get();
-    return view('tasks.comments.index', compact('project', 'task', 'comments'));
-}
+    {
+        $project = Project::findOrFail($projectId);
+        $comments = $task->comments()->with('user')->orderBy('created_at', 'desc')->get();
+        return view('tasks.comments.index', compact('project', 'task', 'comments'));
+    }
 
 }
