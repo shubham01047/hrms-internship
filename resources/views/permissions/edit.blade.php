@@ -31,9 +31,11 @@
     </x-slot>
 
     <div class="py-6 sm:py-8">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Increased max-width from max-w-4xl to max-w-6xl and reduced horizontal padding --}}
+        <div class="max-w-6xl mx-auto px-1 sm:px-2 lg:px-3">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
-                <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200">
+                {{-- Reduced header section horizontal padding --}}
+                <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-2 py-3 sm:px-3 sm:py-4 border-b border-gray-200">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <div class="theme-app p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +49,8 @@
                     </div>
                 </div>
                 
-                <div class="p-4 sm:p-8">
+                {{-- Reduced form content padding --}}
+                <div class="p-2 sm:p-4">
                     <form action="{{ route('permissions.update', $permission->id) }}" method="POST" class="space-y-4 sm:space-y-6">
                         @csrf
                         
@@ -70,7 +73,7 @@
                             @error('name')
                                 <div class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
                                     </svg>
                                     <span class="text-xs sm:text-sm text-red-600 font-medium">{{ $message }}</span>
                                 </div>

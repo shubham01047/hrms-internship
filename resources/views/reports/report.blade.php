@@ -6,7 +6,7 @@
                     <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-primary">
                         Monthly Attendance Percentage - {{ $selectedYear }}
                     </h2>
-                    <form method="GET" action="{{ route('reports.report') }}" class="w-full md:w-auto flex items-center gap-3">
+                    <form method="GET" action="{{ route('reports.report') }}" class="w-full md:w-auto flex items-center gap-3 lg:mr-24">
                         <label for="year" class="text-secondary text-sm font-medium">Select Year</label>
                         <div class="relative w-full md:w-auto">
                             <select
