@@ -4,8 +4,8 @@
 
         <!-- About -->
         <div>
-            <h3 class="text-xl font-bold mb-3 text-primary">About {{ $company->name }}</h3>
-            <p class="text-sm text-secondary-text leading-relaxed">{{ $company->description }}</p>
+            <h3 class="text-xl font-bold mb-3 text-primary">About {{ $company->company_name }}</h3>
+            <p class="text-sm text-secondary-text leading-relaxed">{{ $company->company_description }}</p>
         </div>
 
         <!-- Quick Links -->
