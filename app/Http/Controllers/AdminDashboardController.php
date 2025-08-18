@@ -66,7 +66,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
         ])
             ->orderBy('date', 'asc')
             ->get();
-        return view('default_dashboard', compact( 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
+        return view('default_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
     }
     public function showAttendanceReport(Request $request)
     {
@@ -200,62 +200,30 @@ class AdminDashboardController extends Controller implements HasMiddleware
 
     public function attendanceChart(Request $request)
     {
-        // Month range
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
-
-        // Total days in month
-        $totalDays = $start->diffInDaysFiltered(function (Carbon $date) {
-            return !in_array($date->dayOfWeek, [0, 6]); // Exclude Sat, Sun
-        }, $end->copy()->addDay());
-
-        // Count holidays (excluding weekends)
-        $holidayCount = Holiday::whereBetween('date', [$start, $end])
-            ->whereRaw('WEEKDAY(date) NOT IN (5, 6)') // MySQL: 5=Saturday, 6=Sunday
-            ->count();
-
-        // Final working days
-        $totalWorkingDays = $totalDays - $holidayCount;
-
-        // Step 1: Get all years for dropdown
         $years = Attendance::selectRaw('YEAR(date) as year')
             ->distinct()
             ->orderByDesc('year')
             ->pluck('year');
-
-        // Step 2: Use selected year or current year by default
         $selectedYear = $request->input('year', now()->year);
-
-        // Step 3: Get present days per month for that year
         $monthlyData = Attendance::selectRaw('MONTH(date) as month, COUNT(DISTINCT date) as present_days')
             ->whereYear('date', $selectedYear)
             ->whereNotNull('punch_in')
             ->groupByRaw('MONTH(date)')
             ->get()
             ->pluck('present_days', 'month');
-
-        // Step 4: Calculate attendance percentage
         $monthlyAttendance = [];
         for ($i = 1; $i <= 12; $i++) {
             $present = $monthlyData[$i] ?? 0;
-            $workingDays = $totalWorkingDays; // You can change to dynamic if needed
+            $workingDays = 22; 
             $percentage = ($workingDays > 0) ? round(($present / $workingDays) * 100, 2) : 0;
             $monthlyAttendance[] = $percentage;
         }
-
-        //all employee
         $employees = Employee::all();
-
-        //birthday tomorrow
         $tomorrow = Carbon::tomorrow();
         $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
-
-        //leaves    
         $pendingLeaves = Leave::where('status', 'pending')->count();
-
-        //punch in today
         $today = Carbon::today()->toDateString();
         $todayPunchInCount = DB::table('attendance')
             ->whereDate('date', $today)
@@ -265,31 +233,18 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
-
-        //absentee
-
         $employeeCount = User::whereHas('employee')->count();
         $absentees = $employeeCount - $todayPunchInCount;
-
-        //projects
         $projectCount = Project::count();
-
-
-        //Late commer
-
-        //percentage
         $attendancePercentage = 0;
         if ($employeeCount > 0) {
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
-
-
-        //timesheet
         $projects = Project::with(['tasks.assignedUsers'])->get();
 
 
-        // Step 5: Send to Blade view
-        return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear', 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects'));
-    }
+    // Step 5: Send to Blade view
+    return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear','employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
+}
 
 }
