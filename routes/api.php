@@ -107,7 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/projects/{projectId}/tasks/{taskId}/timesheets/{id}', [TimesheetApiController::class, 'update']);
     Route::put('/timesheets/{id}/approve', [TimesheetApiController::class, 'approve']);
     Route::put('/timesheets/{id}/reject', [TimesheetApiController::class, 'reject']);
-    Route::get('/projects/{projectId}/tasks/{taskId}/timesheet-report', TimesheetReportController::class);
+    Route::get('/projects/{projectId}/tasks/{taskId}/timesheet-report', [TimesheetReportController::class, 'report']);
 
     //Salary Structure Routes API
     Route::get('/salary-structures', [SalaryStructureApiController::class, 'index']);
