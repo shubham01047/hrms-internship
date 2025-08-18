@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class TimesheetReportController extends Controller
 {
-    public function __invoke(Request $request, $projectId, $taskId)
+public function report(Request $request, $projectId, $taskId)
     {
         $request->validate([
             'from' => 'required|date',
