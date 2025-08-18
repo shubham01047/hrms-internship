@@ -18,7 +18,10 @@
         <!-- Header -->
         <div class="text-center p-6 sm:p-8 relative" style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));">
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-           <x-application-logo/>
+           <!-- Added flex centering classes to properly center the logo -->
+           <div class="flex justify-center items-center mb-4">
+               <x-application-logo/>
+           </div>
 
             <h3 class="text-xl sm:text-2xl font-bold mb-2 relative z-10" style="color: var(--primary-text);">
                 {{ $company->system_title ?? 'HRMS Portal' }}
