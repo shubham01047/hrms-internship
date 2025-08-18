@@ -18,9 +18,10 @@
         <!-- Header -->
         <div class="text-center p-6 sm:p-8 relative" style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));">
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-            <img src="{{ asset($company->company_logo ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') }}"
-                 alt="Company Logo"
-                 class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-white/20 p-2 relative z-10">
+            <!-- Replaced dynamic logo with application logo component for consistency -->
+            <div class="flex justify-center items-center mb-4">
+                <x-application-logo class="w-14 h-14 sm:w-16 sm:h-16" />
+            </div>
             <h3 class="text-xl sm:text-2xl font-bold mb-2 relative z-10" style="color: var(--primary-text);">
                 {{ $company->system_title ?? 'HRMS Portal' }}
             </h3>
