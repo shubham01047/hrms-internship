@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 18, 2025 at 05:00 PM
+-- Generation Time: Aug 19, 2025 at 08:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -209,7 +209,7 @@ CREATE TABLE `company_profile` (
 --
 
 INSERT INTO `company_profile` (`id`, `company_name`, `company_description`, `company_logo`, `navbar_color`, `sidebar_color`, `primary_color`, `text_color`, `footer_color`, `system_title`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Demerg Systems India', 'Software company in Panaji, Goa.', 'us.jpg', '#294a94', '#1d3c72', '#ffffff', '#e0e6ef', '#173562', 'HRMS', '2025-08-18 18:17:35', '2025-08-18 19:49:09', NULL);
+(1, 'Demerg Systems India', 'Software company in Panaji, Goa.', 'logo.png', '#294a94', '#1d3c72', '#ffffff', '#e0e6ef', '#173562', 'HRMS', '2025-08-18 18:17:35', '2025-08-19 12:00:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -883,8 +883,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('gik5A8m6MOGGa1F3GmcBcSZgGV1cYdpn7NkcbZME', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiY0JBdWZlN3ZYR0ZQbVFoRjNldkl5TEZCd0swb0x4dnR5MGNISzNIbiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3VzZXJzIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kZWZhdWx0L2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1755529206),
-('NVJNmMv0hM3xsAkQig9i7QQPgHicjDeuf0XOhFXp', 7, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSnFTZVBtRWNZWmpFSml5WVNHcHVmaUlNTDNRYVROU1JTd0pNZWlmVyI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3Blcm1pc3Npb25zIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wYXlyb2xscyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjc7fQ==', 1755529090);
+('uMcZJJXf24Xe0AB9h404PPwB5y9i0G2urYtTfMDE', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiS3VQMXFxeEZKTW9PYm1NcUF5RGxwdURtRTRCRE41NWpLVEVhNlpvNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jb21wYW55LzEvZWRpdCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1755585100);
 
 -- --------------------------------------------------------
 
