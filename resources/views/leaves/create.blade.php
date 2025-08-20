@@ -119,7 +119,8 @@
 
                     <!-- Form Content -->
                     <div class="p-6">
-                        <form action="{{ route('leaves.store') }}" method="POST" class="space-y-6">
+                        <form action="{{ route('leaves.store') }}" method="POST" class="space-y-6"
+                            enctype="multipart/form-data">
                             @csrf
                             <!-- Leave Type -->
                             Leave Balance:<Br>
@@ -218,6 +219,10 @@
                                     @enderror
                                 </div>
                             </div>
+                            <br>
+                            <label for="proof_sick">Upload Medical Certificate (If Sick Leave more than 3 days)</label><br>
+                                <input type="file" name="proof_sick" id="proof_sick" accept=".jpg,.jpeg,.png,.pdf">
+
 
                             <!-- Reason -->
                             <div class="space-y-2">

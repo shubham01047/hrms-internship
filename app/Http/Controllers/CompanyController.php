@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 
 class CompanyController extends Controller implements HasMiddleware
 {
-     public static function middleware(): array
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:edit company', only: ['edit']),
@@ -26,6 +26,7 @@ class CompanyController extends Controller implements HasMiddleware
         try {
             $company = Company::findOrFail($id);
 
+            // Validate standard company fields
             $request->validate([
                 'company_name' => 'required|string|max:255',
                 'company_description' => 'nullable|string',
@@ -35,26 +36,21 @@ class CompanyController extends Controller implements HasMiddleware
                 'primary_color' => 'nullable|string|max:20',
                 'text_color' => 'nullable|string|max:20',
                 'system_title' => 'nullable|string|max:255',
+                'timings' => 'required|array',
+                'timings.*.day_from' => 'required|string',
+                'timings.*.day_to' => 'required|string',
+                'timings.*.start' => 'required|date_format:H:i',
+                'timings.*.end' => 'required|date_format:H:i',
             ]);
-
-            // ✅ Handle logo upload + delete old
-
             if ($request->hasFile('company_logo')) {
-                // Delete existing logo if it exists
                 if ($company->company_logo && File::exists(public_path('images/' . $company->company_logo))) {
                     File::delete(public_path('images/' . $company->company_logo));
                 }
-
-                // Store new logo in public/images/
                 $file = $request->file('company_logo');
                 $filename = time() . '_' . $file->getClientOriginalName();
                 $file->move(public_path('images'), $filename);
-
-                // Save filename in database
                 $company->company_logo = $filename;
             }
-
-            // ✅ Update other fields
             $company->fill($request->only([
                 'company_name',
                 'company_description',
@@ -64,19 +60,13 @@ class CompanyController extends Controller implements HasMiddleware
                 'text_color',
                 'system_title'
             ]));
-
+            $company->timings = json_encode($request->timings);
             $company->save();
-
-            // ✅ Redirect back to edit page with success
             return redirect()->route('company.edit', $company->id)
                 ->with('success', 'Company details updated successfully!');
-
         } catch (\Exception $e) {
-            // ✅ Redirect back to edit page with error
             return redirect()->route('company.edit', $id)
                 ->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
-
 }

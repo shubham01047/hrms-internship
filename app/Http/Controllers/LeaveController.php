@@ -36,29 +36,54 @@ class LeaveController extends Controller implements HasMiddleware
         return view('leaves.create', compact('leaveTypes', 'leaveBalance'));
     }
     public function store(Request $request)
-    {
+{
+    $request->validate([
+        'leave_type_id' => 'required|exists:leave_types,id',
+        'start_date'    => 'required|date',
+        'end_date'      => 'required|date|after_or_equal:start_date',
+        'reason'        => 'required|string',
+        'proof_sick'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // default optional
+    ]);
+
+    // Calculate leave days
+    $days = Carbon::parse($request->start_date)
+            ->diffInDays(Carbon::parse($request->end_date)) + 1;
+
+    // Check if leave type is sick and days > 3
+    $leaveType = LeaveType::find($request->leave_type_id);
+    if (strtolower($leaveType->name) === 'sick' && $days > 3) {
         $request->validate([
-            'leave_type_id' => 'required|exists:leave_types,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'reason' => 'required|string',
+            'proof_sick' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
-        Leave::create([
-            'user_id' => auth()->id(),
-            'leave_type_id' => $request->leave_type_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'reason' => $request->reason,
-            'status' => 'pending',
-            'applied_on' => now(),
-        ]);
-        return redirect()->route('leaves.index')->with('success', 'Leave request submitted.');
     }
+
+    // Handle file upload if exists
+    $proofPath = null;
+    if ($request->hasFile('proof_sick')) {
+        $proofPath = $request->file('proof_sick')->store('sick_proofs', 'public');
+    }
+
+    // Store leave request
+    Leave::create([
+        'user_id'       => auth()->id(),
+        'leave_type_id' => $request->leave_type_id,
+        'start_date'    => $request->start_date,
+        'end_date'      => $request->end_date,
+        'reason'        => $request->reason,
+        'status'        => 'pending',
+        'applied_on'    => now(),
+        'proof_sick'    => $proofPath,   // store path in DB
+    ]);
+
+    return redirect()->route('leaves.index')->with('success', 'Leave request submitted.');
+}
+
     public function manage()
-    {
-        $leaves = Leave::with('user', 'leaveType')->where('status', 'pending')->get();
-        return view('leaves.manage', compact('leaves'));
-    }
+{
+    $leaves = Leave::with('user', 'leaveType')->where('status', 'pending')->get();
+    return view('leaves.manage', compact('leaves'));
+}
+
     public function approve($id)
     {
         $leave = Leave::with('user')->findOrFail($id);
