@@ -161,7 +161,7 @@ Route::middleware('auth')->group(function () {
         ->name('attendance.calendar');
     Route::get('/attendance-calendar', [AttendanceController::class, 'attendance'])
         ->middleware('auth'); 
-    Route::get('/holidays-week', [AttendanceController::class, 'weeklyHolidays']);
+    Route::get('/holidays-month', [AttendanceController::class, 'monthlyHolidays']);
     Route::get('/leaves-week', [AttendanceController::class, 'weeklyLeaves']);
     Route::get('/projects-six-months', [AttendanceController::class, 'projectsSixMonths']);
     Route::get('/tasks-month', [AttendanceController::class, 'tasksMonth'])->name('tasks.month');

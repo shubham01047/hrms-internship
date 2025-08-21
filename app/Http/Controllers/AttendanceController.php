@@ -234,23 +234,24 @@ class AttendanceController extends Controller
         return response()->json($data);
     }
 
-    public function weeklyHolidays()
-    {
-        $start = \Carbon\Carbon::now()->startOfWeek(\Carbon\Carbon::MONDAY);
-        $end = \Carbon\Carbon::now()->endOfWeek(\Carbon\Carbon::SUNDAY);
+    public function monthlyHolidays()
+{
+    $start = \Carbon\Carbon::now()->startOfMonth();
+    $end = \Carbon\Carbon::now()->endOfMonth();
 
-        $holidays = Holiday::whereBetween('date', [$start, $end])
-            ->get()
-            ->mapWithKeys(function ($h) {
-                return [
-                    \Carbon\Carbon::parse($h->date)->format('Y-m-d') => [
-                        'title' => $h->title ?? 'Holiday'
-                    ]
-                ];
-            });
+    $holidays = Holiday::whereBetween('date', [$start, $end])
+        ->get()
+        ->mapWithKeys(function ($h) {
+            return [
+                \Carbon\Carbon::parse($h->date)->format('Y-m-d') => [
+                    'title' => $h->title ?? 'Holiday'
+                ]
+            ];
+        });
 
-        return response()->json($holidays);
-    }
+    return response()->json($holidays);
+}
+
     public function weeklyLeaves()
     {
         $user = auth()->user();
@@ -332,10 +333,8 @@ class AttendanceController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
-
         $start = Carbon::now()->startOfMonth();
         $end = Carbon::now()->endOfMonth();
-
         // Fetch tasks assigned to the user within current month
         $tasks = Task::whereHas('assignedUsers', function ($q) use ($user) {
             $q->where('user_id', $user->id);

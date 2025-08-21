@@ -537,7 +537,7 @@
 
         <!-- Holiday Chart -->
         <div class="p-4">
-            <h3>Weekly Holidays Report (Mon → Sun)</h3>
+            <h3>Monthly Holidays Report (For this Month)</h3>
             <div style="width:100%; max-width:500px; height:300px;">
                 <canvas id="holidayChart"></canvas>
             </div>
@@ -567,144 +567,132 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dayGroups = [{
-                    label: "1-5",
-                    start: 1,
-                    end: 5
-                },
-                {
-                    label: "6-10",
-                    start: 6,
-                    end: 10
-                },
-                {
-                    label: "11-15",
-                    start: 11,
-                    end: 15
-                },
-                {
-                    label: "16-20",
-                    start: 16,
-                    end: 20
-                },
-                {
-                    label: "21-25",
-                    start: 21,
-                    end: 25
-                },
-                {
-                    label: "26-31",
-                    start: 26,
-                    end: 31
-                }
-            ];
+      document.addEventListener("DOMContentLoaded", function() {
+    const dayGroups = [
+        { label: "1-5", start: 1, end: 5 },
+        { label: "6-10", start: 6, end: 10 },
+        { label: "11-15", start: 11, end: 15 },
+        { label: "16-20", start: 16, end: 20 },
+        { label: "21-25", start: 21, end: 25 },
+        { label: "26-31", start: 26, end: 31 }
+    ];
 
-            const priorityColors = {
-                "Low": "#4db6ac",
-                "Medium": "#f57c00",
-                "High": "#e53935",
-                "Urgent": "#8e24aa"
-            };
+    const priorityColors = {
+        "Low": "#4db6ac",
+        "Medium": "#f57c00",
+        "High": "#e53935",
+        "Urgent": "#8e24aa"
+    };
 
-            fetch("/tasks-month")
-                .then(res => res.json())
-                .then(tasksByDate => {
-                    const datasets = [];
+    fetch("/tasks-month")
+        .then(res => res.json())
+        .then(tasksByDate => {
+            // 🔥 Grouped datasets by priority
+            const datasetsByPriority = {};
 
-                    for (const dateStr in tasksByDate) {
-                        const taskArray = tasksByDate[dateStr];
-                        const day = new Date(dateStr).getDate();
+            for (const dateStr in tasksByDate) {
+                const taskArray = tasksByDate[dateStr];
+                const day = new Date(dateStr).getDate();
 
-                        // Find which group this day belongs to
-                        const groupIdx = dayGroups.findIndex(g => day >= g.start && day <= g.end);
-                        if (groupIdx === -1) continue;
+                // Find which group this day belongs to
+                const groupIdx = dayGroups.findIndex(g => day >= g.start && day <= g.end);
+                if (groupIdx === -1) continue;
 
-                        taskArray.forEach(task => {
-                            const dataArr = dayGroups.map(() => 0);
-                            dataArr[groupIdx] = task.hours_assigned; // bar height = hours_assigned
-
-                            datasets.push({
-                                label: task.priority,
-                                data: dataArr,
-                                backgroundColor: priorityColors[task.priority] || "#999",
-                                borderColor: "transparent",
-                                borderWidth: 1,
-                                taskDate: dateStr,
-                                taskStatus: task.status,
-                                taskTitle: task.title
-                            });
-                        });
+                taskArray.forEach(task => {
+                    // If priority dataset doesn’t exist, create it
+                    if (!datasetsByPriority[task.priority]) {
+                        datasetsByPriority[task.priority] = {
+                            label: task.priority,
+                            data: dayGroups.map(() => 0),
+                            backgroundColor: priorityColors[task.priority] || "#999",
+                            borderColor: "transparent",
+                            borderWidth: 1,
+                            // 🔥 keep tasks grouped by dayGroup index
+                            tasksByGroup: dayGroups.map(() => [])
+                        };
                     }
 
-                    const ctx = document.getElementById("taskChart").getContext("2d");
-                    new Chart(ctx, {
-                        type: "bar",
-                        data: {
-                            labels: dayGroups.map(g => g.label), // X-axis = day groups
-                            datasets: datasets
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                tooltip: {
-                                    mode: 'nearest',
-                                    intersect: true,
-                                    callbacks: {
-                                        label: function(context) {
-                                            const ds = context.dataset;
-                                            const date = new Date(ds.taskDate);
-                                            const formattedDate =
-                                                `${date.getDate()}-${date.toLocaleString('default',{month:'short'})}-${date.getFullYear()}`;
-                                            return `${ds.taskTitle} | Status: ${ds.taskStatus} | Due: ${formattedDate}`;
-                                        }
-                                    }
-                                },
-                                legend: {
-                                    display: true,
-                                    position: 'top',
-                                    labels: {
-                                        boxWidth: 20,
-                                        padding: 10,
-                                        font: {
-                                            size: 12
-                                        }
-                                    },
-                                    onClick: function(e, legendItem, legend) {
-                                        const ci = legend.chart;
-                                        const index = ci.data.datasets.findIndex(ds => ds.label ===
-                                            legendItem.text);
-                                        ci.getDatasetMeta(index).hidden = !ci.getDatasetMeta(index)
-                                            .hidden;
-                                        ci.update();
-                                    }
+                    // Add task hours to the correct day group
+                    datasetsByPriority[task.priority].data[groupIdx] += task.hours_assigned;
+
+                    // Store task details for tooltip
+                    datasetsByPriority[task.priority].tasksByGroup[groupIdx].push({
+                        title: task.title,
+                        status: task.status,
+                        dueDate: dateStr
+                    });
+                });
+            }
+
+            const datasets = Object.values(datasetsByPriority); // Convert to array
+
+            const ctx = document.getElementById("taskChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: dayGroups.map(g => g.label), // X-axis = day groups
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            mode: 'nearest',
+                            intersect: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const ds = context.dataset;
+                                    const groupIdx = context.dataIndex;
+                                    const tasks = ds.tasksByGroup[groupIdx] || [];
+
+                                    // Show each task inside this bar
+                                    return tasks.map(t => {
+                                        const date = new Date(t.dueDate);
+                                        const formattedDate =
+                                            `${date.getDate()}-${date.toLocaleString('default',{month:'short'})}-${date.getFullYear()}`;
+                                        return `${t.title} | Status: ${t.status} | Due: ${formattedDate}`;
+                                    });
                                 }
-                            },
-                            scales: {
-                                x: {
-                                    stacked: true
-                                },
-                                y: {
-                                    stacked: true,
-                                    beginAtZero: true,
-                                    max: 12,
-                                    ticks: {
-                                        stepSize: 2,
-                                        callback: v => `${v} hr`
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: "Hours Assigned"
-                                    }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 25,
+                                padding: 10,
+                                font: {
+                                    size: 12
                                 }
                             }
                         }
-                    });
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            max: 30,
+                            ticks: {
+                                stepSize: 3,
+                                callback: v => `${v} hr`
+                            },
+                            title: {
+                                display: true,
+                                text: "Hours Assigned"
+                            }
+                        }
+                    }
+                }
+            });
 
-                })
-                .catch(err => console.error("Tasks fetch error:", err));
-        });
+        })
+        .catch(err => console.error("Tasks fetch error:", err));
+});
+
     </script>
 
 
@@ -906,101 +894,126 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    // Define monthly groups
+    const dayGroups = [
+        { label: "1-5", start: 1, end: 5 },
+        { label: "6-10", start: 6, end: 10 },
+        { label: "11-15", start: 11, end: 15 },
+        { label: "16-20", start: 16, end: 20 },
+        { label: "21-25", start: 21, end: 25 },
+        { label: "26-31", start: 26, end: 31 }
+    ];
 
-            // Current week Mon → Sun
-            const monday = new Date();
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+    // Current month
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // 0-based
 
-            function formatLocalDate(d) {
-                const yyyy = d.getFullYear();
-                const mm = (d.getMonth() + 1).toString().padStart(2, '0');
-                const dd = d.getDate().toString().padStart(2, '0');
-                return `${yyyy}-${mm}-${dd}`;
-            }
+    function formatLocalDate(d) {
+        const yyyy = d.getFullYear();
+        const mm = (d.getMonth() + 1).toString().padStart(2, '0');
+        const dd = d.getDate().toString().padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
 
-            const dateKeys = [];
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(monday);
-                d.setDate(monday.getDate() + i);
-                dateKeys.push(formatLocalDate(d));
-            }
+    // All days in current month
+    const dateKeys = [];
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
 
-            fetch("/holidays-week")
-                .then(res => res.json())
-                .then(holidays => {
-                    console.log("Holidays JSON from server:", holidays);
+    for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
+        dateKeys.push(formatLocalDate(new Date(d)));
+    }
 
-                    const barValues = [];
-                    const barColors = [];
+    fetch("/holidays-month")
+        .then(res => res.json())
+        .then(holidays => {
+            console.log("Holidays JSON from server:", holidays);
 
-                    dateKeys.forEach(ds => {
-                        if (holidays[ds] && holidays[ds].title) {
-                            barValues.push(1);
-                            barColors.push('blue'); // color for the bar
-                        } else {
-                            barValues.push(0);
-                            barColors.push('transparent');
+            const barValues = dayGroups.map(() => 0);
+
+            // Count holidays per group
+            dateKeys.forEach(ds => {
+                if (holidays[ds] && holidays[ds].title) {
+                    const day = new Date(ds).getDate();
+                    const groupIdx = dayGroups.findIndex(g => day >= g.start && day <= g.end);
+                    if (groupIdx !== -1) {
+                        barValues[groupIdx] = 1; // mark holiday exists in this range
+                    }
+                }
+            });
+
+            const ctx = document.getElementById('holidayChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dayGroups.map(g => g.label),
+                    datasets: [{
+                        label: 'Holiday',
+                        data: barValues,
+                        backgroundColor: 'blue',
+                        borderColor: "transparent",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1,
+                            ticks: {
+                                stepSize: 1,
+                                callback: v => v === 1 ? 'Holiday' : ''
+                            }
                         }
-                    });
-
-                    const ctx = document.getElementById('holidayChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: weekdays,
-                            datasets: [{
-                                label: 'Holiday', // legend label
-                                data: barValues,
-                                backgroundColor: 'blue', // single color for legend
-                                borderColor: "transparent", // per-bar color
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 1,
-                                    ticks: {
-                                        stepSize: 1,
-                                        callback: v => v === 1 ? 'Holiday' : ''
-                                    }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 20,
+                                padding: 10,
+                                font: {
+                                    size: 12
                                 }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: true, // show legend with blue box
-                                    position: 'top',
-                                    labels: {
-                                        boxWidth: 20,
-                                        padding: 10,
-                                        font: {
-                                            size: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const groupIdx = context.dataIndex;
+                                    const group = dayGroups[groupIdx];
+                                    const holidaysInGroup = [];
+
+                                    // Collect holidays for this group
+                                    for (let d = group.start; d <= group.end; d++) {
+                                        const dateObj = new Date(year, month, d);
+                                        if (dateObj.getMonth() !== month) continue;
+                                        const ds = formatLocalDate(dateObj);
+                                        if (holidays[ds] && holidays[ds].title) {
+                                            holidaysInGroup.push(
+                                                `${d}-${now.toLocaleString('default',{month:'short'})}: ${holidays[ds].title}`
+                                            );
                                         }
                                     }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const idx = context.dataIndex;
-                                            const ds = dateKeys[idx];
-                                            if (holidays[ds] && holidays[ds].title) {
-                                                return `Holiday: ${holidays[ds].title}`;
-                                            }
-                                            return '';
-                                        }
-                                    }
+
+                                    return holidaysInGroup.length > 0
+                                        ? holidaysInGroup
+                                        : "No Holiday";
                                 }
                             }
                         }
-                    });
+                    }
+                }
+            });
 
-                })
-                .catch(err => console.error('Holiday fetch error:', err));
-        });
+        })
+        .catch(err => console.error('Holiday fetch error:', err));
+});
+
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
