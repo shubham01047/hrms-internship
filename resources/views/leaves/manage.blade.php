@@ -4,7 +4,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <!-- Professional Header -->
-        <div class="theme-app px-6 py-8" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
+        <div class="theme-app px-6 py-8"
+            style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
             <div class="flex items-center justify-between" style="color: var(--primary-text);">
                 <div class="flex items-center space-x-4">
                     <div class="p-3 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
@@ -12,7 +13,8 @@
                     </div>
                     <div>
                         <h1 class="text-3xl font-bold">Pending Leave Requests</h1>
-                        <p class="mt-1" style="color: var(--secondary-text);">Review and manage employee leave applications</p>
+                        <p class="mt-1" style="color: var(--secondary-text);">Review and manage employee leave
+                            applications</p>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
@@ -100,11 +102,14 @@
                 <!-- Main Content Card -->
                 <div class="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
                     <!-- Header Section -->
-                    <div class="theme-app px-6 py-6 border-b border-gray-200" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+                    <div class="theme-app px-6 py-6 border-b border-gray-200"
+                        style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h2 class="text-xl font-bold" style="color: var(--primary-text);">Leave Requests Awaiting Approval</h2>
-                                <p class="text-sm mt-1" style="color: var(--secondary-text);">{{ $leaves->count() }} pending reviews</p>
+                                <h2 class="text-xl font-bold" style="color: var(--primary-text);">Leave Requests Awaiting
+                                    Approval</h2>
+                                <p class="text-sm mt-1" style="color: var(--secondary-text);">{{ $leaves->count() }} pending
+                                    reviews</p>
                             </div>
                             <div class="p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
                                 <i class="fas fa-check-circle text-white"></i>
@@ -116,8 +121,10 @@
                     @if (!$leaves->isEmpty())
                         <div class="overflow-x-auto">
                             <!-- Table Header -->
-                            <div class="theme-app" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);">
-                                <div class="grid grid-cols-5 gap-4 px-6 py-4 text-xs font-semibold uppercase tracking-wider">
+                            <div class="theme-app"
+                                style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);">
+                                <div
+                                    class="grid grid-cols-5 gap-4 px-6 py-4 text-xs font-semibold uppercase tracking-wider">
                                     <div class="flex items-center space-x-2">
                                         <i class="fas fa-user"></i>
                                         <span>Employee</span>
@@ -126,6 +133,10 @@
                                         <i class="fas fa-tag"></i>
                                         <span>Leave Type</span>
                                     </div>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-tag"></i>
+                                            <span>Medical Certificate</span>
+                                        </div>
                                     <div class="flex items-center space-x-2">
                                         <i class="fas fa-calendar-day"></i>
                                         <span>Start Date</span>
@@ -164,7 +175,8 @@
                                         <!-- Leave Type -->
                                         <div class="flex items-center space-x-3">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <div class="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                                                <div
+                                                    class="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center">
                                                     <i class="fas fa-tag text-purple-600"></i>
                                                 </div>
                                             </div>
@@ -174,12 +186,26 @@
                                                 <div class="text-sm text-gray-500">Leave Request</div>
                                             </div>
                                         </div>
-
+                                        <div class="flex items-center space-x-3">
+                                            <div class="min-w-0 flex-1">
+                                                <div class="text-sm font-semibold text-gray-900 truncate">
+                                                    @if ($leave->proof_sick)
+                                                        <a href="{{ asset('storage/' . $leave->proof_sick) }}"
+                                                            target="_blank" class="btn btn-sm btn-primary">
+                                                            View Certificate
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">No File</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- Start Date -->
                                         <div class="flex items-center">
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</div>
+                                                    {{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}
+                                                </div>
                                                 <div class="text-sm text-gray-500">
                                                     {{ \Carbon\Carbon::parse($leave->start_date)->format('l') }}</div>
                                             </div>
@@ -189,7 +215,8 @@
                                         <div class="flex items-center">
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</div>
+                                                    {{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}
+                                                </div>
                                                 <div class="text-sm text-gray-500">
                                                     {{ \Carbon\Carbon::parse($leave->end_date)->format('l') }}</div>
                                             </div>

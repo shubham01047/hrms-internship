@@ -21,7 +21,7 @@ class TaskController extends Controller implements HasMiddleware
     }
     public function create($projectId)
     {
-        $project = Project::with('users')->findOrFail($projectId); 
+        $project = Project::with('users')->findOrFail($projectId);
         return view('tasks.create', compact('project'));
     }
 
@@ -33,8 +33,11 @@ class TaskController extends Controller implements HasMiddleware
             'priority' => 'required|in:Low,Medium,High,Urgent',
             'status' => 'required|in:To-Do,In Progress,On Hold,Done',
             'due_date' => 'nullable|date',
+            'hours_assigned' => 'nullable|numeric|min:0',
             'assigned_user_ids' => 'nullable|array',
+            'assigned_user_ids.*' => 'exists:users,id',
         ]);
+
         $task = new Task();
         $task->project_id = $projectId;
         $task->title = $validated['title'];
@@ -42,15 +45,20 @@ class TaskController extends Controller implements HasMiddleware
         $task->priority = $validated['priority'];
         $task->status = $validated['status'];
         $task->due_date = $validated['due_date'] ?? null;
+        $task->hours_assigned = $validated['hours_assigned'] ?? null; // <-- store hours
         $task->save();
+
         if (!empty($validated['assigned_user_ids'])) {
             $task->assignedUsers()->sync($validated['assigned_user_ids']);
         }
-        return redirect()->route('projects.show', $projectId)->with('success', 'Task created successfully.');
+
+        return redirect()->route('projects.show', $projectId)
+            ->with('success', 'Task created successfully.');
     }
+
     public function show($projectId, Task $task)
     {
-        $task->load('assignedUsers'); 
+        $task->load('assignedUsers');
         return view('projects.show', compact('task'));
     }
     public function edit($projectId, Task $task)
@@ -67,6 +75,7 @@ class TaskController extends Controller implements HasMiddleware
             'priority' => 'required|in:Low,Medium,High,Urgent',
             'status' => 'required|in:To-Do,In Progress,On Hold,Done',
             'due_date' => 'nullable|date',
+            'hours_assigned' => 'nullable|numeric|min:0',
             'assigned_user_ids' => 'nullable|array',
         ]);
         $task->title = $validated['title'];
@@ -74,6 +83,7 @@ class TaskController extends Controller implements HasMiddleware
         $task->priority = $validated['priority'];
         $task->status = $validated['status'];
         $task->due_date = $validated['due_date'] ?? null;
+        $task->hours_assigned = $validated['hours_assigned'] ?? null;
         $task->save();
         $task->assignedUsers()->sync($validated['assigned_user_ids'] ?? []);
         return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');
