@@ -319,5 +319,111 @@
                 </div>
             </div>
         </div>
+
+        {{-- Added JavaScript validation for sick leave medical certificate requirement --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const leaveTypeSelect = document.getElementById('leave_type_id');
+                const startDateInput = document.getElementById('start_date');
+                const endDateInput = document.getElementById('end_date');
+                const medicalCertInput = document.getElementById('proof_sick');
+                const form = document.querySelector('form');
+                
+                // Get leave type names from the select options
+                const leaveTypeOptions = Array.from(leaveTypeSelect.options);
+                
+                function calculateDays(startDate, endDate) {
+                    if (!startDate || !endDate) return 0;
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const timeDiff = end.getTime() - start.getTime();
+                    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 to include both start and end dates
+                    return dayDiff > 0 ? dayDiff : 0;
+                }
+                
+                function isSickLeave() {
+                    const selectedOption = leaveTypeSelect.options[leaveTypeSelect.selectedIndex];
+                    return selectedOption && selectedOption.text.toLowerCase().includes('sick');
+                }
+                
+                function validateMedicalCertificate() {
+                    const days = calculateDays(startDateInput.value, endDateInput.value);
+                    const isSick = isSickLeave();
+                    
+                    // Remove any existing error message
+                    const existingError = document.getElementById('medical-cert-error');
+                    if (existingError) {
+                        existingError.remove();
+                    }
+                    
+                    if (isSick && days > 3) {
+                        // Make medical certificate required
+                        medicalCertInput.setAttribute('required', 'required');
+                        
+                        // Add visual indicator
+                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
+                        if (!label.querySelector('.text-red-500')) {
+                            const requiredSpan = document.createElement('span');
+                            requiredSpan.className = 'text-red-500';
+                            requiredSpan.textContent = ' *';
+                            label.querySelector('div').appendChild(requiredSpan);
+                        }
+                    } else {
+                        // Remove required attribute
+                        medicalCertInput.removeAttribute('required');
+                        
+                        // Remove visual indicator
+                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
+                        const requiredSpan = label.querySelector('.text-red-500');
+                        if (requiredSpan) {
+                            requiredSpan.remove();
+                        }
+                    }
+                }
+                
+                // Add event listeners
+                leaveTypeSelect.addEventListener('change', validateMedicalCertificate);
+                startDateInput.addEventListener('change', validateMedicalCertificate);
+                endDateInput.addEventListener('change', validateMedicalCertificate);
+                
+                // Form submission validation
+                form.addEventListener('submit', function(e) {
+                    const days = calculateDays(startDateInput.value, endDateInput.value);
+                    const isSick = isSickLeave();
+                    
+                    if (isSick && days > 3 && !medicalCertInput.files.length) {
+                        e.preventDefault();
+                        
+                        // Remove any existing error message
+                        const existingError = document.getElementById('medical-cert-error');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+                        
+                        // Create and show error message
+                        const errorDiv = document.createElement('div');
+                        errorDiv.id = 'medical-cert-error';
+                        errorDiv.className = 'flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg';
+                        errorDiv.innerHTML = `
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-sm text-red-600 font-medium">Medical certificate is required for Sick Leave of more than 3 days.</span>
+                        `;
+                        
+                        // Insert error message after the file input
+                        medicalCertInput.closest('.space-y-2').appendChild(errorDiv);
+                        
+                        // Scroll to the error
+                        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        return false;
+                    }
+                });
+                
+                // Initial validation on page load
+                validateMedicalCertificate();
+            });
+        </script>
     @endcan
 </x-app-layout>
