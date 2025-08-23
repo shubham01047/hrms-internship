@@ -523,48 +523,105 @@
         </div>
     </div>
 
-    <h1>Attendance Calander</h1>
-    <div id="attendance-calendar" style="width:100%; height:200px; border: black solid 5px;"></div>
+    <!-- Added professional GUI styling to attendance calendar section -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">Attendance Calendar</h2>
+        </div>
+        <div id="attendance-calendar" style="width:100%; height:200px; border: 1px solid #e5e7eb; border-radius: 8px;"></div>
+    </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <!-- Added professional GUI styling to chart grid sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Attendance Chart -->
-        <div class="p-4">
-            <h3>Weekly Attendance Report (Mon → Sun)</h3>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Weekly Attendance Report</h3>
+                <span class="text-sm text-gray-500">(Mon → Sun)</span>
+            </div>
             <div style="width:100%; max-width:500px; height:300px;">
                 <canvas id="attendanceChart"></canvas>
             </div>
         </div>
 
         <!-- Holiday Chart -->
-        <div class="p-4">
-            <h3>Monthly Holidays Report (For this Month)</h3>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Monthly Holidays Report</h3>
+                <span class="text-sm text-gray-500">(For this Month)</span>
+            </div>
             <div style="width:100%; max-width:500px; height:300px;">
                 <canvas id="holidayChart"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
-        <!-- Attendance Chart -->
-        <div class="p-4">
-            <h3>Weekly Leaves Report (Mon → Sun)</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Leave Chart -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2
+0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Weekly Leaves Report</h3>
+                <span class="text-sm text-gray-500">(Mon → Sun)</span>
+            </div>
             <div style="width:100%; max-width:500px; height:300px;">
                 <canvas id="leaveChart"></canvas>
             </div>
         </div>
 
-        <!-- Holiday Chart -->
-        <div class="p-4">
-            <h3>Tasks Report (For this Month)</h3>
+        <!-- Task Chart -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Tasks Report</h3>
+                <span class="text-sm text-gray-500">(For this Month)</span>
+            </div>
             <div style="width:100%; max-width:500px; height:300px;">
                 <canvas id="taskChart"></canvas>
             </div>
         </div>
     </div>
-    <h3>Projects Report (Next 6 Months)</h3>
-    <div style="width:100%; max-width:89%; height:400px;">
-        <canvas id="projectChart"></canvas>
+
+    <!-- Added professional GUI styling to projects chart section -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2-2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Projects Report</h3>
+            <span class="text-sm text-gray-500">(Next 6 Months)</span>
+        </div>
+        <div style="width:100%; max-width:89%; height:400px;">
+            <canvas id="projectChart"></canvas>
+        </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {

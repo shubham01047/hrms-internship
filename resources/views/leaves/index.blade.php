@@ -147,29 +147,33 @@
                             <div class="theme-app"
                                 style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);">
                                 <div
-                                    class="grid grid-cols-3 sm:grid-cols-5 gap-4 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-hashtag text-sm sm:text-base"></i>
-                                        <span>No.</span>
+                                    class="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-hashtag text-xs sm:text-base"></i>
+                                        <span class="hidden sm:inline">No.</span>
+                                        <span class="sm:hidden">#</span>
                                     </div>
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-tag text-sm sm:text-base"></i>
-                                        <span>Leave Type</span>
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-tag text-xs sm:text-base"></i>
+                                        <span class="hidden sm:inline">Leave Type</span>
+                                        <span class="sm:hidden">Type</span>
                                     </div>
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-calendar-day text-sm sm:text-base"></i>
-                                        <span>Start Date</span>
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-calendar-day text-xs sm:text-base"></i>
+                                        <span class="hidden sm:inline">Start Date</span>
+                                        <span class="sm:hidden">Start</span>
                                     </div>
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-calendar-day text-sm sm:text-base"></i>
-                                        <span>End Date</span>
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-calendar-day text-xs sm:text-base"></i>
+                                        <span class="hidden sm:inline">End Date</span>
+                                        <span class="sm:hidden">End</span>
                                     </div>
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-calendar-day text-sm sm:text-base"></i>
+                                    <div class="hidden sm:flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-file-medical text-xs sm:text-base"></i>
                                         <span>Medical Certificate</span>
                                     </div>
-                                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                                        <i class="fas fa-info-circle text-sm sm:text-base"></i>
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <i class="fas fa-info-circle text-xs sm:text-base"></i>
                                         <span>Status</span>
                                     </div>
                                 </div>
@@ -178,60 +182,66 @@
                             <div class="bg-white divide-y divide-gray-200">
                                 @foreach ($leaves as $index => $leave)
                                     <div
-                                        class="grid grid-cols-3 sm:grid-cols-5 gap-4 px-4 py-3 sm:px-6 sm:py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
+                                        class="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4 hover:bg-gray-50 transition-colors duration-150 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-25' }}">
                                         <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                            <div class="flex-shrink-0 h-6 w-6 sm:h-10 sm:w-10">
                                                 <div
-                                                    class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                    class="h-6 w-6 sm:h-10 sm:w-10 rounded-lg bg-gray-100 flex items-center justify-center">
                                                     <span
-                                                        class="text-sm sm:text-base font-bold text-gray-700">{{ $index + 1 }}</span>
+                                                        class="text-xs sm:text-base font-bold text-gray-700">{{ $index + 1 }}</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="flex items-center space-x-2 sm:space-x-3">
-                                            <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                        <div class="flex items-center space-x-1 sm:space-x-3">
+                                            <div class="flex-shrink-0 h-6 w-6 sm:h-10 sm:w-10">
                                                 <div
-                                                    class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                                                    <i class="fas fa-tag text-base sm:text-lg text-blue-600"></i>
+                                                    class="h-6 w-6 sm:h-10 sm:w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                                                    <i class="fas fa-tag text-xs sm:text-lg text-blue-600"></i>
                                                 </div>
                                             </div>
                                             <div class="min-w-0 flex-1">
-                                                <div class="text-sm sm:text-base font-semibold text-gray-900 truncate">
+                                                <div class="text-xs sm:text-base font-semibold text-gray-900 truncate">
                                                     {{ $leave->leaveType->name }}</div>
-                                                <div class="text-xs sm:text-sm text-gray-500">Leave Request</div>
+                                                <div class="text-xs text-gray-500 hidden sm:block">Leave Request</div>
                                             </div>
                                         </div>
 
                                         <div class="flex items-center">
                                             <div>
-                                                <div class="text-sm sm:text-base font-medium text-gray-900">
-                                                    {{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</div>
-                                                <div class="text-xs sm:text-sm text-gray-500">
+                                                <div class="text-xs sm:text-base font-medium text-gray-900">
+                                                    <span class="sm:hidden">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M') }}</span>
+                                                    <span class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</span>
+                                                </div>
+                                                <div class="text-xs text-gray-500 hidden sm:block">
                                                     {{ \Carbon\Carbon::parse($leave->start_date)->format('l') }}</div>
                                             </div>
                                         </div>
 
                                         <div class="flex items-center">
                                             <div>
-                                                <div class="text-sm sm:text-base font-medium text-gray-900">
-                                                    {{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</div>
-                                                <div class="text-xs sm:text-sm text-gray-500">
+                                                <div class="text-xs sm:text-base font-medium text-gray-900">
+                                                    <span class="sm:hidden">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M') }}</span>
+                                                    <span class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</span>
+                                                </div>
+                                                <div class="text-xs text-gray-500 hidden sm:block">
                                                     {{ \Carbon\Carbon::parse($leave->end_date)->format('l') }}</div>
                                             </div>
                                         </div>
-                                        <div class="flex items-center">
+                                        
+                                        <div class="hidden sm:flex items-center">
                                             <div>
                                                 @if ($leave->proof_sick)
                                                     <a href="{{ asset('storage/' . $leave->proof_sick) }}"
-                                                        target="_blank" class="btn btn-sm btn-primary">
+                                                        target="_blank" class="btn btn-sm btn-primary text-xs">
                                                         View Certificate
                                                     </a>
                                                 @else
-                                                    <span class="text-muted">No File</span>
+                                                    <span class="text-muted text-xs">No File</span>
                                                 @endif
                                             </div>
                                         </div>
+                                        
                                         <div class="flex items-center">
                                             @php
                                                 $statusConfig = [
@@ -256,9 +266,10 @@
                                                     $statusConfig['pending'];
                                             @endphp
                                             <span
-                                                class="inline-flex items-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium {{ $config['bg'] }} {{ $config['text'] }}">
-                                                <i class="{{ $config['icon'] }} mr-1 text-xs sm:text-sm"></i>
-                                                {{ ucfirst($leave->status) }}
+                                                class="inline-flex items-center px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium {{ $config['bg'] }} {{ $config['text'] }}">
+                                                <i class="{{ $config['icon'] }} mr-1 text-xs"></i>
+                                                <span class="hidden sm:inline">{{ ucfirst($leave->status) }}</span>
+                                                <span class="sm:hidden">{{ substr(ucfirst($leave->status), 0, 3) }}</span>
                                             </span>
                                         </div>
                                     </div>

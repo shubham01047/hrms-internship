@@ -97,71 +97,85 @@
 
                 @if (count($holidays) > 0)
                     <div class="overflow-x-auto">
-                        <div class="theme-app min-w-[880px]" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
-                            <div class="grid grid-cols-12 gap-4 px-4 sm:px-6 py-3 sm:py-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+                        <!-- Reduced minimum width and made table more mobile friendly -->
+                        <div class="theme-app min-w-[320px] sm:min-w-[640px] lg:min-w-[880px]" style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
+                            <!-- Made grid responsive - fewer columns on mobile -->
+                            <div class="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-12 gap-2 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                                
-                                <div class="col-span-1 flex items-center space-x-2" style="color: var(--primary-text);">
-                                    <i class="fas fa-hashtag text-sm sm:text-base"></i>
-                                    <span>No.</span>
+                                <div class="col-span-1 flex items-center space-x-1 sm:space-x-2" style="color: var(--primary-text);">
+                                    <i class="fas fa-hashtag text-xs sm:text-sm lg:text-base"></i>
+                                    <span class="hidden sm:inline">No.</span>
                                 </div>
-                                <div class="col-span-3 flex items-center space-x-2" style="color: var(--primary-text);">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <div class="col-span-3 sm:col-span-3 lg:col-span-3 flex items-center space-x-1 sm:space-x-2" style="color: var(--primary-text);">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                    <span>Holiday Title</span>
+                                    <span>Holiday</span>
                                 </div>
-                                <div class="col-span-2 flex items-center space-x-2" style="color: var(--primary-text);">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <div class="col-span-2 flex items-center space-x-1 sm:space-x-2" style="color: var(--primary-text);">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                     <span>Date</span>
                                 </div>
-                                <div class="col-span-2 flex items-center space-x-2" style="color: var(--primary-text);">
+                                <!-- Hide Type column on mobile, show on sm and up -->
+                                <div class="hidden sm:col-span-2 sm:flex items-center space-x-2" style="color: var(--primary-text);">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                     </svg>
                                     <span>Type</span>
                                 </div>
-                                <div class="col-span-2" style="color: var(--primary-text);">Description</div>
+                                <!-- Hide Description column on mobile and sm, show on lg and up -->
+                                <div class="hidden lg:col-span-2 lg:block" style="color: var(--primary-text);">Description</div>
                                 <div class="col-span-2" style="color: var(--primary-text);">Actions</div>
                             </div>
                         </div>
 
                         <div class="bg-white">
                             @foreach ($holidays as $index => $holiday)
-                                <div class="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                <!-- Made grid responsive to match header -->
+                                <div class="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-12 gap-2 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                     {{-- Added numbering column to match the header --}}
                                     <div class="col-span-1 flex items-center">
-                                        <div class="theme-app w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: var(--hover-bg); color: var(--primary-text);">
+                                        <!-- Made number circle smaller on mobile -->
+                                        <div class="theme-app w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold" style="background-color: var(--hover-bg); color: var(--primary-text);">
                                             {{ $index + 1 }}
                                         </div>
                                     </div>
 
-                                    <div class="col-span-3 flex items-center space-x-3">
-                                        <div class="theme-app p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
-                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <div class="col-span-3 flex items-center space-x-2 sm:space-x-3">
+                                        <!-- Made icon smaller on mobile -->
+                                        <div class="theme-app p-1.5 sm:p-2 rounded-lg shadow-sm" style="background-color: var(--hover-bg);">
+                                            <svg class="w-4 h-4 sm:w-5 sm:h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
-                                        <div>
-                                            <div class="font-semibold text-gray-900">{{ $holiday->title }}</div>
-                                            <div class="text-sm text-gray-500">Holiday Event</div>
+                                        <div class="min-w-0">
+                                            <!-- Made text smaller and truncated on mobile -->
+                                            <div class="font-semibold text-sm sm:text-base text-gray-900 truncate">{{ $holiday->title }}</div>
+                                            <div class="text-xs text-gray-500 hidden sm:block">Holiday Event</div>
                                         </div>
                                     </div>
 
-                                    <div class="col-span-2 flex items-center space-x-3">
-                                        <div class="p-2 bg-blue-100 rounded-lg">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <div class="col-span-2 flex items-center space-x-2 sm:space-x-3">
+                                        <!-- Made date icon smaller on mobile -->
+                                        <div class="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+                                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($holiday->date)->format('M d, Y') }}</div>
-                                            <div class="text-sm text-blue-600">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</div>
+                                        <div class="min-w-0">
+                                            <!-- Responsive date format - shorter on mobile -->
+                                            <div class="font-medium text-gray-900 text-xs sm:text-sm">
+                                                <span class="sm:hidden">{{ \Carbon\Carbon::parse($holiday->date)->format('M d') }}</span>
+                                                <span class="hidden sm:inline">{{ \Carbon\Carbon::parse($holiday->date)->format('M d, Y') }}</span>
+                                            </div>
+                                            <div class="text-xs text-blue-600 hidden sm:block">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</div>
                                         </div>
                                     </div>
 
-                                    <div class="col-span-2 flex items-center">
+                                    <!-- Hide Type column on mobile, show on sm and up -->
+                                    <div class="hidden sm:col-span-2 sm:flex items-center">
                                         @php
                                             $typeConfig = [
                                                 'national' => ['bg' => 'bg-gray-100', 'text' => 'text-gray-800', 'icon' => '🏛️'],
@@ -171,14 +185,16 @@
                                             ];
                                             $config = $typeConfig[$holiday->type] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-800', 'icon' => '📋'];
                                         @endphp
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $config['bg'] }} {{ $config['text'] }}">
+                                        <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium {{ $config['bg'] }} {{ $config['text'] }}">
                                             <span class="mr-1">{{ $config['icon'] }}</span>
-                                            {{ ucfirst($holiday->type ?: 'General') }}
+                                            <span class="hidden sm:inline">{{ ucfirst($holiday->type ?: 'General') }}</span>
+                                            <span class="sm:hidden">{{ substr(ucfirst($holiday->type ?: 'General'), 0, 3) }}</span>
                                         </span>
                                     </div>
 
-                                    <div class="col-span-2 flex items-center">
-                                        <span class="text-gray-900">{{ $holiday->description ?: 'No description provided' }}</span>
+                                    <!-- Hide Description column on mobile and sm, show on lg and up -->
+                                    <div class="hidden lg:col-span-2 lg:flex items-center">
+                                        <span class="text-gray-900 text-sm truncate">{{ $holiday->description ?: 'No description provided' }}</span>
                                     </div>
 
                                     <div class="col-span-2 flex items-center">
@@ -187,12 +203,14 @@
                                                   onsubmit="return confirm('Are you sure you want to delete this holiday?')" class="inline">
                                                 @csrf
                                                 @method('DELETE')
+                                                <!-- Made delete button smaller and responsive -->
                                                 <button type="submit"
-                                                        class="inline-flex items-center px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-sm font-medium rounded-full transition-colors hover:scale-105 transform">
-                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                        class="inline-flex items-center px-2 sm:px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs sm:text-sm font-medium rounded-full transition-colors hover:scale-105 transform">
+                                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                     </svg>
-                                                    Delete
+                                                    <span class="hidden sm:inline">Delete</span>
+                                                    <span class="sm:hidden">Del</span>
                                                 </button>
                                             </form>
                                         @endcan

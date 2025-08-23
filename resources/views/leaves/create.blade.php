@@ -219,10 +219,24 @@
                                     @enderror
                                 </div>
                             </div>
-                            <br>
-                            <label for="proof_sick">Upload Medical Certificate (If Sick Leave more than 3 days)</label><br>
-                                <input type="file" name="proof_sick" id="proof_sick" accept=".jpg,.jpeg,.png,.pdf">
 
+                            <!-- Enhanced mobile responsive file upload section -->
+                            <div class="space-y-2">
+                                <label for="proof_sick" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                        </svg>
+                                        <span>Upload Medical Certificate</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500 block mt-1">(Required for sick leave more than 3 days)</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="file" name="proof_sick" id="proof_sick" accept=".jpg,.jpeg,.png,.pdf"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    <p class="text-xs text-gray-500 mt-2">Accepted formats: JPG, JPEG, PNG, PDF (Max 5MB)</p>
+                                </div>
+                            </div>
 
                             <!-- Reason -->
                             <div class="space-y-2">
@@ -278,10 +292,10 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Buttons -->
-                            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                            <!-- Enhanced mobile responsive submit buttons -->
+                            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
                                 <a href="{{ route('leaves.index') }}"
-                                    class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12"></path>
@@ -289,7 +303,7 @@
                                     Cancel
                                 </a>
                                 <button type="submit"
-                                    class="theme-app inline-flex items-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                    class="w-full sm:w-auto theme-app inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                     onmouseout="this.style.backgroundColor='var(--hover-bg)'">

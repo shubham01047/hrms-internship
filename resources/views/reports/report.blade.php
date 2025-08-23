@@ -6,14 +6,15 @@
                     <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-primary">
                         Monthly Attendance Percentage - {{ $selectedYear }}
                     </h2>
-                    <form method="GET" action="{{ route('reports.report') }}" class="w-full md:w-auto flex items-center gap-3 lg:mr-24">
-                        <label for="year" class="text-secondary text-sm font-medium">Select Year</label>
-                        <div class="relative w-full md:w-auto">
+                    <!-- Improved mobile form layout with better stacking -->
+                    <form method="GET" action="{{ route('reports.report') }}" class="w-full md:w-auto flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 lg:mr-24">
+                        <label for="year" class="text-secondary text-xs sm:text-sm font-medium whitespace-nowrap">Select Year</label>
+                        <div class="relative w-full sm:w-auto min-w-[120px]">
                             <select
                                 name="year"
                                 id="year"
                                 onchange="this.form.submit()"
-                                class="w-full md:w-[160px] bg-primary-light text-primary border border-primary rounded-lg pl-3 pr-9 py-2 shadow-sm focus:outline-none"
+                                class="w-full sm:w-[140px] md:w-[160px] bg-primary-light text-primary border border-primary rounded-lg pl-3 pr-8 py-1.5 sm:py-2 text-sm shadow-sm focus:outline-none"
                             >
                                 @foreach ($years as $year)
                                     <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
@@ -22,7 +23,7 @@
                                 @endforeach
                             </select>
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                 class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary"
+                                 class="pointer-events-none absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 h-3 w-3 sm:h-4 sm:w-4 text-secondary"
                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                  stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9" />
@@ -33,9 +34,10 @@
             </div>
         </div>
 
-        <div class="rounded-xl bg-white border border-gray-200 p-3 sm:p-5 mb-5 sm:mb-6 shadow-sm">
+        <!-- Improved chart container for mobile -->
+        <div class="rounded-xl bg-white border border-gray-200 p-3 sm:p-4 lg:p-5 mb-4 sm:mb-5 lg:mb-6 shadow-sm">
             <div class="w-full overflow-hidden">
-                <canvas id="attendanceChart" height="100"></canvas>
+                <canvas id="attendanceChart" class="max-w-full h-auto" height="80"></canvas>
             </div>
         </div>
 
@@ -45,6 +47,7 @@
             </div>
         </div>
 
+        <!-- Better mobile grid with improved spacing -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
             <a href="{{ route('employees.index') }}"
                class="min-w-0 rounded-xl bg-white border border-gray-200 hover:shadow-sm transition-shadow p-4 sm:p-5 flex items-start gap-3">
@@ -104,7 +107,8 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 mb-5 sm:mb-6">
+        <!-- Better mobile layout for compliance cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-5 lg:mb-6">
             <div class="rounded-xl bg-white border border-rose-200 p-4 sm:p-5">
                 <p class="text-xs text-rose-600 mb-1.5">Absent</p>
                 <p class="text-2xl sm:text-3xl font-semibold text-rose-700">{{ $absentees }}</p>
@@ -127,91 +131,94 @@
             </div>
         </div>
 
-        <div class="overflow-x-auto rounded-xl bg-white border border-gray-200 p-3 sm:p-5 shadow-sm">
-            <h2 class="text-base sm:text-lg font-semibold text-gray-900 mb-3">Project Timeline</h2>
-            <table class="min-w-full border-collapse text-xs sm:text-sm">
-                <thead>
-                    <tr class="bg-gray-50 text-gray-600 uppercase text-[10px] sm:text-xs leading-normal border-b border-gray-200">
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Project</th>
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Task</th>
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Assigned To</th>
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Priority</th>
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Status</th>
-                        <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium min-w-[260px] sm:min-w-[300px]">Timeline</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-700">
-                    @forelse($projects as $project)
-                        @foreach($project->tasks as $task)
-                            @php
-                                $start = \Carbon\Carbon::parse($task->created_at);
-                                $end = \Carbon\Carbon::parse($task->due_date ?? now()->addDays(1));
-                                $today = \Carbon\Carbon::now();
-
-                                $totalDuration = $start->diffInSeconds($end);
-                                $elapsedDuration = $start->diffInSeconds(min($today, $end));
-                                $progressPercent = $totalDuration > 0 ? min(100, round(($elapsedDuration / $totalDuration) * 100)) : 0;
-
-                                $isOverdue = $today->gt($end) && $task->status !== 'Done';
-
-                                $statusColors = [
-                                    'To-Do' => '#2563eb',
-                                    'In Progress' => '#f59e0b',
-                                    'Done' => '#22c55e',
-                                    'On Hold' => '#a855f7',
-                                    'Blocked' => '#ef4444',
-                                ];
-                                $barColor = $isOverdue ? '#dc2626' : ($statusColors[$task->status] ?? '#6b7280');
-
-                                $priorityColors = [
-                                    'Low' => 'bg-green-100 text-green-800',
-                                    'Medium' => 'bg-yellow-100 text-yellow-800',
-                                    'High' => 'bg-red-100 text-red-800',
-                                    'Urgent' => 'bg-rose-100 text-rose-800',
-                                ];
-                                $priorityClass = $priorityColors[$task->priority] ?? 'bg-gray-100 text-gray-800';
-                            @endphp
-
-                            <tr class="border-b border-gray-100 hover:bg-gray-50/60 transition-colors">
-                                <td class="py-3 px-3 sm:px-4 align-top">{{ $project->title }}</td>
-                                <td class="py-3 px-3 sm:px-4 align-top">{{ $task->title }}</td>
-                                <td class="py-3 px-3 sm:px-4 align-top">
-                                    @foreach($task->assignedUsers as $user)
-                                        <span class="inline-block bg-blue-50 text-blue-700 text-[10px] sm:text-xs font-semibold mr-1 px-2 py-0.5 rounded-full border border-blue-100">
-                                            {{ $user->name }}
-                                        </span>
-                                    @endforeach
-                                </td>
-                                <td class="py-3 px-3 sm:px-4 align-top">
-                                    <span class="text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-full {{ $priorityClass }}">
-                                        {{ $task->priority }}
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 sm:px-4 align-top">
-                                    <span class="text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-full"
-                                          style="background-color: {{ $barColor }}20; color: {{ $barColor }}">
-                                        {{ $task->status }}
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 sm:px-4 align-top">
-                                    <div class="flex items-center gap-2 sm:gap-3">
-                                        <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                            <div class="h-full rounded-full" style="width: {{ $progressPercent }}%; background-color: {{ $barColor }};"></div>
-                                        </div>
-                                        <div class="shrink-0 whitespace-nowrap text-[10px] sm:text-[11px] text-gray-500">
-                                            {{ $start->format('d M') }} - {{ $end->format('d M') }} ({{ $progressPercent }}%)
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-6 text-gray-500">No projects or tasks available.</td>
+        <!-- Enhanced mobile table with better responsive design -->
+        <div class="overflow-x-auto rounded-xl bg-white border border-gray-200 p-3 sm:p-4 lg:p-5 shadow-sm">
+            <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 mb-3">Project Timeline</h2>
+            <div class="min-w-[800px]">
+                <table class="w-full border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 uppercase text-[10px] sm:text-xs leading-normal border-b border-gray-200">
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Project</th>
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Task</th>
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Assigned To</th>
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Priority</th>
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium">Status</th>
+                            <th class="py-2.5 sm:py-3 px-3 sm:px-4 text-left font-medium min-w-[260px] sm:min-w-[300px] lg:min-w-[320px]">Timeline</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        @forelse($projects as $project)
+                            @foreach($project->tasks as $task)
+                                @php
+                                    $start = \Carbon\Carbon::parse($task->created_at);
+                                    $end = \Carbon\Carbon::parse($task->due_date ?? now()->addDays(1));
+                                    $today = \Carbon\Carbon::now();
+
+                                    $totalDuration = $start->diffInSeconds($end);
+                                    $elapsedDuration = $start->diffInSeconds(min($today, $end));
+                                    $progressPercent = $totalDuration > 0 ? min(100, round(($elapsedDuration / $totalDuration) * 100)) : 0;
+
+                                    $isOverdue = $today->gt($end) && $task->status !== 'Done';
+
+                                    $statusColors = [
+                                        'To-Do' => '#2563eb',
+                                        'In Progress' => '#f59e0b',
+                                        'Done' => '#22c55e',
+                                        'On Hold' => '#a855f7',
+                                        'Blocked' => '#ef4444',
+                                    ];
+                                    $barColor = $isOverdue ? '#dc2626' : ($statusColors[$task->status] ?? '#6b7280');
+
+                                    $priorityColors = [
+                                        'Low' => 'bg-green-100 text-green-800',
+                                        'Medium' => 'bg-yellow-100 text-yellow-800',
+                                        'High' => 'bg-red-100 text-red-800',
+                                        'Urgent' => 'bg-rose-100 text-rose-800',
+                                    ];
+                                    $priorityClass = $priorityColors[$task->priority] ?? 'bg-gray-100 text-gray-800';
+                                @endphp
+
+                                <tr class="border-b border-gray-100 hover:bg-gray-50/60 transition-colors">
+                                    <td class="py-3 px-3 sm:px-4 align-top text-xs">{{ $project->title }}</td>
+                                    <td class="py-3 px-3 sm:px-4 align-top text-xs">{{ $task->title }}</td>
+                                    <td class="py-3 px-3 sm:px-4 align-top">
+                                        @foreach($task->assignedUsers as $user)
+                                            <span class="inline-block bg-blue-50 text-blue-700 text-[10px] sm:text-[11px] font-semibold mr-1 mb-1 px-1.5 py-0.5 rounded-full border border-blue-100">
+                                                {{ $user->name }}
+                                            </span>
+                                        @endforeach
+                                    </td>
+                                    <td class="py-3 px-3 sm:px-4 align-top">
+                                        <span class="text-[10px] sm:text-[11px] font-medium px-1.5 py-0.5 rounded-full {{ $priorityClass }}">
+                                            {{ $task->priority }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-3 sm:px-4 align-top">
+                                        <span class="text-[10px] sm:text-[11px] font-medium px-1.5 py-0.5 rounded-full"
+                                              style="background-color: {{ $barColor }}20; color: {{ $barColor }}">
+                                            {{ $task->status }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-3 sm:px-4 align-top">
+                                        <div class="flex items-center gap-1 sm:gap-2">
+                                            <div class="flex-1 h-1.5 sm:h-2 bg-gray-100 rounded-full overflow-hidden min-w-[60px]">
+                                                <div class="h-full rounded-full" style="width: {{ $progressPercent }}%; background-color: {{ $barColor }};"></div>
+                                            </div>
+                                            <div class="shrink-0 whitespace-nowrap text-[10px] sm:text-[11px] text-gray-500">
+                                                {{ $start->format('d M') }} - {{ $end->format('d M') }} ({{ $progressPercent }}%)
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-6 text-gray-500">No projects or tasks available.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

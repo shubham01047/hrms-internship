@@ -52,7 +52,7 @@
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                d="M9 12l2 2 4-4m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         {{ session('success') }}
                     </div>
@@ -176,7 +176,7 @@
                                 // Decode JSON timings from DB
                                 $timings = json_decode($company->timings, true) ?? [];
 
-                                // If there’s no row yet, create a default row
+                                // If there's no row yet, create a default row
                                 if (empty($timings)) {
                                     $timings[] = [
                                         'day_from' => 'monday',
@@ -187,29 +187,46 @@
                                 }
                             @endphp
                             @foreach ($timings as $index => $row)
-                                    <label>Office Timings:</label>
-                                    <select name="timings[{{ $index }}][day_from]" class="form-control">
-                                        @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                                            <option value="{{ $day }}"
-                                                {{ $row['day_from'] == $day ? 'selected' : '' }}>
-                                                {{ ucfirst($day) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    to
-                                    <select name="timings[{{ $index }}][day_to]" class="form-control">
-                                        @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                                            <option value="{{ $day }}"
-                                                {{ $row['day_to'] == $day ? 'selected' : '' }}>
-                                                {{ ucfirst($day) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <input type="time" name="timings[{{ $index }}][start]"
-                                        value="{{ $row['start'] }}" class="form-control" required>
-                                    <span>to</span>
-                                    <input type="time" name="timings[{{ $index }}][end]"
-                                        value="{{ $row['end'] }}" class="form-control" required>
+                                <div class="space-y-4 sm:space-y-0">
+                                    <label class="block text-gray-700 font-medium mb-2">
+                                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Office Timings:
+                                    </label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">From Day</label>
+                                            <select name="timings[{{ $index }}][day_from]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                                @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
+                                                    <option value="{{ $day }}" {{ $row['day_from'] == $day ? 'selected' : '' }}>
+                                                        {{ ucfirst($day) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">To Day</label>
+                                            <select name="timings[{{ $index }}][day_to]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                                @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
+                                                    <option value="{{ $day }}" {{ $row['day_to'] == $day ? 'selected' : '' }}>
+                                                        {{ ucfirst($day) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Start Time</label>
+                                            <input type="time" name="timings[{{ $index }}][start]" value="{{ $row['start'] }}" 
+                                                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">End Time</label>
+                                            <input type="time" name="timings[{{ $index }}][end]" value="{{ $row['end'] }}" 
+                                                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -223,8 +240,7 @@
                                     <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z">
-                                        </path>
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
                                     </svg>
                                 </div>
                                 <h2 class="text-lg font-semibold" style="color: var(--primary-text);">Theme
@@ -233,7 +249,8 @@
                             </div>
                         </div>
                         <div class="p-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Improved mobile responsive grid for color pickers -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                                 <div>
                                     <label class="block text-gray-700 font-medium mb-2">
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor"
@@ -243,14 +260,14 @@
                                         </svg>
                                         Navbar Color
                                     </label>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 sm:gap-3">
                                         <input type="color" name="navbar_color"
                                             value="{{ old('navbar_color', $company->navbar_color ?? '#000000') }}"
-                                            class="w-12 h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('navbar_color', $company->navbar_color ?? '#000000') }}"
                                             readonly
-                                            class="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                                            class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>
                                 <div>
@@ -263,14 +280,14 @@
                                         </svg>
                                         Sidebar Color
                                     </label>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 sm:gap-3">
                                         <input type="color" name="sidebar_color"
                                             value="{{ old('sidebar_color', $company->sidebar_color ?? '#000000') }}"
-                                            class="w-12 h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('sidebar_color', $company->sidebar_color ?? '#000000') }}"
                                             readonly
-                                            class="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                                            class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>
                                 <div>
@@ -283,14 +300,14 @@
                                         </svg>
                                         Primary Color
                                     </label>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 sm:gap-3">
                                         <input type="color" name="primary_color"
                                             value="{{ old('primary_color', $company->primary_color ?? '#000000') }}"
-                                            class="w-12 h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('primary_color', $company->primary_color ?? '#000000') }}"
                                             readonly
-                                            class="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                                            class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>
                                 <div>
@@ -303,14 +320,14 @@
                                         </svg>
                                         Text Color
                                     </label>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 sm:gap-3">
                                         <input type="color" name="text_color"
                                             value="{{ old('text_color', $company->text_color ?? '#000000') }}"
-                                            class="w-12 h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('text_color', $company->text_color ?? '#000000') }}"
                                             readonly
-                                            class="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                                            class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>
                                 <div>
@@ -322,14 +339,14 @@
                                         </svg>
                                         Footer Color
                                     </label>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 sm:gap-3">
                                         <input type="color" name="footer_color"
                                             value="{{ old('footer_color', $company->footer_color ?? '#000000') }}"
-                                            class="w-12 h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('footer_color', $company->footer_color ?? '#000000') }}"
                                             readonly
-                                            class="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                                            class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>
                             </div>
@@ -346,16 +363,17 @@
                                     <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            d="M9 12l2 2 4-4m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                 </div>
                                 <h2 class="text-lg font-semibold" style="color: var(--primary-text);">Actions</h2>
                             </div>
                         </div>
                         <div class="p-6">
-                            <div class="flex flex-col sm:flex-row gap-4 sm:justify-end">
+                            <!-- Made action buttons stack vertically on mobile with full width -->
+                            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-end">
                                 <a href="{{ url()->previous() }}"
-                                    class="inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg shadow-lg transform transition-all duration-300 focus:outline-none focus:ring-4"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-3 sm:px-6 text-sm sm:text-base font-semibold rounded-lg shadow-lg transform transition-all duration-300 focus:outline-none focus:ring-4"
                                     style="background-color: var(--secondary-text, #8a8a8a); color: var(--primary-text, #f8fafc); focus:ring-color: rgba(138, 138, 138, 0.5);"
                                     onmouseover="this.style.backgroundColor='#6b7280'; this.style.transform='scale(1.05)'"
                                     onmouseout="this.style.backgroundColor='var(--secondary-text, #8a8a8a)'; this.style.transform='scale(1)'">
@@ -367,7 +385,7 @@
                                     Cancel
                                 </a>
                                 <button type="submit"
-                                    class="inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg shadow-lg transform transition-all duration-300 focus:outline-none focus:ring-4"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-3 sm:px-6 text-sm sm:text-base font-semibold rounded-lg shadow-lg transform transition-all duration-300 focus:outline-none focus:ring-4"
                                     style="background-color: var(--hover-bg, #2563eb); color: var(--primary-text, #f8fafc); focus:ring-color: rgba(37, 99, 235, 0.5);"
                                     onmouseover="this.style.backgroundColor='#1d4ed8'; this.style.transform='scale(1.05)'"
                                     onmouseout="this.style.backgroundColor='var(--hover-bg, #2563eb)'; this.style.transform='scale(1)'">
@@ -382,6 +400,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
