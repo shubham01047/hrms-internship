@@ -119,7 +119,8 @@
 
                     <!-- Form Content -->
                     <div class="p-6">
-                        <form action="{{ route('leaves.store') }}" method="POST" class="space-y-6">
+                        <form action="{{ route('leaves.store') }}" method="POST" class="space-y-6"
+                            enctype="multipart/form-data">
                             @csrf
                             <!-- Leave Type -->
                             Leave Balance:<Br>
@@ -219,6 +220,24 @@
                                 </div>
                             </div>
 
+                            <!-- Enhanced mobile responsive file upload section -->
+                            <div class="space-y-2">
+                                <label for="proof_sick" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                        </svg>
+                                        <span>Upload Medical Certificate</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500 block mt-1">(Required for sick leave more than 3 days)</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="file" name="proof_sick" id="proof_sick" accept=".jpg,.jpeg,.png,.pdf"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    <p class="text-xs text-gray-500 mt-2">Accepted formats: JPG, JPEG, PNG, PDF (Max 5MB)</p>
+                                </div>
+                            </div>
+
                             <!-- Reason -->
                             <div class="space-y-2">
                                 <label for="reason" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -273,10 +292,10 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Buttons -->
-                            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                            <!-- Enhanced mobile responsive submit buttons -->
+                            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
                                 <a href="{{ route('leaves.index') }}"
-                                    class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-300">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12"></path>
@@ -284,7 +303,7 @@
                                     Cancel
                                 </a>
                                 <button type="submit"
-                                    class="theme-app inline-flex items-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
+                                    class="w-full sm:w-auto theme-app inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
                                     onmouseout="this.style.backgroundColor='var(--hover-bg)'">
@@ -300,5 +319,111 @@
                 </div>
             </div>
         </div>
+
+        {{-- Added JavaScript validation for sick leave medical certificate requirement --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const leaveTypeSelect = document.getElementById('leave_type_id');
+                const startDateInput = document.getElementById('start_date');
+                const endDateInput = document.getElementById('end_date');
+                const medicalCertInput = document.getElementById('proof_sick');
+                const form = document.querySelector('form');
+                
+                // Get leave type names from the select options
+                const leaveTypeOptions = Array.from(leaveTypeSelect.options);
+                
+                function calculateDays(startDate, endDate) {
+                    if (!startDate || !endDate) return 0;
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const timeDiff = end.getTime() - start.getTime();
+                    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 to include both start and end dates
+                    return dayDiff > 0 ? dayDiff : 0;
+                }
+                
+                function isSickLeave() {
+                    const selectedOption = leaveTypeSelect.options[leaveTypeSelect.selectedIndex];
+                    return selectedOption && selectedOption.text.toLowerCase().includes('sick');
+                }
+                
+                function validateMedicalCertificate() {
+                    const days = calculateDays(startDateInput.value, endDateInput.value);
+                    const isSick = isSickLeave();
+                    
+                    // Remove any existing error message
+                    const existingError = document.getElementById('medical-cert-error');
+                    if (existingError) {
+                        existingError.remove();
+                    }
+                    
+                    if (isSick && days > 3) {
+                        // Make medical certificate required
+                        medicalCertInput.setAttribute('required', 'required');
+                        
+                        // Add visual indicator
+                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
+                        if (!label.querySelector('.text-red-500')) {
+                            const requiredSpan = document.createElement('span');
+                            requiredSpan.className = 'text-red-500';
+                            requiredSpan.textContent = ' *';
+                            label.querySelector('div').appendChild(requiredSpan);
+                        }
+                    } else {
+                        // Remove required attribute
+                        medicalCertInput.removeAttribute('required');
+                        
+                        // Remove visual indicator
+                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
+                        const requiredSpan = label.querySelector('.text-red-500');
+                        if (requiredSpan) {
+                            requiredSpan.remove();
+                        }
+                    }
+                }
+                
+                // Add event listeners
+                leaveTypeSelect.addEventListener('change', validateMedicalCertificate);
+                startDateInput.addEventListener('change', validateMedicalCertificate);
+                endDateInput.addEventListener('change', validateMedicalCertificate);
+                
+                // Form submission validation
+                form.addEventListener('submit', function(e) {
+                    const days = calculateDays(startDateInput.value, endDateInput.value);
+                    const isSick = isSickLeave();
+                    
+                    if (isSick && days > 3 && !medicalCertInput.files.length) {
+                        e.preventDefault();
+                        
+                        // Remove any existing error message
+                        const existingError = document.getElementById('medical-cert-error');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+                        
+                        // Create and show error message
+                        const errorDiv = document.createElement('div');
+                        errorDiv.id = 'medical-cert-error';
+                        errorDiv.className = 'flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg';
+                        errorDiv.innerHTML = `
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-sm text-red-600 font-medium">Medical certificate is required for Sick Leave of more than 3 days.</span>
+                        `;
+                        
+                        // Insert error message after the file input
+                        medicalCertInput.closest('.space-y-2').appendChild(errorDiv);
+                        
+                        // Scroll to the error
+                        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        return false;
+                    }
+                });
+                
+                // Initial validation on page load
+                validateMedicalCertificate();
+            });
+        </script>
     @endcan
 </x-app-layout>

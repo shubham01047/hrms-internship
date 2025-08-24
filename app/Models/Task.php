@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Task extends Model
 {
     use SoftDeletes;
+
     protected $table = "tasks";
+
     protected $fillable = [
         'project_id',
         'title',
@@ -16,6 +18,7 @@ class Task extends Model
         'priority',
         'status',
         'due_date',
+        'hours_assigned',
     ];
     public function project()
     {
@@ -23,15 +26,14 @@ class Task extends Model
     }
     public function assignedUsers()
     {
-        return $this->belongsToMany(User::class, 'task_members');
-    }
-    public function comments()
-    {
-        return $this->hasMany(TaskComment::class);
+        return $this->belongsToMany(User::class, 'task_members', 'task_id', 'user_id');
     }
     public function timesheets()
     {
         return $this->hasMany(Timesheet::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
 }
-

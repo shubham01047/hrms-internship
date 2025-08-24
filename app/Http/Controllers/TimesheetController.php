@@ -93,19 +93,34 @@ class TimesheetController extends Controller implements HasMiddleware
     {
         abort_unless(auth()->user()->can('approve timesheet'), 403);
         $timesheet->update(['status' => 'Approved']);
+        $task = $timesheet->task;
+        if ($task->hours_assigned !== null) {
+            $task->hours_assigned -= $timesheet->hours_worked;
+            if ($task->hours_assigned < 0) {
+                $task->hours_assigned = 0; 
+            }
+            $task->save();
+        }
         return redirect()->route('tasks.timesheets.index', [
-            'project' => $timesheet->task->project_id,
-            'task' => $timesheet->task_id
-        ])->with('success', 'Timesheet approved.');
+            'project' => $task->project_id,
+            'task' => $task->id
+        ])->with('success', 'Timesheet approved and task hours updated.');
     }
     public function reject(Timesheet $timesheet)
     {
         abort_unless(auth()->user()->can('reject timesheet'), 403);
+        if ($timesheet->status === 'Approved') {
+            $task = $timesheet->task;
+            if ($task->hours_assigned !== null) {
+                $task->hours_assigned += $timesheet->hours_worked;
+                $task->save();
+            }
+        }
         $timesheet->update(['status' => 'Rejected']);
         return redirect()->route('tasks.timesheets.index', [
             'project' => $timesheet->task->project_id,
             'task' => $timesheet->task_id
-        ])->with('error', 'Timesheet rejected.');
+        ])->with('error', 'Timesheet rejected and task hours restored.');
     }
     public function reportForm(Project $project, Task $task)
     {

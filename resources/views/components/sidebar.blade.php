@@ -47,6 +47,7 @@
             <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
+            
         </div>
 
         {{-- Company Management --}}

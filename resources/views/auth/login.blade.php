@@ -38,7 +38,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--primary-bg);">Email Address</label>
+                    <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--primary-bg);">Email sAddress</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                            class="w-full px-4 py-3 border rounded-xl outline-none transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white focus:bg-white text-sm"
                            style="border-color: var(--primary-border); color: var(--primary-bg);"

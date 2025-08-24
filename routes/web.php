@@ -155,9 +155,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/payrolls', [PayrollController::class, 'destroyAll'])->name('payrolls.destroyAll');
 
     //Company Routes
-   Route::get('company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
-Route::put('company/{id}', [CompanyController::class, 'update'])->name('company.update');
-
+    Route::get('company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
+    Route::put('company/{id}', [CompanyController::class, 'update'])->name('company.update');
+    Route::get('/attendance-calendar/{user}', [AttendanceController::class, 'attendance'])
+        ->name('attendance.calendar');
+    Route::get('/attendance-calendar', [AttendanceController::class, 'attendance'])
+        ->middleware('auth'); 
+    Route::get('/holidays-month', [AttendanceController::class, 'monthlyHolidays']);
+    Route::get('/leaves-week', [AttendanceController::class, 'weeklyLeaves']);
+    Route::get('/projects-six-months', [AttendanceController::class, 'projectsSixMonths']);
+    Route::get('/tasks-month', [AttendanceController::class, 'tasksMonth'])->name('tasks.month');
 });
 
 require __DIR__ . '/auth.php';
