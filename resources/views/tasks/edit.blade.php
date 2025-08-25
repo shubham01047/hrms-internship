@@ -166,9 +166,22 @@
                             <input type="date" name="due_date" id="due_date" value="{{ $task->due_date }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
                         </div>
-                        assign total hours
-                        <input type="number" name="hours_assigned" id="hours_assigned" class="form-control"
-                            min="0" step="0.1" value="{{ $task->hours_assigned }}">
+
+                        <div class="space-y-2">
+                            <label for="hours_assigned" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Assign Total Hours</span>
+                                </div>
+                            </label>
+                            <input type="number" name="hours_assigned" id="hours_assigned" 
+                                   min="0" step="0.1" value="{{ $task->hours_assigned }}" 
+                                   placeholder="Enter hours (e.g., 8.5)"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                        </div>
+
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <div class="flex items-center space-x-2">

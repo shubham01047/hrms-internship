@@ -217,8 +217,16 @@
                                                 {{ ucfirst($task->priority) }}
                                             </span>
                                         </td>
-                                        <td class="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-800">
-                                            {{ ucfirst($task->status) }}</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-medium">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-xs font-semibold
+                                                @if ($task->status === 'Done') bg-green-100 text-green-800
+                                                @elseif($task->status === 'In Progress') bg-blue-100 text-blue-800
+                                                @elseif($task->status === 'On Hold') bg-yellow-100 text-yellow-800
+                                                @else bg-gray-100 text-gray-800 @endif">
+                                                {{ ucfirst($task->status) }}
+                                            </span>
+                                        </td>
                                         <td class="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-800">
                                             {{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}</td>
                                         @php

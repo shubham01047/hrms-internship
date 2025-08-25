@@ -199,18 +199,15 @@
 
                                     <div class="col-span-2 flex items-center">
                                         @can('delete holiday')
+                                            <!-- Updated delete button to match listuser style exactly -->
                                             <form action="{{ route('holidays.destroy', $holiday->id) }}" method="POST"
                                                   onsubmit="return confirm('Are you sure you want to delete this holiday?')" class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <!-- Made delete button smaller and responsive -->
                                                 <button type="submit"
-                                                        class="inline-flex items-center px-2 sm:px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs sm:text-sm font-medium rounded-full transition-colors hover:scale-105 transform">
-                                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                    </svg>
-                                                    <span class="hidden sm:inline">Delete</span>
-                                                    <span class="sm:hidden">Del</span>
+                                                        class="inline-flex items-center justify-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded hover:scale-105 transform transition-all duration-200 ease-in-out focus:outline-none">
+                                                    <x-trashcan class="w-3 h-3 mr-1" />
+                                                    Delete
                                                 </button>
                                             </form>
                                         @endcan
