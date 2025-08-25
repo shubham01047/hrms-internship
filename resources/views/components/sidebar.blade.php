@@ -5,7 +5,7 @@
 
     $role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
 
-    if ($role === 'Employee') {
+    if ($role === 'Employee' || $role === 'Trainee' || $role === 'Intern') {
         $routeName = 'employee.dashboard';
     } else {
         $routeName = 'default.dashboard';

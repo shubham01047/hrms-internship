@@ -25,8 +25,6 @@ class CompanyController extends Controller implements HasMiddleware
     {
         try {
             $company = Company::findOrFail($id);
-
-            // Validate standard company fields
             $request->validate([
                 'company_name' => 'required|string|max:255',
                 'company_description' => 'nullable|string',
@@ -35,6 +33,7 @@ class CompanyController extends Controller implements HasMiddleware
                 'sidebar_color' => 'nullable|string|max:20',
                 'primary_color' => 'nullable|string|max:20',
                 'text_color' => 'nullable|string|max:20',
+                'footer_color' => 'nullable|string|max:20',
                 'system_title' => 'nullable|string|max:255',
                 'timings' => 'required|array',
                 'timings.*.day_from' => 'required|string',
@@ -58,6 +57,7 @@ class CompanyController extends Controller implements HasMiddleware
                 'sidebar_color',
                 'primary_color',
                 'text_color',
+                'footer_color',
                 'system_title'
             ]));
             $company->timings = json_encode($request->timings);
