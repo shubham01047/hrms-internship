@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="p-4 sm:p-6">
-                    <form method="POST" action="{{ route('tasks.timesheets.update', [$projectId, $task->id, $timesheet->id]) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('tasks.timesheets.update', [$projectId, $task->id, $timesheet->id]) }}" class="space-y-6" id="timesheetEditForm">
                         @csrf
                         @method('PUT')
 
@@ -68,6 +68,13 @@
                             </label>
                             <input type="date" name="date" id="date" value="{{ old('date', $timesheet->date) }}" required
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white">
+                            <div id="dateError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="dateErrorText"></span>
+                            </div>
                             @error('date')
                                 <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                     <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,10 +97,17 @@
                                     <span class="text-red-500">*</span>
                                 </div>
                             </label>
-                            <input type="number" name="hours_worked" id="hours_worked" step="0.01" min="0.1" max="24"
+                            <input type="number" name="hours_worked" id="hours_worked" step="0.01" min="0.01" max="24"
                                    value="{{ old('hours_worked', $timesheet->hours_worked) }}" required
                                    placeholder="Enter hours worked..."
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white">
+                            <div id="hoursError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="hoursErrorText"></span>
+                            </div>
                             @error('hours_worked')
                                 <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                     <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,16 +121,26 @@
 
                         <div class="space-y-2">
                             <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M4 6h16M4 12h16M4 18h7"/>
-                                    </svg>
-                                    <span>Description</span>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M4 6h16M4 12h16M4 18h7"/>
+                                        </svg>
+                                        <span>Description</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500" id="descriptionCounter">0/500</span>
                                 </div>
                             </label>
-                            <textarea name="description" id="description" rows="5" placeholder="Enter a description of your work..."
+                            <textarea name="description" id="description" rows="5" maxlength="500" placeholder="Enter a description of your work..."
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white resize-none">{{ old('description', $timesheet->description) }}</textarea>
+                            <div id="descriptionError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="descriptionErrorText"></span>
+                            </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 pt-6 border-t border-gray-200">
@@ -124,7 +148,7 @@
                                class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 bg-white font-semibold rounded-lg shadow-sm hover:bg-gray-50 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-300">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M6 18L18 6M6 6l12 12"/>
+                                          d="M6 18L18 6M6 6l12 12M6 12h12"/>
                                 </svg>
                                 Cancel
                             </a>
@@ -145,4 +169,139 @@
             </div>
         </div>
     </div>
+
+    <!-- Added comprehensive validation JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('timesheetEditForm');
+            const dateInput = document.getElementById('date');
+            const hoursInput = document.getElementById('hours_worked');
+            const descriptionInput = document.getElementById('description');
+            const descriptionCounter = document.getElementById('descriptionCounter');
+
+            // Initialize character counter
+            function updateDescriptionCounter() {
+                const length = descriptionInput.value.length;
+                descriptionCounter.textContent = `${length}/500`;
+                descriptionCounter.className = length > 450 ? 'text-xs text-red-500' : 'text-xs text-gray-500';
+            }
+
+            // Validation functions
+            function validateDate() {
+                const dateError = document.getElementById('dateError');
+                const dateErrorText = document.getElementById('dateErrorText');
+                
+                if (!dateInput.value) {
+                    showError(dateInput, dateError, dateErrorText, 'Date is required');
+                    return false;
+                }
+
+                const selectedDate = new Date(dateInput.value);
+                const today = new Date();
+                const oneYearAgo = new Date();
+                oneYearAgo.setFullYear(today.getFullYear() - 1);
+                
+                if (selectedDate > today) {
+                    showError(dateInput, dateError, dateErrorText, 'Date cannot be in the future');
+                    return false;
+                }
+                
+                if (selectedDate < oneYearAgo) {
+                    showError(dateInput, dateError, dateErrorText, 'Date cannot be more than 1 year ago');
+                    return false;
+                }
+
+                hideError(dateInput, dateError);
+                return true;
+            }
+
+            function validateHours() {
+                const hoursError = document.getElementById('hoursError');
+                const hoursErrorText = document.getElementById('hoursErrorText');
+                const value = parseFloat(hoursInput.value);
+                
+                if (!hoursInput.value) {
+                    showError(hoursInput, hoursError, hoursErrorText, 'Hours worked is required');
+                    return false;
+                }
+                
+                if (isNaN(value) || value <= 0) {
+                    showError(hoursInput, hoursError, hoursErrorText, 'Hours must be a positive number');
+                    return false;
+                }
+                
+                if (value < 0.01) {
+                    showError(hoursInput, hoursError, hoursErrorText, 'Minimum hours is 0.01');
+                    return false;
+                }
+                
+                if (value > 24) {
+                    showError(hoursInput, hoursError, hoursErrorText, 'Maximum hours is 24');
+                    return false;
+                }
+
+                hideError(hoursInput, hoursError);
+                return true;
+            }
+
+            function validateDescription() {
+                const descriptionError = document.getElementById('descriptionError');
+                const descriptionErrorText = document.getElementById('descriptionErrorText');
+                
+                if (descriptionInput.value.length > 500) {
+                    showError(descriptionInput, descriptionError, descriptionErrorText, 'Description cannot exceed 500 characters');
+                    return false;
+                }
+
+                hideError(descriptionInput, descriptionError);
+                return true;
+            }
+
+            function showError(input, errorDiv, errorText, message) {
+                input.classList.add('border-red-500', 'bg-red-50');
+                input.classList.remove('border-gray-300', 'bg-gray-50');
+                errorText.textContent = message;
+                errorDiv.classList.remove('hidden');
+            }
+
+            function hideError(input, errorDiv) {
+                input.classList.remove('border-red-500', 'bg-red-50');
+                input.classList.add('border-gray-300', 'bg-gray-50');
+                errorDiv.classList.add('hidden');
+            }
+
+            // Event listeners
+            dateInput.addEventListener('blur', validateDate);
+            dateInput.addEventListener('change', validateDate);
+            
+            hoursInput.addEventListener('input', validateHours);
+            hoursInput.addEventListener('blur', validateHours);
+            
+            descriptionInput.addEventListener('input', function() {
+                updateDescriptionCounter();
+                validateDescription();
+            });
+
+            // Initialize counter
+            updateDescriptionCounter();
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                const isDateValid = validateDate();
+                const isHoursValid = validateHours();
+                const isDescriptionValid = validateDescription();
+
+                if (!isDateValid || !isHoursValid || !isDescriptionValid) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>

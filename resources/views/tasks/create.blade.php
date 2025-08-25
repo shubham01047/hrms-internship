@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="p-4 sm:p-6">
-                    <form method="POST" action="{{ route('projects.tasks.store', $project->id) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('projects.tasks.store', $project->id) }}" class="space-y-6" id="taskForm">
                         @csrf
 
                         <div class="space-y-2">
@@ -72,9 +72,17 @@
                                     <span class="text-red-500">*</span>
                                 </div>
                             </label>
+                            <!-- Added validation attributes and error display -->
                             <input type="text" name="title" id="title" required
+                                minlength="2" maxlength="200"
                                 placeholder="Enter task title..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="title-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="title-error-text"></span>
+                            </div>
                             @error('title')
                                 <div
                                     class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -97,9 +105,12 @@
                                             d="M4 6h16M4 12h16M4 18h7"></path>
                                     </svg>
                                     <span>Description</span>
+                                    <!-- Added character counter -->
+                                    <span class="text-xs text-gray-500" id="description-counter">0/1000 characters</span>
                                 </div>
                             </label>
-                            <textarea name="description" id="description" rows="5" placeholder="Enter task description..."
+                            <!-- Added maxlength validation -->
+                            <textarea name="description" id="description" rows="5" maxlength="1000" placeholder="Enter task description..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none"></textarea>
                         </div>
 
@@ -124,6 +135,13 @@
                                 <option value="High">High</option>
                                 <option value="Urgent">Urgent</option>
                             </select>
+                            <!-- Added priority error display -->
+                            <div id="priority-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium">Please select a priority level</span>
+                            </div>
                         </div>
 
                         <div class="space-y-2">
@@ -146,6 +164,13 @@
                                 <option value="On Hold">On Hold</option>
                                 <option value="Done">Done</option>
                             </select>
+                            <!-- Added status error display -->
+                            <div id="status-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium">Please select a status</span>
+                            </div>
                         </div>
 
                         <div class="space-y-2">
@@ -162,10 +187,37 @@
                             </label>
                             <input type="date" name="due_date" id="due_date"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <!-- Added due date error display -->
+                            <div id="due-date-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="due-date-error-text"></span>
+                            </div>
                         </div>
-                        assign total hours
-                        <input type="number" name="hours_assigned" id="hours_assigned" class="form-control"
-                            min="0" step="0.1">
+
+                        <!-- Added proper label and validation for hours assigned -->
+                        <div class="space-y-2">
+                            <label for="hours_assigned" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Assign Total Hours</span>
+                                </div>
+                            </label>
+                            <input type="number" name="hours_assigned" id="hours_assigned" 
+                                min="0" max="9999" step="0.1" placeholder="Enter hours (e.g., 8.5)"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="hours-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="hours-error-text"></span>
+                            </div>
+                        </div>
 
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
@@ -221,4 +273,175 @@
             </div>
         </div>
     </div>
+
+    <!-- Added comprehensive JavaScript validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('taskForm');
+            const titleInput = document.getElementById('title');
+            const descriptionInput = document.getElementById('description');
+            const prioritySelect = document.getElementById('priority');
+            const statusSelect = document.getElementById('status');
+            const dueDateInput = document.getElementById('due_date');
+            const hoursInput = document.getElementById('hours_assigned');
+
+            // Character counter for description
+            const descriptionCounter = document.getElementById('description-counter');
+            descriptionInput.addEventListener('input', function() {
+                const length = this.value.length;
+                descriptionCounter.textContent = `${length}/1000 characters`;
+                descriptionCounter.className = length > 900 ? 'text-xs text-red-500' : 'text-xs text-gray-500';
+            });
+
+            // Real-time validation functions
+            function validateTitle() {
+                const value = titleInput.value.trim();
+                const errorDiv = document.getElementById('title-error');
+                const errorText = document.getElementById('title-error-text');
+                
+                if (value.length === 0) {
+                    showError(titleInput, errorDiv, errorText, 'Task title is required');
+                    return false;
+                } else if (value.length < 2) {
+                    showError(titleInput, errorDiv, errorText, 'Task title must be at least 2 characters');
+                    return false;
+                } else if (value.length > 200) {
+                    showError(titleInput, errorDiv, errorText, 'Task title cannot exceed 200 characters');
+                    return false;
+                } else if (!/^[a-zA-Z0-9\s\-_.,!?()]+$/.test(value)) {
+                    showError(titleInput, errorDiv, errorText, 'Task title contains invalid characters');
+                    return false;
+                } else {
+                    hideError(titleInput, errorDiv);
+                    return true;
+                }
+            }
+
+            function validatePriority() {
+                const value = prioritySelect.value;
+                const errorDiv = document.getElementById('priority-error');
+                
+                if (!value) {
+                    showError(prioritySelect, errorDiv);
+                    return false;
+                } else {
+                    hideError(prioritySelect, errorDiv);
+                    return true;
+                }
+            }
+
+            function validateStatus() {
+                const value = statusSelect.value;
+                const errorDiv = document.getElementById('status-error');
+                
+                if (!value) {
+                    showError(statusSelect, errorDiv);
+                    return false;
+                } else {
+                    hideError(statusSelect, errorDiv);
+                    return true;
+                }
+            }
+
+            function validateDueDate() {
+                const value = dueDateInput.value;
+                const errorDiv = document.getElementById('due-date-error');
+                const errorText = document.getElementById('due-date-error-text');
+                
+                if (value) {
+                    const selectedDate = new Date(value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (selectedDate < today) {
+                        showError(dueDateInput, errorDiv, errorText, 'Due date cannot be in the past');
+                        return false;
+                    }
+                    
+                    const maxDate = new Date();
+                    maxDate.setFullYear(maxDate.getFullYear() + 5);
+                    if (selectedDate > maxDate) {
+                        showError(dueDateInput, errorDiv, errorText, 'Due date cannot be more than 5 years in the future');
+                        return false;
+                    }
+                }
+                
+                hideError(dueDateInput, errorDiv);
+                return true;
+            }
+
+            function validateHours() {
+                const value = hoursInput.value;
+                const errorDiv = document.getElementById('hours-error');
+                const errorText = document.getElementById('hours-error-text');
+                
+                if (value) {
+                    const hours = parseFloat(value);
+                    if (isNaN(hours) || hours < 0) {
+                        showError(hoursInput, errorDiv, errorText, 'Hours must be a positive number');
+                        return false;
+                    } else if (hours > 9999) {
+                        showError(hoursInput, errorDiv, errorText, 'Hours cannot exceed 9999');
+                        return false;
+                    }
+                }
+                
+                hideError(hoursInput, errorDiv);
+                return true;
+            }
+
+            function showError(input, errorDiv, errorText = null, message = '') {
+                input.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                input.classList.remove('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                errorDiv.classList.remove('hidden');
+                if (errorText) {
+                    errorText.textContent = message;
+                }
+            }
+
+            function hideError(input, errorDiv) {
+                input.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                input.classList.add('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                errorDiv.classList.add('hidden');
+            }
+
+            // Add event listeners for real-time validation
+            titleInput.addEventListener('blur', validateTitle);
+            titleInput.addEventListener('input', function() {
+                if (this.value.length >= 2) validateTitle();
+            });
+
+            prioritySelect.addEventListener('change', validatePriority);
+            statusSelect.addEventListener('change', validateStatus);
+            dueDateInput.addEventListener('change', validateDueDate);
+            hoursInput.addEventListener('blur', validateHours);
+            hoursInput.addEventListener('input', function() {
+                if (this.value) validateHours();
+            });
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                const isTitleValid = validateTitle();
+                const isPriorityValid = validatePriority();
+                const isStatusValid = validateStatus();
+                const isDueDateValid = validateDueDate();
+                const isHoursValid = validateHours();
+
+                if (!isTitleValid || !isPriorityValid || !isStatusValid || !isDueDateValid || !isHoursValid) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = document.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                }
+            });
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            dueDateInput.setAttribute('min', today);
+        });
+    </script>
 </x-app-layout>

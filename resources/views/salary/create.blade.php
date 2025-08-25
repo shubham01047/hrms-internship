@@ -112,7 +112,7 @@
 
                 <!-- Form Content -->
                 <div class="p-4 sm:p-6">
-                    <form method="POST" action="{{ route('salary.store') }}" class="space-y-4 sm:space-y-6">
+                    <form method="POST" action="{{ route('salary.store') }}" class="space-y-4 sm:space-y-6" id="salaryForm">
                         @csrf
                         
                         <!-- Employee Selection -->
@@ -135,6 +135,13 @@
                                     <option value="{{ $u->id }}">{{ $u->name }}</option>
                                 @endforeach
                             </select>
+                            <!-- Added client-side validation error display -->
+                            <div id="user_id_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                            </div>
                             @error('user_id')
                                 <div
                                     class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -172,10 +179,17 @@
                                             <span class="text-red-500">*</span>
                                         </div>
                                     </label>
-                                    {{-- Removed all dollar symbols, using only rupees --}}
+                                    <!-- Added validation attributes and improved input -->
                                     <input type="number" name="basic" id="basic" required
-                                        placeholder="Enter basic salary amount"
+                                        placeholder="Enter basic salary amount" min="1" max="99999999" step="0.01"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="basic_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('basic')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -202,10 +216,17 @@
                                             <span class="text-red-500">*</span>
                                         </div>
                                     </label>
-                                    {{-- Removed all dollar symbols, using only rupees --}}
+                                    <!-- Added validation attributes and improved input -->
                                     <input type="number" name="hra" id="hra" required
-                                        placeholder="Enter HRA amount"
+                                        placeholder="Enter HRA amount" min="0" max="99999999" step="0.01"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="hra_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('hra')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -232,10 +253,17 @@
                                             <span class="text-red-500">*</span>
                                         </div>
                                     </label>
-                                    {{-- Removed all dollar symbols, using only rupees --}}
+                                    <!-- Added validation attributes and improved input -->
                                     <input type="number" name="allowances" id="allowances" required
-                                        placeholder="Enter other allowances amount"
+                                        placeholder="Enter other allowances amount" min="0" max="99999999" step="0.01"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="allowances_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('allowances')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -274,6 +302,13 @@
                                     <input type="number" name="tax" id="tax" required
                                         placeholder="0.00" step="0.01" min="0" max="100"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="tax_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('tax')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -299,6 +334,13 @@
                                     <input type="number" name="pf" id="pf" required
                                         placeholder="0.00" step="0.01" min="0" max="100"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="pf_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('pf')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -324,6 +366,13 @@
                                     <input type="number" name="esi" id="esi" required
                                         placeholder="0.00" step="0.01" min="0" max="100"
                                         class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm sm:text-base">
+                                    <!-- Added client-side validation error display -->
+                                    <div id="esi_error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                     @error('esi')
                                         <div
                                             class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -373,7 +422,7 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
+                            <button type="submit" id="submitBtn"
                                 class="w-full sm:w-auto theme-app inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-sm sm:text-base"
                                 style="background-color: var(--hover-bg); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
@@ -390,4 +439,147 @@
             </div>
         </div>
     </div>
+
+    <!-- Added comprehensive client-side validation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('salaryForm');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Validation functions
+            function showError(fieldId, message) {
+                const errorDiv = document.getElementById(fieldId + '_error');
+                const field = document.getElementById(fieldId);
+                
+                if (errorDiv && field) {
+                    errorDiv.querySelector('span').textContent = message;
+                    errorDiv.classList.remove('hidden');
+                    field.classList.add('border-red-500');
+                    field.classList.remove('border-gray-300');
+                }
+            }
+            
+            function hideError(fieldId) {
+                const errorDiv = document.getElementById(fieldId + '_error');
+                const field = document.getElementById(fieldId);
+                
+                if (errorDiv && field) {
+                    errorDiv.classList.add('hidden');
+                    field.classList.remove('border-red-500');
+                    field.classList.add('border-gray-300');
+                }
+            }
+            
+            function validateEmployee() {
+                const userSelect = document.getElementById('user_id');
+                if (!userSelect.value) {
+                    showError('user_id', 'Please select an employee');
+                    return false;
+                }
+                hideError('user_id');
+                return true;
+            }
+            
+            function validateSalaryAmount(fieldId, fieldName, min = 1) {
+                const field = document.getElementById(fieldId);
+                const value = parseFloat(field.value);
+                
+                if (!field.value) {
+                    showError(fieldId, `${fieldName} is required`);
+                    return false;
+                }
+                
+                if (isNaN(value) || value < min) {
+                    showError(fieldId, `${fieldName} must be at least ${min}`);
+                    return false;
+                }
+                
+                if (value > 99999999) {
+                    showError(fieldId, `${fieldName} cannot exceed 99,999,999`);
+                    return false;
+                }
+                
+                hideError(fieldId);
+                return true;
+            }
+            
+            function validatePercentage(fieldId, fieldName) {
+                const field = document.getElementById(fieldId);
+                const value = parseFloat(field.value);
+                
+                if (!field.value) {
+                    showError(fieldId, `${fieldName} is required`);
+                    return false;
+                }
+                
+                if (isNaN(value) || value < 0) {
+                    showError(fieldId, `${fieldName} must be 0 or greater`);
+                    return false;
+                }
+                
+                if (value > 100) {
+                    showError(fieldId, `${fieldName} cannot exceed 100%`);
+                    return false;
+                }
+                
+                hideError(fieldId);
+                return true;
+            }
+            
+            // Real-time validation
+            document.getElementById('user_id').addEventListener('change', validateEmployee);
+            
+            document.getElementById('basic').addEventListener('input', function() {
+                validateSalaryAmount('basic', 'Basic salary', 1);
+            });
+            
+            document.getElementById('hra').addEventListener('input', function() {
+                validateSalaryAmount('hra', 'HRA', 0);
+            });
+            
+            document.getElementById('allowances').addEventListener('input', function() {
+                validateSalaryAmount('allowances', 'Allowances', 0);
+            });
+            
+            document.getElementById('tax').addEventListener('input', function() {
+                validatePercentage('tax', 'Tax percentage');
+            });
+            
+            document.getElementById('pf').addEventListener('input', function() {
+                validatePercentage('pf', 'PF percentage');
+            });
+            
+            document.getElementById('esi').addEventListener('input', function() {
+                validatePercentage('esi', 'ESI percentage');
+            });
+            
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                // Validate all fields
+                if (!validateEmployee()) isValid = false;
+                if (!validateSalaryAmount('basic', 'Basic salary', 1)) isValid = false;
+                if (!validateSalaryAmount('hra', 'HRA', 0)) isValid = false;
+                if (!validateSalaryAmount('allowances', 'Allowances', 0)) isValid = false;
+                if (!validatePercentage('tax', 'Tax percentage')) isValid = false;
+                if (!validatePercentage('pf', 'PF percentage')) isValid = false;
+                if (!validatePercentage('esi', 'ESI percentage')) isValid = false;
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = document.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        firstError.focus();
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>

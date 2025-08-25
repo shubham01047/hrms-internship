@@ -119,9 +119,17 @@
                                     <span class="text-red-500">*</span>
                                 </div>
                             </label>
-                            <input type="number" name="hours_worked" id="hours_worked" step="0.01" min="0.01"
+                            <input type="number" name="hours_worked" id="hours_worked" step="0.01" min="0.01" max="24"
                                    value="{{ old('hours_worked', $hoursWorked) }}" required placeholder="Enter hours worked..."
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white">
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white"
+                                   data-validation="hours">
+                            <div id="hours_worked_error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="hours_worked_error_text"></span>
+                            </div>
                             @error('hours_worked')
                                 <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                     <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,16 +143,29 @@
 
                         <div class="space-y-2">
                             <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M4 6h16M4 12h16M4 18h7"/>
-                                    </svg>
-                                    <span>Work Description</span>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M4 6h16M4 12h16M4 18h7"/>
+                                        </svg>
+                                        <span>Work Description</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">
+                                        <span id="description_count">0</span>/500 characters
+                                    </span>
                                 </div>
                             </label>
-                            <textarea name="description" id="description" rows="5" placeholder="Enter a description of your work..."
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white resize-none">{{ old('description') }}</textarea>
+                            <textarea name="description" id="description" rows="5" placeholder="Enter a description of your work..." maxlength="500"
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-gray-50 focus:bg-white resize-none"
+                                      data-validation="description">{{ old('description') }}</textarea>
+                            <div id="description_error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="description_error_text"></span>
+                            </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 pt-6 border-t border-gray-200">
@@ -156,7 +177,7 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
+                            <button type="submit" id="submit_btn"
                                     class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
@@ -173,4 +194,124 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const hoursWorkedInput = document.getElementById('hours_worked');
+            const descriptionInput = document.getElementById('description');
+            const descriptionCount = document.getElementById('description_count');
+            const submitBtn = document.getElementById('submit_btn');
+
+            // Validation functions
+            function validateHoursWorked() {
+                const value = parseFloat(hoursWorkedInput.value);
+                const errorDiv = document.getElementById('hours_worked_error');
+                const errorText = document.getElementById('hours_worked_error_text');
+                
+                hoursWorkedInput.classList.remove('border-red-500');
+                errorDiv.classList.add('hidden');
+                
+                if (!hoursWorkedInput.value.trim()) {
+                    showError('hours_worked', 'Hours worked is required');
+                    return false;
+                }
+                
+                if (isNaN(value) || value <= 0) {
+                    showError('hours_worked', 'Hours worked must be a positive number');
+                    return false;
+                }
+                
+                if (value > 24) {
+                    showError('hours_worked', 'Hours worked cannot exceed 24 hours per day');
+                    return false;
+                }
+                
+                if (value < 0.01) {
+                    showError('hours_worked', 'Hours worked must be at least 0.01 hours (36 seconds)');
+                    return false;
+                }
+                
+                return true;
+            }
+
+            function validateDescription() {
+                const value = descriptionInput.value.trim();
+                const errorDiv = document.getElementById('description_error');
+                
+                descriptionInput.classList.remove('border-red-500');
+                errorDiv.classList.add('hidden');
+                
+                if (value.length > 500) {
+                    showError('description', 'Description cannot exceed 500 characters');
+                    return false;
+                }
+                
+                return true;
+            }
+
+            function showError(fieldName, message) {
+                const input = document.getElementById(fieldName);
+                const errorDiv = document.getElementById(fieldName + '_error');
+                const errorText = document.getElementById(fieldName + '_error_text');
+                
+                input.classList.add('border-red-500');
+                errorText.textContent = message;
+                errorDiv.classList.remove('hidden');
+            }
+
+            function updateDescriptionCount() {
+                const count = descriptionInput.value.length;
+                descriptionCount.textContent = count;
+                
+                if (count > 500) {
+                    descriptionCount.parentElement.classList.add('text-red-500');
+                    descriptionCount.parentElement.classList.remove('text-gray-500');
+                } else {
+                    descriptionCount.parentElement.classList.remove('text-red-500');
+                    descriptionCount.parentElement.classList.add('text-gray-500');
+                }
+            }
+
+            // Real-time validation
+            hoursWorkedInput.addEventListener('input', validateHoursWorked);
+            hoursWorkedInput.addEventListener('blur', validateHoursWorked);
+            
+            descriptionInput.addEventListener('input', function() {
+                updateDescriptionCount();
+                validateDescription();
+            });
+            descriptionInput.addEventListener('blur', validateDescription);
+
+            // Initialize description count
+            updateDescriptionCount();
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                if (!validateHoursWorked()) {
+                    isValid = false;
+                }
+                
+                if (!validateDescription()) {
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = document.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        firstError.focus();
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>
