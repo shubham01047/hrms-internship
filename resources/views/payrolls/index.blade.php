@@ -98,20 +98,15 @@
                     <p class="text-sm mb-4" style="color: var(--secondary-text);">
                         This action will permanently delete all payroll records. This cannot be undone.
                     </p>
-                    <form method="POST" action="{{ route('payrolls.destroyAll') }}"
-                        onsubmit="return confirm('Delete ALL payrolls? This action cannot be undone!')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                </path>
-                            </svg>
-                            Delete All Payrolls
-                        </button>
-                    </form>
+                    <button type="button" onclick="deleteAllPayrolls()"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                        Delete All Payrolls
+                    </button>
                 </div>
             @endcan
 
@@ -175,22 +170,17 @@
                                             Download
                                         </a>
                                         @can('delete payroll')
-                                            <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
-                                                onsubmit="return confirm('Delete this payroll?')" class="flex-1">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="w-full inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
-                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                        </path>
-                                                    </svg>
-                                                    Delete
-                                                </button>
-                                            </form>
+                                            <button type="button" onclick="deletePayroll({{ $p->id }}, '{{ $p->user->name }}', '{{ $p->month }}')"
+                                                class="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                                Delete
+                                            </button>
                                         @endcan
                                     </div>
                                 </div>
@@ -263,11 +253,7 @@
                                                     Download
                                                 </a>
                                                 @can('delete payroll')
-                                                    <form method="POST" action="{{ route('payrolls.destroy', $p->id) }}"
-                                                    onsubmit="return confirm('Delete this payroll?')" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
+                                                    <button type="button" onclick="deletePayroll({{ $p->id }}, '{{ $p->user->name }}', '{{ $p->month }}')"
                                                         class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors duration-200">
                                                         <svg class="w-4 h-4 mr-1" fill="none"
                                                             stroke="currentColor" viewBox="0 0 24 24">
@@ -278,7 +264,6 @@
                                                         </svg>
                                                         Delete
                                                     </button>
-                                                </form>
                                                 @endcan
                                             </div>
                                         </td>
@@ -408,4 +393,168 @@
             @endcan
         </div>
     </div>
+
+    <!-- Delete Individual Payroll Modal -->
+    <div id="deletePayrollModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0V5a2 2 0 012-2h3a2 2 0 012 2v2"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mt-4">Delete Payroll</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        Are you sure you want to delete the payroll for "<span id="payrollEmployeeName" class="font-semibold text-red-600"></span>" for <span id="payrollMonth" class="font-semibold text-red-600"></span>?
+                    </p>
+                    <p class="text-xs text-red-400 mt-2">This action cannot be undone and will permanently remove this payroll record.</p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="confirmDeletePayroll" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                        <span class="delete-text">Delete</span>
+                        <div class="delete-spinner" style="display: none;">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <button id="cancelDeletePayroll" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete All Payrolls Modal -->
+    <div id="deleteAllPayrollsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mt-4">Delete All Payrolls</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        Are you sure you want to delete <span class="font-semibold text-red-600">ALL</span> payroll records?
+                    </p>
+                    <p class="text-xs text-red-400 mt-2">This action cannot be undone and will permanently remove all payroll data from the system.</p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="confirmDeleteAllPayrolls" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                        <span class="delete-all-text">Delete All</span>
+                        <div class="delete-all-spinner" style="display: none;">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <button id="cancelDeleteAllPayrolls" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        let currentPayrollId = null;
+
+        function deletePayroll(payrollId, employeeName, month) {
+            currentPayrollId = payrollId;
+            $('#payrollEmployeeName').text(employeeName);
+            $('#payrollMonth').text(month);
+            $('#deletePayrollModal').fadeIn(300);
+            $('body').css('overflow', 'hidden');
+        }
+
+        function deleteAllPayrolls() {
+            $('#deleteAllPayrollsModal').fadeIn(300);
+            $('body').css('overflow', 'hidden');
+        }
+
+        // Individual payroll delete modal handlers
+        $('#confirmDeletePayroll').click(function() {
+            if (currentPayrollId) {
+                // Show loading state
+                $('.delete-text').hide();
+                $('.delete-spinner').show();
+                $(this).prop('disabled', true);
+                $('#cancelDeletePayroll').prop('disabled', true);
+
+                // Create and submit form
+                const form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ route("payrolls.destroy", ":id") }}'.replace(':id', currentPayrollId)
+                });
+                form.append('@csrf');
+                form.append('@method("DELETE")');
+                $('body').append(form);
+                form.submit();
+            }
+        });
+
+        $('#cancelDeletePayroll').click(function() {
+            $('#deletePayrollModal').fadeOut(300);
+            $('body').css('overflow', 'auto');
+            currentPayrollId = null;
+        });
+
+        // Delete all payrolls modal handlers
+        $('#confirmDeleteAllPayrolls').click(function() {
+            // Show loading state
+            $('.delete-all-text').hide();
+            $('.delete-all-spinner').show();
+            $(this).prop('disabled', true);
+            $('#cancelDeleteAllPayrolls').prop('disabled', true);
+
+            // Create and submit form
+            const form = $('<form>', {
+                'method': 'POST',
+                'action': '{{ route("payrolls.destroyAll") }}'
+            });
+            form.append('@csrf');
+            form.append('@method("DELETE")');
+            $('body').append(form);
+            form.submit();
+        });
+
+        $('#cancelDeleteAllPayrolls').click(function() {
+            $('#deleteAllPayrollsModal').fadeOut(300);
+            $('body').css('overflow', 'auto');
+        });
+
+        // Close modals on background click
+        $('#deletePayrollModal, #deleteAllPayrollsModal').click(function(e) {
+            if (e.target === this) {
+                $(this).fadeOut(300);
+                $('body').css('overflow', 'auto');
+                currentPayrollId = null;
+            }
+        });
+
+        // Close modals on ESC key
+        $(document).keydown(function(e) {
+            if (e.keyCode === 27) {
+                $('#deletePayrollModal, #deleteAllPayrollsModal').fadeOut(300);
+                $('body').css('overflow', 'auto');
+                currentPayrollId = null;
+            }
+        });
+    </script>
+
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </x-app-layout>

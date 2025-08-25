@@ -29,7 +29,7 @@
     </x-slot>
 
     <div class="py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
                 <div class="theme-app px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                     <div class="flex items-center space-x-2 sm:space-x-3">

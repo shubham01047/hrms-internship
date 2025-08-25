@@ -161,6 +161,9 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                        style="color: var(--primary-text);">#</th>
+                                    <th scope="col"
+                                        class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider"
                                         style="color: var(--primary-text);">User</th>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider"
@@ -183,6 +186,11 @@
                                 @foreach ($timesheets as $index => $timesheet)
                                     <tr
                                         class="table-row-hover transition-all duration-200 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-50' }}">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <div class="theme-app w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: var(--hover-bg); color: var(--primary-text);">
+                                                {{ $loop->iteration }}
+                                            </div>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $timesheet->user->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -207,44 +215,31 @@
                                             <div class="flex flex-wrap gap-2">
                                                 @can('approve timesheet')
                                                     @if ($timesheet->status !== 'Approved')
-                                                        <form method="POST"
-                                                            action="{{ route('timesheets.approve', $timesheet->id) }}"
-                                                            class="inline-block">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit"
+                                                        <button type="button" onclick="approveTimesheet({{ $timesheet->id }}, '{{ $timesheet->user->name }}', '{{ \Carbon\Carbon::parse($timesheet->date)->format('M d, Y') }}')"
                                                                 class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md text-white"
                                                                 style="background-color: #16a34a;"
                                                                 onmouseover="this.style.backgroundColor='#22c55e'"
                                                                 onmouseout="this.style.backgroundColor='#16a34a'">
-                                                                <svg class="w-3 h-3 mr-1" fill="none"
-                                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                                </svg>
-                                                                Approve
-                                                            </button>
-
-                                                        </form>
+                                                            <svg class="w-3 h-3 mr-1" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                            Approve
+                                                        </button>
                                                     @endif
                                                 @endcan
                                                 @can('reject timesheet')
                                                     @if ($timesheet->status !== 'Rejected')
-                                                        <form method="POST"
-                                                            action="{{ route('timesheets.reject', $timesheet->id) }}"
-                                                            class="inline-block">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit"
+                                                        <button type="button" onclick="rejectTimesheet({{ $timesheet->id }}, '{{ $timesheet->user->name }}', '{{ \Carbon\Carbon::parse($timesheet->date)->format('M d, Y') }}')"
                                                                 class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-all duration-200">
-                                                                <svg class="w-3 h-3 mr-1" fill="none"
-                                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                                </svg>
-                                                                Reject
-                                                            </button>
-                                                        </form>
+                                                            <svg class="w-3 h-3 mr-1" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                            </svg>
+                                                            Reject
+                                                        </button>
                                                     @endif
                                                 @endcan
                                                 @can('edit timesheet')
@@ -299,4 +294,181 @@
             </div>
         </div>
     </div>
+
+    <!-- Approve Confirmation Modal -->
+    <div id="approveModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mt-4">Approve Timesheet</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        Are you sure you want to approve the timesheet for "<span id="approveUserName" class="font-semibold text-green-600"></span>" on <span id="approveDate" class="font-semibold text-green-600"></span>?
+                    </p>
+                    <p class="text-xs text-green-400 mt-2">This will mark the timesheet as approved and may affect payroll calculations.</p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="confirmApprove" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                        <span class="approve-text">Approve</span>
+                        <div class="approve-spinner" style="display: none;">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <button id="cancelApprove" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Confirmation Modal -->
+    <div id="rejectModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mt-4">Reject Timesheet</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        Are you sure you want to reject the timesheet for "<span id="rejectUserName" class="font-semibold text-red-600"></span>" on <span id="rejectDate" class="font-semibold text-red-600"></span>?
+                    </p>
+                    <p class="text-xs text-red-400 mt-2">This will mark the timesheet as rejected and may require the user to resubmit.</p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="confirmReject" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                        <span class="reject-text">Reject</span>
+                        <div class="reject-spinner" style="display: none;">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <button id="cancelReject" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        let currentTimesheetId = null;
+        let currentAction = null;
+
+        function approveTimesheet(timesheetId, userName, date) {
+            currentTimesheetId = timesheetId;
+            currentAction = 'approve';
+            $('#approveUserName').text(userName);
+            $('#approveDate').text(date);
+            $('#approveModal').fadeIn(300);
+            $('body').css('overflow', 'hidden');
+        }
+
+        function rejectTimesheet(timesheetId, userName, date) {
+            currentTimesheetId = timesheetId;
+            currentAction = 'reject';
+            $('#rejectUserName').text(userName);
+            $('#rejectDate').text(date);
+            $('#rejectModal').fadeIn(300);
+            $('body').css('overflow', 'hidden');
+        }
+
+        // Approve modal handlers
+        $('#confirmApprove').click(function() {
+            if (currentTimesheetId && currentAction === 'approve') {
+                // Show loading state
+                $('.approve-text').hide();
+                $('.approve-spinner').show();
+                $(this).prop('disabled', true);
+                $('#cancelApprove').prop('disabled', true);
+
+                // Create and submit form
+                const form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ route("timesheets.approve", ":id") }}'.replace(':id', currentTimesheetId)
+                });
+                form.append('@csrf');
+                form.append('@method("PUT")');
+                $('body').append(form);
+                form.submit();
+            }
+        });
+
+        $('#cancelApprove').click(function() {
+            $('#approveModal').fadeOut(300);
+            $('body').css('overflow', 'auto');
+            currentTimesheetId = null;
+            currentAction = null;
+        });
+
+        // Reject modal handlers
+        $('#confirmReject').click(function() {
+            if (currentTimesheetId && currentAction === 'reject') {
+                // Show loading state
+                $('.reject-text').hide();
+                $('.reject-spinner').show();
+                $(this).prop('disabled', true);
+                $('#cancelReject').prop('disabled', true);
+
+                // Create and submit form
+                const form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ route("timesheets.reject", ":id") }}'.replace(':id', currentTimesheetId)
+                });
+                form.append('@csrf');
+                form.append('@method("PUT")');
+                $('body').append(form);
+                form.submit();
+            }
+        });
+
+        $('#cancelReject').click(function() {
+            $('#rejectModal').fadeOut(300);
+            $('body').css('overflow', 'auto');
+            currentTimesheetId = null;
+            currentAction = null;
+        });
+
+        // Close modals on background click
+        $('#approveModal, #rejectModal').click(function(e) {
+            if (e.target === this) {
+                $(this).fadeOut(300);
+                $('body').css('overflow', 'auto');
+                currentTimesheetId = null;
+                currentAction = null;
+            }
+        });
+
+        // Close modals on ESC key
+        $(document).keydown(function(e) {
+            if (e.keyCode === 27) {
+                $('#approveModal, #rejectModal').fadeOut(300);
+                $('body').css('overflow', 'auto');
+                currentTimesheetId = null;
+                currentAction = null;
+            }
+        });
+    </script>
+
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </x-app-layout>

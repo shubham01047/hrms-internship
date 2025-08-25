@@ -159,11 +159,11 @@
                                                         </a>
                                                     @endcan
                                                     @can('delete permissions')
-                                                        <a href="javascript:void(0);" onclick="deletePermission({{ $permission->id }})"
+                                                        <button type="button" onclick="deletePermission({{ $permission->id }}, '{{ addslashes($permission->name) }}')"
                                                            class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg shadow-md hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-300">
                                                             <x-trashcan class="w-3 h-3 mr-1"/>
                                                             Delete
-                                                        </a>
+                                                        </button>
                                                     @endcan
                                                 </div>
                                             </td>
@@ -224,12 +224,171 @@
             </div>
         </div>
     </div>
+
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="deleteConfirmationModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        
+        <!-- Modal container - properly centered -->
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <!-- Modal panel -->
+            <div class="relative bg-white rounded-lg shadow-xl transform transition-all w-full max-w-lg mx-auto">
+                <div class="px-4 pt-5 pb-4 sm:p-6">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Delete Permission
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    Are you sure you want to delete the permission "<span id="permissionNameToDelete" class="font-semibold text-gray-900"></span>"? This action cannot be undone.
+                                </p>
+                            </div>
+                            <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-red-700">
+                                            <strong>Warning:</strong> Deleting this permission will remove it from all roles and users who currently have it assigned.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="confirmDeleteBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Yes, Delete Permission
+                        </button>
+                        <button type="button" id="cancelDeleteBtn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <x-slot name="script">
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
             // Store original permissions data
             const originalPermissions = @json($permissions->items());
             let currentSearchTerm = '';
+            let permissionToDelete = null;
+
+            $(document).ready(function() {
+                // Custom delete confirmation modal functionality
+                window.deletePermission = function(id, name) {
+                    permissionToDelete = id;
+                    $('#permissionNameToDelete').text(name);
+                    $('#deleteConfirmationModal').removeClass('hidden');
+                    $('body').addClass('overflow-hidden');
+                    
+                    // Add fade-in animation
+                    $('#deleteConfirmationModal').hide().fadeIn(300);
+                };
+                
+                // Close modal on cancel
+                $('#cancelDeleteBtn').on('click', function() {
+                    closeDeleteModal();
+                });
+                
+                // Close modal on background click
+                $('#deleteConfirmationModal').on('click', function(e) {
+                    if ($(e.target).hasClass('fixed') && $(e.target).hasClass('inset-0')) {
+                        closeDeleteModal();
+                    }
+                });
+                
+                // Close modal on ESC key
+                $(document).on('keydown', function(e) {
+                    if (e.key === 'Escape' && !$('#deleteConfirmationModal').hasClass('hidden')) {
+                        closeDeleteModal();
+                    }
+                });
+                
+                // Confirm delete
+                $('#confirmDeleteBtn').on('click', function() {
+                    if (permissionToDelete) {
+                        // Add loading state
+                        $(this).prop('disabled', true).html(`
+                            <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Deleting...
+                        `);
+                        
+                        // Perform the delete operation
+                        performDelete(permissionToDelete);
+                    }
+                });
+                
+                function closeDeleteModal() {
+                    $('#deleteConfirmationModal').fadeOut(300, function() {
+                        $(this).addClass('hidden');
+                        $('body').removeClass('overflow-hidden');
+                        permissionToDelete = null;
+                        // Reset button state
+                        $('#confirmDeleteBtn').prop('disabled', false).html(`
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Yes, Delete Permission
+                        `);
+                    });
+                }
+                
+                function performDelete(id) {
+                    $.ajax({
+                        url: '{{ route('permissions.destroy') }}',
+                        type: 'DELETE',
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Close modal first
+                            closeDeleteModal();
+                            
+                            // Remove the row from DOM with animation
+                            const row = document.querySelector(`[data-permission-id="${id}"]`);
+                            if (row) {
+                                $(row).fadeOut(300, function() {
+                                    $(this).remove();
+                                    // Re-filter to update numbering and counter
+                                    filterPermissions(currentSearchTerm);
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            closeDeleteModal();
+                            alert('Error deleting permission: ' + error);
+                        }
+                    });
+                }
+            });
 
             // Search functionality
             document.getElementById('searchInput').addEventListener('input', function() {
@@ -327,40 +486,46 @@
                 updateUI('');
             }
 
-            // deletePermission function
-            function deletePermission(id) {
-                console.log("Calling delete for ID:", id);
-                if (confirm('Are you sure you want to delete this permission?')) {
-                    $.ajax({
-                        url: '{{ route('permissions.destroy') }}',
-                        type: 'DELETE',
-                        data: {
-                            id: id
-                        },
-                        dataType: 'json',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            // Remove the row from DOM
-                            const row = document.querySelector(`[data-permission-id="${id}"]`);
-                            if (row) {
-                                row.remove();
-                                // Re-filter to update numbering and counter
-                                filterPermissions(currentSearchTerm);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Error deleting permission: ' + error);
-                        }
-                    });
-                }
-            }
-
             // Initialize on page load
             document.addEventListener('DOMContentLoaded', function() {
                 updateCounter({{ $permissions->count() }}, '');
             });
         </script>
+
+        <style>
+            /* Custom animations for modal */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.95); }
+            }
+            
+            .animate-fadeIn {
+                animation: fadeIn 0.3s ease-out;
+            }
+            
+            .animate-fadeOut {
+                animation: fadeOut 0.3s ease-in;
+            }
+            
+            /* Prevent body scroll when modal is open */
+            body.overflow-hidden {
+                overflow: hidden;
+            }
+            
+            /* Loading spinner animation */
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            
+            .animate-spin {
+                animation: spin 1s linear infinite;
+            }
+        </style>
     </x-slot>
 </x-app-layout>

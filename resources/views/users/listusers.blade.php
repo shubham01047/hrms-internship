@@ -244,12 +244,11 @@
                                                     </a>
                                                 @endcan
                                                 {{-- @can('delete users') --}}
-                                                <a href="javascript:void(0);"
-                                                    onclick="deleteUser({{ $user->id }})"
+                                                <button type="button" onclick="deleteUser({{ $user->id }}, '{{ $user->name }}')"
                                                     class="inline-flex items-center justify-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded hover:scale-105 transform transition-all duration-200 ease-in-out focus:outline-none">
                                                     <x-trashcan class="w-3 h-3 mr-1" />
                                                     Delete
-                                                </a>
+                                                </button>
                                                 {{-- @endcan --}}
                                             </div>
                                         </td>
@@ -322,33 +321,169 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmationModal" class="fixed inset-0 z-50 hidden" aria-labelledby="delete-modal-title" role="dialog" aria-modal="true">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        
+        <!-- Modal container - properly centered -->
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <!-- Modal panel -->
+            <div class="relative bg-white rounded-lg shadow-xl transform transition-all w-full max-w-lg mx-auto">
+                <div class="px-4 pt-5 pb-4 sm:p-6">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="delete-modal-title">
+                                Delete User
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    Are you sure you want to delete the user "<span id="userNameToDelete" class="font-semibold text-gray-900"></span>"? This action cannot be undone and will permanently remove the user from the system.
+                                </p>
+                            </div>
+                            <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-red-700">
+                                            <strong>Warning:</strong> This will permanently remove the user and all their data. This action cannot be reversed.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="confirmDeleteBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Yes, Delete User
+                        </button>
+                        <button type="button" id="cancelDeleteBtn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <x-slot name="script">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
-            function deleteUser(id) {
-                console.log("Calling delete for ID:", id);
-                if (confirm('Are you sure you want to delete this User?')) {
-                    $.ajax({
-                        url: '{{ route('users.destroy') }}',
-                        type: 'DELETE',
-                        data: {
-                            id: id
-                        },
-                        dataType: 'json',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            window.location.href = '{{ route('users.index') }}'
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Error deleting User: ' + error);
-                        }
-                    });
-                }
-            }
             // Store original users data
             const originalUsers = @json($users->items());
             let currentSearchTerm = '';
+            let userIdToDelete = null;
+
+            // deleteUser function with custom modal
+            function deleteUser(id, userName) {
+                console.log("Calling delete for ID:", id);
+                userIdToDelete = id;
+                
+                // Set the user name in the modal
+                document.getElementById('userNameToDelete').textContent = userName;
+                
+                // Show the modal
+                $('#deleteConfirmationModal').removeClass('hidden');
+                $('body').addClass('overflow-hidden');
+                
+                // Add fade-in animation
+                $('#deleteConfirmationModal').hide().fadeIn(300);
+            }
+
+            $(document).ready(function() {
+                // Close modal on cancel
+                $('#cancelDeleteBtn').on('click', function() {
+                    closeDeleteModal();
+                });
+                
+                // Close modal on background click
+                $('#deleteConfirmationModal').on('click', function(e) {
+                    if ($(e.target).hasClass('fixed') && $(e.target).hasClass('inset-0')) {
+                        closeDeleteModal();
+                    }
+                });
+                
+                // Close modal on ESC key
+                $(document).on('keydown', function(e) {
+                    if (e.key === 'Escape' && !$('#deleteConfirmationModal').hasClass('hidden')) {
+                        closeDeleteModal();
+                    }
+                });
+                
+                // Confirm delete
+                $('#confirmDeleteBtn').on('click', function() {
+                    if (userIdToDelete) {
+                        // Add loading state
+                        $(this).prop('disabled', true).html(`
+                            <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Deleting...
+                        `);
+                        
+                        // Perform the AJAX delete request
+                        $.ajax({
+                            url: '{{ route('users.destroy') }}',
+                            type: 'DELETE',
+                            data: {
+                                id: userIdToDelete
+                            },
+                            dataType: 'json',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                // Remove the row from DOM
+                                const row = document.querySelector(`[data-user-id="${userIdToDelete}"]`);
+                                if (row) {
+                                    row.remove();
+                                    // Re-filter to update numbering and counter
+                                    filterUsers(currentSearchTerm);
+                                }
+                                closeDeleteModal();
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Error deleting user: ' + error);
+                                // Reset button state
+                                $('#confirmDeleteBtn').prop('disabled', false).html(`
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                    Yes, Delete User
+                                `);
+                                closeDeleteModal();
+                            }
+                        });
+                    }
+                });
+                
+                function closeDeleteModal() {
+                    $('#deleteConfirmationModal').fadeOut(300, function() {
+                        $(this).addClass('hidden');
+                        $('body').removeClass('overflow-hidden');
+                        userIdToDelete = null;
+                    });
+                }
+
+                // Initialize on page load
+                updateCounter({{ $users->count() }}, '');
+            });
 
             // Search functionality
             document.getElementById('searchInput').addEventListener('input', function() {
@@ -487,8 +622,23 @@
             document.addEventListener('DOMContentLoaded', function() {
                 updateCounter({{ $users->count() }}, '');
             });
-
-            // deleteUser function here (commented out as per original)
         </script>
+
+        <style>
+            /* Loading spinner animation */
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            
+            .animate-spin {
+                animation: spin 1s linear infinite;
+            }
+            
+            /* Prevent body scroll when modal is open */
+            body.overflow-hidden {
+                overflow: hidden;
+            }
+        </style>
     </x-slot>
 </x-app-layout>

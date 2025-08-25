@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="theme-app p-4 sm:p-6 rounded-lg shadow-sm" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 lg:mr-24">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
                     <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-0">
                         <div class="p-2 rounded-lg shadow-md" style="background-color: var(--hover-bg);">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6" style="color: var(--primary-text);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </div>
-                        <h2 class="font-bold text-xl sm:text-xl lg:text-2xl leading-tight" style="color: var(--primary-text);">
+                        <h2 class="font-bold text-xl sm:text-2xl leading-tight" style="color: var(--primary-text);">
                             Edit Role
                         </h2>
                     </div>
@@ -31,7 +31,7 @@
     </x-slot>
 
     <div class="py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
                 <div class="theme-app px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
                     <div class="flex items-center space-x-2 sm:space-x-3">
@@ -48,7 +48,7 @@
                 </div>
                 
                 <div class="p-4 sm:p-8">
-                    <form action="{{ route('roles.update', $role->id) }}" method="POST" class="space-y-4 sm:space-y-6">
+                    <form id="roleUpdateForm" action="{{ route('roles.update', $role->id) }}" method="POST" class="space-y-4 sm:space-y-6">
                         @csrf
                         
                         <!-- Role Name Section -->
@@ -144,7 +144,7 @@
                                                        class="permission-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
                                                 <div class="flex items-center space-x-1.5 sm:space-x-2">
                                                     <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
-                                                        <svg class="w-3.5 h-3.5 sm:w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
                                                         </svg>
                                                     </div>
@@ -200,12 +200,11 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
+                            <button type="button" id="updateRoleBtn"
                                     class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-base sm:text-lg"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'"
-                                    onclick="return confirmUpdate()">
+                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
@@ -218,13 +217,122 @@
         </div>
     </div>
 
-    <!-- Enhanced JavaScript for select all functionality and Search -->
-    <script>
-        function confirmUpdate() {
-            return confirm('Are you sure? All permissions will be removed from it.');
-        }
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         
-        document.addEventListener('DOMContentLoaded', function() {
+        <!-- Modal container - properly centered -->
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <!-- Modal panel -->
+            <div class="relative bg-white rounded-lg shadow-xl transform transition-all w-full max-w-lg mx-auto">
+                <div class="px-4 pt-5 pb-4 sm:p-6">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Confirm Role Update
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    Are you sure you want to update this role? This action will immediately affect all users assigned to this role and their permissions will be updated accordingly.
+                                </p>
+                            </div>
+                            <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-yellow-700">
+                                            <strong>Warning:</strong> This change cannot be undone and will take effect immediately.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="confirmUpdateBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                            Yes, Update Role
+                        </button>
+                        <button type="button" id="cancelUpdateBtn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript with jQuery Modal -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Custom confirmation modal functionality
+            $('#updateRoleBtn').on('click', function(e) {
+                e.preventDefault();
+                $('#confirmationModal').removeClass('hidden');
+                $('body').addClass('overflow-hidden');
+                
+                // Add fade-in animation
+                $('#confirmationModal').hide().fadeIn(300);
+            });
+            
+            // Close modal on cancel
+            $('#cancelUpdateBtn').on('click', function() {
+                closeModal();
+            });
+            
+            // Close modal on background click
+            $('#confirmationModal').on('click', function(e) {
+                if ($(e.target).hasClass('fixed') && $(e.target).hasClass('inset-0')) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal on ESC key
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && !$('#confirmationModal').hasClass('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            // Confirm update
+            $('#confirmUpdateBtn').on('click', function() {
+                // Add loading state
+                $(this).prop('disabled', true).html(`
+                    <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Updating...
+                `);
+                
+                // Submit the form
+                $('#roleUpdateForm').submit();
+            });
+            
+            function closeModal() {
+                $('#confirmationModal').fadeOut(300, function() {
+                    $(this).addClass('hidden');
+                    $('body').removeClass('overflow-hidden');
+                });
+            }
+            
+            // Original search and select functionality
             const selectAllCheckbox = document.getElementById('select-all');
             const searchInput = document.getElementById('permission-search');
             const permissionsGrid = document.getElementById('permissions-grid');
@@ -336,4 +444,40 @@
             searchInput.dispatchEvent(new Event('input'));
         }
     </script>
+
+    <style>
+        /* Custom animations for modal */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .animate-fadeOut {
+            animation: fadeOut 0.3s ease-in;
+        }
+        
+        /* Prevent body scroll when modal is open */
+        body.overflow-hidden {
+            overflow: hidden;
+        }
+        
+        /* Loading spinner animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
 </x-app-layout>
