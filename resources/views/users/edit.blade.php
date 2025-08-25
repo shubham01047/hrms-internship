@@ -53,10 +53,10 @@
                 
                 <!-- Reduced form content padding from p-4 sm:p-8 to p-2 sm:p-4 -->
                 <div class="p-2 sm:p-4">
-                    <form action="{{ route('users.update', $users->id) }}" method="POST" class="space-y-4 sm:space-y-8">
+                    <form id="userEditForm" action="{{ route('users.update', $users->id) }}" method="POST" class="space-y-4 sm:space-y-8">
                         @csrf
                         
-                         User Information Section 
+                        {{-- User Information Section --}}
                         <div class="bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200">
                             <div class="space-y-2 sm:space-y-4">
                                 <div class="flex items-center space-x-1.5 sm:space-x-2 mb-2 sm:mb-4">
@@ -83,6 +83,12 @@
                                                value="{{ old('name', $users->name) }}"
                                                placeholder="Enter full name"
                                                class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-white text-sm">
+                                        <div id="name-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                        </div>
                                         @error('name')
                                             <div class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
                                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,6 +115,12 @@
                                                value="{{ old('email', $users->email) }}"
                                                placeholder="Enter email address"
                                                class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-white text-sm">
+                                        <div id="email-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                        </div>
                                         @error('email')
                                             <div class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
                                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +134,7 @@
                             </div>
                         </div>
 
-                         Roles Assignment Section 
+                        {{-- Roles Assignment Section --}}
                         <div class="bg-blue-50 rounded-lg p-4 sm:p-6 border border-blue-200">
                             <div class="flex items-center space-x-1.5 sm:space-x-2 mb-4 sm:mb-6">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +153,7 @@
                                                        value="{{ $role->name }}"
                                                        id="role-{{ $role->id }}"
                                                        {{ $hasRoles->contains($role->id) ? 'checked' : '' }}
-                                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
+                                                       class="role-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all duration-200">
                                                 <div class="flex items-center space-x-1.5 sm:space-x-2">
                                                     <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
                                                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,6 +165,12 @@
                                             </label>
                                         </div>
                                     @endforeach
+                                </div>
+                                <div id="roles-error" class="hidden flex items-center space-x-2 mt-4 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="text-xs sm:text-sm text-red-600 font-medium">Please select at least one role for the user.</span>
                                 </div>
                             @else
                                 <div class="text-center py-6 sm:py-8">
@@ -180,7 +198,7 @@
                             </div>
                         </div>
                         
-                         Action Buttons 
+                        {{-- Action Buttons --}}
                         <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6 border-t border-gray-200">
                             <a href="{{ route('users.index') }}"
                                class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-4 py-3 sm:px-6 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-sm sm:text-base"
@@ -192,15 +210,16 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
-                                    class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-base sm:text-lg"
+                            <button type="submit" id="updateUserBtn"
+                                    class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                    onmouseout="this.style.backgroundColor='var(--hover-bg)'"
+                                    disabled>
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
-                                Update User
+                                <span id="button-text">No Changes Made</span>
                             </button>
                         </div>
                     </form>
@@ -208,4 +227,245 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript Validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('userEditForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const roleCheckboxes = document.querySelectorAll('.role-checkbox');
+            const submitBtn = document.getElementById('updateUserBtn');
+            const buttonText = document.getElementById('button-text');
+            
+            let isSubmitting = false;
+            
+            // Store original values for change detection
+            const originalValues = {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort()
+            };
+            
+            // Validation state
+            const validation = {
+                name: true, // Start as valid since we have existing data
+                email: true,
+                roles: true,
+                hasChanges: false
+            };
+            
+            // Validation functions
+            function validateName() {
+                const name = nameInput.value.trim();
+                const nameError = document.getElementById('name-error');
+                
+                if (!name) {
+                    showError(nameInput, nameError, 'Full name is required.');
+                    validation.name = false;
+                } else if (name.length < 2) {
+                    showError(nameInput, nameError, 'Name must be at least 2 characters long.');
+                    validation.name = false;
+                } else if (name.length > 100) {
+                    showError(nameInput, nameError, 'Name must not exceed 100 characters.');
+                    validation.name = false;
+                } else if (!/^[a-zA-Z\s\-'\.]+$/.test(name)) {
+                    showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens, and apostrophes.');
+                    validation.name = false;
+                } else {
+                    hideError(nameInput, nameError);
+                    validation.name = true;
+                    // Auto-format name
+                    nameInput.value = name.replace(/\s+/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+                
+                checkForChanges();
+                updateSubmitButton();
+            }
+            
+            function validateEmail() {
+                const email = emailInput.value.trim().toLowerCase();
+                const emailError = document.getElementById('email-error');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!email) {
+                    showError(emailInput, emailError, 'Email address is required.');
+                    validation.email = false;
+                } else if (!emailRegex.test(email)) {
+                    showError(emailInput, emailError, 'Please enter a valid email address.');
+                    validation.email = false;
+                } else if (email.length > 255) {
+                    showError(emailInput, emailError, 'Email address must not exceed 255 characters.');
+                    validation.email = false;
+                } else {
+                    hideError(emailInput, emailError);
+                    validation.email = true;
+                    // Auto-format email
+                    emailInput.value = email;
+                }
+                
+                checkForChanges();
+                updateSubmitButton();
+            }
+            
+            function validateRoles() {
+                const checkedRoles = Array.from(roleCheckboxes).filter(cb => cb.checked);
+                const rolesError = document.getElementById('roles-error');
+                
+                if (checkedRoles.length === 0) {
+                    rolesError.classList.remove('hidden');
+                    validation.roles = false;
+                } else {
+                    rolesError.classList.add('hidden');
+                    validation.roles = true;
+                }
+                
+                checkForChanges();
+                updateSubmitButton();
+            }
+            
+            function checkForChanges() {
+                const currentValues = {
+                    name: nameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort()
+                };
+                
+                const hasNameChange = currentValues.name !== originalValues.name;
+                const hasEmailChange = currentValues.email !== originalValues.email;
+                const hasRoleChanges = JSON.stringify(currentValues.roles) !== JSON.stringify(originalValues.roles);
+                
+                validation.hasChanges = hasNameChange || hasEmailChange || hasRoleChanges;
+            }
+            
+            function showError(input, errorElement, message) {
+                input.classList.remove('border-gray-300', 'border-green-500');
+                input.classList.add('border-red-500');
+                errorElement.querySelector('span').textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+            
+            function hideError(input, errorElement) {
+                input.classList.remove('border-red-500');
+                input.classList.add('border-green-500');
+                errorElement.classList.add('hidden');
+            }
+            
+            function updateSubmitButton() {
+                const allValid = validation.name && validation.email && validation.roles;
+                
+                if (!allValid) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    buttonText.textContent = 'Please Fix Errors';
+                } else if (!validation.hasChanges) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    buttonText.textContent = 'No Changes Made';
+                } else if (isSubmitting) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-75');
+                    // Keep loading text
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'opacity-75');
+                    buttonText.textContent = 'Update User';
+                }
+            }
+            
+            function scrollToFirstError() {
+                const firstError = document.querySelector('.border-red-500, .flex.items-center.space-x-2:not(.hidden)');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (firstError.tagName === 'INPUT' || firstError.tagName === 'SELECT' || firstError.tagName === 'TEXTAREA') {
+                        setTimeout(() => firstError.focus(), 500);
+                    }
+                }
+            }
+            
+            // Event listeners
+            nameInput.addEventListener('input', validateName);
+            nameInput.addEventListener('blur', validateName);
+            
+            emailInput.addEventListener('input', validateEmail);
+            emailInput.addEventListener('blur', validateEmail);
+            
+            roleCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Update visual style for role boxes
+                    const parentDiv = this.closest('.bg-white');
+                    if (this.checked) {
+                        parentDiv.classList.add('ring-2', 'ring-blue-200', 'bg-blue-50');
+                    } else {
+                        parentDiv.classList.remove('ring-2', 'ring-blue-200', 'bg-blue-50');
+                    }
+                    validateRoles();
+                });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (isSubmitting) return;
+                
+                // Validate all fields
+                validateName();
+                validateEmail();
+                validateRoles();
+                
+                const allValid = validation.name && validation.email && validation.roles;
+                
+                if (!allValid) {
+                    scrollToFirstError();
+                    return;
+                }
+                
+                if (!validation.hasChanges) {
+                    return;
+                }
+                
+                // Show loading state
+                isSubmitting = true;
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-75');
+                buttonText.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Updating User...
+                `;
+                
+                // Submit the form
+                setTimeout(() => {
+                    form.submit();
+                }, 500);
+            });
+            
+            // Initial validation and change detection
+            validateName();
+            validateEmail();
+            validateRoles();
+            checkForChanges();
+            updateSubmitButton();
+        });
+    </script>
+
+    <style>
+        /* Loading spinner animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Smooth transitions for form elements */
+        input, select, textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
 </x-app-layout>
