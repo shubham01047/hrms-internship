@@ -87,9 +87,11 @@
                                 <h2 class="text-lg sm:text-xl font-bold" style="color: var(--primary-bg);">{{ $project->title }}</h2>
                             </div>
                             <p class="text-sm mb-3" style="color: var(--secondary-bg);"><span class="font-medium">👤 Client:</span> {{ $project->client_name ?: 'Not specified' }}</p>
-                            @if($project->budget)
+                           @can('view project budget')
+                                @if($project->budget)
                                 <p class="text-sm mb-3" style="color: var(--secondary-bg);"><span class="font-medium">💰 Budget:</span> <span class="font-bold" style="color: var(--hover-bg);">₹{{ number_format($project->budget, 2) }}</span></p>
                             @endif
+                           @endcan
                             <div class="mb-4">
                                 <h3 class="text-sm font-semibold mb-2" style="color: var(--primary-bg);">Project Description</h3>
                                 <div class="bg-white bg-opacity-70 p-3 rounded border text-sm" style="color: var(--secondary-bg);">{{ $project->description ?: 'No description provided' }}</div>
