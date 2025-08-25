@@ -51,7 +51,7 @@
                 
                 {{-- Reduced form content padding --}}
                 <div class="p-2 sm:p-4">
-                    <form action="{{ route('permissions.update', $permission->id) }}" method="POST" class="space-y-4 sm:space-y-6">
+                    <form id="editPermissionForm" action="{{ route('permissions.update', $permission->id) }}" method="POST" class="space-y-4 sm:space-y-6" novalidate>
                         @csrf
                         
                         <div class="space-y-2">
@@ -69,7 +69,18 @@
                                    id="name"
                                    value="{{ old('name', $permission->name) }}"
                                    placeholder="Enter permission name (e.g., create users, edit posts)"
-                                   class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm">
+                                   class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm"
+                                   required>
+                            
+                            <!-- Client-side validation error display -->
+                            <div id="nameError" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <span id="nameErrorText" class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                            </div>
+
+                            <!-- Server-side validation error display -->
                             @error('name')
                                 <div class="flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +113,7 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
+                            <button type="submit" id="submitBtn"
                                     class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-2.5 sm:px-8 sm:py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-sm"
                                     style="background-color: var(--hover-bg); color: var(--primary-text);"
                                     onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
@@ -110,7 +121,13 @@
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
-                                Update Permission
+                                <span id="submitBtnText">Update Permission</span>
+                                <div id="submitSpinner" class="hidden ml-2">
+                                    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </div>
                             </button>
                         </div>
                     </form>
@@ -118,4 +135,243 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript Validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('editPermissionForm');
+            const nameInput = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            const nameErrorText = document.getElementById('nameErrorText');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            const submitSpinner = document.getElementById('submitSpinner');
+
+            // Validation rules
+            const validationRules = {
+                name: {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 100,
+                    pattern: /^[a-zA-Z0-9\s_-]+$/,
+                    customValidation: function(value) {
+                        // Check for reserved words
+                        const reservedWords = ['admin', 'root', 'system', 'null', 'undefined'];
+                        const lowerValue = value.toLowerCase().trim();
+                        
+                        if (reservedWords.includes(lowerValue)) {
+                            return 'This permission name is reserved and cannot be used.';
+                        }
+                        
+                        // Check for consecutive spaces or special characters
+                        if (/\s{2,}/.test(value)) {
+                            return 'Permission name cannot contain consecutive spaces.';
+                        }
+                        
+                        // Check if starts or ends with space/underscore/hyphen
+                        if (/^[\s_-]|[\s_-]$/.test(value)) {
+                            return 'Permission name cannot start or end with spaces, underscores, or hyphens.';
+                        }
+                        
+                        return null;
+                    }
+                }
+            };
+
+            // Validation function
+            function validateField(fieldName, value) {
+                const rules = validationRules[fieldName];
+                if (!rules) return { isValid: true, message: '' };
+
+                // Required validation
+                if (rules.required && (!value || value.trim() === '')) {
+                    return { isValid: false, message: 'Permission name is required.' };
+                }
+
+                // Skip other validations if field is empty and not required
+                if (!value || value.trim() === '') {
+                    return { isValid: true, message: '' };
+                }
+
+                const trimmedValue = value.trim();
+
+                // Length validation
+                if (rules.minLength && trimmedValue.length < rules.minLength) {
+                    return { isValid: false, message: `Permission name must be at least ${rules.minLength} characters long.` };
+                }
+
+                if (rules.maxLength && trimmedValue.length > rules.maxLength) {
+                    return { isValid: false, message: `Permission name cannot exceed ${rules.maxLength} characters.` };
+                }
+
+                // Pattern validation
+                if (rules.pattern && !rules.pattern.test(trimmedValue)) {
+                    return { isValid: false, message: 'Permission name can only contain letters, numbers, spaces, underscores, and hyphens.' };
+                }
+
+                // Custom validation
+                if (rules.customValidation) {
+                    const customError = rules.customValidation(trimmedValue);
+                    if (customError) {
+                        return { isValid: false, message: customError };
+                    }
+                }
+
+                return { isValid: true, message: '' };
+            }
+
+            // Show error function
+            function showError(errorElement, errorTextElement, message) {
+                errorTextElement.textContent = message;
+                errorElement.classList.remove('hidden');
+                errorElement.classList.add('animate-pulse');
+                setTimeout(() => {
+                    errorElement.classList.remove('animate-pulse');
+                }, 500);
+            }
+
+            // Hide error function
+            function hideError(errorElement) {
+                errorElement.classList.add('hidden');
+            }
+
+            // Update input styling
+            function updateInputStyling(input, isValid) {
+                if (isValid) {
+                    input.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                    input.classList.add('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                } else {
+                    input.classList.remove('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                    input.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                }
+            }
+
+            // Real-time validation for name field
+            nameInput.addEventListener('input', function() {
+                const validation = validateField('name', this.value);
+                
+                if (validation.isValid) {
+                    hideError(nameError);
+                    updateInputStyling(nameInput, true);
+                } else {
+                    showError(nameError, nameErrorText, validation.message);
+                    updateInputStyling(nameInput, false);
+                }
+            });
+
+            // Blur validation (when user leaves the field)
+            nameInput.addEventListener('blur', function() {
+                const validation = validateField('name', this.value);
+                
+                if (!validation.isValid) {
+                    showError(nameError, nameErrorText, validation.message);
+                    updateInputStyling(nameInput, false);
+                }
+            });
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate all fields
+                const nameValidation = validateField('name', nameInput.value);
+                
+                let isFormValid = true;
+
+                // Show validation errors
+                if (!nameValidation.isValid) {
+                    showError(nameError, nameErrorText, nameValidation.message);
+                    updateInputStyling(nameInput, false);
+                    isFormValid = false;
+                } else {
+                    hideError(nameError);
+                    updateInputStyling(nameInput, true);
+                }
+
+                // If form is valid, show loading state and submit
+                if (isFormValid) {
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitBtnText.textContent = 'Updating...';
+                    submitSpinner.classList.remove('hidden');
+                    
+                    // Add a small delay to show the loading state
+                    setTimeout(() => {
+                        form.submit();
+                    }, 500);
+                } else {
+                    // Focus on first invalid field
+                    nameInput.focus();
+                    
+                    // Shake animation for submit button
+                    submitBtn.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        submitBtn.classList.remove('animate-pulse');
+                    }, 500);
+                }
+            });
+
+            // Prevent double submission
+            let isSubmitting = false;
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return false;
+                }
+                isSubmitting = true;
+            });
+
+            // Auto-format permission name (convert to lowercase with proper spacing)
+            nameInput.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    // Clean up the value: trim, convert multiple spaces to single space
+                    let cleanValue = this.value.trim().replace(/\s+/g, ' ');
+                    
+                    // Convert to lowercase for consistency (optional - remove if you want to preserve case)
+                    // cleanValue = cleanValue.toLowerCase();
+                    
+                    this.value = cleanValue;
+                    
+                    // Trigger validation after formatting
+                    const validation = validateField('name', this.value);
+                    if (!validation.isValid) {
+                        showError(nameError, nameErrorText, validation.message);
+                        updateInputStyling(nameInput, false);
+                    }
+                }
+            });
+
+            // Character counter (optional enhancement)
+            nameInput.addEventListener('input', function() {
+                const maxLength = validationRules.name.maxLength;
+                const currentLength = this.value.length;
+                
+                // You can add a character counter display here if needed
+                if (currentLength > maxLength * 0.8) {
+                    // Warn when approaching limit
+                    this.style.borderColor = '#f59e0b'; // amber
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .animate-pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </x-app-layout>

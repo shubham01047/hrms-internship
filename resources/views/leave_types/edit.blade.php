@@ -60,35 +60,60 @@
                     <p class="text-xs sm:text-sm" style="color: var(--secondary-text);">Fields marked with an asterisk are required</p>
                 </div>
 
-                <form action="{{ route('leave-types.update', $leaveType) }}" method="POST" class="p-3 sm:p-4 md:p-6 space-y-5 sm:space-y-6">
+                <!-- Added form validation with novalidate and onsubmit handler -->
+                <form action="{{ route('leave-types.update', $leaveType) }}" method="POST" class="p-3 sm:p-4 md:p-6 space-y-5 sm:space-y-6" id="leaveTypeForm" novalidate onsubmit="return validateForm()">
                     @csrf
                     @method('PUT')
 
                     <div class="grid grid-cols-1 gap-5 sm:gap-6">
                         <div>
-                            <label for="name" class="block text-sm font-medium mb-1 text-gray-800">Name <span class="text-red-500">*</span></label>
+                            <label for="name" class="block text-sm font-medium mb-1 text-gray-800">
+                                Name <span class="text-red-500">*</span>
+                            </label>
+                            <!-- Added validation attributes and error styling -->
                             <input
                                 id="name"
                                 type="text"
                                 name="name"
                                 value="{{ old('name', $leaveType->name) }}"
                                 required
-                                class="w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                minlength="2"
+                                maxlength="100"
+                                pattern="^[a-zA-Z0-9\s\-_.,()]+$"
+                                class="w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 @error('name') border-red-500 @enderror"
                                 style="border-color: var(--primary-border); --tw-ring-color: var(--hover-bg);"
                                 placeholder="e.g., Sick Leave, Casual Leave"
+                                oninput="validateName()"
                             >
+                            <!-- Added client-side error message -->
+                            <div id="nameError" class="text-red-500 text-sm mt-1 hidden"></div>
+                            @error('name')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div>
-                            <label for="description" class="block text-sm font-medium mb-1 text-gray-800">Description</label>
+                            <label for="description" class="block text-sm font-medium mb-1 text-gray-800">
+                                Description
+                                <!-- Added character counter -->
+                                <span class="text-gray-500 text-xs ml-1">(<span id="charCount">0</span>/500 characters)</span>
+                            </label>
+                            <!-- Added validation attributes and character counter -->
                             <textarea
                                 id="description"
                                 name="description"
                                 rows="4"
-                                class="w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                maxlength="500"
+                                class="w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 @error('description') border-red-500 @enderror"
                                 style="border-color: var(--primary-border); --tw-ring-color: var(--hover-bg);"
                                 placeholder="Add a short description (optional)"
+                                oninput="updateCharCount()"
                             >{{ old('description', $leaveType->description) }}</textarea>
+                            <!-- Added client-side error message -->
+                            <div id="descriptionError" class="text-red-500 text-sm mt-1 hidden"></div>
+                            @error('description')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -112,4 +137,96 @@
             </div>
         </div>
     </div>
+
+    <!-- Added client-side validation JavaScript -->
+    <script>
+        function validateName() {
+            const nameInput = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            const name = nameInput.value.trim();
+            
+            nameError.classList.add('hidden');
+            nameInput.classList.remove('border-red-500');
+            
+            if (name.length === 0) {
+                showError(nameInput, nameError, 'Leave type name is required.');
+                return false;
+            }
+            
+            if (name.length < 2) {
+                showError(nameInput, nameError, 'Name must be at least 2 characters long.');
+                return false;
+            }
+            
+            if (name.length > 100) {
+                showError(nameInput, nameError, 'Name cannot exceed 100 characters.');
+                return false;
+            }
+            
+            const pattern = /^[a-zA-Z0-9\s\-_.,()]+$/;
+            if (!pattern.test(name)) {
+                showError(nameInput, nameError, 'Name can only contain letters, numbers, spaces, and basic punctuation.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function validateDescription() {
+            const descInput = document.getElementById('description');
+            const descError = document.getElementById('descriptionError');
+            const description = descInput.value.trim();
+            
+            descError.classList.add('hidden');
+            descInput.classList.remove('border-red-500');
+            
+            if (description.length > 500) {
+                showError(descInput, descError, 'Description cannot exceed 500 characters.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function updateCharCount() {
+            const description = document.getElementById('description').value;
+            const charCount = document.getElementById('charCount');
+            charCount.textContent = description.length;
+            
+            if (description.length > 450) {
+                charCount.style.color = '#ef4444';
+            } else {
+                charCount.style.color = '#6b7280';
+            }
+            
+            validateDescription();
+        }
+        
+        function showError(input, errorDiv, message) {
+            input.classList.add('border-red-500');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+        
+        function validateForm() {
+            const isNameValid = validateName();
+            const isDescValid = validateDescription();
+            
+            if (!isNameValid || !isDescValid) {
+                const firstError = document.querySelector('.border-red-500');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Initialize character count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCharCount();
+        });
+    </script>
 </x-app-layout>

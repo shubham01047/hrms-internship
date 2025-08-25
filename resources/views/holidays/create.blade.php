@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="p-4 sm:p-6">
-                        <form action="{{ route('holidays.store') }}" method="POST" class="space-y-6">
+                        <form action="{{ route('holidays.store') }}" method="POST" class="space-y-6" id="holidayForm" novalidate>
                             @csrf
 
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -78,9 +78,20 @@
                                             name="title"
                                             value="{{ old('title') }}"
                                             required
+                                            minlength="2"
+                                            maxlength="100"
+                                            pattern="^[a-zA-Z0-9\s\-\'\.\,$$$$]+$"
                                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm"
                                             placeholder="e.g., Christmas Day, Independence Day"
                                         />
+                                        <!-- Added client-side validation error display -->
+                                        <div id="title-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span class="text-sm text-red-600 font-medium" id="title-error-text"></span>
+                                        </div>
                                         @error('title')
                                             <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                                 <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,8 +117,18 @@
                                             name="date"
                                             value="{{ old('date') }}"
                                             required
+                                            min="{{ date('Y-m-d') }}"
+                                            max="{{ date('Y-m-d', strtotime('+5 years')) }}"
                                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm"
                                         />
+                                        <!-- Added client-side validation error display -->
+                                        <div id="date-error" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span class="text-sm text-red-600 font-medium" id="date-error-text"></span>
+                                        </div>
                                         @error('date')
                                             <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                                 <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,16 +226,21 @@
                                     id="description"
                                     name="description"
                                     rows="4"
+                                    maxlength="500"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white text-sm resize-none"
                                     placeholder="Add any additional details about this holiday..."
                                 >{{ old('description') }}</textarea>
-                                <p class="text-xs text-gray-500 flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Provide context or significance of this holiday
-                                </p>
+                                <!-- Added character counter -->
+                                <div class="flex justify-between items-center">
+                                    <p class="text-xs text-gray-500 flex items-center">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Provide context or significance of this holiday
+                                    </p>
+                                    <span id="description-counter" class="text-xs text-gray-500">0/500</span>
+                                </div>
                                 @error('description')
                                     <div class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                                         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,6 +273,7 @@
                                     </a>
 
                                     <button type="submit"
+                                            id="submitBtn"
                                             class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 font-semibold rounded-lg shadow-lg hover:scale-[1.02] transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                                             style="background-color: var(--hover-bg); color: var(--primary-text);"
                                             onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
@@ -266,4 +293,131 @@
             </div>
         </div>
     @endcan
+
+    <!-- Added comprehensive client-side validation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('holidayForm');
+            const titleInput = document.getElementById('title');
+            const dateInput = document.getElementById('date');
+            const descriptionInput = document.getElementById('description');
+            const descriptionCounter = document.getElementById('description-counter');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validation functions
+            function validateTitle() {
+                const value = titleInput.value.trim();
+                const titleError = document.getElementById('title-error');
+                const titleErrorText = document.getElementById('title-error-text');
+                
+                if (!value) {
+                    showError(titleInput, titleError, titleErrorText, 'Holiday title is required');
+                    return false;
+                } else if (value.length < 2) {
+                    showError(titleInput, titleError, titleErrorText, 'Holiday title must be at least 2 characters');
+                    return false;
+                } else if (value.length > 100) {
+                    showError(titleInput, titleError, titleErrorText, 'Holiday title cannot exceed 100 characters');
+                    return false;
+                } else if (!/^[a-zA-Z0-9\s\-\'\.\,$$$$]+$/.test(value)) {
+                    showError(titleInput, titleError, titleErrorText, 'Holiday title contains invalid characters');
+                    return false;
+                } else {
+                    hideError(titleInput, titleError);
+                    return true;
+                }
+            }
+
+            function validateDate() {
+                const value = dateInput.value;
+                const dateError = document.getElementById('date-error');
+                const dateErrorText = document.getElementById('date-error-text');
+                const today = new Date().toISOString().split('T')[0];
+                const maxDate = new Date();
+                maxDate.setFullYear(maxDate.getFullYear() + 5);
+                const maxDateStr = maxDate.toISOString().split('T')[0];
+                
+                if (!value) {
+                    showError(dateInput, dateError, dateErrorText, 'Holiday date is required');
+                    return false;
+                } else if (value < today) {
+                    showError(dateInput, dateError, dateErrorText, 'Holiday date cannot be in the past');
+                    return false;
+                } else if (value > maxDateStr) {
+                    showError(dateInput, dateError, dateErrorText, 'Holiday date cannot be more than 5 years in the future');
+                    return false;
+                } else {
+                    hideError(dateInput, dateError);
+                    return true;
+                }
+            }
+
+            function validateDescription() {
+                const value = descriptionInput.value;
+                if (value.length > 500) {
+                    descriptionInput.value = value.substring(0, 500);
+                }
+                updateDescriptionCounter();
+                return true;
+            }
+
+            function updateDescriptionCounter() {
+                const count = descriptionInput.value.length;
+                descriptionCounter.textContent = `${count}/500`;
+                descriptionCounter.className = count > 450 ? 'text-xs text-red-500' : 'text-xs text-gray-500';
+            }
+
+            function showError(input, errorDiv, errorText, message) {
+                input.classList.add('border-red-500', 'bg-red-50');
+                input.classList.remove('border-gray-300');
+                errorDiv.classList.remove('hidden');
+                errorText.textContent = message;
+            }
+
+            function hideError(input, errorDiv) {
+                input.classList.remove('border-red-500', 'bg-red-50');
+                input.classList.add('border-gray-300');
+                errorDiv.classList.add('hidden');
+            }
+
+            function validateForm() {
+                const isTitleValid = validateTitle();
+                const isDateValid = validateDate();
+                const isDescriptionValid = validateDescription();
+                
+                return isTitleValid && isDateValid && isDescriptionValid;
+            }
+
+            // Event listeners
+            titleInput.addEventListener('input', validateTitle);
+            titleInput.addEventListener('blur', validateTitle);
+            
+            dateInput.addEventListener('change', validateDate);
+            dateInput.addEventListener('blur', validateDate);
+            
+            descriptionInput.addEventListener('input', validateDescription);
+            
+            // Initialize description counter
+            updateDescriptionCounter();
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                if (!validateForm()) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        firstError.focus();
+                    }
+                    
+                    return false;
+                }
+            });
+        });
+    </script>
 </x-app-layout>

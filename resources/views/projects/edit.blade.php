@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="p-4 sm:p-6">
-                    <form method="POST" action="{{ route('projects.update', $project->id) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('projects.update', $project->id) }}" class="space-y-6" id="projectEditForm">
                         @csrf
                         @method('PUT')
 
@@ -75,8 +75,15 @@
                                 </div>
                             </label>
                             <input type="text" name="title" id="title" value="{{ $project->title }}" required
+                                minlength="2" maxlength="200"
                                 placeholder="Enter project title..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="titleError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="titleErrorText"></span>
+                            </div>
                             @error('title')
                                 <div
                                     class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -103,8 +110,14 @@
                                 </div>
                             </label>
                             <input type="text" name="client_name" id="client_name"
-                                value="{{ $project->client_name }}" placeholder="Enter client name..."
+                                value="{{ $project->client_name }}" maxlength="100" placeholder="Enter client name..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="clientError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="clientErrorText"></span>
+                            </div>
                         </div>
 
                         <div class="space-y-2">
@@ -120,8 +133,14 @@
                                 </div>
                             </label>
                             <input type="number" name="budget" id="budget" value="{{ $project->budget }}"
-                                step="0.01" placeholder="Enter project budget..."
+                                step="0.01" min="0" max="999999999.99" placeholder="Enter project budget..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="budgetError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="budgetErrorText"></span>
+                            </div>
                         </div>
 
                         <div class="space-y-2">
@@ -139,7 +158,14 @@
                             <input type="date" name="deadline" id="deadline"
                                 value="{{ $project->deadline ? \Carbon\Carbon::parse($project->deadline)->format('Y-m-d') : '' }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <div id="deadlineError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="deadlineErrorText"></span>
+                            </div>
                         </div>
+                        
                         <div class="space-y-2">
                             <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
                                 <div class="flex items-center space-x-2">
@@ -151,8 +177,19 @@
                                     <span>Description</span>
                                 </div>
                             </label>
-                            <textarea name="description" id="description" rows="5" placeholder="Enter project description..."
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none">{{ $project->description }}</textarea>
+                            <div class="relative">
+                                <textarea name="description" id="description" rows="5" maxlength="1000" placeholder="Enter project description..."
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none">{{ $project->description }}</textarea>
+                                <div class="absolute bottom-2 right-2 text-xs text-gray-500">
+                                    <span id="descriptionCount">{{ strlen($project->description ?? '') }}</span>/1000
+                                </div>
+                            </div>
+                            <div id="descriptionError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm text-red-600 font-medium" id="descriptionErrorText"></span>
+                            </div>
                         </div>
 
                         <div class="space-y-2">
@@ -193,7 +230,7 @@
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit"
+                            <button type="submit" id="submitBtn"
                                 class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-8 py-3 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                                 style="background-color: var(--hover-bg); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
@@ -211,4 +248,169 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('projectEditForm');
+            const titleInput = document.getElementById('title');
+            const clientInput = document.getElementById('client_name');
+            const budgetInput = document.getElementById('budget');
+            const deadlineInput = document.getElementById('deadline');
+            const descriptionInput = document.getElementById('description');
+            const descriptionCount = document.getElementById('descriptionCount');
+
+            // Set date constraints
+            const today = new Date().toISOString().split('T')[0];
+            const maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() + 5);
+            deadlineInput.setAttribute('min', today);
+            deadlineInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+
+            // Validation functions
+            function validateTitle() {
+                const value = titleInput.value.trim();
+                const titleError = document.getElementById('titleError');
+                const titleErrorText = document.getElementById('titleErrorText');
+                
+                if (!value) {
+                    showError(titleInput, titleError, titleErrorText, 'Project title is required');
+                    return false;
+                } else if (value.length < 2) {
+                    showError(titleInput, titleError, titleErrorText, 'Project title must be at least 2 characters');
+                    return false;
+                } else if (value.length > 200) {
+                    showError(titleInput, titleError, titleErrorText, 'Project title must not exceed 200 characters');
+                    return false;
+                } else if (!/^[a-zA-Z0-9\s\-_.,!?()&]+$/.test(value)) {
+                    showError(titleInput, titleError, titleErrorText, 'Project title contains invalid characters');
+                    return false;
+                } else {
+                    hideError(titleInput, titleError);
+                    return true;
+                }
+            }
+
+            function validateClient() {
+                const value = clientInput.value.trim();
+                const clientError = document.getElementById('clientError');
+                const clientErrorText = document.getElementById('clientErrorText');
+                
+                if (value && value.length > 100) {
+                    showError(clientInput, clientError, clientErrorText, 'Client name must not exceed 100 characters');
+                    return false;
+                } else if (value && !/^[a-zA-Z0-9\s\-_.,!?()&]+$/.test(value)) {
+                    showError(clientInput, clientError, clientErrorText, 'Client name contains invalid characters');
+                    return false;
+                } else {
+                    hideError(clientInput, clientError);
+                    return true;
+                }
+            }
+
+            function validateBudget() {
+                const value = budgetInput.value;
+                const budgetError = document.getElementById('budgetError');
+                const budgetErrorText = document.getElementById('budgetErrorText');
+                
+                if (value && (isNaN(value) || parseFloat(value) < 0)) {
+                    showError(budgetInput, budgetError, budgetErrorText, 'Budget must be a positive number');
+                    return false;
+                } else if (value && parseFloat(value) > 999999999.99) {
+                    showError(budgetInput, budgetError, budgetErrorText, 'Budget cannot exceed 999,999,999.99');
+                    return false;
+                } else {
+                    hideError(budgetInput, budgetError);
+                    return true;
+                }
+            }
+
+            function validateDeadline() {
+                const value = deadlineInput.value;
+                const deadlineError = document.getElementById('deadlineError');
+                const deadlineErrorText = document.getElementById('deadlineErrorText');
+                
+                if (value) {
+                    const selectedDate = new Date(value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (selectedDate < today) {
+                        showError(deadlineInput, deadlineError, deadlineErrorText, 'Deadline cannot be in the past');
+                        return false;
+                    } else {
+                        hideError(deadlineInput, deadlineError);
+                        return true;
+                    }
+                } else {
+                    hideError(deadlineInput, deadlineError);
+                    return true;
+                }
+            }
+
+            function validateDescription() {
+                const value = descriptionInput.value;
+                const descriptionError = document.getElementById('descriptionError');
+                const descriptionErrorText = document.getElementById('descriptionErrorText');
+                
+                descriptionCount.textContent = value.length;
+                
+                if (value.length > 1000) {
+                    showError(descriptionInput, descriptionError, descriptionErrorText, 'Description must not exceed 1000 characters');
+                    return false;
+                } else {
+                    hideError(descriptionInput, descriptionError);
+                    return true;
+                }
+            }
+
+            function showError(input, errorDiv, errorText, message) {
+                input.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                input.classList.remove('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                errorDiv.classList.remove('hidden');
+                errorText.textContent = message;
+            }
+
+            function hideError(input, errorDiv) {
+                input.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                input.classList.add('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                errorDiv.classList.add('hidden');
+            }
+
+            // Real-time validation
+            titleInput.addEventListener('input', validateTitle);
+            titleInput.addEventListener('blur', validateTitle);
+            
+            clientInput.addEventListener('input', validateClient);
+            clientInput.addEventListener('blur', validateClient);
+            
+            budgetInput.addEventListener('input', validateBudget);
+            budgetInput.addEventListener('blur', validateBudget);
+            
+            deadlineInput.addEventListener('change', validateDeadline);
+            deadlineInput.addEventListener('blur', validateDeadline);
+            
+            descriptionInput.addEventListener('input', validateDescription);
+            descriptionInput.addEventListener('blur', validateDescription);
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                const isTitleValid = validateTitle();
+                const isClientValid = validateClient();
+                const isBudgetValid = validateBudget();
+                const isDeadlineValid = validateDeadline();
+                const isDescriptionValid = validateDescription();
+
+                if (!isTitleValid || !isClientValid || !isBudgetValid || !isDeadlineValid || !isDescriptionValid) {
+                    e.preventDefault();
+                    
+                    // Scroll to first error
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>

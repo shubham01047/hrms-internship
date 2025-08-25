@@ -72,7 +72,7 @@
             @endif
 
             <form action="{{ route('company.update', $company->id) }}" method="POST" enctype="multipart/form-data"
-                class="space-y-6">
+                class="space-y-6" id="companyForm" novalidate>
                 @csrf
                 @method('PUT')
 
@@ -104,14 +104,22 @@
                                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
                                         </path>
                                     </svg>
-                                    Company Name
+                                    Company Name <span class="text-red-500">*</span>
                                 </label>
+                                <!-- Added required, minlength, maxlength, and pattern validation -->
                                 <input type="text" name="company_name"
                                     value="{{ old('company_name', $company->company_name) }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('company_name') border-red-500 @enderror">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('company_name') border-red-500 @enderror"
+                                    required
+                                    minlength="2"
+                                    maxlength="100"
+                                    pattern="[a-zA-Z0-9\s\-&.,']+"
+                                    title="Company name must be 2-100 characters and contain only letters, numbers, spaces, and common punctuation">
                                 @error('company_name')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
+                                <!-- Added validation feedback div -->
+                                <div class="validation-feedback text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-medium mb-2">
@@ -121,14 +129,21 @@
                                             d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
                                         </path>
                                     </svg>
-                                    System Title
+                                    System Title <span class="text-red-500">*</span>
                                 </label>
+                                <!-- Added required, minlength, maxlength validation -->
                                 <input type="text" name="system_title"
                                     value="{{ old('system_title', $company->system_title) }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('system_title') border-red-500 @enderror">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('system_title') border-red-500 @enderror"
+                                    required
+                                    minlength="2"
+                                    maxlength="50"
+                                    title="System title must be 2-50 characters">
                                 @error('system_title')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
+                                <!-- Added validation feedback div -->
+                                <div class="validation-feedback text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                         </div>
                         <div>
@@ -140,11 +155,20 @@
                                 </svg>
                                 Company Description
                             </label>
+                            <!-- Added maxlength validation -->
                             <textarea name="company_description" rows="4"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('company_description') border-red-500 @enderror">{{ old('company_description', $company->company_description) }}</textarea>
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 @error('company_description') border-red-500 @enderror"
+                                maxlength="1000"
+                                title="Description must not exceed 1000 characters">{{ old('company_description', $company->company_description) }}</textarea>
                             @error('company_description')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
+                            <!-- Added character counter -->
+                            <div class="text-sm text-gray-500 mt-1">
+                                <span id="descriptionCount">{{ strlen($company->company_description ?? '') }}</span>/1000 characters
+                            </div>
+                            <!-- Added validation feedback div -->
+                            <div class="validation-feedback text-red-500 text-sm mt-1 hidden"></div>
                         </div>
                         <div>
                             <label class="block text-gray-700 font-medium mb-2">
@@ -165,11 +189,18 @@
                                     </div>
                                 </div>
                             @endif
-                            <input type="file" name="company_logo" accept="image/*"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 @error('company_logo') border-red-500 @enderror">
+                            <!-- Added file type and size validation -->
+                            <input type="file" name="company_logo" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 @error('company_logo') border-red-500 @enderror"
+                                data-max-size="5242880"
+                                title="Please select an image file (JPEG, PNG, GIF, WebP) under 5MB">
                             @error('company_logo')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
+                            <!-- Added file validation info -->
+                            <p class="text-sm text-gray-500 mt-1">Accepted formats: JPEG, PNG, GIF, WebP. Maximum size: 5MB</p>
+                            <!-- Added validation feedback div -->
+                            <div class="validation-feedback text-red-500 text-sm mt-1 hidden"></div>
                         </div>
                         <div class="office-timing-row">
                             @php
@@ -192,12 +223,13 @@
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
-                                        Office Timings:
+                                        Office Timings: <span class="text-red-500">*</span>
                                     </label>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                                         <div>
-                                            <label class="block text-sm text-gray-600 mb-1">From Day</label>
-                                            <select name="timings[{{ $index }}][day_from]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                            <label class="block text-sm text-gray-600 mb-1">From Day <span class="text-red-500">*</span></label>
+                                            <!-- Added required validation -->
+                                            <select name="timings[{{ $index }}][day_from]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
                                                 @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
                                                     <option value="{{ $day }}" {{ $row['day_from'] == $day ? 'selected' : '' }}>
                                                         {{ ucfirst($day) }}
@@ -206,8 +238,9 @@
                                             </select>
                                         </div>
                                         <div>
-                                            <label class="block text-sm text-gray-600 mb-1">To Day</label>
-                                            <select name="timings[{{ $index }}][day_to]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                            <label class="block text-sm text-gray-600 mb-1">To Day <span class="text-red-500">*</span></label>
+                                            <!-- Added required validation -->
+                                            <select name="timings[{{ $index }}][day_to]" class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
                                                 @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
                                                     <option value="{{ $day }}" {{ $row['day_to'] == $day ? 'selected' : '' }}>
                                                         {{ ucfirst($day) }}
@@ -216,16 +249,20 @@
                                             </select>
                                         </div>
                                         <div>
-                                            <label class="block text-sm text-gray-600 mb-1">Start Time</label>
+                                            <label class="block text-sm text-gray-600 mb-1">Start Time <span class="text-red-500">*</span></label>
                                             <input type="time" name="timings[{{ $index }}][start]" value="{{ $row['start'] }}" 
                                                 class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
                                         </div>
                                         <div>
-                                            <label class="block text-sm text-gray-600 mb-1">End Time</label>
+                                            <label class="block text-sm text-gray-600 mb-1">End Time <span class="text-red-500">*</span></label>
+                                            <!-- Added data attribute for time validation -->
                                             <input type="time" name="timings[{{ $index }}][end]" value="{{ $row['end'] }}" 
-                                                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" required>
+                                                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" 
+                                                required data-start-time="timings[{{ $index }}][start]">
                                         </div>
                                     </div>
+                                    <!-- Added timing validation feedback -->
+                                    <div class="timing-validation-feedback text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                             @endforeach
                         </div>
@@ -403,5 +440,201 @@
             </form>
         </div>
     </div>
+
+    <!-- Added comprehensive JavaScript validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('companyForm');
+            const companyNameInput = document.querySelector('input[name="company_name"]');
+            const systemTitleInput = document.querySelector('input[name="system_title"]');
+            const descriptionTextarea = document.querySelector('textarea[name="company_description"]');
+            const logoInput = document.querySelector('input[name="company_logo"]');
+            const descriptionCount = document.getElementById('descriptionCount');
+
+            // Character counter for description
+            if (descriptionTextarea && descriptionCount) {
+                descriptionTextarea.addEventListener('input', function() {
+                    const currentLength = this.value.length;
+                    descriptionCount.textContent = currentLength;
+                    
+                    if (currentLength > 1000) {
+                        this.classList.add('border-red-500');
+                        showValidationError(this, 'Description cannot exceed 1000 characters');
+                    } else {
+                        this.classList.remove('border-red-500');
+                        hideValidationError(this);
+                    }
+                });
+            }
+
+            // File validation
+            if (logoInput) {
+                logoInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        // Check file size (5MB = 5242880 bytes)
+                        if (file.size > 5242880) {
+                            showValidationError(this, 'File size must be less than 5MB');
+                            this.value = '';
+                            return;
+                        }
+
+                        // Check file type
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                        if (!allowedTypes.includes(file.type)) {
+                            showValidationError(this, 'Please select a valid image file (JPEG, PNG, GIF, WebP)');
+                            this.value = '';
+                            return;
+                        }
+
+                        hideValidationError(this);
+                    }
+                });
+            }
+
+            // Real-time validation for text inputs
+            function validateInput(input, minLength, maxLength, pattern = null) {
+                input.addEventListener('input', function() {
+                    const value = this.value.trim();
+                    
+                    if (value.length === 0) {
+                        showValidationError(this, 'This field is required');
+                        return;
+                    }
+                    
+                    if (value.length < minLength) {
+                        showValidationError(this, `Minimum ${minLength} characters required`);
+                        return;
+                    }
+                    
+                    if (value.length > maxLength) {
+                        showValidationError(this, `Maximum ${maxLength} characters allowed`);
+                        return;
+                    }
+                    
+                    if (pattern && !pattern.test(value)) {
+                        showValidationError(this, 'Please enter a valid format');
+                        return;
+                    }
+                    
+                    hideValidationError(this);
+                });
+            }
+
+            // Apply validation to inputs
+            if (companyNameInput) {
+                validateInput(companyNameInput, 2, 100, /^[a-zA-Z0-9\s\-&.,']+$/);
+            }
+            
+            if (systemTitleInput) {
+                validateInput(systemTitleInput, 2, 50);
+            }
+
+            // Time validation
+            function validateTimings() {
+                const timingRows = document.querySelectorAll('.office-timing-row > div');
+                let isValid = true;
+
+                timingRows.forEach(row => {
+                    const startTimeInput = row.querySelector('input[type="time"][name*="[start]"]');
+                    const endTimeInput = row.querySelector('input[type="time"][name*="[end]"]');
+                    const feedbackDiv = row.querySelector('.timing-validation-feedback');
+
+                    if (startTimeInput && endTimeInput && feedbackDiv) {
+                        const startTime = startTimeInput.value;
+                        const endTime = endTimeInput.value;
+
+                        if (startTime && endTime) {
+                            if (startTime >= endTime) {
+                                feedbackDiv.textContent = 'End time must be after start time';
+                                feedbackDiv.classList.remove('hidden');
+                                startTimeInput.classList.add('border-red-500');
+                                endTimeInput.classList.add('border-red-500');
+                                isValid = false;
+                            } else {
+                                feedbackDiv.classList.add('hidden');
+                                startTimeInput.classList.remove('border-red-500');
+                                endTimeInput.classList.remove('border-red-500');
+                            }
+                        }
+                    }
+                });
+
+                return isValid;
+            }
+
+            // Add time validation listeners
+            document.querySelectorAll('input[type="time"]').forEach(timeInput => {
+                timeInput.addEventListener('change', validateTimings);
+            });
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                let isFormValid = true;
+
+                // Validate required fields
+                const requiredFields = form.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        showValidationError(field, 'This field is required');
+                        isFormValid = false;
+                    }
+                });
+
+                // Validate timings
+                if (!validateTimings()) {
+                    isFormValid = false;
+                }
+
+                // Validate file if selected
+                if (logoInput && logoInput.files[0]) {
+                    const file = logoInput.files[0];
+                    if (file.size > 5242880) {
+                        showValidationError(logoInput, 'File size must be less than 5MB');
+                        isFormValid = false;
+                    }
+                }
+
+                if (!isFormValid) {
+                    e.preventDefault();
+                    // Scroll to first error
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                }
+            });
+
+            // Helper functions
+            function showValidationError(input, message) {
+                input.classList.add('border-red-500');
+                const feedbackDiv = input.parentNode.querySelector('.validation-feedback');
+                if (feedbackDiv) {
+                    feedbackDiv.textContent = message;
+                    feedbackDiv.classList.remove('hidden');
+                }
+            }
+
+            function hideValidationError(input) {
+                input.classList.remove('border-red-500');
+                const feedbackDiv = input.parentNode.querySelector('.validation-feedback');
+                if (feedbackDiv) {
+                    feedbackDiv.classList.add('hidden');
+                }
+            }
+
+            // Color picker validation
+            document.querySelectorAll('input[type="color"]').forEach(colorInput => {
+                const textInput = colorInput.parentNode.querySelector('input[type="text"]');
+                
+                colorInput.addEventListener('change', function() {
+                    if (textInput) {
+                        textInput.value = this.value;
+                    }
+                });
+            });
+        });
+    </script>
 
 </x-app-layout>
