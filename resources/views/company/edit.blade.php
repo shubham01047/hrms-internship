@@ -345,7 +345,6 @@
                                             class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 border-gray-300 bg-transparent cursor-pointer">
                                         <input type="text"
                                             value="{{ old('footer_color', $company->footer_color ?? '#000000') }}"
-                                            readonly
                                             class="flex-1 px-2 py-2 sm:px-3 text-xs sm:text-sm bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
                                     </div>
                                 </div>

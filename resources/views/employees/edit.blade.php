@@ -182,6 +182,7 @@
                                     <option value="full_time" {{ $employee->employment_type === 'full_time' ? 'selected' : '' }}>Full Time</option>
                                     <option value="part_time" {{ $employee->employment_type === 'part_time' ? 'selected' : '' }}>Part Time</option>
                                     <option value="intern" {{ $employee->employment_type === 'intern' ? 'selected' : '' }}>Intern</option>
+                                    <option value="trainee" {{ $employee->employment_type === 'trainee' ? 'selected' : '' }}>Trainee</option>
                                 </select>
                             </div>
 
