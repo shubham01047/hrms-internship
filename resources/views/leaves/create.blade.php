@@ -148,7 +148,8 @@
                                 </select>
                                 @error('leave_type_id')
                                     <div
-                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+                                        id="leave-type-error">
                                         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -179,7 +180,8 @@
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
                                     @error('start_date')
                                         <div
-                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+                                            id="start-date-error">
                                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -208,7 +210,8 @@
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
                                     @error('end_date')
                                         <div
-                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                            class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+                                            id="end-date-error">
                                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -236,6 +239,18 @@
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                                     <p class="text-xs text-gray-500 mt-2">Accepted formats: JPG, JPEG, PNG, PDF (Max 5MB)</p>
                                 </div>
+                                @error('proof_sick')
+                                    <div
+                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+                                        id="medical-cert-error">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm text-red-600 font-medium">{{ $message }}</span>
+                                    </div>
+                                @enderror
                             </div>
 
                             <!-- Reason -->
@@ -257,7 +272,8 @@
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none"></textarea>
                                 @error('reason')
                                     <div
-                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        class="flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg"
+                                        id="reason-error">
                                         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -320,14 +336,24 @@
             </div>
         </div>
 
-        {{-- Added JavaScript validation for sick leave medical certificate requirement --}}
+        {{-- Updated JavaScript validation to use proper JS validation instead of required attributes --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const leaveTypeSelect = document.getElementById('leave_type_id');
                 const startDateInput = document.getElementById('start_date');
                 const endDateInput = document.getElementById('end_date');
                 const medicalCertInput = document.getElementById('proof_sick');
+                const reasonTextarea = document.getElementById('reason');
                 const form = document.querySelector('form');
+                
+                // Validation state
+                const validationState = {
+                    leaveType: false,
+                    startDate: false,
+                    endDate: false,
+                    reason: false,
+                    medicalCert: true // Default true, becomes false only when required
+                };
                 
                 // Get leave type names from the select options
                 const leaveTypeOptions = Array.from(leaveTypeSelect.options);
@@ -337,7 +363,7 @@
                     const start = new Date(startDate);
                     const end = new Date(endDate);
                     const timeDiff = end.getTime() - start.getTime();
-                    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 to include both start and end dates
+                    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
                     return dayDiff > 0 ? dayDiff : 0;
                 }
                 
@@ -346,83 +372,233 @@
                     return selectedOption && selectedOption.text.toLowerCase().includes('sick');
                 }
                 
-                function validateMedicalCertificate() {
-                    const days = calculateDays(startDateInput.value, endDateInput.value);
-                    const isSick = isSickLeave();
-                    
-                    // Remove any existing error message
-                    const existingError = document.getElementById('medical-cert-error');
+                function showFieldError(field, message, errorId) {
+                    // Remove existing error
+                    const existingError = document.getElementById(errorId);
                     if (existingError) {
                         existingError.remove();
                     }
                     
-                    if (isSick && days > 3) {
-                        // Make medical certificate required
-                        medicalCertInput.setAttribute('required', 'required');
-                        
-                        // Add visual indicator
-                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
-                        if (!label.querySelector('.text-red-500')) {
-                            const requiredSpan = document.createElement('span');
-                            requiredSpan.className = 'text-red-500';
-                            requiredSpan.textContent = ' *';
-                            label.querySelector('div').appendChild(requiredSpan);
-                        }
-                    } else {
-                        // Remove required attribute
-                        medicalCertInput.removeAttribute('required');
-                        
-                        // Remove visual indicator
-                        const label = medicalCertInput.closest('.space-y-2').querySelector('label');
-                        const requiredSpan = label.querySelector('.text-red-500');
-                        if (requiredSpan) {
-                            requiredSpan.remove();
-                        }
-                    }
+                    // Create error element
+                    const errorDiv = document.createElement('div');
+                    errorDiv.id = errorId;
+                    errorDiv.className = 'flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg';
+                    errorDiv.innerHTML = `
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm text-red-600 font-medium">${message}</span>
+                    `;
+                    
+                    // Insert after field's parent container
+                    field.closest('.space-y-2').appendChild(errorDiv);
+                    
+                    // Add error styling to field
+                    field.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                    field.classList.remove('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
                 }
                 
-                // Add event listeners
-                leaveTypeSelect.addEventListener('change', validateMedicalCertificate);
-                startDateInput.addEventListener('change', validateMedicalCertificate);
-                endDateInput.addEventListener('change', validateMedicalCertificate);
+                function clearFieldError(field, errorId) {
+                    const existingError = document.getElementById(errorId);
+                    if (existingError) {
+                        existingError.remove();
+                    }
+                    
+                    // Remove error styling
+                    field.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                    field.classList.add('border-gray-300', 'focus:border-blue-500', 'focus:ring-blue-200');
+                }
+                
+                // Leave Type Validation
+                function validateLeaveType() {
+                    const isValid = leaveTypeSelect.value !== '';
+                    validationState.leaveType = isValid;
+                    
+                    if (!isValid) {
+                        showFieldError(leaveTypeSelect, 'Please select a leave type.', 'leave-type-error');
+                    } else {
+                        clearFieldError(leaveTypeSelect, 'leave-type-error');
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Start Date Validation
+                function validateStartDate() {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const selectedDate = new Date(startDateInput.value);
+                    
+                    let isValid = true;
+                    let message = '';
+                    
+                    if (!startDateInput.value) {
+                        isValid = false;
+                        message = 'Please select a start date.';
+                    } else if (selectedDate < today) {
+                        isValid = false;
+                        message = 'Start date cannot be in the past.';
+                    }
+                    
+                    validationState.startDate = isValid;
+                    
+                    if (!isValid) {
+                        showFieldError(startDateInput, message, 'start-date-error');
+                    } else {
+                        clearFieldError(startDateInput, 'start-date-error');
+                        // Revalidate end date when start date changes
+                        if (endDateInput.value) {
+                            validateEndDate();
+                        }
+                    }
+                    
+                    return isValid;
+                }
+                
+                // End Date Validation
+                function validateEndDate() {
+                    const startDate = new Date(startDateInput.value);
+                    const endDate = new Date(endDateInput.value);
+                    
+                    let isValid = true;
+                    let message = '';
+                    
+                    if (!endDateInput.value) {
+                        isValid = false;
+                        message = 'Please select an end date.';
+                    } else if (!startDateInput.value) {
+                        isValid = false;
+                        message = 'Please select a start date first.';
+                    } else if (endDate < startDate) {
+                        isValid = false;
+                        message = 'End date must be after or equal to start date.';
+                    }
+                    
+                    validationState.endDate = isValid;
+                    
+                    if (!isValid) {
+                        showFieldError(endDateInput, message, 'end-date-error');
+                    } else {
+                        clearFieldError(endDateInput, 'end-date-error');
+                        // Revalidate medical certificate when dates change
+                        validateMedicalCertificate();
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Reason Validation
+                function validateReason() {
+                    const reasonValue = reasonTextarea.value.trim();
+                    let isValid = true;
+                    let message = '';
+                    
+                    if (!reasonValue) {
+                        isValid = false;
+                        message = 'Please provide a reason for your leave.';
+                    } else if (reasonValue.length < 10) {
+                        isValid = false;
+                        message = 'Please provide a more detailed reason (at least 10 characters).';
+                    }
+                    
+                    validationState.reason = isValid;
+                    
+                    if (!isValid) {
+                        showFieldError(reasonTextarea, message, 'reason-error');
+                    } else {
+                        clearFieldError(reasonTextarea, 'reason-error');
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Medical Certificate Validation
+                function validateMedicalCertificate() {
+                    const days = calculateDays(startDateInput.value, endDateInput.value);
+                    const isSick = isSickLeave();
+                    const hasFile = medicalCertInput.files.length > 0;
+                    
+                    let isValid = true;
+                    let message = '';
+                    
+                    // Check if medical certificate is required
+                    if (isSick && days > 3 && !hasFile) {
+                        isValid = false;
+                        message = 'Medical certificate is required for Sick Leave of more than 3 days.';
+                    } else if (hasFile) {
+                        // Validate file if uploaded
+                        const file = medicalCertInput.files[0];
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                        const maxSize = 5 * 1024 * 1024; // 5MB
+                        
+                        if (!allowedTypes.includes(file.type)) {
+                            isValid = false;
+                            message = 'Please upload a valid file (JPG, JPEG, PNG, or PDF).';
+                        } else if (file.size > maxSize) {
+                            isValid = false;
+                            message = 'File size must be less than 5MB.';
+                        }
+                    }
+                    
+                    validationState.medicalCert = isValid;
+                    
+                    if (!isValid) {
+                        showFieldError(medicalCertInput, message, 'medical-cert-error');
+                    } else {
+                        clearFieldError(medicalCertInput, 'medical-cert-error');
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Event Listeners
+                leaveTypeSelect.addEventListener('change', function() {
+                    validateLeaveType();
+                    validateMedicalCertificate(); // Recheck medical cert requirement
+                });
+                
+                startDateInput.addEventListener('change', validateStartDate);
+                endDateInput.addEventListener('change', validateEndDate);
+                
+                reasonTextarea.addEventListener('blur', validateReason);
+                reasonTextarea.addEventListener('input', function() {
+                    // Clear error on input if it exists
+                    if (document.getElementById('reason-error')) {
+                        clearFieldError(reasonTextarea, 'reason-error');
+                    }
+                });
+                
+                medicalCertInput.addEventListener('change', validateMedicalCertificate);
                 
                 // Form submission validation
                 form.addEventListener('submit', function(e) {
-                    const days = calculateDays(startDateInput.value, endDateInput.value);
-                    const isSick = isSickLeave();
+                    // Validate all fields
+                    const leaveTypeValid = validateLeaveType();
+                    const startDateValid = validateStartDate();
+                    const endDateValid = validateEndDate();
+                    const reasonValid = validateReason();
+                    const medicalCertValid = validateMedicalCertificate();
                     
-                    if (isSick && days > 3 && !medicalCertInput.files.length) {
+                    // Check if all validations pass
+                    const allValid = leaveTypeValid && startDateValid && endDateValid && reasonValid && medicalCertValid;
+                    
+                    if (!allValid) {
                         e.preventDefault();
                         
-                        // Remove any existing error message
-                        const existingError = document.getElementById('medical-cert-error');
-                        if (existingError) {
-                            existingError.remove();
+                        // Scroll to first error
+                        const firstError = document.querySelector('[id$="-error"]');
+                        if (firstError) {
+                            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
-                        
-                        // Create and show error message
-                        const errorDiv = document.createElement('div');
-                        errorDiv.id = 'medical-cert-error';
-                        errorDiv.className = 'flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg';
-                        errorDiv.innerHTML = `
-                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-sm text-red-600 font-medium">Medical certificate is required for Sick Leave of more than 3 days.</span>
-                        `;
-                        
-                        // Insert error message after the file input
-                        medicalCertInput.closest('.space-y-2').appendChild(errorDiv);
-                        
-                        // Scroll to the error
-                        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         
                         return false;
                     }
                 });
                 
-                // Initial validation on page load
-                validateMedicalCertificate();
+                // Set minimum date to today for date inputs
+                const today = new Date().toISOString().split('T')[0];
+                startDateInput.setAttribute('min', today);
+                endDateInput.setAttribute('min', today);
             });
         </script>
     @endcan
