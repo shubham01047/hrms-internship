@@ -465,7 +465,7 @@
                             <div class="flex flex-wrap gap-3 sm:gap-4 lg:gap-6 px-4">
 
                                 <!-- Card 1 -->
-                                <a href="{{ route('employees.index') }}"
+                                <a href="{{ route('users.index') }}"
                                     class="flex-1 min-w-[200px] p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:scale-[1.01]
             bg-white border border-gray-200 flex flex-col items-start gap-2 sm:gap-3 cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-red-600"
