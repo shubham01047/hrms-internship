@@ -16,7 +16,6 @@ use App\Http\Controllers\TimesheetController;
 use App\Http\Controllers\WorklogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionConrtoller;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -55,14 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
-
-    //Employee Route
-    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
-    Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
-    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
-    Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
-    Route::delete('/employees', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
     //Users Route
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

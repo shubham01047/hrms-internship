@@ -6,7 +6,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakModel;
-use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\Project;
 use App\Models\User;
@@ -26,9 +25,9 @@ class AdminDashboardController extends Controller implements HasMiddleware
     public function index()
     {
         $user = auth()->user();
-        $employees = Employee::all();
+        $employees = User::all();
         $tomorrow = Carbon::tomorrow();
-        $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
+        $employeesWithBirthdayTomorrow = User::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
         $pendingLeaves = Leave::where('status', 'pending')->count();
@@ -41,7 +40,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
-        $employeeCount = User::whereHas('employee')->count();
+        $employeeCount = User::count();
         $absentees = $employeeCount - $todayPunchInCount;
         $projectCount = Project::count();
         $topPerformer = Attendance::select('user_id', DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_working_hours) + TIME_TO_SEC(overtime_working_hours))) as total_hours'))
@@ -218,9 +217,9 @@ class AdminDashboardController extends Controller implements HasMiddleware
             $percentage = ($workingDays > 0) ? round(($present / $workingDays) * 100, 2) : 0;
             $monthlyAttendance[] = $percentage;
         }
-        $employees = Employee::all();
+        $employees = User::all();
         $tomorrow = Carbon::tomorrow();
-        $employeesWithBirthdayTomorrow = Employee::whereMonth('date_of_birth', $tomorrow->month)
+        $employeesWithBirthdayTomorrow = User::whereMonth('date_of_birth', $tomorrow->month)
             ->whereDay('date_of_birth', $tomorrow->day)
             ->get();
         $pendingLeaves = Leave::where('status', 'pending')->count();
@@ -233,7 +232,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
             })
             ->distinct('user_id')
             ->count('user_id');
-        $employeeCount = User::whereHas('employee')->count();
+        $employeeCount = User::count();
         $absentees = $employeeCount - $todayPunchInCount;
         $projectCount = Project::count();
         $attendancePercentage = 0;

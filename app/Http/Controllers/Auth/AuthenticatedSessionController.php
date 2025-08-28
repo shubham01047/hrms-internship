@@ -30,11 +30,7 @@ class AuthenticatedSessionController extends Controller
             $roles = Auth::user()->roles->pluck('name');
             if (Auth::check()) {
                 $roles = Auth::user()->roles->pluck('name');
-                if ($roles->contains('Employee') || $roles->contains('Trainee') || $roles->contains('Intern')) {
-                    return redirect()->route('employee.dashboard');
-                } else {
-                    return redirect()->route('default.dashboard');
-                }
+                return redirect()->route('default.dashboard');
             } else {
                 return redirect()->route('login');
             }
