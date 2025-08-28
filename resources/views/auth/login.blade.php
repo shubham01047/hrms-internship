@@ -90,7 +90,7 @@
                 </button>
 
                 <!-- Google Login -->
-                @if (Route::has('google.auth'))
+                {{-- @if (Route::has('google.auth'))
                     <button type="button"
                             onclick="window.location.href='{{ route('google.auth') }}'"
                             class="w-full py-3 border rounded-xl flex items-center justify-center gap-3 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white hover:shadow-md text-sm"
@@ -98,7 +98,7 @@
                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5">
                         Sign in with Google
                     </button>
-                @endif
+                @endif --}}
 
                 <!-- Register -->
                 @if (Route::has('register'))
