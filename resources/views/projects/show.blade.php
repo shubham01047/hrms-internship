@@ -156,9 +156,32 @@
                     </div>
                 </div>
 
+                <div class="px-3 sm:px-4 py-3 border-b border-gray-100 bg-white">
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1 max-w-md">
+                            <input
+                                id="taskSearch"
+                                type="text"
+                                placeholder="Search tasks by title..."
+                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                aria-label="Search tasks by title"
+                            />
+                        </div>
+                        <button
+                            id="clearTaskSearch"
+                            type="button"
+                            class="text-sm px-3 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            aria-label="Clear task search"
+                        >
+                            Clear
+                        </button>
+                        <span id="taskSearchCount" class="text-xs text-gray-500" aria-live="polite"></span>
+                    </div>
+                </div>
+
                 @if ($project->tasks->count() > 0)
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table id="tasksTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="theme-app"
                                 style="background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg));">
                                 <tr>
@@ -415,6 +438,46 @@
                 currentProjectId = null;
                 currentTaskId = null;
             }
+        });
+
+        // Task search logic
+        $(function() {
+            const $input = $('#taskSearch');
+            const $clear = $('#clearTaskSearch');
+            const $count = $('#taskSearchCount');
+
+            function normalize(s) {
+                return (s || '').toString().toLowerCase().trim();
+            }
+
+            function applyFilter() {
+                const q = normalize($input.val());
+                const $rows = $('#tasksTable tbody tr');
+
+                if (!q) {
+                    $rows.show();
+                    $count.text('');
+                    return;
+                }
+
+                let visible = 0;
+                $rows.each(function() {
+                    // Only check the Title column (second td)
+                    const titleText = normalize($(this).find('td:nth-child(2)').text());
+                    const match = titleText.indexOf(q) !== -1;
+                    $(this).toggle(match);
+                    if (match) visible++;
+                });
+
+                $count.text(visible + ' match' + (visible === 1 ? '' : 'es'));
+            }
+
+            $input.on('input', applyFilter);
+            $clear.on('click', function() {
+                $input.val('');
+                applyFilter();
+                $input.trigger('focus');
+            });
         });
     </script>
 

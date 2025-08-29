@@ -13,7 +13,7 @@
                             Edit Role
                         </h2>
                     </div>
-                    <div class="w-full sm:w-auto">
+                   <div class="w-full sm:w-auto lg:mr-24">
                         <a href="{{ route('roles.index') }}" 
                            class="inline-flex items-center justify-center w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4"
                            style="background-color: var(--hover-bg); color: var(--primary-text);"
