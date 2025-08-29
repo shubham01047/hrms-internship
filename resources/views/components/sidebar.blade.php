@@ -15,7 +15,7 @@
 <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<aside
+<aside id="app-sidebar"
     class="bg-secondary-gradient fixed top-0 left-0 w-64 h-screen overflow-y-auto hide-scrollbar shadow-md z-30
            bg-gradient-to-br from-[var(--primary-bg)] to-[var(--primary-bg-light)] text-primary
            transition-transform duration-300 ease-in-out
@@ -191,3 +191,46 @@
         </div>
     </nav>
 </aside>
+
+<script>
+(() => {
+  const KEY = 'sidebar-scroll-top';
+  function getSidebar() {
+    return document.getElementById('app-sidebar');
+  }
+
+  function restoreScroll() {
+    const el = getSidebar();
+    if (!el) return;
+    const saved = sessionStorage.getItem(KEY);
+    if (saved !== null) {
+      const y = parseInt(saved, 10);
+      if (!Number.isNaN(y)) {
+        // Defer to ensure layout/transitions are applied
+        requestAnimationFrame(() => { el.scrollTop = y; });
+      }
+    }
+    // Save on scroll (passive for perf)
+    el.addEventListener('scroll', () => {
+      try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
+    }, { passive: true });
+
+    // Also save right before navigating away via sidebar links
+    const links = el.querySelectorAll('a[href]');
+    links.forEach((a) => {
+      a.addEventListener('click', () => {
+        try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
+      });
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', restoreScroll);
+
+  // Fallback: ensure we persist on page unload too
+  window.addEventListener('beforeunload', () => {
+    const el = getSidebar();
+    if (!el) return;
+    try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
+  });
+})();
+</script>

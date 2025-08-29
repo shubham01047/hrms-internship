@@ -171,7 +171,7 @@
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 2 0 002 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                     </path>
                                 </svg>
                                 <h4 class="theme-app text-base sm:text-lg font-semibold"
@@ -624,6 +624,26 @@
                 }
             });
 
+            // If multiple password inputs exist, remove all but the first to keep design/validation intact.
+            const passwordFields = document.querySelectorAll('input[name="password"]');
+            if (passwordFields.length > 1) {
+                for (let i = 1; i < passwordFields.length; i++) {
+                    const wrapper = passwordFields[i].closest('.space-y-2') || passwordFields[i].parentElement;
+                    if (wrapper && wrapper.contains(passwordFields[i])) {
+                        wrapper.remove();
+                    } else {
+                        passwordFields[i].remove();
+                    }
+                }
+            }
+            // Enforce hidden type for both fields in case any markup discrepancy exists
+            if (typeof passwordInput !== 'undefined' && passwordInput) {
+                passwordInput.setAttribute('type', 'password');
+            }
+            if (typeof confirmPasswordInput !== 'undefined' && confirmPasswordInput) {
+                confirmPasswordInput.setAttribute('type', 'password');
+            }
+
             // Validation functions
             function validateName() {
                 const nameError = document.getElementById('name-error');
@@ -958,6 +978,14 @@
         /* Password strength bar animation */
         #strength-bar {
             transition: width 0.3s ease, background-color 0.3s ease;
+        }
+    </style>
+
+    /* Hide native password reveal/clear icons */
+    <style>
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
         }
     </style>
 </x-app-layout>

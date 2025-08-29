@@ -37,12 +37,37 @@
 
     <div class="py-6 sm:py-8 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
         <div class="w-full px-3 sm:px-5 lg:px-8 space-y-6 sm:space-y-8">
+            <!-- Search Toolbar -->
+            <div class="theme-app rounded-lg border border-gray-200/60 bg-white/70 backdrop-blur p-4 sm:p-5 flex flex-col gap-3">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div class="relative flex-1">
+                        <input
+                            id="projectSearch"
+                            type="text"
+                            placeholder="Search projects by title…"
+                            class="w-full rounded-lg border border-gray-200 px-4 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-blue-200"
+                        />
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 110-16 8 8 0 010 16z"/>
+                        </svg>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-2">
+                        <button type="button" id="clearSearch" class="hidden text-xs sm:text-sm px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700">Clear</button>
+                        <div id="resultsCounter" class="text-xs sm:text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <span class="font-semibold" id="totalCount">{{ $projects->count() }}</span>
+                            <span id="entityText">{{ Str::plural('project', $projects->count()) }}</span>
+                            <span id="searchContext"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @if (session('success'))
                 <div class="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-5">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414 1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                             </svg>
                         </div>
                         <p class="text-sm text-green-800 font-medium">{{ session('success') }}</p>
@@ -53,15 +78,15 @@
             @if (session('error'))
                 <div class="bg-red-50 border-l-4 border-red-400 p-4 sm:p-5 rounded-lg">
                     <div class="flex items-start gap-3">
-                        <svg class="h-5 w-5 text-red-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 00-1.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        <svg class="h-5 w-5 text-red-400 mt-0.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 110-16 8 8 0 010 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 00-1.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                         </svg>
                         <p class="text-sm text-red-700 font-medium">{{ session('error') }}</p>
                     </div>
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 @foreach ($projects as $index => $project)
                     @php
                         $cardBackgrounds = [
@@ -81,7 +106,10 @@
                         $cardBg = $cardBackgrounds[$index % 12];
                     @endphp
 
-                    <div class="theme-app rounded-xl shadow-lg p-5 sm:p-6 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between" style="{{ $cardBg }}">
+                    <div class="theme-app rounded-xl shadow-lg p-5 sm:p-6 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between project-card"
+                        style="{{ $cardBg }}"
+                        data-searchable="true"
+                        data-title="{{ Str::lower($project->title) }}">
                         <div>
                             <div class="mb-4">
                                 <h2 class="text-lg sm:text-xl font-bold" style="color: var(--primary-bg);">{{ $project->title }}</h2>
@@ -144,6 +172,18 @@
                 @endforeach
             </div>
 
+            <div id="noResults" class="hidden">
+                <div class="text-center py-12">
+                    <div class="bg-gray-100 p-4 rounded-full mx-auto mb-4 w-fit">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 110-16 8 8 0 010 16z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No matching projects</h3>
+                    <p class="text-gray-500">Try adjusting your search or clearing the filter.</p>
+                </div>
+            </div>
+
             @if($projects->isEmpty())
                 <div class="text-center py-12">
                     <div class="bg-gray-100 p-4 rounded-full mx-auto mb-4 w-fit">
@@ -198,5 +238,67 @@
                 modal.classList.remove('flex');
             }
         }
+
+        // Search functionality script
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('projectSearch');
+            const clearBtn = document.getElementById('clearSearch');
+            const grid = document.getElementById('projectsGrid');
+            const cards = grid ? Array.from(grid.querySelectorAll('.project-card[data-searchable="true"]')) : [];
+            const totalCount = document.getElementById('totalCount');
+            const entityText = document.getElementById('entityText');
+            const searchContext = document.getElementById('searchContext');
+            const noResults = document.getElementById('noResults');
+
+            function setCounter(count, term) {
+                if (totalCount) totalCount.textContent = count;
+                if (entityText) entityText.textContent = count === 1 ? 'project' : 'projects';
+                if (searchContext) {
+                    if (term) {
+                        searchContext.innerHTML = ` found for "<span class="font-medium text-blue-600">${term}</span>"`;
+                    } else {
+                        searchContext.textContent = '';
+                    }
+                }
+            }
+
+            function toggleClear(term) {
+                if (!clearBtn) return;
+                if (term) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+
+            function filterCards(query) {
+                const q = (query || '').trim().toLowerCase();
+                let visible = 0;
+                cards.forEach(card => {
+                    const title = (card.getAttribute('data-title') || '').toLowerCase();
+                    const match = q === '' || title.includes(q);
+                    card.classList.toggle('hidden', !match);
+                    if (match) visible++;
+                });
+                if (noResults) noResults.classList.toggle('hidden', !(q && visible === 0));
+                setCounter(visible, q);
+                toggleClear(q);
+            }
+
+            if (input) {
+                input.addEventListener('input', e => filterCards(e.target.value));
+            }
+            if (clearBtn && input) {
+                clearBtn.addEventListener('click', () => {
+                    input.value = '';
+                    filterCards('');
+                    input.focus();
+                });
+            }
+
+            // initialize counts on load
+            setCounter(cards.length, '');
+            toggleClear('');
+        });
     </script>
 </x-app-layout>
