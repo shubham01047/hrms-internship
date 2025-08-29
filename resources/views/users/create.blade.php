@@ -166,12 +166,12 @@
                         </div>
 
                         {{-- Password Section --}}
-                        <div class="bg-green-50 rounded-lg p-2 sm:p-4 border border-green-200"> {{-- reduced section padding --}}
+                        <div class="bg-green-50 rounded-lg p-2 sm:p-4 border border-green-200">
                             <div class="flex items-center space-x-1.5 sm:space-x-2 mb-4 sm:mb-6">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 2 0 002 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                     </path>
                                 </svg>
                                 <h4 class="theme-app text-base sm:text-lg font-semibold"
@@ -294,55 +294,151 @@
                                 </div>
                             </div>
                         </div>
-                        <label>Gender:</label>
-                        <select name="gender">
-                            <option value="">-- Select Gender --</option>
-                            <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                            <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
-                        </select><br><br>
-                        <label>Date of Birth:</label>
-                        <input type="date" name="date_of_birth" value="{{ old('date_of_birth') }}"><br><br>
-                        <label>Contact Number:</label>
-                        <input type="number" name="contact_number" value="{{ old('contact_number') }}"><br><br>
-                        <label>Address:</label>
-                        <input type="text" name="address" value="{{ old('address') }}"><br><br>
-                        <label>City:</label>
-                        <input type="text" name="city" value="{{ old('city') }}"><br><br>
-                        <label>State:</label>
-                        <input type="text" name="state" value="{{ old('state') }}"><br><br>
-                        <label>Country:</label>
-                        <input type="text" name="country" value="{{ old('country') }}"><br><br>
-                        <label>Pin Code:</label>
-                        <input type="number" name="pin_code" value="{{ old('pin_code') }}"><br><br>
-                        <label>Joining Date:</label>
-                        <input type="date" name="joining_date" value="{{ old('joining_date') }}"><br><br>
-                        <label>Employment Type:</label>
-                        <select name="employment_type" id="employment_type" class="form-control" required>
-                            <option value="">-- Select Employment Type --</option>
-                            <option value="full_time">Full-Time</option>
-                            <option value="part_time">Part-Time</option>
-                            <option value="intern">Intern</option>
-                            <option value="trainee">Trainee</option>
-                            <option value="Contract">Contract</option>
-                        </select><br><br>
-                        <label>Status:</label>
-                        <select name="status" id="status" class="form-control" required>
-                            <option value="">-- Select Status --</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="terminated">Terminated</option>
-                        </select><br><br>
-                        <label>Resume:</label>
-                        <input type="file" name="resume" value="{{ old('resume') }}"><br><br>
-                        <label>Aadhar Card:</label>
-                        <input type="file" name="aadhar_card" value="{{ old('aadhar_card') }}"><br><br>
-                        <label>PAN Card:</label>
-                        <input type="file" name="pan_card" value="{{ old('pan_card') }}"><br><br>
-                        <label>Leave Balance:</label>
-                        <input type="number" name="leave_balance" value="{{ old('leave_balance') }}"><br><br>
+
+                        {{-- Personal & Employment Details --}}
+                        <div class="bg-gray-50 rounded-lg p-2 sm:p-4 border border-gray-200 mt-4">
+                            <div class="flex items-center space-x-1.5 sm:space-x-2 mb-4">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 13V7a2 2 0 00-2-2h-3.5a2 2 0 01-1.6-.8l-.9-1.2a2 2 0 00-1.6-.8H6a2 2 0 00-2 2v10">
+                                    </path>
+                                </svg>
+                                <h4 class="theme-app text-base sm:text-lg font-semibold"
+                                    style="color: var(--secondary-text);">Personal & Employment Details</h4>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                                {{-- Gender --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Gender</label>
+                                    <select name="gender"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                        <option value="">-- Select Gender --</option>
+                                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male
+                                        </option>
+                                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>
+                                            Female</option>
+                                        <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                </div>
+
+                                {{-- Date of Birth --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Date of Birth</label>
+                                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Contact Number --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Contact Number</label>
+                                    <input type="number" name="contact_number" value="{{ old('contact_number') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Address --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Address</label>
+                                    <input type="text" name="address" value="{{ old('address') }}"
+                                        placeholder="House, Street, Area"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- City --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">City</label>
+                                    <input type="text" name="city" value="{{ old('city') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- State --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">State</label>
+                                    <input type="text" name="state" value="{{ old('state') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Country --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Country</label>
+                                    <input type="text" name="country" value="{{ old('country') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Pin Code --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Pin Code</label>
+                                    <input type="number" name="pin_code" value="{{ old('pin_code') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Joining Date --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Joining Date</label>
+                                    <input type="date" name="joining_date" value="{{ old('joining_date') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Employment Type --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Employment Type</label>
+                                    <select name="employment_type" id="employment_type" required
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                        <option value="">-- Select Employment Type --</option>
+                                        <option value="full_time">Full-Time</option>
+                                        <option value="part_time">Part-Time</option>
+                                        <option value="intern">Intern</option>
+                                        <option value="trainee">Trainee</option>
+                                        <option value="Contract">Contract</option>
+                                    </select>
+                                </div>
+
+                                {{-- Status --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Status</label>
+                                    <select name="status" id="status" required
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                        <option value="">-- Select Status --</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                        <option value="terminated">Terminated</option>
+                                    </select>
+                                </div>
+
+                                {{-- Resume --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Resume</label>
+                                    <input type="file" name="resume"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Aadhar Card --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Aadhar Card</label>
+                                    <input type="file" name="aadhar_card"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- PAN Card --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">PAN Card</label>
+                                    <input type="file" name="pan_card"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+
+                                {{-- Leave Balance --}}
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Leave Balance</label>
+                                    <input type="number" name="leave_balance" value="{{ old('leave_balance') }}"
+                                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Roles Assignment Section --}}
-                        <div class="bg-blue-50 rounded-lg p-2 sm:p-4 border border-blue-200"> {{-- reduced section padding --}}
+                        <div class="bg-blue-50 rounded-lg p-2 sm:p-4 border border-blue-200">
                             <div class="flex items-center space-x-1.5 sm:space-x-2 mb-4 sm:mb-6">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -528,31 +624,60 @@
                 }
             });
 
+            // If multiple password inputs exist, remove all but the first to keep design/validation intact.
+            const passwordFields = document.querySelectorAll('input[name="password"]');
+            if (passwordFields.length > 1) {
+                for (let i = 1; i < passwordFields.length; i++) {
+                    const wrapper = passwordFields[i].closest('.space-y-2') || passwordFields[i].parentElement;
+                    if (wrapper && wrapper.contains(passwordFields[i])) {
+                        wrapper.remove();
+                    } else {
+                        passwordFields[i].remove();
+                    }
+                }
+            }
+            // Enforce hidden type for both fields in case any markup discrepancy exists
+            if (typeof passwordInput !== 'undefined' && passwordInput) {
+                passwordInput.setAttribute('type', 'password');
+            }
+            if (typeof confirmPasswordInput !== 'undefined' && confirmPasswordInput) {
+                confirmPasswordInput.setAttribute('type', 'password');
+            }
+
             // Validation functions
             function validateName() {
-                const name = nameInput.value.trim();
                 const nameError = document.getElementById('name-error');
+                const raw = nameInput.value || '';
+                const trimmed = raw.trim();
 
-                if (!name) {
+                if (!trimmed) {
                     showError(nameInput, nameError, 'Full name is required.');
                     validation.name = false;
-                } else if (name.length < 2) {
-                    showError(nameInput, nameError, 'Name must be at least 2 characters long.');
-                    validation.name = false;
-                } else if (name.length > 100) {
-                    showError(nameInput, nameError, 'Name must not exceed 100 characters.');
-                    validation.name = false;
-                } else if (!/^[a-zA-Z\s\-'\.]+$/.test(name)) {
-                    showError(nameInput, nameError,
-                        'Name can only contain letters, spaces, hyphens, and apostrophes.');
-                    validation.name = false;
-                } else {
-                    hideError(nameInput, nameError);
-                    validation.name = true;
-                    // Auto-format name
-                    nameInput.value = name.replace(/\s+/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    updateSubmitButton();
+                    return;
                 }
 
+                // exactly one space, no leading/trailing spaces, letters only on both sides
+                const spaces = (trimmed.match(/ /g) || []).length;
+                if (spaces !== 1) {
+                    showError(nameInput, nameError, 'Full name must contain exactly one space (e.g., First Last).');
+                    validation.name = false;
+                    updateSubmitButton();
+                    return;
+                }
+
+                if (!/^[A-Za-z]+ [A-Za-z]+$/.test(trimmed)) {
+                    showError(nameInput, nameError, 'Use letters only with one space between first and last name.');
+                    validation.name = false;
+                    updateSubmitButton();
+                    return;
+                }
+
+                // normalize the input (no extra spaces at ends)
+                nameInput.value = trimmed;
+
+                hideError(nameInput, nameError);
+                validation.name = true;
                 updateSubmitButton();
             }
 
@@ -853,6 +978,14 @@
         /* Password strength bar animation */
         #strength-bar {
             transition: width 0.3s ease, background-color 0.3s ease;
+        }
+    </style>
+
+    /* Hide native password reveal/clear icons */
+    <style>
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
         }
     </style>
 </x-app-layout>

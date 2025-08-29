@@ -523,7 +523,36 @@
         </div>
     </div>
 
+    <div id="infoAlertModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-lg shadow-xl transform transition-all w-full max-w-md mx-auto">
+                <div class="px-4 pt-5 pb-4 sm:p-6">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-blue-100 sm:mx-0">
+                            <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a9 9 0 110-18 9 9 0 010 18z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="info-modal-title">Notice</h3>
+                            <div class="mt-2">
+                                <p id="infoAlertMessage" class="text-sm text-gray-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="infoAlertOkBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            OK
+                        </button>
+                        <button type="button" id="infoAlertCancelBg" class="sr-only">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         function updateClocks() {
@@ -681,7 +710,7 @@
             const gpsStatus = document.getElementById('gps-status');
 
             if (!locationType) {
-                alert("Please select your work location (Home or Company).");
+                showInfoModal("Please select your work location (Home or Company).");
                 document.getElementById('location_type').focus();
                 return;
             }
@@ -705,13 +734,46 @@
                     gpsStatus.innerHTML =
                         '<span class="text-red-500">❌</span> Unable to get location. Please enable GPS.';
                     gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
-                    alert("Unable to get your location. Please enable GPS and try again.");
+                    showInfoModal("Unable to get your location. Please enable GPS and try again.");
                 });
             } else {
                 gpsStatus.innerHTML = '<span class="text-red-500">❌</span> Geolocation not supported.';
                 gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
-                alert("Geolocation is not supported by this browser.");
+                showInfoModal("Geolocation is not supported by this browser.");
             }
+        });
+
+        function showInfoModal(message) {
+            $('#infoAlertMessage').text(message || 'Notice');
+            $('#infoAlertModal').removeClass('hidden').hide().fadeIn(250);
+            $('body').addClass('overflow-hidden');
+        }
+
+        function closeInfoModal() {
+            $('#infoAlertModal').fadeOut(250, function() {
+                $(this).addClass('hidden');
+                $('body').removeClass('overflow-hidden');
+            });
+        }
+
+        $(document).ready(function() {
+            $('#infoAlertOkBtn').on('click', function() {
+                closeInfoModal();
+            });
+
+            // Close when clicking on the overlay background
+            $('#infoAlertModal').on('click', function(e) {
+                if ($(e.target).hasClass('fixed') && $(e.target).hasClass('inset-0')) {
+                    closeInfoModal();
+                }
+            });
+
+            // ESC key to close
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && !$('#infoAlertModal').hasClass('hidden')) {
+                    closeInfoModal();
+                }
+            });
         });
     </script>
 </x-app-layout>

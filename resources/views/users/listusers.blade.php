@@ -134,18 +134,126 @@
                                         <span>Roles</span>
                                     </div>
                                 </th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Contact</th>
-                                <th>Address</th>
-                                <th>Country</th>
-                                <th>State</th>
-                                <th>City</th>
-                                <th>Employment Type</th>
-                                <th>Status</th>
-                                <th>Resume</th>
-                                <th>Aadhar</th>
-                                <th>PAN</th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3a4 4 0 118 0v4M5 8h14M5 12h14M5 16h14" />
+                                        </svg>
+                                        <span>DOB</span>
+                                    </div>
+                                </th>
+                                <th class="w-20 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 14l9-5-9-5-9 5 9 5z" />
+                                        </svg>
+                                        <span>Gender</span>
+                                    </div>
+                                </th>
+                                <th class="w-28 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5h2l3 7 3-7h8M5 19h14" />
+                                        </svg>
+                                        <span>Contact</span>
+                                    </div>
+                                </th>
+                                <th class="w-56 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 12l4.243-4.243m-11.314 0L10.586 12 6.343 16.243" />
+                                        </svg>
+                                        <span>Address</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                        </svg>
+                                        <span>Country</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 7h18M3 12h18M3 17h18" />
+                                        </svg>
+                                        <span>State</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z" />
+                                        </svg>
+                                        <span>City</span>
+                                    </div>
+                                </th>
+                                <th class="w-32 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6M7 8h10l1 4H6l1-4z" />
+                                        </svg>
+                                        <span>Employment Type</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>Status</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 10l4.553-2.276A2 2 0 0122 9.528V14.5a2 2 0 01-2.447 1.804L15 14" />
+                                        </svg>
+                                        <span>Resume</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 11c0 1.657-1.343 3-3 3H6v-3a6 6 0 1112 0v3h-3c-1.657 0-3-1.343-3-3z" />
+                                        </svg>
+                                        <span>Aadhar</span>
+                                    </div>
+                                </th>
+                                <th class="w-24 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--primary-text);">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 7h18M3 12h18M3 17h18" />
+                                        </svg>
+                                        <span>PAN</span>
+                                    </div>
+                                </th>
                                 <th class="w-1/6 px-3 py-3 sm:px-4 sm:py-4 text-left text-xs font-bold uppercase tracking-wider"
                                     style="color: var(--primary-text);">
                                     <div class="flex items-center space-x-1">
@@ -231,39 +339,109 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td>{{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d M Y') : '-' }}
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
+                                            @php($dob = $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d M Y') : '-')
+                                            <div class="flex items-center text-xs text-gray-900">
+                                                <svg class="w-3 h-3 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                          d="M8 7V3a4 4 0 118 0v4M5 8h14M5 12h14M5 16h14"/>
+                                                </svg>
+                                                <span>{{ $dob }}</span>
+                                            </div>
                                         </td>
-                                        <td>{{ $user->gender ?? '-' }}</td>
-                                        <td>{{ $user->contact_number ?? '-' }}</td>
-                                        <td>{{ $user->address ?? '-' }}</td>
-                                        <td>{{ $user->country ?? '-' }}</td>
-                                        <td>{{ $user->state ?? '-' }}</td>
-                                        <td>{{ $user->city ?? '-' }}</td>
-                                        <td>{{ $user->employment_type ?? '-' }}</td>
-                                        <td>{{ $user->status ?? '-' }}</td>
-                                        <td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
+                                            @php($gender = $user->gender ?? '-')
+                                            @if ($gender !== '-')
+                                                @php($g = strtolower(trim($gender)))
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                                    {{ $g === 'female' ? 'bg-pink-100 text-pink-800' : ($g === 'male' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700') }}">
+                                                    {{ $gender }}
+                                                </span>
+                                            @else
+                                                <span class="text-xs text-gray-400">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
+                                            @if ($user->contact_number)
+                                                <a href="tel:{{ $user->contact_number }}" class="inline-flex items-center text-xs font-medium text-gray-900 hover:text-indigo-600">
+                                                    <svg class="w-3 h-3 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M3 5h2l3 7 3-7h8M5 19h14"/>
+                                                    </svg>
+                                                    <span>{{ $user->contact_number }}</span>
+                                                </a>
+                                            @else
+                                                <span class="text-xs text-gray-400">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4 max-w-[220px]" title="{{ $user->address ?? '' }}">
+                                            <span class="block text-xs text-gray-900 truncate">{{ $user->address ?? '-' }}</span>
+                                        </td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4"><span class="text-xs text-gray-900">{{ $user->country ?? '-' }}</span></td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4"><span class="text-xs text-gray-900">{{ $user->state ?? '-' }}</span></td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4"><span class="text-xs text-gray-900">{{ $user->city ?? '-' }}</span></td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
+                                            @if ($user->employment_type)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
+                                                    {{ $user->employment_type }}
+                                                </span>
+                                            @else
+                                                <span class="text-xs text-gray-400">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
+                                            @php($status = strtolower($user->status ?? ''))
+                                            @if ($status === 'active')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">Active</span>
+                                            @elseif ($status === 'inactive' || $status === 'disabled')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">{{ ucfirst($user->status) }}</span>
+                                            @elseif ($status)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">{{ ucfirst($user->status) }}</span>
+                                            @else
+                                                <span class="text-xs text-gray-400">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
                                             @if ($user->resume)
-                                                <a href="{{ asset('storage/' . $user->resume) }}"
-                                                    target="_blank">View
-                                                    Resume</a>
+                                                <a href="{{ asset('storage/' . $user->resume) }}" target="_blank"
+                                                   class="inline-flex items-center px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium rounded-md transition">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M15 10l4.553-2.276A2 2 0 0122 9.528V14.5a2 2 0 01-2.447 1.804L15 14"/>
+                                                    </svg>
+                                                    View
+                                                </a>
                                             @else
-                                                -
+                                                <span class="text-xs text-gray-400">-</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
                                             @if ($user->aadhar_card)
-                                                <a href="{{ asset('storage/' . $user->aadhar_card) }}"
-                                                    target="_blank">View Aadharcard</a>
+                                                <a href="{{ asset('storage/' . $user->aadhar_card) }}" target="_blank"
+                                                   class="inline-flex items-center px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium rounded-md transition">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24
+                                                        24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M15 10l4.553-2.276A2 2 0 0122 9.528V14.5a2 2 0 01-2.447 1.804L15 14"/>
+                                                    </svg>
+                                                    View
+                                                </a>
                                             @else
-                                                -
+                                                <span class="text-xs text-gray-400">-</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="px-3 py-4 sm:px-4 sm:py-4">
                                             @if ($user->pan_card)
-                                                <a href="{{ asset('storage/' . $user->pan_card) }}"
-                                                    target="_blank">View Pancard</a>
+                                                <a href="{{ asset('storage/' . $user->pan_card) }}" target="_blank"
+                                                   class="inline-flex items-center px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium rounded-md transition">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M15 10l4.553-2.276A2 2 0 0122 9.528V14.5a2 2 0 01-2.447 1.804L15 14"/>
+                                                    </svg>
+                                                    View
+                                                </a>
                                             @else
-                                                -
+                                                <span class="text-xs text-gray-400">-</span>
                                             @endif
                                         </td>
                                         <td class="px-3 py-4 sm:px-4 sm:py-4 whitespace-nowrap">
@@ -521,6 +699,8 @@
                                     filterUsers(currentSearchTerm);
                                 }
                                 closeDeleteModal();
+
+                                setTimeout(function () { window.location.reload(); }, 300);
                             },
                             error: function(xhr, status, error) {
                                 alert('Error deleting user: ' + error);
