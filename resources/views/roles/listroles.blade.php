@@ -139,7 +139,9 @@
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="max-w-xs role-permissions">
-                                                @if($role->permissions->isNotEmpty())
+                                                @if (strtolower($role->name) === 'superadmin')
+                                                    <span class="text-xs sm:text-sm text-green-600 font-bold">No permission required for Superadmin</span>
+                                                @elseif($role->permissions->isNotEmpty())
                                                     <div class="permissions-container" data-role-index="{{ $index }}">
                                                         <!-- Initially visible permissions (first 3) -->
                                                         <div class="flex flex-wrap gap-1.5 sm:gap-2 visible-permissions">
@@ -190,27 +192,31 @@
                                         </td>
                                         <td class="px-4 py-3 sm:px-8 sm:py-6">
                                             <div class="flex items-center space-x-2 sm:space-x-3">
-                                                @can('edit roles')
-                                                    <button class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
-                                                            style="background-color: var(--hover-bg); color: var(--primary-text);"
-                                                            onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                                                            onmouseout="this.style.backgroundColor='var(--hover-bg)'"
-                                                            onclick="window.location.href='{{ route('roles.edit', $role->id) }}'">
-                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                        </svg>
-                                                        Edit
-                                                    </button>
-                                                @endcan
-                                                @can('delete roles')
-                                                    <button type="button" onclick="deleteRole({{ $role->id }}, '{{ $role->name }}')"
-                                                            class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105">
-                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                        </svg>
-                                                        Delete
-                                                    </button>
-                                                @endcan
+                                                @if (strtolower($role->name) === 'superadmin')
+                                                    <span class="text-gray-400 text-xs sm:text-sm font-semibold">No Actions</span>
+                                                @else
+                                                    @can('edit roles')
+                                                        <button class="theme-app inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                                                                style="background-color: var(--hover-bg); color: var(--primary-text);"
+                                                                onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
+                                                                onmouseout="this.style.backgroundColor='var(--hover-bg)'"
+                                                                onclick="window.location.href='{{ route('roles.edit', $role->id) }}'">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                            </svg>
+                                                            Edit
+                                                        </button>
+                                                    @endcan
+                                                    @can('delete roles')
+                                                        <button type="button" onclick="deleteRole({{ $role->id }}, '{{ $role->name }}')"
+                                                                class="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                            </svg>
+                                                            Delete
+                                                        </button>
+                                                    @endcan
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -473,6 +479,11 @@
 
             // deleteRole function with custom modal
             function deleteRole(id, roleName) {
+                if ((roleName || '').toLowerCase() === 'superadmin') {
+                    alert('Superadmin role cannot be deleted.');
+                    return;
+                }
+
                 console.log("Calling delete for ID:", id);
                 roleIdToDelete = id;
                 

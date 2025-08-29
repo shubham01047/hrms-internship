@@ -8,34 +8,39 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use SoftDeletes, HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'google_id',
-        'google_token',
-        'google_refresh_token',
-        'google_avatar',
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'phone',
+    'gender',
+    'dob',
+    'country',
+    'state',
+    'city',
+    'address',
+    'employment_type',
+    'status',
+    'resume',
+    'aadharcard',
+    'pancard',
+];
 
-    ];
 
 
-    public function employee()
-    {
-        return $this->hasOne(Employee::class, 'user_id');
-    }
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *

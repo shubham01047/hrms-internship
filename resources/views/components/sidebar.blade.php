@@ -5,10 +5,8 @@
 
     $role = Auth::check() ? Auth::user()->roles->pluck('name')->first() : null;
 
-    if ($role === 'Employee' || $role === 'Trainee' || $role === 'Intern') {
-        $routeName = 'employee.dashboard';
-    } else {
-        $routeName = 'default.dashboard';
+    if ($role === true) {
+        return redirect()->route('default.dashboard');
     }
 
 @endphp
@@ -44,10 +42,10 @@
 
         <!-- Dashboard -->
         <div class="border-b border-primary pb-2 mb-2">
-            <a href="{{ route($routeName) }}" class="{{ $isActive('*.dashboard') }}">
+            <a href="{{ route('default.dashboard') }}" class="{{ $isActive('default.dashboard') }}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            
+
         </div>
 
         {{-- Company Management --}}
@@ -85,7 +83,9 @@
         <!-- Attendance -->
         <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">Attendance</div>
-
+            <a href="{{ route('employee.dashboard') }}" class="{{ $isActive('employee.dashboard') }}"><i
+                    class="fas fa-user-clock"></i> Punch-In/Punch-Out
+            </a>
             @can('attendance report')
                 <a href="{{ route('admin.attendance.report') }}" class="{{ $isActive('admin.attendance.report') }}"><i
                         class="fas fa-user-clock"></i> Attendance Reports

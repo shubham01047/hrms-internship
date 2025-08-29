@@ -523,737 +523,36 @@
         </div>
     </div>
 
-    <!-- Added professional GUI styling to attendance calendar section -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-            </div>
-            <h2 class="text-lg font-semibold text-gray-900">Attendance Calendar</h2>
-        </div>
-        <div id="attendance-calendar" style="width:100%; height:200px; border: 1px solid #e5e7eb; border-radius: 8px;"></div>
-    </div>
-
-    <!-- Added professional GUI styling to chart grid sections -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Attendance Chart -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
+    <div id="infoAlertModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-lg shadow-xl transform transition-all w-full max-w-md mx-auto">
+                <div class="px-4 pt-5 pb-4 sm:p-6">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-blue-100 sm:mx-0">
+                            <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a9 9 0 110-18 9 9 0 010 18z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="info-modal-title">Notice</h3>
+                            <div class="mt-2">
+                                <p id="infoAlertMessage" class="text-sm text-gray-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="infoAlertOkBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200 hover:scale-105">
+                            OK
+                        </button>
+                        <button type="button" id="infoAlertCancelBg" class="sr-only">Close</button>
+                    </div>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900">Weekly Attendance Report</h3>
-                <span class="text-sm text-gray-500">(Mon → Sun)</span>
-            </div>
-            <div style="width:100%; max-width:500px; height:300px;">
-                <canvas id="attendanceChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Holiday Chart -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Monthly Holidays Report</h3>
-                <span class="text-sm text-gray-500">(For this Month)</span>
-            </div>
-            <div style="width:100%; max-width:500px; height:300px;">
-                <canvas id="holidayChart"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Leave Chart -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2
-0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Weekly Leaves Report</h3>
-                <span class="text-sm text-gray-500">(Mon → Sun)</span>
-            </div>
-            <div style="width:100%; max-width:500px; height:300px;">
-                <canvas id="leaveChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Task Chart -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Tasks Report</h3>
-                <span class="text-sm text-gray-500">(For this Month)</span>
-            </div>
-            <div style="width:100%; max-width:500px; height:300px;">
-                <canvas id="taskChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Added professional GUI styling to projects chart section -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2-2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900">Projects Report</h3>
-            <span class="text-sm text-gray-500">(Next 6 Months)</span>
-        </div>
-        <div style="width:100%; max-width:89%; height:400px;">
-            <canvas id="projectChart"></canvas>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-    const dayGroups = [
-        { label: "1-5", start: 1, end: 5 },
-        { label: "6-10", start: 6, end: 10 },
-        { label: "11-15", start: 11, end: 15 },
-        { label: "16-20", start: 16, end: 20 },
-        { label: "21-25", start: 21, end: 25 },
-        { label: "26-31", start: 26, end: 31 }
-    ];
-
-    const priorityColors = {
-        "Low": "#4db6ac",
-        "Medium": "#f57c00",
-        "High": "#e53935",
-        "Urgent": "#8e24aa"
-    };
-
-    fetch("/tasks-month")
-        .then(res => res.json())
-        .then(tasksByDate => {
-            // 🔥 Grouped datasets by priority
-            const datasetsByPriority = {};
-
-            for (const dateStr in tasksByDate) {
-                const taskArray = tasksByDate[dateStr];
-                const day = new Date(dateStr).getDate();
-
-                // Find which group this day belongs to
-                const groupIdx = dayGroups.findIndex(g => day >= g.start && day <= g.end);
-                if (groupIdx === -1) continue;
-
-                taskArray.forEach(task => {
-                    // If priority dataset doesn’t exist, create it
-                    if (!datasetsByPriority[task.priority]) {
-                        datasetsByPriority[task.priority] = {
-                            label: task.priority,
-                            data: dayGroups.map(() => 0),
-                            backgroundColor: priorityColors[task.priority] || "#999",
-                            borderColor: "transparent",
-                            borderWidth: 1,
-                            // 🔥 keep tasks grouped by dayGroup index
-                            tasksByGroup: dayGroups.map(() => [])
-                        };
-                    }
-
-                    // Add task hours to the correct day group
-                    datasetsByPriority[task.priority].data[groupIdx] += task.hours_assigned;
-
-                    // Store task details for tooltip
-                    datasetsByPriority[task.priority].tasksByGroup[groupIdx].push({
-                        title: task.title,
-                        status: task.status,
-                        dueDate: dateStr
-                    });
-                });
-            }
-
-            const datasets = Object.values(datasetsByPriority); // Convert to array
-
-            const ctx = document.getElementById("taskChart").getContext("2d");
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: dayGroups.map(g => g.label), // X-axis = day groups
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        tooltip: {
-                            mode: 'nearest',
-                            intersect: true,
-                            callbacks: {
-                                label: function(context) {
-                                    const ds = context.dataset;
-                                    const groupIdx = context.dataIndex;
-                                    const tasks = ds.tasksByGroup[groupIdx] || [];
-
-                                    // Show each task inside this bar
-                                    return tasks.map(t => {
-                                        const date = new Date(t.dueDate);
-                                        const formattedDate =
-                                            `${date.getDate()}-${date.toLocaleString('default',{month:'short'})}-${date.getFullYear()}`;
-                                        return `${t.title} | Status: ${t.status} | Due: ${formattedDate}`;
-                                    });
-                                }
-                            }
-                        },
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                boxWidth: 25,
-                                padding: 10,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: true
-                        },
-                        y: {
-                            stacked: true,
-                            beginAtZero: true,
-                            max: 30,
-                            ticks: {
-                                stepSize: 3,
-                                callback: v => `${v} hr`
-                            },
-                            title: {
-                                display: true,
-                                text: "Hours Assigned"
-                            }
-                        }
-                    }
-                }
-            });
-
-        })
-        .catch(err => console.error("Tasks fetch error:", err));
-});
-
-    </script>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth(), 1);
-
-            const monthKeys = [];
-            const monthLabels = [];
-            for (let i = 0; i < 6; i++) {
-                const d = new Date(start.getFullYear(), start.getMonth() + i, 1);
-                const key = d.toLocaleDateString('en-CA').slice(0, 7); // YYYY-MM
-                monthKeys.push(key);
-                monthLabels.push(d.toLocaleString('default', {
-                    month: 'short',
-                    year: 'numeric'
-                }));
-            }
-
-            fetch("/projects-six-months")
-                .then(res => res.json())
-                .then(projectsByDate => {
-                    const datasets = [];
-                    const colors = [
-                        "#4a148c", "#6a1b9a", "#7b1fa2", "#8e24aa", "#9c27b0",
-                        "#ab47bc", "#ba68c8", "#ce93d8", "#d1c4e9", "#b39ddb",
-                        "#6a1b9a", "#7b1fa2", "#8e24aa", "#9c27b0", "#ab47bc",
-                        "#7b1fa2", "#8e24aa", "#9c27b0", "#6a1b9a", "#4a148c"
-                    ];
-                    let colorIdx = 0;
-
-                    // Create one dataset per project
-                    for (const dateStr in projectsByDate) {
-                        projectsByDate[dateStr].forEach(p => {
-                            const dataArr = monthKeys.map(() => 0);
-                            const monthIdx = monthKeys.findIndex(mk => dateStr.startsWith(mk));
-                            if (monthIdx !== -1) dataArr[monthIdx] = 1;
-
-                            datasets.push({
-                                label: `Title: ${p.title} (${p.client_name || "Client N/A"})`,
-                                data: dataArr,
-                                backgroundColor: colors[colorIdx % colors.length],
-                                borderColor: "transparent",
-                                borderWidth: 1,
-                                projectDate: dateStr // store exact date
-                            });
-
-                            colorIdx++;
-                        });
-                    }
-
-                    const ctx = document.getElementById("projectChart").getContext("2d");
-                    new Chart(ctx, {
-                        type: "bar",
-                        data: {
-                            labels: monthLabels,
-                            datasets: datasets
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                tooltip: {
-                                    mode: 'nearest',
-                                    intersect: true,
-                                    callbacks: {
-                                        label: function(context) {
-                                            const dataset = context.dataset;
-                                            const date = new Date(dataset.projectDate);
-                                            const formattedDate =
-                                                `${date.getDate()}-${date.toLocaleString('default',{month:'short'})}-${date.getFullYear()}`;
-                                            return `${dataset.label} | Deadline: ${formattedDate}`;
-                                        }
-                                    }
-                                },
-                                legend: {
-                                    display: true
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    stacked: true,
-                                    barPercentage: 0.1, // narrower bars
-                                    categoryPercentage: 0.6
-                                },
-                                y: {
-                                    stacked: true,
-                                    beginAtZero: true,
-                                    title: {
-                                        display: true,
-                                        text: "Projects"
-                                    },
-                                    ticks: {
-                                        stepSize: 1,
-                                        precision: 0
-                                    }
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(err => console.error("Project fetch error:", err));
-        });
-    </script>
-
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const monday = new Date();
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-            const weekdays = [];
-            const dateKeys = [];
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(monday);
-                d.setDate(monday.getDate() + i);
-                dateKeys.push(d.toISOString().slice(0, 10));
-                weekdays.push(`${d.getDate()}-${d.toLocaleString('default',{month:'short'})}`);
-            }
-
-            fetch("/leaves-week")
-                .then(res => res.json())
-                .then(leaves => {
-                    console.log("Leaves JSON:", leaves);
-
-                    const barValues = [];
-                    const barColors = [];
-
-                    dateKeys.forEach(ds => {
-                        if (leaves[ds]) {
-                            barValues.push(1);
-                            barColors.push('orange'); // leave color
-                        } else {
-                            barValues.push(0);
-                            barColors.push('transparent');
-                        }
-                    });
-
-                    const ctx = document.getElementById('leaveChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: weekdays,
-                            datasets: [{
-                                label: 'Leave', // for legend
-                                data: barValues,
-                                backgroundColor: 'orange', // single color for legend
-                                borderColor: "transparent",
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 1,
-                                    ticks: {
-                                        stepSize: 1,
-                                        callback: v => v ? 'Leave' : ''
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'top',
-                                    labels: {
-                                        boxWidth: 20,
-                                        padding: 10,
-                                        font: {
-                                            size: 12
-                                        }
-                                    }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const idx = context.dataIndex;
-                                            const ds = dateKeys[idx];
-                                            if (leaves[ds]) {
-                                                return `Leave Type: ${leaves[ds].type}\nReason: ${leaves[ds].reason}`;
-                                            }
-                                            return '';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(err => console.error('Leave fetch error:', err));
-        });
-    </script>
-
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    // Define monthly groups
-    const dayGroups = [
-        { label: "1-5", start: 1, end: 5 },
-        { label: "6-10", start: 6, end: 10 },
-        { label: "11-15", start: 11, end: 15 },
-        { label: "16-20", start: 16, end: 20 },
-        { label: "21-25", start: 21, end: 25 },
-        { label: "26-31", start: 26, end: 31 }
-    ];
-
-    // Current month
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); // 0-based
-
-    function formatLocalDate(d) {
-        const yyyy = d.getFullYear();
-        const mm = (d.getMonth() + 1).toString().padStart(2, '0');
-        const dd = d.getDate().toString().padStart(2, '0');
-        return `${yyyy}-${mm}-${dd}`;
-    }
-
-    // All days in current month
-    const dateKeys = [];
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-
-    for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
-        dateKeys.push(formatLocalDate(new Date(d)));
-    }
-
-    fetch("/holidays-month")
-        .then(res => res.json())
-        .then(holidays => {
-            console.log("Holidays JSON from server:", holidays);
-
-            const barValues = dayGroups.map(() => 0);
-
-            // Count holidays per group
-            dateKeys.forEach(ds => {
-                if (holidays[ds] && holidays[ds].title) {
-                    const day = new Date(ds).getDate();
-                    const groupIdx = dayGroups.findIndex(g => day >= g.start && day <= g.end);
-                    if (groupIdx !== -1) {
-                        barValues[groupIdx] = 1; // mark holiday exists in this range
-                    }
-                }
-            });
-
-            const ctx = document.getElementById('holidayChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: dayGroups.map(g => g.label),
-                    datasets: [{
-                        label: 'Holiday',
-                        data: barValues,
-                        backgroundColor: 'blue',
-                        borderColor: "transparent",
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 1,
-                            ticks: {
-                                stepSize: 1,
-                                callback: v => v === 1 ? 'Holiday' : ''
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                boxWidth: 20,
-                                padding: 10,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const groupIdx = context.dataIndex;
-                                    const group = dayGroups[groupIdx];
-                                    const holidaysInGroup = [];
-
-                                    // Collect holidays for this group
-                                    for (let d = group.start; d <= group.end; d++) {
-                                        const dateObj = new Date(year, month, d);
-                                        if (dateObj.getMonth() !== month) continue;
-                                        const ds = formatLocalDate(dateObj);
-                                        if (holidays[ds] && holidays[ds].title) {
-                                            holidaysInGroup.push(
-                                                `${d}-${now.toLocaleString('default',{month:'short'})}: ${holidays[ds].title}`
-                                            );
-                                        }
-                                    }
-
-                                    return holidaysInGroup.length > 0
-                                        ? holidaysInGroup
-                                        : "No Holiday";
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-        })
-        .catch(err => console.error('Holiday fetch error:', err));
-});
-
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            function formatTime(datetime) {
-                if (!datetime) return '-';
-                const d = new Date(datetime);
-                if (isNaN(d)) return '-';
-                let h = d.getHours();
-                const m = d.getMinutes().toString().padStart(2, '0');
-                const ampm = h >= 12 ? 'PM' : 'AM';
-                h = h % 12;
-                if (h === 0) h = 12;
-                return `${h}:${m} ${ampm}`;
-            }
-
-            const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const monday = new Date();
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-            const dateKeys = [];
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(monday);
-                d.setDate(monday.getDate() + i);
-                dateKeys.push(d.toISOString().slice(0, 10));
-            }
-
-            fetch("/attendance-calendar")
-                .then(res => res.json())
-                .then(data => {
-                    const barColors = [];
-                    const barValues = [];
-                    const MAX_HOURS = 12;
-                    const today = new Date();
-
-                    dateKeys.forEach(ds => {
-                        const dayInfo = data[ds] || {
-                            status: 0,
-                            punch: null,
-                            hours: 0
-                        };
-                        const isFuture = new Date(ds) > today;
-                        let color = 'green';
-                        let hours = Math.min(dayInfo.hours, MAX_HOURS);
-
-                        if (dayInfo.status === 0 && !isFuture) {
-                            color = 'red';
-                            hours = MAX_HOURS;
-                        } else if (dayInfo.status === 1 && dayInfo.punch && dayInfo.punch.in) {
-                            const punchIn = new Date(dayInfo.punch.in);
-                            const nineThirty = new Date(punchIn);
-                            nineThirty.setHours(9, 30, 0, 0);
-                            if (punchIn > nineThirty) color = '#FF8C00';
-                        }
-
-                        if (isFuture) {
-                            color = 'transparent';
-                            hours = 0;
-                        }
-
-                        barColors.push(color);
-                        barValues.push(hours);
-                    });
-
-                    const ctx = document.getElementById('attendanceChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: weekdays,
-                            datasets: [{
-                                data: barValues,
-                                backgroundColor: barColors,
-                                borderColor: "transparent",
-                                borderWidth: 1,
-                                barPercentage: 0.7,
-                                categoryPercentage: 0.7
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: MAX_HOURS,
-                                    title: {
-                                        display: true,
-                                        text: 'Hours Worked'
-                                    },
-                                    ticks: {
-                                        stepSize: 2, // <-- 2 hours per box
-                                        callback: v => v + " hr"
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    labels: {
-                                        generateLabels: function(chart) {
-                                            return [{
-                                                    text: 'Present',
-                                                    fillStyle: 'green',
-                                                    strokeStyle: 'transparent'
-                                                },
-                                                {
-                                                    text: 'Late Punch-In',
-                                                    fillStyle: '#FF8C00',
-                                                    strokeStyle: 'transparent'
-                                                },
-                                                {
-                                                    text: 'Absent',
-                                                    fillStyle: 'red',
-                                                    strokeStyle: 'transparent'
-                                                }
-                                            ];
-                                        }
-                                    },
-                                    position: 'top'
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const idx = context.dataIndex;
-                                            const ds = dateKeys[idx];
-                                            const dayInfo = data[ds] || {
-                                                status: 0,
-                                                punch: null,
-                                                hours: 0
-                                            };
-                                            let status = dayInfo.status === 1 ? 'Present' :
-                                            'Absent';
-                                            if (dayInfo.status === 1 && dayInfo.punch &&
-                                                new Date(dayInfo.punch.in) > new Date(new Date(
-                                                    dayInfo.punch.in).setHours(9, 30, 0, 0))) {
-                                                status = 'Late Punch-In';
-                                            }
-                                            let punchText = '';
-                                            if (dayInfo.punch) {
-                                                punchText =
-                                                    ` | In: ${formatTime(dayInfo.punch.in)}${dayInfo.punch.in_again ? ' / ' + formatTime(dayInfo.punch.in_again) : ''} Out: ${formatTime(dayInfo.punch.out)}${dayInfo.punch.out_again ? ' / ' + formatTime(dayInfo.punch.out_again) : ''}`;
-                                            }
-                                            return `${status}${punchText} | Hours: ${dayInfo.hours}`;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                })
-                .catch(err => console.error(err));
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch("/attendance-calendar")
-                .then(res => res.json())
-                .then(dateData => {
-                    console.log("Date-based data:", dateData);
-                    const cal = new window.CalHeatMap();
-                    cal.init({
-                        itemSelector: "#attendance-calendar",
-                        domain: "month",
-                        subDomain: "day",
-                        start: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
-                        data: dateData,
-                        cellSize: 25,
-                        range: 3,
-                        tooltip: true,
-                        legend: [0, 1, 3],
-                        legendColors: {
-                            min: "#ebedf0",
-                            max: "#216e39",
-                            empty: "#eeeeee",
-                            data: ["#ebedf0", "#8cc665", "#f39c12"]
-                        },
-                        dateFormat: "YYYY-MM-DD"
-                    });
-                })
-                .catch(err => console.error(err));
-        });
-    </script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         function updateClocks() {
@@ -1411,7 +710,7 @@
             const gpsStatus = document.getElementById('gps-status');
 
             if (!locationType) {
-                alert("Please select your work location (Home or Company).");
+                showInfoModal("Please select your work location (Home or Company).");
                 document.getElementById('location_type').focus();
                 return;
             }
@@ -1435,13 +734,46 @@
                     gpsStatus.innerHTML =
                         '<span class="text-red-500">❌</span> Unable to get location. Please enable GPS.';
                     gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
-                    alert("Unable to get your location. Please enable GPS and try again.");
+                    showInfoModal("Unable to get your location. Please enable GPS and try again.");
                 });
             } else {
                 gpsStatus.innerHTML = '<span class="text-red-500">❌</span> Geolocation not supported.';
                 gpsStatus.className = 'flex items-center gap-2 text-xs text-red-600';
-                alert("Geolocation is not supported by this browser.");
+                showInfoModal("Geolocation is not supported by this browser.");
             }
+        });
+
+        function showInfoModal(message) {
+            $('#infoAlertMessage').text(message || 'Notice');
+            $('#infoAlertModal').removeClass('hidden').hide().fadeIn(250);
+            $('body').addClass('overflow-hidden');
+        }
+
+        function closeInfoModal() {
+            $('#infoAlertModal').fadeOut(250, function() {
+                $(this).addClass('hidden');
+                $('body').removeClass('overflow-hidden');
+            });
+        }
+
+        $(document).ready(function() {
+            $('#infoAlertOkBtn').on('click', function() {
+                closeInfoModal();
+            });
+
+            // Close when clicking on the overlay background
+            $('#infoAlertModal').on('click', function(e) {
+                if ($(e.target).hasClass('fixed') && $(e.target).hasClass('inset-0')) {
+                    closeInfoModal();
+                }
+            });
+
+            // ESC key to close
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && !$('#infoAlertModal').hasClass('hidden')) {
+                    closeInfoModal();
+                }
+            });
         });
     </script>
 </x-app-layout>
