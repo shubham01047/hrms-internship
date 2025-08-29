@@ -168,88 +168,136 @@
                                 </div>
                             </div>
                         </div>
-                        <label>Gender:</label>
-                        <select name="gender">
-                            <option value="">-- Select Gender --</option>
-                            <option value="male" {{ old('gender', $users->gender) == 'male' ? 'selected' : '' }}>Male
-                            </option>
-                            <option value="female" {{ old('gender', $users->gender) == 'female' ? 'selected' : '' }}>
-                                Female</option>
-                            <option value="other" {{ old('gender', $users->gender) == 'other' ? 'selected' : '' }}>
-                                Other</option>
-                        </select><br><br>
-                        <label>Date of Birth:</label>
-                        <input type="date" name="date_of_birth"
-                            value="{{ old('date_of_birth', $users->date_of_birth) }}"><br><br>
-                        <label>Contact Number:</label>
-                        <input type="number" name="contact_number"
-                            value="{{ old('contact_number', $users->contact_number) }}"><br><br>
-                        <label>Address:</label>
-                        <input type="text" name="address" value="{{ old('address', $users->address) }}"><br><br>
-                        <label>City:</label>
-                        <input type="text" name="city" value="{{ old('city', $users->city) }}"><br><br>
-                        <label>State:</label>
-                        <input type="text" name="state" value="{{ old('state', $users->state) }}"><br><br>
-                        <label>Country:</label>
-                        <input type="text" name="country" value="{{ old('country', $users->country) }}"><br><br>
-                        <label>Pin Code:</label>
-                        <input type="number" name="pin_code"
-                            value="{{ old('pin_code', $users->pin_code) }}"><br><br>
-                        <label>Joining Date:</label>
-                        <input type="date" name="joining_date"
-                            value="{{ old('joining_date', $users->joining_date) }}"><br><br>
-                        <label>Employment Type:</label>
-                        <select name="employment_type" id="employment_type" class="form-control" required>
-                            <option value="">-- Select Employment Type --</option>
-                            <option value="Full-Time" {{ $users->employment_type == 'full_time' ? 'selected' : '' }}>
-                                Full-Time</option>
-                            <option value="Part-Time" {{ $users->employment_type == 'part_time' ? 'selected' : '' }}>
-                                Part-Time</option>
-                            <option value="intern" {{ $users->employment_type == 'intern' ? 'selected' : '' }}>
-                                Intern</option>
-                            <option value="trainee" {{ $users->employment_type == 'trainee' ? 'selected' : '' }}>
-                                Trainee</option>
-                            <option value="contract" {{ $users->employment_type == 'contract' ? 'selected' : '' }}>
-                                Contract</option>
-                        </select><br><br>
-                        <label>Status:</label>
-                        <select name="status" id="status" class="form-control" required>
-                            <option value="">-- Select Status --</option>
-                            <option value="active" {{ $users->status == 'active' ? 'selected' : '' }}>Active
-                            </option>
-                            <option value="inactive" {{ $users->status == 'inactive' ? 'selected' : '' }}>Inactive
-                            </option>
-                            <option value="terminated" {{ $users->status == 'terminated' ? 'selected' : '' }}>
-                                Terminated</option>
-                        </select><br><br>
-                        <div>
-                            <label for="resume">Resume</label><br>
-                            @if ($users->resume)
-                                <a href="{{ asset('storage/' . $users->resume) }}" target="_blank">View Resume</a><br>
-                            @endif
-                            <input type="file" name="resume" id="resume">
-                        </div>
-                        <!-- Aadhar Card -->
-                        <div>
-                            <label for="aadhar_card">Aadhar Card</label><br>
-                            @if ($users->aadhar_card)
-                                <a href="{{ asset('storage/' . $users->aadhar_card) }}" target="_blank">View
-                                    Aadhar</a><br>
-                            @endif
-                            <input type="file" name="aadhar_card" id="aadhar_card">
+
+                        <div class="bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200">
+                            <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7zM16 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                <h4 class="theme-app text-base sm:text-lg font-semibold" style="color: var(--secondary-text);">
+                                    Additional Information
+                                </h4>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Gender</label>
+                                    <select name="gender"
+                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
+                                        <option value="">-- Select Gender --</option>
+                                        <option value="male"   {{ old('gender', $users->gender) == 'male' ? 'selected' : '' }}>Male</option>
+                                        <option value="female" {{ old('gender', $users->gender) == 'female' ? 'selected' : '' }}>Female</option>
+                                        <option value="other"  {{ old('gender', $users->gender) == 'other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Date of Birth</label>
+                                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $users->date_of_birth) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Contact Number</label>
+                                    <input type="number" name="contact_number" value="{{ old('contact_number', $users->contact_number) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2 md:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700">Address</label>
+                                    <input type="text" name="address" value="{{ old('address', $users->address) }}"
+                                           placeholder="Street, Area"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">City</label>
+                                    <input type="text" name="city" value="{{ old('city', $users->city) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">State</label>
+                                    <input type="text" name="state" value="{{ old('state', $users->state) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Country</label>
+                                    <input type="text" name="country" value="{{ old('country', $users->country) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Pin Code</label>
+                                    <input type="number" name="pin_code" value="{{ old('pin_code', $users->pin_code) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Joining Date</label>
+                                    <input type="date" name="joining_date" value="{{ old('joining_date', $users->joining_date) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Employment Type</label>
+                                    <select name="employment_type" id="employment_type" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" required>
+                                        <option value="">-- Select Employment Type --</option>
+                                        <option value="Full-Time" {{ $users->employment_type == 'full_time' ? 'selected' : '' }}>Full-Time</option>
+                                        <option value="Part-Time" {{ $users->employment_type == 'part_time' ? 'selected' : '' }}>Part-Time</option>
+                                        <option value="intern"    {{ $users->employment_type == 'intern' ? 'selected' : '' }}>Intern</option>
+                                        <option value="trainee"   {{ $users->employment_type == 'trainee' ? 'selected' : '' }}>Trainee</option>
+                                        <option value="contract"  {{ $users->employment_type == 'contract' ? 'selected' : '' }}>Contract</option>
+                                    </select>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">Status</label>
+                                    <select name="status" id="status" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" required>
+                                        <option value="">-- Select Status --</option>
+                                        <option value="active"     {{ $users->status == 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive"   {{ $users->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="terminated" {{ $users->status == 'terminated' ? 'selected' : '' }}>Terminated</option>
+                                    </select>
+                                </div>
+
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="block text-sm font-semibold text-gray-700" for="resume">Resume</label>
+                                    @if ($users->resume)
+                                        <a class="text-sm text-blue-600 underline" href="{{ asset('storage/' . $users->resume) }}" target="_blank">View Resume</a>
+                                    @endif
+                                    <input type="file" name="resume" id="resume"
+                                           class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2 md:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700" for="aadhar_card">Aadhar Card</label>
+                                    @if ($users->aadhar_card)
+                                        <a class="text-sm text-blue-600 underline" href="{{ asset('storage/' . $users->aadhar_card) }}" target="_blank">View Aadhar</a>
+                                    @endif
+                                    <input type="file" name="aadhar_card" id="aadhar_card"
+                                           class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2 md:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700" for="pan_card">PAN Card</label>
+                                    @if ($users->pan_card)
+                                        <a class="text-sm text-blue-600 underline" href="{{ asset('storage/' . $users->pan_card) }}" target="_blank">View PAN</a>
+                                    @endif
+                                    <input type="file" name="pan_card" id="pan_card"
+                                           class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+
+                                <div class="space-y-2 md:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700">Leave Balance</label>
+                                    <input type="number" name="leave_balance" value="{{ old('leave_balance', $users->leave_balance) }}"
+                                           class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- PAN Card -->
-                        <div>
-                            <label for="pan_card">PAN Card</label><br>
-                            @if ($users->pan_card)
-                                <a href="{{ asset('storage/' . $users->pan_card) }}" target="_blank">View PAN</a><br>
-                            @endif
-                            <input type="file" name="pan_card" id="pan_card">
-                        </div><br><br>
-                        <label>Leave Balance:</label>
-                        <input type="number" name="leave_balance"
-                            value="{{ old('leave_balance', $users->leave_balance) }}"><br><br>
                         {{-- Roles Assignment Section --}}
                         <div class="bg-blue-50 rounded-lg p-4 sm:p-6 border border-blue-200">
                             <div class="flex items-center space-x-1.5 sm:space-x-2 mb-4 sm:mb-6">
@@ -411,15 +459,24 @@
                 } else if (name.length > 100) {
                     showError(nameInput, nameError, 'Name must not exceed 100 characters.');
                     validation.name = false;
-                } else if (!/^[a-zA-Z\s\-'\.]+$/.test(name)) {
-                    showError(nameInput, nameError,
-                        'Name can only contain letters, spaces, hyphens, and apostrophes.');
-                    validation.name = false;
                 } else {
-                    hideError(nameInput, nameError);
-                    validation.name = true;
-                    // Auto-format name
-                    nameInput.value = name.replace(/\s+/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    // exactly one space between first and last; allow letters, apostrophes, hyphens, periods in each part
+                    const normalized = name.replace(/\s+/g, ' '); // collapse multiple spaces for check
+                    const exactOneSpace = /^[A-Za-z][A-Za-z.'-]* [A-Za-z][A-Za-z.'-]*$/.test(normalized);
+
+                    if (!exactOneSpace) {
+                        showError(
+                            nameInput,
+                            nameError,
+                            'Enter first and last name with exactly one space (e.g., John Doe).'
+                        );
+                        validation.name = false;
+                    } else {
+                        hideError(nameInput, nameError);
+                        validation.name = true;
+                        // Auto-format: single space and capitalize initials
+                        nameInput.value = normalized.replace(/\b\w/g, l => l.toUpperCase());
+                    }
                 }
 
                 checkForChanges();
