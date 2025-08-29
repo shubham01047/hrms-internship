@@ -45,4 +45,5 @@ class AppServiceProvider extends ServiceProvider
             User::observe(UserObserver::class);
         }
     }
+    //done
 }
