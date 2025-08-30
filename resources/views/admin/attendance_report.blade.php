@@ -117,6 +117,7 @@
             font-size: .875rem;
             transition: background-color .15s ease, color .15s ease, border-color .15s ease;
             border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .btn-primary {
@@ -176,6 +177,17 @@
             border-color: var(--primary-border);
             color: var(--primary-text);
         }
+
+        .filter-actions {
+            display: flex;
+            align-items: center;          /* was flex-end */
+            justify-content: flex-start;   /* align buttons to start */
+            gap: .5rem;
+            flex-wrap: wrap;               /* allow wrap only on very narrow screens */
+        }
+        @media (min-width: 640px) { /* sm: */
+            .filter-actions { flex-wrap: nowrap; }
+        }
     </style>
 
     @can('attendance report')
@@ -233,17 +245,29 @@
                     </div>
 
                     <form method="GET" action="{{ route('admin.attendance.report') }}"
-                        class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                        <div>
+                        class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                        <div class="lg:col-span-3">
                             <label for="from_date" class="block text-sm mb-1" style="color: var(--secondary-text);">From date</label>
-                            <input type="date" id="from_date" name="from_date" value="{{ $fromDate }}"
-                                class="input">
+                            <input type="date" id="from_date" name="from_date" value="{{ $fromDate }}" class="input">
                         </div>
-                        <div>
+                        <div class="lg:col-span-3">
                             <label for="to_date" class="block text-sm mb-1" style="color: var(--secondary-text);">To date</label>
                             <input type="date" id="to_date" name="to_date" value="{{ $toDate }}" class="input">
                         </div>
-                        <div class="lg:col-span-3 flex items-end gap-2">
+                        <div class="sm:col-span-2 lg:col-span-6">
+                            <label for="user_name" class="block text-sm mb-1" style="color: var(--secondary-text);">User name</label>
+                            <input
+                                type="text"
+                                id="user_name"
+                                name="user_name"
+                                value="{{ request('user_name') }}"
+                                placeholder="Search by user name"
+                                class="input"
+                                aria-label="Search attendance by user name"
+                            >
+                            <p id="filter-counter" class="text-xs mt-1" style="color: var(--secondary-text);" aria-live="polite"></p>
+                        </div>
+                        <div class="sm:col-span-2 lg:col-span-6 filter-actions">
                             <button type="submit" class="btn btn-primary">Apply Filters</button>
                             <a href="{{ route('admin.attendance.report') }}" class="btn btn-ghost">Reset</a>
                             <a href="{{ route('admin.report.form') }}" class="btn btn-ghost">Download Report</a>
@@ -251,235 +275,274 @@
                     </form>
                 </div>
 
-                @forelse ($attendances as $index => $attendance)
-                    <!-- Removed animate-fade-in class -->
-                    <div class="card">
-                        <div class="p-4 sm:p-6 border-b" style="border-color: var(--primary-border);">
-                            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div class="avatar-circle">
-                                        <span>{{ strtoupper(substr($attendance['name'], 0, 2)) }}</span>
+                <div id="no-matches" class="card p-6 hidden">
+                    <div class="text-center">
+                        <h3 class="text-base font-semibold mb-1" style="color: var(--primary-bg);">No matching records</h3>
+                        <p class="text-sm" style="color: var(--secondary-text);">Try a different user name.</p>
+                    </div>
+                </div>
+
+                <div id="attendance-cards" class="space-y-6">
+                    @forelse ($attendances as $index => $attendance)
+                        <div class="card attendance-card" data-employee-name="{{ strtolower($attendance['name']) }}">
+                            <div class="p-4 sm:p-6 border-b" style="border-color: var(--primary-border);">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <div class="avatar-circle">
+                                            <span>{{ strtoupper(substr($attendance['name'], 0, 2)) }}</span>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <h3 style="color: var(--primary-bg);" class="text-lg sm:text-xl font-semibold break-words">
+                                                {{ $attendance['name'] }}
+                                            </h3>
+                                            <p style="color: var(--secondary-text);" class="text-sm">Employee ID:
+                                                EMP{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</p>
+                                        </div>
                                     </div>
-                                    <div class="min-w-0">
-                                        <h3 style="color: var(--primary-bg);" class="text-lg sm:text-xl font-semibold break-words">
-                                            {{ $attendance['name'] }}
-                                        </h3>
-                                        <p style="color: var(--secondary-text);" class="text-sm">Employee ID:
-                                            EMP{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</p>
+                                    <div class="flex items-center gap-2">
+                                        @if ($attendance['punch_out'])
+                                            <span class="status-badge checked-out">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                                </svg>
+                                                Checked Out
+                                            </span>
+                                        @else
+                                            <span class="status-badge active">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                Active
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    @if ($attendance['punch_out'])
-                                        <span class="status-badge checked-out">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            </div>
+
+                            <!-- Updated all info tiles to use corporate theme -->
+                            <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                                <div class="info-tile info-tile-green">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7" />
-                                            </svg>
-                                            Checked Out
-                                        </span>
-                                    @else
-                                        <span class="status-badge active">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            Active
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Updated all info tiles to use corporate theme -->
-                        <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                            <div class="info-tile info-tile-green">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Punch In</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ \Carbon\Carbon::parse($attendance['punch_in'])->format('h:i A') }}</p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
-                                    {{ $attendance['punch_in_remarks'] ?? '-' }}</p>
-                            </div>
-
-                            <div class="info-tile info-tile-red">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Punch Out</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ $attendance['punch_out'] ? \Carbon\Carbon::parse($attendance['punch_out'])->format('h:i A') : 'Not punched out' }}
-                                </p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
-                                    {{ $attendance['punch_out_remarks'] ?? '-' }}</p>
-                            </div>
-
-                            <div class="info-tile info-tile-blue">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Total Hours</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ $attendance['total_working_hours'] }}</p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Daily total work duration</p>
-                            </div>
-
-                            <div class="info-tile info-tile-yellow">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 16l-4-4m0 0l4-4m-4 4h14" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Punch In Again</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ $attendance['punch_in_again'] ? \Carbon\Carbon::parse($attendance['punch_in_again'])->format('h:i A') : 'Not punched in again' }}
-                                </p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
-                                    {{ $attendance['punch_in_again_remarks'] ?? '-' }}</p>
-                            </div>
-
-                            <div class="info-tile info-tile-purple">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 16l4-4m0 0l-4-4m4 4H7" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Punch Out Again</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ $attendance['punch_out_again'] ? \Carbon\Carbon::parse($attendance['punch_out_again'])->format('h:i A') : 'Not punched out again' }}
-                                </p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
-                                    {{ $attendance['punch_out_again_remarks'] ?? '-' }}</p>
-                            </div>
-
-                            <div class="info-tile info-tile-blue">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
-                                        <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <p class="font-medium text-sm">Total Overtime Hours</p>
-                                </div>
-                                <p class="text-2xl font-bold">
-                                    {{ $attendance['overtime_working_hours'] }}</p>
-                                <p class="text-xs mt-1" style="color: var(--secondary-text);">Additional hours worked</p>
-                            </div>
-                        </div>
-
-                        <div class="px-4 sm:px-6 pb-5">
-                            <div class="card p-4">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="section-title text-base sm:text-lg flex items-center gap-2">
-                                        <svg class="w-5 h-5" style="color: var(--primary-bg);" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                        </svg>
-                                        Break Details
-                                    </h4>
-                                    @if (!empty($attendance['breaks']) && count($attendance['breaks']) > 0)
-                                        <span class="px-3 py-1 rounded-full text-sm font-medium"
-                                            style="background: var(--primary-bg-light); border: 1px solid var(--primary-border); color: var(--primary-text);">
-                                            {{ count($attendance['breaks']) }}
-                                            Break{{ count($attendance['breaks']) > 1 ? 's' : '' }}
-                                        </span>
-                                    @endif
-                                </div>
-
-                                @if (!empty($attendance['breaks']) && count($attendance['breaks']) > 0)
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                                        @foreach ($attendance['breaks'] as $break)
-                                            <div class="break-card">
-                                                <div class="flex items-center gap-2">
-                                                    <span class="text-lg" style="color: var(--primary-text);">
-                                                        @php
-                                                            $breakType = strtolower($break['type'] ?? 'custom');
-                                                            $emoji = match($breakType) {
-                                                                'morning tea' => '☕',
-                                                                'lunch' => '🍽️',
-                                                                'evening tea' => '🫖',
-                                                                default => '💼'
-                                                            };
-                                                        @endphp
-                                                        {{ $emoji }} {{ ucwords($break['type'] ?? 'Custom') }}
-                                                    </span>
-                                                </div>
-                                                <div class="text-right">
-                                                    <span class="break-badge">
-                                                        {{ is_numeric($break['duration']) ? gmdate('H:i:s', $break['duration']) : $break['duration'] }}
-                                                    </span>
-                                                    <p class="text-xs" style="color: var(--secondary-text);">Duration</p>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="text-center py-8">
-                                        <div class="p-3 rounded-full mx-auto mb-3 w-fit"
-                                            style="background: var(--primary-bg-light); border: 1px solid var(--primary-border);">
-                                            <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                             </svg>
                                         </div>
-                                        <h4 class="text-sm font-medium mb-1" style="color: var(--primary-bg);">No Breaks Taken</h4>
-                                        <p class="text-xs" style="color: var(--secondary-text);">Employee worked continuously today</p>
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mt-2"
-                                            style="background: var(--primary-bg-light); color: var(--primary-text); border: 1px solid var(--primary-border);">
-                                            Continuous Work
-                                        </span>
+                                        <p class="font-medium text-sm">Punch In</p>
                                     </div>
-                                @endif
+                                    <p class="text-2xl font-bold">
+                                        {{ \Carbon\Carbon::parse($attendance['punch_in'])->format('h:i A') }}</p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
+                                        {{ $attendance['punch_in_remarks'] ?? '-' }}</p>
+                                </div>
+
+                                <div class="info-tile info-tile-red">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-medium text-sm">Punch Out</p>
+                                    </div>
+                                    <p class="text-2xl font-bold">
+                                        {{ $attendance['punch_out'] ? \Carbon\Carbon::parse($attendance['punch_out'])->format('h:i A') : 'Not punched out' }}
+                                    </p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
+                                        {{ $attendance['punch_out_remarks'] ?? '-' }}</p>
+                                </div>
+
+                                <div class="info-tile info-tile-blue">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-medium text-sm">Total Hours</p>
+                                    </div>
+                                    <p class="text-2xl font-bold">
+                                        {{ $attendance['total_working_hours'] }}</p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Daily total work duration</p>
+                                </div>
+
+                                <div class="info-tile info-tile-yellow">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-medium text-sm">Punch In Again</p>
+                                    </div>
+                                    <p class="text-2xl font-bold">
+                                        {{ $attendance['punch_in_again'] ? \Carbon\Carbon::parse($attendance['punch_in_again'])->format('h:i A') : 'Not punched in again' }}
+                                    </p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
+                                        {{ $attendance['punch_in_again_remarks'] ?? '-' }}</p>
+                                </div>
+
+                                <div class="info-tile info-tile-purple">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-medium text-sm">Punch Out Again</p>
+                                    </div>
+                                    <p class="text-2xl font-bold">
+                                        {{ $attendance['punch_out_again'] ? \Carbon\Carbon::parse($attendance['punch_out_again'])->format('h:i A') : 'Not punched out again' }}
+                                    </p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Remark:
+                                        {{ $attendance['punch_out_again_remarks'] ?? '-' }}</p>
+                                </div>
+
+                                <div class="info-tile info-tile-blue">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="p-2 rounded-lg" style="background: var(--hover-bg);">
+                                            <svg class="w-5 h-5" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-medium text-sm">Total Overtime Hours</p>
+                                    </div>
+                                    <p class="text-2xl font-bold">
+                                        {{ $attendance['overtime_working_hours'] }}</p>
+                                    <p class="text-xs mt-1" style="color: var(--secondary-text);">Additional hours worked</p>
+                                </div>
+                            </div>
+
+                            <div class="px-4 sm:px-6 pb-5">
+                                <div class="card p-4">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="section-title text-base sm:text-lg flex items-center gap-2">
+                                            <svg class="w-5 h-5" style="color: var(--primary-bg);" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 00-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                            </svg>
+                                            Break Details
+                                        </h4>
+                                        @if (!empty($attendance['breaks']) && count($attendance['breaks']) > 0)
+                                            <span class="px-3 py-1 rounded-full text-sm font-medium"
+                                                style="background: var(--primary-bg-light); border: 1px solid var(--primary-border); color: var(--primary-text);">
+                                                {{ count($attendance['breaks']) }}
+                                                Break{{ count($attendance['breaks']) > 1 ? 's' : '' }}
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    @if (!empty($attendance['breaks']) && count($attendance['breaks']) > 0)
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                                            @foreach ($attendance['breaks'] as $break)
+                                                <div class="break-card">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-lg" style="color: var(--primary-text);">
+                                                            @php
+                                                                $breakType = strtolower($break['type'] ?? 'custom');
+                                                                $emoji = match($breakType) {
+                                                                    'morning tea' => '☕',
+                                                                    'lunch' => '🍽️',
+                                                                    'evening tea' => '🫖',
+                                                                    default => '💼'
+                                                                };
+                                                            @endphp
+                                                            {{ $emoji }} {{ ucwords($break['type'] ?? 'Custom') }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="break-badge">
+                                                            {{ is_numeric($break['duration']) ? gmdate('H:i:s', $break['duration']) : $break['duration'] }}
+                                                        </span>
+                                                        <p class="text-xs" style="color: var(--secondary-text);">Duration</p>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-center py-8">
+                                            <div class="p-3 rounded-full mx-auto mb-3 w-fit"
+                                                style="background: var(--primary-bg-light); border: 1px solid var(--primary-border);">
+                                                <svg class="w-6 h-6" style="color: var(--primary-text);" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </div>
+                                            <h4 class="text-sm font-medium mb-1" style="color: var(--primary-bg);">No Breaks Taken</h4>
+                                            <p class="text-xs" style="color: var(--secondary-text);">Employee worked continuously today</p>
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mt-2"
+                                                style="background: var(--primary-bg-light); color: var(--primary-text); border: 1px solid var(--primary-border);">
+                                                Continuous Work
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @empty
-                    <!-- Removed animate-fade-in class -->
-                    <div class="text-center py-12 card">
-                        <div class="p-4 rounded-full mx-auto mb-4 w-fit"
-                            style="background: var(--primary-bg-light); border: 1px solid var(--primary-border);">
-                            <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-                            </svg>
+                    @empty
+                        <div class="text-center py-12 card">
+                            <div class="p-4 rounded-full mx-auto mb-4 w-fit"
+                                style="background: var(--primary-bg-light); border: 1px solid var(--primary-border);">
+                                <svg class="w-8 h-8" style="color: var(--primary-text);" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-medium mb-2" style="color: var(--primary-bg);">No Attendance Records</h3>
+                            <p style="color: var(--secondary-text);">No attendance records found for the selected range.</p>
                         </div>
-                        <h3 class="text-lg font-medium mb-2" style="color: var(--primary-bg);">No Attendance Records</h3>
-                        <p style="color: var(--secondary-text);">No attendance records found for the selected range.</p>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
         </div>
     @endcan
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('user_name');
+        const list = document.getElementById('attendance-cards');
+        if (!input || !list) return;
+
+        const cards = Array.from(list.querySelectorAll('.attendance-card'));
+        const noMatches = document.getElementById('no-matches');
+        const counter = document.getElementById('filter-counter');
+        const total = cards.length;
+
+        function applyFilter() {
+          const q = (input.value || '').trim().toLowerCase();
+          let shown = 0;
+
+          cards.forEach((card) => {
+            const name = (card.getAttribute('data-employee-name') || '').toLowerCase();
+            const match = !q || name.includes(q);
+            card.classList.toggle('hidden', !match);
+            if (match) shown++;
+          });
+
+          if (noMatches) noMatches.classList.toggle('hidden', shown !== 0);
+          if (counter) counter.textContent = q ? `Showing ${shown} of ${total}` : '';
+        }
+
+        input.addEventListener('input', applyFilter);
+        // Run once on load to reflect any pre-filled server query
+        applyFilter();
+      });
+    </script>
 </x-app-layout>
