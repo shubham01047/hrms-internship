@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         try {
-            if (Schema::hasTable('company_profiles')) { 
+            if (Schema::hasTable('company_profile')) { 
                 $company = Company::first();
                 if ($company) {
                     View::share('company', $company);

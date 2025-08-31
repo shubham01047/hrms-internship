@@ -156,6 +156,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaves-week', [AttendanceController::class, 'weeklyLeaves']);
     Route::get('/projects-six-months', [AttendanceController::class, 'projectsSixMonths']);
     Route::get('/tasks-month', [AttendanceController::class, 'tasksMonth'])->name('tasks.month');
+
+    Route::get('/files/{type}/{filename}', [UserController::class, 'viewFile'])
+    ->where('type', 'resumes|aadhar|pan')
+    ->name('files.view');
+
+    Route::get('/files/leave/{filename}', [LeaveController::class, 'viewLeave'])
+    ->name('files.leave.view');
 });
 
 require __DIR__ . '/auth.php';

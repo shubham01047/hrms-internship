@@ -82,7 +82,7 @@
                             <div>
                                 <p class="text-xs sm:text-sm font-medium text-gray-600 uppercase tracking-wide">Approved</p>
                                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
-                                    {{ $leaves->where('status', 'approved')->count() }}</p>
+                                    {{ $leaves->where('status', 'Approved')->count() }}</p>
                             </div>
                             <div class="p-2 sm:p-3 bg-green-100 rounded-lg">
                                 <i class="fas fa-check-circle text-lg sm:text-xl"></i>
@@ -96,7 +96,7 @@
                             <div>
                                 <p class="text-xs sm:text-sm font-medium text-gray-600 uppercase tracking-wide">Pending</p>
                                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
-                                    {{ $leaves->where('status', 'pending')->count() }}</p>
+                                    {{ $leaves->where('status', 'Pending')->count() }}</p>
                             </div>
                             <div class="p-2 sm:p-3 bg-yellow-100 rounded-lg">
                                 <i class="fas fa-clock text-lg sm:text-xl"></i>
@@ -110,7 +110,7 @@
                             <div>
                                 <p class="text-xs sm:text-sm font-medium text-gray-600 uppercase tracking-wide">Rejected</p>
                                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
-                                    {{ $leaves->where('status', 'rejected')->count() }}</p>
+                                    {{ $leaves->where('status', 'Rejected')->count() }}</p>
                             </div>
                             <div class="p-2 sm:p-3 bg-red-100 rounded-lg">
                                 <i class="fas fa-times-circle text-lg sm:text-xl"></i>
@@ -210,8 +210,10 @@
                                         <div class="flex items-center">
                                             <div>
                                                 <div class="text-xs sm:text-base font-medium text-gray-900">
-                                                    <span class="sm:hidden">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M') }}</span>
-                                                    <span class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</span>
+                                                    <span
+                                                        class="sm:hidden">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M') }}</span>
+                                                    <span
+                                                        class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->start_date)->format('d M, Y') }}</span>
                                                 </div>
                                                 <div class="text-xs text-gray-500 hidden sm:block">
                                                     {{ \Carbon\Carbon::parse($leave->start_date)->format('l') }}</div>
@@ -221,27 +223,31 @@
                                         <div class="flex items-center">
                                             <div>
                                                 <div class="text-xs sm:text-base font-medium text-gray-900">
-                                                    <span class="sm:hidden">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M') }}</span>
-                                                    <span class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</span>
+                                                    <span
+                                                        class="sm:hidden">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M') }}</span>
+                                                    <span
+                                                        class="hidden sm:inline">{{ \Carbon\Carbon::parse($leave->end_date)->format('d M, Y') }}</span>
                                                 </div>
                                                 <div class="text-xs text-gray-500 hidden sm:block">
                                                     {{ \Carbon\Carbon::parse($leave->end_date)->format('l') }}</div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="hidden sm:flex items-center">
                                             <div>
                                                 @if ($leave->proof_sick)
-                                                    <a href="{{ asset('storage/' . $leave->proof_sick) }}"
+                                                    <a href="{{ route('files.leave.view', [
+                                                        'filename' => str_replace('sick_proofs/', '', $leave->proof_sick),
+                                                    ]) }}"
                                                         target="_blank" class="btn btn-sm btn-primary text-xs">
                                                         View Certificate
                                                     </a>
                                                 @else
-                                                    <span class="text-muted text-xs">No File</span>
+                                                    <span class="text-xs text-gray-400">No File</span>
                                                 @endif
                                             </div>
                                         </div>
-                                        
+
                                         <div class="flex items-center">
                                             @php
                                                 $statusConfig = [

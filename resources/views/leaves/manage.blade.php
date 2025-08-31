@@ -193,13 +193,15 @@
                                             <div class="min-w-0 flex-1">
                                                 <div class="text-sm font-semibold text-gray-900 truncate">
                                                     @if ($leave->proof_sick)
-                                                        <a href="{{ asset('storage/' . $leave->proof_sick) }}"
-                                                            target="_blank" class="btn btn-sm btn-primary">
-                                                            View Certificate
-                                                        </a>
-                                                    @else
-                                                        <span class="text-muted">No File</span>
-                                                    @endif
+                                                    <a href="{{ route('files.leave.view', [
+                                                        'filename' => str_replace('sick_proofs/', '', $leave->proof_sick),
+                                                    ]) }}"
+                                                        target="_blank" class="btn btn-sm btn-primary text-xs">
+                                                        View Certificate
+                                                    </a>
+                                                @else
+                                                    <span class="text-gray-400">No File</span>
+                                                @endif
                                                 </div>
                                             </div>
                                         </div>
