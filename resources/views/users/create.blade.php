@@ -171,7 +171,7 @@
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 2 0 002 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                     </path>
                                 </svg>
                                 <h4 class="theme-app text-base sm:text-lg font-semibold"
@@ -207,16 +207,6 @@
                                                 </path>
                                             </svg>
                                         </button>
-                                    </div>
-                                    <div id="password-strength" class="hidden mt-2">
-                                        <div class="flex items-center space-x-2 mb-2">
-                                            <span class="text-xs font-medium text-gray-600">Password Strength:</span>
-                                            <span id="strength-text" class="text-xs font-bold"></span>
-                                        </div>
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div id="strength-bar"
-                                                class="h-2 rounded-full transition-all duration-300"></div>
-                                        </div>
                                     </div>
                                     <div id="password-error"
                                         class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -575,11 +565,6 @@
             const eyeIcon = document.getElementById('eyeIcon');
             const eyeIconConfirm = document.getElementById('eyeIconConfirm');
 
-            // Password strength elements
-            const passwordStrength = document.getElementById('password-strength');
-            const strengthBar = document.getElementById('strength-bar');
-            const strengthText = document.getElementById('strength-text');
-
             let isSubmitting = false;
 
             // Validation state
@@ -590,6 +575,42 @@
                 confirmPassword: false,
                 roles: false
             };
+
+            const genderSelect = form.querySelector('select[name="gender"]');
+            const dobInput = form.querySelector('input[name="date_of_birth"]');
+            const contactInput = form.querySelector('input[name="contact_number"]');
+            const addressInput = form.querySelector('input[name="address"]');
+            const cityInput = form.querySelector('input[name="city"]');
+            const stateInput = form.querySelector('input[name="state"]');
+            const countryInput = form.querySelector('input[name="country"]');
+            const pinInput = form.querySelector('input[name="pin_code"]');
+            const joiningInput = form.querySelector('input[name="joining_date"]');
+            const employmentSelect = document.getElementById('employment_type');
+            const statusSelect = document.getElementById('status');
+
+            const resumeInput = form.querySelector('input[name="resume"]');
+            const aadharInput = form.querySelector('input[name="aadhar_card"]');
+            const panInput = form.querySelector('input[name="pan_card"]');
+            const leaveBalanceInput = form.querySelector('input[name="leave_balance"]');
+
+            Object.assign(validation, {
+              gender: false,
+              dob: false,
+              contact: false,
+              address: false,
+              city: false,
+              state: false,
+              country: false,
+              pin: false,
+              joiningDate: false,
+              employmentType: false,
+              status: false,
+              // optional fields: start as valid, only fail if incorrect when provided
+              resumeValid: true,
+              aadharValid: true,
+              panValid: true,
+              leaveBalanceValid: true,
+            });
 
             // Password visibility toggle
             togglePassword.addEventListener('click', function() {
@@ -705,87 +726,9 @@
                 updateSubmitButton();
             }
 
-            function checkPasswordStrength(password) {
-                let strength = 0;
-                let feedback = [];
-
-                // Length check
-                if (password.length >= 8) strength += 1;
-                else feedback.push('at least 8 characters');
-
-                // Uppercase check
-                if (/[A-Z]/.test(password)) strength += 1;
-                else feedback.push('uppercase letter');
-
-                // Lowercase check
-                if (/[a-z]/.test(password)) strength += 1;
-                else feedback.push('lowercase letter');
-
-                // Number check
-                if (/\d/.test(password)) strength += 1;
-                else feedback.push('number');
-
-                // Special character check
-                if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 1;
-                else feedback.push('special character');
-
-                return {
-                    strength,
-                    feedback
-                };
-            }
-
-            function updatePasswordStrength(password) {
-                if (!password) {
-                    passwordStrength.classList.add('hidden');
-                    return;
-                }
-
-                passwordStrength.classList.remove('hidden');
-                const {
-                    strength,
-                    feedback
-                } = checkPasswordStrength(password);
-
-                const strengthLevels = [{
-                        text: 'Very Weak',
-                        color: 'bg-red-500',
-                        width: '20%'
-                    },
-                    {
-                        text: 'Weak',
-                        color: 'bg-red-400',
-                        width: '40%'
-                    },
-                    {
-                        text: 'Fair',
-                        color: 'bg-yellow-500',
-                        width: '60%'
-                    },
-                    {
-                        text: 'Good',
-                        color: 'bg-blue-500',
-                        width: '80%'
-                    },
-                    {
-                        text: 'Strong',
-                        color: 'bg-green-500',
-                        width: '100%'
-                    }
-                ];
-
-                const level = strengthLevels[strength] || strengthLevels[0];
-                strengthText.textContent = level.text;
-                strengthText.className = `text-xs font-bold ${level.color.replace('bg-', 'text-')}`;
-                strengthBar.className = `h-2 rounded-full transition-all duration-300 ${level.color}`;
-                strengthBar.style.width = level.width;
-            }
-
             function validatePassword() {
                 const password = passwordInput.value;
                 const passwordError = document.getElementById('password-error');
-
-                updatePasswordStrength(password);
 
                 if (!password) {
                     showError(passwordInput, passwordError, 'Password is required.');
@@ -797,8 +740,10 @@
                     showError(passwordInput, passwordError, 'Password must not exceed 255 characters.');
                     validation.password = false;
                 } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-                    showError(passwordInput, passwordError,
-                        'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
+                    showError(
+                      passwordInput,
+                      passwordError,
+                      'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
                     );
                     validation.password = false;
                 } else {
@@ -806,7 +751,6 @@
                     validation.password = true;
                 }
 
-                // Re-validate confirm password when password changes
                 if (confirmPasswordInput.value) {
                     validateConfirmPassword();
                 }
@@ -892,6 +836,200 @@
                 }
             }
 
+            function ensureErrorBox(field, id) {
+                let container = field.closest('.space-y-2') || field.parentElement;
+                if (!container) container = field;
+
+                let err = container.querySelector('#' + id);
+                if (!err) {
+                    err = document.createElement('div');
+                    err.id = id;
+                    err.className = 'hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg';
+                    err.innerHTML = `
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                    `;
+                    container.appendChild(err);
+                }
+                return err;
+            }
+
+            function validateGender() {
+                if (!genderSelect) return;
+                const err = ensureErrorBox(genderSelect, 'gender-error-dyn');
+                if (!genderSelect.value) {
+                    showError(genderSelect, err, 'Please select a gender.');
+                    validation.gender = false;
+                } else {
+                    hideError(genderSelect, err);
+                    validation.gender = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validateDOB() {
+                if (!dobInput) return;
+                const err = ensureErrorBox(dobInput, 'dob-error-dyn');
+                const val = (dobInput.value || '').trim();
+                if (!val) {
+                    showError(dobInput, err, 'Date of birth is required.');
+                    validation.dob = false;
+                } else {
+                    const d = new Date(val);
+                    const today = new Date();
+                    // Strip time
+                    d.setHours(0,0,0,0); today.setHours(0,0,0,0);
+                    if (isNaN(d.getTime())) {
+                        showError(dobInput, err, 'Please enter a valid date.');
+                        validation.dob = false;
+                    } else if (d > today) {
+                        showError(dobInput, err, 'Date of birth cannot be in the future.');
+                        validation.dob = false;
+                    } else {
+                        hideError(dobInput, err);
+                        validation.dob = true;
+                    }
+                }
+                updateSubmitButton();
+            }
+
+            function validateContact() {
+                if (!contactInput) return;
+                const err = ensureErrorBox(contactInput, 'contact-error-dyn');
+                const digits = String(contactInput.value || '').replace(/\D/g, '');
+                contactInput.value = digits; // normalize
+                if (!digits) {
+                    showError(contactInput, err, 'Contact number is required.');
+                    validation.contact = false;
+                } else if (!/^\d{7,15}$/.test(digits)) {
+                    showError(contactInput, err, 'Enter a valid contact number (7–15 digits).');
+                    validation.contact = false;
+                } else {
+                    hideError(contactInput, err);
+                    validation.contact = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validateRequiredText(inputEl, key, label, minLen = 1) {
+                if (!inputEl) { validation[key] = true; return; }
+                const err = ensureErrorBox(inputEl, key + '-error-dyn');
+                const val = (inputEl.value || '').trim();
+                if (!val || val.length < minLen) {
+                    showError(inputEl, err, `${label} is required.`);
+                    validation[key] = false;
+                } else {
+                    hideError(inputEl, err);
+                    validation[key] = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validatePin() {
+                if (!pinInput) return;
+                const err = ensureErrorBox(pinInput, 'pin-error-dyn');
+                const digits = String(pinInput.value || '').replace(/\D/g, '');
+                pinInput.value = digits; // normalize
+                if (!digits) {
+                    showError(pinInput, err, 'Pin code is required.');
+                    validation.pin = false;
+                } else if (!/^\d{4,10}$/.test(digits)) {
+                    showError(pinInput, err, 'Pin code must be 4–10 digits.');
+                    validation.pin = false;
+                } else {
+                    hideError(pinInput, err);
+                    validation.pin = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validateJoiningDate() {
+                if (!joiningInput) return;
+                const err = ensureErrorBox(joiningInput, 'joining-error-dyn');
+                const val = (joiningInput.value || '').trim();
+                if (!val) {
+                    showError(joiningInput, err, 'Joining date is required.');
+                    validation.joiningDate = false;
+                } else {
+                    hideError(joiningInput, err);
+                    validation.joiningDate = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validateEmploymentType() {
+                if (!employmentSelect) return;
+                const err = ensureErrorBox(employmentSelect, 'employment-type-error-dyn');
+                if (!employmentSelect.value) {
+                    showError(employmentSelect, err, 'Please select an employment type.');
+                    validation.employmentType = false;
+                } else {
+                    hideError(employmentSelect, err);
+                    validation.employmentType = true;
+                }
+                updateSubmitButton();
+            }
+
+            function validateStatus() {
+                if (!statusSelect) return;
+                const err = ensureErrorBox(statusSelect, 'status-error-dyn');
+                if (!statusSelect.value) {
+                    showError(statusSelect, err, 'Please select a status.');
+                    validation.status = false;
+                } else {
+                    hideError(statusSelect, err);
+                    validation.status = true;
+                }
+                updateSubmitButton();
+            }
+
+            // Optional fields: validate only if provided
+            function validateFile(inputEl, key, label, exts, maxMB) {
+                if (!inputEl) { validation[key] = true; return; }
+                const err = ensureErrorBox(inputEl, key + '-error-dyn');
+                const f = inputEl.files && inputEl.files[0];
+                if (!f) {
+                    // no file = treat as valid (optional)
+                    hideError(inputEl, err);
+                    validation[key] = true;
+                } else {
+                    const sizeMB = f.size / (1024 * 1024);
+                    const ext = (f.name.split('.').pop() || '').toLowerCase();
+                    if (!exts.includes(ext)) {
+                        showError(inputEl, err, `${label} must be one of: ${exts.join(', ')}.`);
+                        validation[key] = false;
+                    } else if (sizeMB > maxMB) {
+                        showError(inputEl, err, `${label} must be ≤ ${maxMB} MB.`);
+                        validation[key] = false;
+                    } else {
+                        hideError(inputEl, err);
+                        validation[key] = true;
+                    }
+                }
+                updateSubmitButton();
+            }
+
+            function validateLeaveBalance() {
+                if (!leaveBalanceInput) { validation.leaveBalanceValid = true; return; }
+                const err = ensureErrorBox(leaveBalanceInput, 'leave-balance-error-dyn');
+                const raw = String(leaveBalanceInput.value || '').trim();
+                if (!raw) {
+                    // optional, empty is fine
+                    hideError(leaveBalanceInput, err);
+                    validation.leaveBalanceValid = true;
+                } else if (!/^\d+$/.test(raw)) {
+                    showError(leaveBalanceInput, err, 'Leave balance must be a non-negative integer.');
+                    validation.leaveBalanceValid = false;
+                } else {
+                    hideError(leaveBalanceInput, err);
+                    validation.leaveBalanceValid = true;
+                }
+                updateSubmitButton();
+            }
+
             // Event listeners
             nameInput.addEventListener('input', validateName);
             nameInput.addEventListener('blur', validateName);
@@ -909,6 +1047,23 @@
                 checkbox.addEventListener('change', validateRoles);
             });
 
+            if (genderSelect) genderSelect.addEventListener('change', validateGender);
+            if (dobInput) { dobInput.addEventListener('input', validateDOB); dobInput.addEventListener('blur', validateDOB); }
+            if (contactInput) { contactInput.addEventListener('input', validateContact); contactInput.addEventListener('blur', validateContact); }
+            if (addressInput) { addressInput.addEventListener('input', () => validateRequiredText(addressInput, 'address', 'Address')); addressInput.addEventListener('blur', () => validateRequiredText(addressInput, 'address', 'Address')); }
+            if (cityInput) { cityInput.addEventListener('input', () => validateRequiredText(cityInput, 'city', 'City')); cityInput.addEventListener('blur', () => validateRequiredText(cityInput, 'city', 'City')); }
+            if (stateInput) { stateInput.addEventListener('input', () => validateRequiredText(stateInput, 'state', 'State')); stateInput.addEventListener('blur', () => validateRequiredText(stateInput, 'state', 'State')); }
+            if (countryInput) { countryInput.addEventListener('input', () => validateRequiredText(countryInput, 'country', 'Country')); countryInput.addEventListener('blur', () => validateRequiredText(countryInput, 'country', 'Country')); }
+            if (pinInput) { pinInput.addEventListener('input', validatePin); pinInput.addEventListener('blur', validatePin); }
+            if (joiningInput) { joiningInput.addEventListener('input', validateJoiningDate); joiningInput.addEventListener('blur', validateJoiningDate); }
+            if (employmentSelect) employmentSelect.addEventListener('change', validateEmploymentType);
+            if (statusSelect) statusSelect.addEventListener('change', validateStatus);
+
+            if (resumeInput) resumeInput.addEventListener('change', () => validateFile(resumeInput, 'resumeValid', 'Resume', ['pdf', 'doc', 'docx'], 5));
+            if (aadharInput) aadharInput.addEventListener('change', () => validateFile(aadharInput, 'aadharValid', 'Aadhar card', ['pdf', 'jpg', 'jpeg', 'png'], 5));
+            if (panInput) panInput.addEventListener('change', () => validateFile(panInput, 'panValid', 'PAN card', ['pdf', 'jpg', 'jpeg', 'png'], 5));
+            if (leaveBalanceInput) { leaveBalanceInput.addEventListener('input', validateLeaveBalance); leaveBalanceInput.addEventListener('blur', validateLeaveBalance); }
+
             // Form submission
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -921,6 +1076,23 @@
                 validatePassword();
                 validateConfirmPassword();
                 validateRoles();
+
+                // New validations for Personal & Employment Details
+                validateGender();
+                validateDOB();
+                validateContact();
+                validateRequiredText(addressInput, 'address', 'Address');
+                validateRequiredText(cityInput, 'city', 'City');
+                validateRequiredText(stateInput, 'state', 'State');
+                validateRequiredText(countryInput, 'country', 'Country');
+                validatePin();
+                validateJoiningDate();
+                validateEmploymentType();
+                validateStatus();
+                validateFile(resumeInput, 'resumeValid', 'Resume', ['pdf', 'doc', 'docx'], 5);
+                validateFile(aadharInput, 'aadharValid', 'Aadhar card', ['pdf', 'jpg', 'jpeg', 'png'], 5);
+                validateFile(panInput, 'panValid', 'PAN card', ['pdf', 'jpg', 'jpeg', 'png'], 5);
+                validateLeaveBalance();
 
                 const allValid = Object.values(validation).every(v => v === true);
 
@@ -946,6 +1118,14 @@
                     form.submit();
                 }, 500);
             });
+
+            validateGender(); validateDOB(); validateContact();
+            validateRequiredText(addressInput, 'address', 'Address');
+            validateRequiredText(cityInput, 'city', 'City');
+            validateRequiredText(stateInput, 'state', 'State');
+            validateRequiredText(countryInput, 'country', 'Country');
+            validatePin(); validateJoiningDate(); validateEmploymentType(); validateStatus();
+            // optional fields start valid; no need to trigger now
 
             // Initial validation
             updateSubmitButton();
@@ -976,13 +1156,7 @@
         }
 
         /* Password strength bar animation */
-        #strength-bar {
-            transition: width 0.3s ease, background-color 0.3s ease;
-        }
-    </style>
-
-    /* Hide native password reveal/clear icons */
-    <style>
+        /* Hide native password reveal/clear icons */
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
             display: none;

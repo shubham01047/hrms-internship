@@ -190,18 +190,36 @@
                                         <option value="female" {{ old('gender', $users->gender) == 'female' ? 'selected' : '' }}>Female</option>
                                         <option value="other"  {{ old('gender', $users->gender) == 'other' ? 'selected' : '' }}>Other</option>
                                     </select>
+                                    <div id="gender-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Date of Birth</label>
                                     <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $users->date_of_birth) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="date_of_birth-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Contact Number</label>
                                     <input type="number" name="contact_number" value="{{ old('contact_number', $users->contact_number) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="contact_number-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2 md:col-span-1">
@@ -209,36 +227,72 @@
                                     <input type="text" name="address" value="{{ old('address', $users->address) }}"
                                            placeholder="Street, Area"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="address-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">City</label>
                                     <input type="text" name="city" value="{{ old('city', $users->city) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="city-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">State</label>
                                     <input type="text" name="state" value="{{ old('state', $users->state) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="state-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Country</label>
                                     <input type="text" name="country" value="{{ old('country', $users->country) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="country-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Pin Code</label>
                                     <input type="number" name="pin_code" value="{{ old('pin_code', $users->pin_code) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="pin_code-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Joining Date</label>
                                     <input type="date" name="joining_date" value="{{ old('joining_date', $users->joining_date) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="joining_date-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
@@ -251,6 +305,12 @@
                                         <option value="trainee"   {{ $users->employment_type == 'trainee' ? 'selected' : '' }}>Trainee</option>
                                         <option value="contract"  {{ $users->employment_type == 'contract' ? 'selected' : '' }}>Contract</option>
                                     </select>
+                                    <div id="employment_type-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
@@ -261,6 +321,12 @@
                                         <option value="inactive"   {{ $users->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                         <option value="terminated" {{ $users->status == 'terminated' ? 'selected' : '' }}>Terminated</option>
                                     </select>
+                                    <div id="status-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2 md:col-span-2">
@@ -270,6 +336,12 @@
                                     @endif
                                     <input type="file" name="resume" id="resume"
                                            class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="resume-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2 md:col-span-1">
@@ -279,6 +351,12 @@
                                     @endif
                                     <input type="file" name="aadhar_card" id="aadhar_card"
                                            class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="aadhar_card-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2 md:col-span-1">
@@ -288,12 +366,24 @@
                                     @endif
                                     <input type="file" name="pan_card" id="pan_card"
                                            class="mt-2 w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="pan_card-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2 md:col-span-1">
                                     <label class="block text-sm font-semibold text-gray-700">Leave Balance</label>
                                     <input type="number" name="leave_balance" value="{{ old('leave_balance', $users->leave_balance) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
+                                    <div id="leave_balance-error" class="hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -428,131 +518,329 @@
             const submitBtn = document.getElementById('updateUserBtn');
             const buttonText = document.getElementById('button-text');
 
+            const genderSelect = form.querySelector('select[name="gender"]');
+            const dobInput = form.querySelector('input[name="date_of_birth"]');
+            const contactInput = form.querySelector('input[name="contact_number"]');
+            const addressInput = form.querySelector('input[name="address"]');
+            const cityInput = form.querySelector('input[name="city"]');
+            const stateInput = form.querySelector('input[name="state"]');
+            const countryInput = form.querySelector('input[name="country"]');
+            const pinCodeInput = form.querySelector('input[name="pin_code"]');
+            const joiningDateInput = form.querySelector('input[name="joining_date"]');
+            const employmentTypeSelect = form.querySelector('select[name="employment_type"]');
+            const statusSelect = form.querySelector('select[name="status"]');
+            const resumeInput = document.getElementById('resume');
+            const aadharInput = document.getElementById('aadhar_card');
+            const panInput = document.getElementById('pan_card');
+            const leaveBalanceInput = form.querySelector('input[name="leave_balance"]');
+
             let isSubmitting = false;
 
             // Store original values for change detection
             const originalValues = {
                 name: nameInput.value.trim(),
                 email: emailInput.value.trim(),
-                roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort()
+                roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort(),
+                gender: genderSelect ? genderSelect.value : '',
+                date_of_birth: dobInput ? dobInput.value : '',
+                contact_number: contactInput ? (contactInput.value || '').trim() : '',
+                address: addressInput ? (addressInput.value || '').trim() : '',
+                city: cityInput ? (cityInput.value || '').trim() : '',
+                state: stateInput ? (stateInput.value || '').trim() : '',
+                country: countryInput ? (countryInput.value || '').trim() : '',
+                pin_code: pinCodeInput ? (pinCodeInput.value || '').trim() : '',
+                joining_date: joiningDateInput ? joiningDateInput.value : '',
+                employment_type: employmentTypeSelect ? employmentTypeSelect.value : '',
+                status: statusSelect ? statusSelect.value : '',
+                leave_balance: leaveBalanceInput ? (leaveBalanceInput.value || '').trim() : '',
+                resume: '', aadhar_card: '', pan_card: ''
             };
 
             // Validation state
             const validation = {
-                name: true, // Start as valid since we have existing data
+                name: true,
                 email: true,
                 roles: true,
+                gender: true,
+                date_of_birth: true,
+                contact_number: true,
+                address: true,
+                city: true,
+                state: true,
+                country: true,
+                pin_code: true,
+                joining_date: true,
+                employment_type: true,
+                status: true,
+                resume: true,
+                aadhar_card: true,
+                pan_card: true,
+                leave_balance: true,
                 hasChanges: false
             };
 
-            // Validation functions
-            function validateName() {
-                const name = nameInput.value.trim();
-                const nameError = document.getElementById('name-error');
 
-                if (!name) {
-                    showError(nameInput, nameError, 'Full name is required.');
-                    validation.name = false;
-                } else if (name.length < 2) {
-                    showError(nameInput, nameError, 'Name must be at least 2 characters long.');
-                    validation.name = false;
-                } else if (name.length > 100) {
-                    showError(nameInput, nameError, 'Name must not exceed 100 characters.');
-                    validation.name = false;
+            function validateGender() {
+                const el = genderSelect;
+                if (!el) return;
+                const err = document.getElementById('gender-error');
+                if (!el.value) {
+                    showError(el, err, 'Please select a gender.');
+                    validation.gender = false;
                 } else {
-                    // exactly one space between first and last; allow letters, apostrophes, hyphens, periods in each part
-                    const normalized = name.replace(/\s+/g, ' '); // collapse multiple spaces for check
-                    const exactOneSpace = /^[A-Za-z][A-Za-z.'-]* [A-Za-z][A-Za-z.'-]*$/.test(normalized);
+                    hideError(el, err);
+                    validation.gender = true;
+                }
+                checkForChanges(); updateSubmitButton();
+            }
 
-                    if (!exactOneSpace) {
-                        showError(
-                            nameInput,
-                            nameError,
-                            'Enter first and last name with exactly one space (e.g., John Doe).'
-                        );
-                        validation.name = false;
+            function validateDOB() {
+                const el = dobInput; if (!el) return;
+                const err = document.getElementById('date_of_birth-error');
+                const v = el.value;
+                if (!v) {
+                    showError(el, err, 'Date of birth is required.');
+                    validation.date_of_birth = false;
+                } else {
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const dob = new Date(v);
+                    if (dob > today) {
+                        showError(el, err, 'Date of birth cannot be in the future.');
+                        validation.date_of_birth = false;
                     } else {
-                        hideError(nameInput, nameError);
-                        validation.name = true;
-                        // Auto-format: single space and capitalize initials
-                        nameInput.value = normalized.replace(/\b\w/g, l => l.toUpperCase());
+                        // require 18+ years
+                        const age = today.getFullYear() - dob.getFullYear() - ((today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) ? 1 : 0);
+                        if (age < 18) {
+                            showError(el, err, 'User must be at least 18 years old.');
+                            validation.date_of_birth = false;
+                        } else {
+                            hideError(el, err);
+                            validation.date_of_birth = true;
+                        }
                     }
                 }
-
-                checkForChanges();
-                updateSubmitButton();
+                checkForChanges(); updateSubmitButton();
             }
 
-            function validateEmail() {
-                const email = emailInput.value.trim().toLowerCase();
-                const emailError = document.getElementById('email-error');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                if (!email) {
-                    showError(emailInput, emailError, 'Email address is required.');
-                    validation.email = false;
-                } else if (!emailRegex.test(email)) {
-                    showError(emailInput, emailError, 'Please enter a valid email address.');
-                    validation.email = false;
-                } else if (email.length > 255) {
-                    showError(emailInput, emailError, 'Email address must not exceed 255 characters.');
-                    validation.email = false;
+            function validateContact() {
+                const el = contactInput; if (!el) return;
+                const err = document.getElementById('contact_number-error');
+                const digits = (el.value || '').replace(/\D/g, '');
+                if (!digits) {
+                    showError(el, err, 'Contact number is required.');
+                    validation.contact_number = false;
+                } else if (digits.length < 7 || digits.length > 15) {
+                    showError(el, err, 'Enter a valid contact number (7-15 digits).');
+                    validation.contact_number = false;
                 } else {
-                    hideError(emailInput, emailError);
-                    validation.email = true;
-                    // Auto-format email
-                    emailInput.value = email;
+                    hideError(el, err);
+                    validation.contact_number = true;
                 }
-
-                checkForChanges();
-                updateSubmitButton();
+                checkForChanges(); updateSubmitButton();
             }
 
-            function validateRoles() {
-                const checkedRoles = Array.from(roleCheckboxes).filter(cb => cb.checked);
-                const rolesError = document.getElementById('roles-error');
+            function minLen(el, errId, field, len = 2) {
+                const err = document.getElementById(errId);
+                const v = (el.value || '').trim();
+                if (!v) {
+                    showError(el, err, field + ' is required.');
+                    return false;
+                } else if (v.length < len) {
+                    showError(el, err, field + ' must be at least ' + len + ' characters.');
+                    return false;
+                }
+                hideError(el, err);
+                return true;
+            }
 
-                if (checkedRoles.length === 0) {
-                    rolesError.classList.remove('hidden');
-                    validation.roles = false;
+            function validateAddress() {
+                if (!addressInput) return;
+                validation.address = minLen(addressInput, 'address-error', 'Address', 5);
+                checkForChanges(); updateSubmitButton();
+            }
+            function validateCity() {
+                if (!cityInput) return;
+                validation.city = minLen(cityInput, 'city-error', 'City', 2);
+                checkForChanges(); updateSubmitButton();
+            }
+            function validateState() {
+                if (!stateInput) return;
+                validation.state = minLen(stateInput, 'state-error', 'State', 2);
+                checkForChanges(); updateSubmitButton();
+            }
+            function validateCountry() {
+                if (!countryInput) return;
+                validation.country = minLen(countryInput, 'country-error', 'Country', 2);
+                checkForChanges(); updateSubmitButton();
+            }
+
+            function validatePinCode() {
+                const el = pinCodeInput; if (!el) return;
+                const err = document.getElementById('pin_code-error');
+                const digits = (el.value || '').replace(/\D/g, '');
+                if (!digits) {
+                    showError(el, err, 'Pin code is required.');
+                    validation.pin_code = false;
+                } else if (!/^\d{4,10}$/.test(digits)) {
+                    showError(el, err, 'Pin code must be 4-10 digits.');
+                    validation.pin_code = false;
                 } else {
-                    rolesError.classList.add('hidden');
-                    validation.roles = true;
+                    hideError(el, err);
+                    validation.pin_code = true;
                 }
+                checkForChanges(); updateSubmitButton();
+            }
 
-                checkForChanges();
+            function validateJoiningDate() {
+                const el = joiningDateInput; if (!el) return;
+                const err = document.getElementById('joining_date-error');
+                const v = el.value;
+                if (!v) {
+                    showError(el, err, 'Joining date is required.');
+                    validation.joining_date = false;
+                } else {
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const jd = new Date(v);
+                    if (jd > today) {
+                        showError(el, err, 'Joining date cannot be in the future.');
+                        validation.joining_date = false;
+                    } else {
+                        hideError(el, err);
+                        validation.joining_date = true;
+                    }
+                }
+                checkForChanges(); updateSubmitButton();
+            }
+
+            function validateEmploymentType() {
+                const el = employmentTypeSelect; if (!el) return;
+                const err = document.getElementById('employment_type-error');
+                if (!el.value) {
+                    showError(el, err, 'Please select employment type.');
+                    validation.employment_type = false;
+                } else {
+                    hideError(el, err);
+                    validation.employment_type = true;
+                }
+                checkForChanges(); updateSubmitButton();
+            }
+
+            function validateStatus() {
+                const el = statusSelect; if (!el) return;
+                const err = document.getElementById('status-error');
+                if (!el.value) {
+                    showError(el, err, 'Please select status.');
+                    validation.status = false;
+                } else {
+                    hideError(el, err);
+                    validation.status = true;
+                }
+                checkForChanges(); updateSubmitButton();
+            }
+
+            function validateFile(input, errId, allowedExt, maxMB) {
+                const err = document.getElementById(errId);
+                if (!input || !input.files || input.files.length === 0) {
+                    // optional; valid if not provided
+                    err.classList.add('hidden');
+                    return true;
+                }
+                const f = input.files[0];
+                const name = (f.name || '').toLowerCase();
+                const sizeOk = f.size <= maxMB * 1024 * 1024;
+                const extOk = allowedExt.some(ext => name.endsWith(ext));
+                if (!extOk) {
+                    const msg = 'Invalid file type. Allowed: ' + allowedExt.join(', ') + '.';
+                    err.querySelector('span').textContent = msg;
+                    input.classList.remove('border-gray-300', 'border-green-500');
+                    input.classList.add('border-red-500');
+                    err.classList.remove('hidden');
+                    return false;
+                }
+                if (!sizeOk) {
+                    const msg = 'File is too large. Max ' + maxMB + ' MB allowed.';
+                    err.querySelector('span').textContent = msg;
+                    input.classList.remove('border-gray-300', 'border-green-500');
+                    input.classList.add('border-red-500');
+                    err.classList.remove('hidden');
+                    return false;
+                }
+                input.classList.remove('border-red-500');
+                input.classList.add('border-green-500');
+                err.classList.add('hidden');
+                return true;
+            }
+
+            function validateUploads() {
+                validation.resume = validateFile(resumeInput, 'resume-error', ['.pdf', '.doc', '.docx'], 5);
+                validation.aadhar_card = validateFile(aadharInput, 'aadhar_card-error', ['.pdf', '.png', '.jpg', '.jpeg', '.webp'], 5);
+                validation.pan_card = validateFile(panInput, 'pan_card-error', ['.pdf', '.png', '.jpg', '.jpeg', '.webp'], 5);
                 updateSubmitButton();
             }
+
+            function validateLeaveBalance() {
+                const el = leaveBalanceInput; if (!el) return;
+                const err = document.getElementById('leave_balance-error');
+                const v = (el.value || '').trim();
+                if (v === '') {
+                    // optional
+                    hideError(el, err);
+                    validation.leave_balance = true;
+                } else if (!/^\d+$/.test(v)) {
+                    showError(el, err, 'Leave balance must be a whole number.');
+                    validation.leave_balance = false;
+                } else {
+                    const n = parseInt(v, 10);
+                    if (n < 0 || n > 365) {
+                        showError(el, err, 'Leave balance must be between 0 and 365.');
+                        validation.leave_balance = false;
+                    } else {
+                        hideError(el, err);
+                        validation.leave_balance = true;
+                    }
+                }
+                checkForChanges(); updateSubmitButton();
+            }
+
 
             function checkForChanges() {
                 const currentValues = {
                     name: nameInput.value.trim(),
                     email: emailInput.value.trim(),
-                    roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort()
+                    roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort(),
+                    gender: genderSelect ? genderSelect.value : '',
+                    date_of_birth: dobInput ? dobInput.value : '',
+                    contact_number: contactInput ? (contactInput.value || '').trim() : '',
+                    address: addressInput ? (addressInput.value || '').trim() : '',
+                    city: cityInput ? (cityInput.value || '').trim() : '',
+                    state: stateInput ? (stateInput.value || '').trim() : '',
+                    country: countryInput ? (countryInput.value || '').trim() : '',
+                    pin_code: pinCodeInput ? (pinCodeInput.value || '').trim() : '',
+                    joining_date: joiningDateInput ? joiningDateInput.value : '',
+                    employment_type: employmentTypeSelect ? employmentTypeSelect.value : '',
+                    status: statusSelect ? statusSelect.value : '',
+                    leave_balance: leaveBalanceInput ? (leaveBalanceInput.value || '').trim() : '',
+                    resume: resumeInput && resumeInput.files.length ? resumeInput.files[0].name : '',
+                    aadhar_card: aadharInput && aadharInput.files.length ? aadharInput.files[0].name : '',
+                    pan_card: panInput && panInput.files.length ? panInput.files[0].name : ''
                 };
 
-                const hasNameChange = currentValues.name !== originalValues.name;
-                const hasEmailChange = currentValues.email !== originalValues.email;
-                const hasRoleChanges = JSON.stringify(currentValues.roles) !== JSON.stringify(originalValues.roles);
+                const hasCoreChange =
+                    currentValues.name !== originalValues.name ||
+                    currentValues.email !== originalValues.email ||
+                    JSON.stringify(currentValues.roles) !== JSON.stringify(originalValues.roles);
 
-                validation.hasChanges = hasNameChange || hasEmailChange || hasRoleChanges;
+                const hasDetailsChange = Object.keys(currentValues).some(k => {
+                    if (k === 'name' || k === 'email' || k === 'roles') return false;
+                    return (currentValues[k] || '') !== (originalValues[k] || '');
+                });
+
+                validation.hasChanges = hasCoreChange || hasDetailsChange;
             }
 
-            function showError(input, errorElement, message) {
-                input.classList.remove('border-gray-300', 'border-green-500');
-                input.classList.add('border-red-500');
-                errorElement.querySelector('span').textContent = message;
-                errorElement.classList.remove('hidden');
-            }
-
-            function hideError(input, errorElement) {
-                input.classList.remove('border-red-500');
-                input.classList.add('border-green-500');
-                errorElement.classList.add('hidden');
-            }
 
             function updateSubmitButton() {
-                const allValid = validation.name && validation.email && validation.roles;
+                const allValid = Object.entries(validation).every(([k, v]) => k === 'hasChanges' ? true : v === true);
 
                 if (!allValid) {
                     submitBtn.disabled = true;
@@ -565,7 +853,6 @@
                 } else if (isSubmitting) {
                     submitBtn.disabled = true;
                     submitBtn.classList.add('opacity-75');
-                    // Keep loading text
                 } else {
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'opacity-75');
@@ -573,64 +860,62 @@
                 }
             }
 
-            function scrollToFirstError() {
-                const firstError = document.querySelector(
-                    '.border-red-500, .flex.items-center.space-x-2:not(.hidden)');
-                if (firstError) {
-                    firstError.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                    if (firstError.tagName === 'INPUT' || firstError.tagName === 'SELECT' || firstError.tagName ===
-                        'TEXTAREA') {
-                        setTimeout(() => firstError.focus(), 500);
-                    }
-                }
+
+            if (genderSelect) genderSelect.addEventListener('change', validateGender);
+            if (dobInput) { dobInput.addEventListener('change', validateDOB); dobInput.addEventListener('blur', validateDOB); }
+            if (contactInput) { contactInput.addEventListener('input', validateContact); contactInput.addEventListener('blur', validateContact); }
+            if (addressInput) { addressInput.addEventListener('input', validateAddress); addressInput.addEventListener('blur', validateAddress); }
+            if (cityInput) { cityInput.addEventListener('input', validateCity); cityInput.addEventListener('blur', validateCity); }
+            if (stateInput) { stateInput.addEventListener('input', validateState); stateInput.addEventListener('blur', validateState); }
+            if (countryInput) { countryInput.addEventListener('input', validateCountry); countryInput.addEventListener('blur', validateCountry); }
+            if (pinCodeInput) { pinCodeInput.addEventListener('input', validatePinCode); pinCodeInput.addEventListener('blur', validatePinCode); }
+            if (joiningDateInput) { joiningDateInput.addEventListener('change', validateJoiningDate); joiningDateInput.addEventListener('blur', validateJoiningDate); }
+            if (employmentTypeSelect) employmentTypeSelect.addEventListener('change', validateEmploymentType);
+            if (statusSelect) statusSelect.addEventListener('change', validateStatus);
+            if (resumeInput) resumeInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
+            if (aadharInput) aadharInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
+            if (panInput) panInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
+
+            if (leaveBalanceInput) {
+                leaveBalanceInput.addEventListener('input', validateLeaveBalance);
+                leaveBalanceInput.addEventListener('blur', validateLeaveBalance);
             }
 
-            // Event listeners
-            nameInput.addEventListener('input', validateName);
-            nameInput.addEventListener('blur', validateName);
 
-            emailInput.addEventListener('input', validateEmail);
-            emailInput.addEventListener('blur', validateEmail);
-
-            roleCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    // Update visual style for role boxes
-                    const parentDiv = this.closest('.bg-white');
-                    if (this.checked) {
-                        parentDiv.classList.add('ring-2', 'ring-blue-200', 'bg-blue-50');
-                    } else {
-                        parentDiv.classList.remove('ring-2', 'ring-blue-200', 'bg-blue-50');
-                    }
-                    validateRoles();
-                });
-            });
-
-            // Form submission
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 if (isSubmitting) return;
 
-                // Validate all fields
+                // Validate all fields before submit
+                // ... existing name/email/roles validations ...
                 validateName();
                 validateEmail();
                 validateRoles();
 
-                const allValid = validation.name && validation.email && validation.roles;
+                validateGender();
+                validateDOB();
+                validateContact();
+                validateAddress();
+                validateCity();
+                validateState();
+                validateCountry();
+                validatePinCode();
+                validateJoiningDate();
+                validateEmploymentType();
+                validateStatus();
+                validateUploads();
+                validateLeaveBalance();
+
+                const allValid = Object.entries(validation).every(([k, v]) => k === 'hasChanges' ? true : v === true);
 
                 if (!allValid) {
                     scrollToFirstError();
                     return;
                 }
-
                 if (!validation.hasChanges) {
                     return;
                 }
 
-                // Show loading state
                 isSubmitting = true;
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-75');
@@ -642,16 +927,24 @@
                     Updating User...
                 `;
 
-                // Submit the form
                 setTimeout(() => {
                     form.submit();
                 }, 500);
             });
 
-            // Initial validation and change detection
-            validateName();
-            validateEmail();
-            validateRoles();
+            validateGender();
+            validateDOB();
+            validateContact();
+            validateAddress();
+            validateCity();
+            validateState();
+            validateCountry();
+            validatePinCode();
+            validateJoiningDate();
+            validateEmploymentType();
+            validateStatus();
+            validateUploads();
+            validateLeaveBalance();
             checkForChanges();
             updateSubmitButton();
         });
