@@ -52,7 +52,7 @@
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" style="color: var(--primary-text);" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7-7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
                         <div>
@@ -297,7 +297,7 @@
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Employment Type</label>
-                                    <select name="employment_type" id="employment_type" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" required>
+                                    <select name="employment_type" id="employment_type" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
                                         <option value="">-- Select Employment Type --</option>
                                         <option value="Full-Time" {{ $users->employment_type == 'full_time' ? 'selected' : '' }}>Full-Time</option>
                                         <option value="Part-Time" {{ $users->employment_type == 'part_time' ? 'selected' : '' }}>Part-Time</option>
@@ -315,7 +315,7 @@
 
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Status</label>
-                                    <select name="status" id="status" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" required>
+                                    <select name="status" id="status" class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
                                         <option value="">-- Select Status --</option>
                                         <option value="active"     {{ $users->status == 'active' ? 'selected' : '' }}>Active</option>
                                         <option value="inactive"   {{ $users->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
@@ -374,7 +374,7 @@
                                     </div>
                                 </div>
 
-                                <div class="space-y-2 md:col-span-1">
+                                <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Leave Balance</label>
                                     <input type="number" name="leave_balance" value="{{ old('leave_balance', $users->leave_balance) }}"
                                            class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm" />
@@ -493,13 +493,14 @@
                                 class="theme-app inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                 style="background-color: var(--hover-bg); color: var(--primary-text);"
                                 onmouseover="this.style.backgroundColor='var(--primary-bg-light)'"
-                                onmouseout="this.style.backgroundColor='var(--hover-bg)'" disabled>
+                                onmouseout="this.style.backgroundColor='var(--hover-bg)'">
+                                {{-- removed disabled attribute and static “No Changes Made” text so the button is always usable --}}
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
-                                <span id="button-text">No Changes Made</span>
+                                <span id="button-text">Update User</span>
                             </button>
                         </div>
                     </form>
@@ -508,447 +509,298 @@
         </div>
     </div>
 
-    <!-- JavaScript Validation -->
+    {{-- JavaScript Validation --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('userEditForm');
-            const nameInput = document.getElementById('name');
-            const emailInput = document.getElementById('email');
-            const roleCheckboxes = document.querySelectorAll('.role-checkbox');
-            const submitBtn = document.getElementById('updateUserBtn');
-            const buttonText = document.getElementById('button-text');
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('userEditForm');
+    if (!form) return;
 
-            const genderSelect = form.querySelector('select[name="gender"]');
-            const dobInput = form.querySelector('input[name="date_of_birth"]');
-            const contactInput = form.querySelector('input[name="contact_number"]');
-            const addressInput = form.querySelector('input[name="address"]');
-            const cityInput = form.querySelector('input[name="city"]');
-            const stateInput = form.querySelector('input[name="state"]');
-            const countryInput = form.querySelector('input[name="country"]');
-            const pinCodeInput = form.querySelector('input[name="pin_code"]');
-            const joiningDateInput = form.querySelector('input[name="joining_date"]');
-            const employmentTypeSelect = form.querySelector('select[name="employment_type"]');
-            const statusSelect = form.querySelector('select[name="status"]');
-            const resumeInput = document.getElementById('resume');
-            const aadharInput = document.getElementById('aadhar_card');
-            const panInput = document.getElementById('pan_card');
-            const leaveBalanceInput = form.querySelector('input[name="leave_balance"]');
+    // Prevent native browser validation popups; we'll manage UX ourselves.
+    form.setAttribute('novalidate', 'true');
 
-            let isSubmitting = false;
+    const submitBtn = document.getElementById('updateUserBtn');
+    const btnText = document.getElementById('button-text');
 
-            // Store original values for change detection
-            const originalValues = {
-                name: nameInput.value.trim(),
-                email: emailInput.value.trim(),
-                roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort(),
-                gender: genderSelect ? genderSelect.value : '',
-                date_of_birth: dobInput ? dobInput.value : '',
-                contact_number: contactInput ? (contactInput.value || '').trim() : '',
-                address: addressInput ? (addressInput.value || '').trim() : '',
-                city: cityInput ? (cityInput.value || '').trim() : '',
-                state: stateInput ? (stateInput.value || '').trim() : '',
-                country: countryInput ? (countryInput.value || '').trim() : '',
-                pin_code: pinCodeInput ? (pinCodeInput.value || '').trim() : '',
-                joining_date: joiningDateInput ? joiningDateInput.value : '',
-                employment_type: employmentTypeSelect ? employmentTypeSelect.value : '',
-                status: statusSelect ? statusSelect.value : '',
-                leave_balance: leaveBalanceInput ? (leaveBalanceInput.value || '').trim() : '',
-                resume: '', aadhar_card: '', pan_card: ''
-            };
+    // Helpers
+    const byId = (id) => document.getElementById(id);
+    const setAriaInvalid = (el, invalid) => {
+      if (!el) return;
+      el.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+      if (invalid) el.setAttribute('aria-describedby', `${el.name}-error`);
+      else el.removeAttribute('aria-describedby');
+    };
 
-            // Validation state
-            const validation = {
-                name: true,
-                email: true,
-                roles: true,
-                gender: true,
-                date_of_birth: true,
-                contact_number: true,
-                address: true,
-                city: true,
-                state: true,
-                country: true,
-                pin_code: true,
-                joining_date: true,
-                employment_type: true,
-                status: true,
-                resume: true,
-                aadhar_card: true,
-                pan_card: true,
-                leave_balance: true,
-                hasChanges: false
-            };
+    const showError = (fieldName, message) => {
+      const container = byId(`${fieldName}-error`);
+      const input = form.elements[fieldName];
+      if (!container) return false;
 
+      const span = container.querySelector('span');
+      if (message) {
+        container.classList.remove('hidden');
+        if (span) span.textContent = message;
+        if (input) setAriaInvalid(input, true);
+        return true;
+      } else {
+        container.classList.add('hidden');
+        if (span) span.textContent = '';
+        if (input) setAriaInvalid(input, false);
+        return false;
+      }
+    };
 
-            function validateGender() {
-                const el = genderSelect;
-                if (!el) return;
-                const err = document.getElementById('gender-error');
-                if (!el.value) {
-                    showError(el, err, 'Please select a gender.');
-                    validation.gender = false;
-                } else {
-                    hideError(el, err);
-                    validation.gender = true;
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const clearAllErrors = () => {
+      const errorBlocks = form.querySelectorAll('[id$="-error"]');
+      errorBlocks.forEach((el) => {
+        el.classList.add('hidden');
+        const span = el.querySelector('span');
+        if (span) span.textContent = '';
+      });
+      // Reset aria-invalid on inputs
+      Array.from(form.elements).forEach((el) => {
+        if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement) {
+          setAriaInvalid(el, false);
+        }
+      });
+    };
 
-            function validateDOB() {
-                const el = dobInput; if (!el) return;
-                const err = document.getElementById('date_of_birth-error');
-                const v = el.value;
-                if (!v) {
-                    showError(el, err, 'Date of birth is required.');
-                    validation.date_of_birth = false;
-                } else {
-                    const today = new Date(); today.setHours(0,0,0,0);
-                    const dob = new Date(v);
-                    if (dob > today) {
-                        showError(el, err, 'Date of birth cannot be in the future.');
-                        validation.date_of_birth = false;
-                    } else {
-                        // require 18+ years
-                        const age = today.getFullYear() - dob.getFullYear() - ((today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) ? 1 : 0);
-                        if (age < 18) {
-                            showError(el, err, 'User must be at least 18 years old.');
-                            validation.date_of_birth = false;
-                        } else {
-                            hideError(el, err);
-                            validation.date_of_birth = true;
-                        }
-                    }
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const isEmpty = (v) => !v || String(v).trim() === '';
+    const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
+    const isDigits = (v) => /^\d+$/.test(String(v).trim());
+    const parseDate = (v) => {
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d;
+    };
+    const today = () => {
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d;
+    };
 
-            function validateContact() {
-                const el = contactInput; if (!el) return;
-                const err = document.getElementById('contact_number-error');
-                const digits = (el.value || '').replace(/\D/g, '');
-                if (!digits) {
-                    showError(el, err, 'Contact number is required.');
-                    validation.contact_number = false;
-                } else if (digits.length < 7 || digits.length > 15) {
-                    showError(el, err, 'Enter a valid contact number (7-15 digits).');
-                    validation.contact_number = false;
-                } else {
-                    hideError(el, err);
-                    validation.contact_number = true;
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    // Field validators
+    const validateName = () => {
+      const el = form.elements['name'];
+      const v = el ? el.value : '';
+      if (isEmpty(v)) return showError('name', 'Full name is required.');
+      if (v.trim().length < 2) return showError('name', 'Full name must be at least 2 characters.');
+      return showError('name', '');
+    };
 
-            function minLen(el, errId, field, len = 2) {
-                const err = document.getElementById(errId);
-                const v = (el.value || '').trim();
-                if (!v) {
-                    showError(el, err, field + ' is required.');
-                    return false;
-                } else if (v.length < len) {
-                    showError(el, err, field + ' must be at least ' + len + ' characters.');
-                    return false;
-                }
-                hideError(el, err);
-                return true;
-            }
+    const validateEmail = () => {
+      const el = form.elements['email'];
+      const v = el ? el.value : '';
+      if (isEmpty(v)) return showError('email', 'Email address is required.');
+      if (!isEmail(v)) return showError('email', 'Enter a valid email address.');
+      return showError('email', '');
+    };
 
-            function validateAddress() {
-                if (!addressInput) return;
-                validation.address = minLen(addressInput, 'address-error', 'Address', 5);
-                checkForChanges(); updateSubmitButton();
-            }
-            function validateCity() {
-                if (!cityInput) return;
-                validation.city = minLen(cityInput, 'city-error', 'City', 2);
-                checkForChanges(); updateSubmitButton();
-            }
-            function validateState() {
-                if (!stateInput) return;
-                validation.state = minLen(stateInput, 'state-error', 'State', 2);
-                checkForChanges(); updateSubmitButton();
-            }
-            function validateCountry() {
-                if (!countryInput) return;
-                validation.country = minLen(countryInput, 'country-error', 'Country', 2);
-                checkForChanges(); updateSubmitButton();
-            }
+    const validateGender = () => {
+      const el = form.elements['gender'];
+      if (!el) return false;
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError('gender', 'Please select a gender.');
+      const allowed = ['male','female','other'];
+      if (!allowed.includes(v)) return showError('gender', 'Invalid gender selected.');
+      return showError('gender', '');
+    };
 
-            function validatePinCode() {
-                const el = pinCodeInput; if (!el) return;
-                const err = document.getElementById('pin_code-error');
-                const digits = (el.value || '').replace(/\D/g, '');
-                if (!digits) {
-                    showError(el, err, 'Pin code is required.');
-                    validation.pin_code = false;
-                } else if (!/^\d{4,10}$/.test(digits)) {
-                    showError(el, err, 'Pin code must be 4-10 digits.');
-                    validation.pin_code = false;
-                } else {
-                    hideError(el, err);
-                    validation.pin_code = true;
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const validateDOB = () => {
+      const el = form.elements['date_of_birth'];
+      if (!el) return false; // optional
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError('date_of_birth', '');
+      const d = parseDate(v);
+      if (!d) return showError('date_of_birth', 'Enter a valid date.');
+      if (d > today()) return showError('date_of_birth', 'Date of birth cannot be in the future.');
+      return showError('date_of_birth', '');
+    };
 
-            function validateJoiningDate() {
-                const el = joiningDateInput; if (!el) return;
-                const err = document.getElementById('joining_date-error');
-                const v = el.value;
-                if (!v) {
-                    showError(el, err, 'Joining date is required.');
-                    validation.joining_date = false;
-                } else {
-                    const today = new Date(); today.setHours(0,0,0,0);
-                    const jd = new Date(v);
-                    if (jd > today) {
-                        showError(el, err, 'Joining date cannot be in the future.');
-                        validation.joining_date = false;
-                    } else {
-                        hideError(el, err);
-                        validation.joining_date = true;
-                    }
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const validateContact = () => {
+      const el = form.elements['contact_number'];
+      if (!el) return false; // optional
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError('contact_number', '');
+      const digitsOnly = v.replace(/\D/g, '');
+      if (!isDigits(digitsOnly)) return showError('contact_number', 'Contact number must contain digits only.');
+      if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+        return showError('contact_number', 'Contact number must be between 7 and 15 digits.');
+      }
+      return showError('contact_number', '');
+    };
 
-            function validateEmploymentType() {
-                const el = employmentTypeSelect; if (!el) return;
-                const err = document.getElementById('employment_type-error');
-                if (!el.value) {
-                    showError(el, err, 'Please select employment type.');
-                    validation.employment_type = false;
-                } else {
-                    hideError(el, err);
-                    validation.employment_type = true;
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const validateTextMax = (name, max = 255, label = 'This field') => {
+      const el = form.elements[name];
+      if (!el) return false;
+      const v = String(el.value || '').trim();
+      if (isEmpty(v)) return showError(name, '');
+      if (v.length > max) return showError(name, `${label} must be at most ${max} characters.`);
+      return showError(name, '');
+    };
 
-            function validateStatus() {
-                const el = statusSelect; if (!el) return;
-                const err = document.getElementById('status-error');
-                if (!el.value) {
-                    showError(el, err, 'Please select status.');
-                    validation.status = false;
-                } else {
-                    hideError(el, err);
-                    validation.status = true;
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const validatePin = () => {
+      const el = form.elements['pin_code'];
+      if (!el) return false;
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError('pin_code', '');
+      if (!isDigits(v)) return showError('pin_code', 'PIN code must be digits only.');
+      if (v.length < 4 || v.length > 10) return showError('pin_code', 'PIN code must be 4 to 10 digits.');
+      return showError('pin_code', '');
+    };
 
-            function validateFile(input, errId, allowedExt, maxMB) {
-                const err = document.getElementById(errId);
-                if (!input || !input.files || input.files.length === 0) {
-                    // optional; valid if not provided
-                    err.classList.add('hidden');
-                    return true;
-                }
-                const f = input.files[0];
-                const name = (f.name || '').toLowerCase();
-                const sizeOk = f.size <= maxMB * 1024 * 1024;
-                const extOk = allowedExt.some(ext => name.endsWith(ext));
-                if (!extOk) {
-                    const msg = 'Invalid file type. Allowed: ' + allowedExt.join(', ') + '.';
-                    err.querySelector('span').textContent = msg;
-                    input.classList.remove('border-gray-300', 'border-green-500');
-                    input.classList.add('border-red-500');
-                    err.classList.remove('hidden');
-                    return false;
-                }
-                if (!sizeOk) {
-                    const msg = 'File is too large. Max ' + maxMB + ' MB allowed.';
-                    err.querySelector('span').textContent = msg;
-                    input.classList.remove('border-gray-300', 'border-green-500');
-                    input.classList.add('border-red-500');
-                    err.classList.remove('hidden');
-                    return false;
-                }
-                input.classList.remove('border-red-500');
-                input.classList.add('border-green-500');
-                err.classList.add('hidden');
-                return true;
-            }
+    const validateJoiningDate = () => {
+      const el = form.elements['joining_date'];
+      if (!el) return false;
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError('joining_date', '');
+      const d = parseDate(v);
+      if (!d) return showError('joining_date', 'Enter a valid joining date.');
+      if (d > today()) return showError('joining_date', 'Joining date cannot be in the future.');
+      return showError('joining_date', '');
+    };
 
-            function validateUploads() {
-                validation.resume = validateFile(resumeInput, 'resume-error', ['.pdf', '.doc', '.docx'], 5);
-                validation.aadhar_card = validateFile(aadharInput, 'aadhar_card-error', ['.pdf', '.png', '.jpg', '.jpeg', '.webp'], 5);
-                validation.pan_card = validateFile(panInput, 'pan_card-error', ['.pdf', '.png', '.jpg', '.jpeg', '.webp'], 5);
-                updateSubmitButton();
-            }
+    const validateSelectIn = (name, allowed, required = false, label = 'Selection') => {
+      const el = form.elements[name];
+      if (!el) return false;
+      const v = String(el.value).trim();
+      if (required && isEmpty(v)) return showError(name, `${label} is required.`);
+      if (!isEmpty(v) && !allowed.includes(v)) return showError(name, `Invalid ${label.toLowerCase()} selected.`);
+      return showError(name, '');
+    };
 
-            function validateLeaveBalance() {
-                const el = leaveBalanceInput; if (!el) return;
-                const err = document.getElementById('leave_balance-error');
-                const v = (el.value || '').trim();
-                if (v === '') {
-                    // optional
-                    hideError(el, err);
-                    validation.leave_balance = true;
-                } else if (!/^\d+$/.test(v)) {
-                    showError(el, err, 'Leave balance must be a whole number.');
-                    validation.leave_balance = false;
-                } else {
-                    const n = parseInt(v, 10);
-                    if (n < 0 || n > 365) {
-                        showError(el, err, 'Leave balance must be between 0 and 365.');
-                        validation.leave_balance = false;
-                    } else {
-                        hideError(el, err);
-                        validation.leave_balance = true;
-                    }
-                }
-                checkForChanges(); updateSubmitButton();
-            }
+    const validateNumberNonNegative = (name, label = 'Value') => {
+      const el = form.elements[name];
+      if (!el) return false;
+      const v = String(el.value).trim();
+      if (isEmpty(v)) return showError(name, '');
+      const num = Number(v);
+      if (!Number.isFinite(num) || num < 0) return showError(name, `${label} must be a non-negative number.`);
+      return showError(name, '');
+    };
 
+    const validateFile = (name, allowedExt, maxMB, label) => {
+      const el = form.elements[name];
+      if (!el || !el.files || !el.files.length) {
+        // optional files; no error if not provided
+        return showError(name, '');
+      }
+      const file = el.files[0];
+      const sizeOK = file.size <= maxMB * 1024 * 1024;
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const typeOK = allowedExt.includes(ext);
+      if (!typeOK) return showError(name, `${label} must be one of: ${allowedExt.join(', ')}.`);
+      if (!sizeOK) return showError(name, `${label} must be ${maxMB}MB or smaller.`);
+      return showError(name, '');
+    };
 
-            function checkForChanges() {
-                const currentValues = {
-                    name: nameInput.value.trim(),
-                    email: emailInput.value.trim(),
-                    roles: Array.from(roleCheckboxes).filter(cb => cb.checked).map(cb => cb.value).sort(),
-                    gender: genderSelect ? genderSelect.value : '',
-                    date_of_birth: dobInput ? dobInput.value : '',
-                    contact_number: contactInput ? (contactInput.value || '').trim() : '',
-                    address: addressInput ? (addressInput.value || '').trim() : '',
-                    city: cityInput ? (cityInput.value || '').trim() : '',
-                    state: stateInput ? (stateInput.value || '').trim() : '',
-                    country: countryInput ? (countryInput.value || '').trim() : '',
-                    pin_code: pinCodeInput ? (pinCodeInput.value || '').trim() : '',
-                    joining_date: joiningDateInput ? joiningDateInput.value : '',
-                    employment_type: employmentTypeSelect ? employmentTypeSelect.value : '',
-                    status: statusSelect ? statusSelect.value : '',
-                    leave_balance: leaveBalanceInput ? (leaveBalanceInput.value || '').trim() : '',
-                    resume: resumeInput && resumeInput.files.length ? resumeInput.files[0].name : '',
-                    aadhar_card: aadharInput && aadharInput.files.length ? aadharInput.files[0].name : '',
-                    pan_card: panInput && panInput.files.length ? panInput.files[0].name : ''
-                };
+    const validateRoles = () => {
+      const checkboxes = form.querySelectorAll('.role-checkbox');
+      const anyChecked = Array.from(checkboxes).some((c) => c.checked);
+      const error = byId('roles-error');
+      if (!error) return false;
+      if (!anyChecked) {
+        error.classList.remove('hidden');
+        return true;
+      } else {
+        error.classList.add('hidden');
+        return false;
+      }
+    };
 
-                const hasCoreChange =
-                    currentValues.name !== originalValues.name ||
-                    currentValues.email !== originalValues.email ||
-                    JSON.stringify(currentValues.roles) !== JSON.stringify(originalValues.roles);
+    // Live validation bindings (only on key fields to keep things light)
+    const bindLiveValidation = () => {
+      const map = [
+        ['name', validateName, ['input', 'blur']],
+        ['email', validateEmail, ['input', 'blur']],
+        ['gender', validateGender, ['change', 'blur']],
+        ['date_of_birth', validateDOB, ['change', 'blur']],
+        ['contact_number', validateContact, ['input', 'blur']],
+        ['address', () => validateTextMax('address', 255, 'Address'), ['input', 'blur']],
+        ['city', () => validateTextMax('city', 120, 'City'), ['input', 'blur']],
+        ['state', () => validateTextMax('state', 120, 'State'), ['input', 'blur']],
+        ['country', () => validateTextMax('country', 120, 'Country'), ['input', 'blur']],
+        ['pin_code', validatePin, ['input', 'blur']],
+        ['joining_date', validateJoiningDate, ['change', 'blur']],
+        ['employment_type', () => validateSelectIn('employment_type', ['Full-Time','Part-Time','intern','trainee','contract'], false, 'Employment type'), ['change', 'blur']],
+        ['status', () => validateSelectIn('status', ['active','inactive','terminated'], false, 'Status'), ['change', 'blur']],
+        ['leave_balance', () => validateNumberNonNegative('leave_balance', 'Leave balance'), ['input', 'blur']],
+        ['resume', () => validateFile('resume', ['pdf','doc','docx'], 5, 'Resume'), ['change']],
+        ['aadhar_card', () => validateFile('aadhar_card', ['pdf','jpg','jpeg','png'], 5, 'Aadhar card'), ['change']],
+        ['pan_card', () => validateFile('pan_card', ['pdf','jpg','jpeg','png'], 5, 'PAN card'), ['change']],
+      ];
+      map.forEach(([name, fn, events]) => {
+        const el = form.elements[name];
+        if (!el) return;
+        events.forEach((ev) => el.addEventListener(ev, fn));
+      });
 
-                const hasDetailsChange = Object.keys(currentValues).some(k => {
-                    if (k === 'name' || k === 'email' || k === 'roles') return false;
-                    return (currentValues[k] || '') !== (originalValues[k] || '');
-                });
+      const roleBoxes = form.querySelectorAll('.role-checkbox');
+      roleBoxes.forEach((cb) => cb.addEventListener('change', validateRoles));
+    };
 
-                validation.hasChanges = hasCoreChange || hasDetailsChange;
-            }
+    bindLiveValidation();
 
+    const setSubmittingState = (submitting) => {
+      if (!submitBtn) return;
+      submitBtn.disabled = submitting;
+      if (submitting) {
+        // Add spinner if not present
+        if (!submitBtn.querySelector('.v0-spinner')) {
+          const spinner = document.createElement('span');
+          spinner.className = 'v0-spinner ml-2 inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin';
+          spinner.setAttribute('aria-hidden', 'true');
+          submitBtn.appendChild(spinner);
+        }
+        if (btnText) btnText.textContent = 'Submitting...';
+      } else {
+        const sp = submitBtn.querySelector('.v0-spinner');
+        if (sp) sp.remove();
+        if (btnText) btnText.textContent = 'Update User';
+      }
+    };
 
-            function updateSubmitButton() {
-                const allValid = Object.entries(validation).every(([k, v]) => k === 'hasChanges' ? true : v === true);
+    form.addEventListener('submit', function (e) {
+      clearAllErrors();
 
-                if (!allValid) {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    buttonText.textContent = 'Please Fix Errors';
-                } else if (!validation.hasChanges) {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    buttonText.textContent = 'No Changes Made';
-                } else if (isSubmitting) {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.add('opacity-75');
-                } else {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'opacity-75');
-                    buttonText.textContent = 'Update User';
-                }
-            }
+      // Run all validations
+      const errors = [];
 
+      if (validateName()) errors.push('name');
+      if (validateEmail()) errors.push('email');
+      if (validateGender()) errors.push('gender');
+      if (validateDOB()) errors.push('date_of_birth');
+      if (validateContact()) errors.push('contact_number');
+      if (validateTextMax('address', 255, 'Address')) errors.push('address');
+      if (validateTextMax('city', 120, 'City')) errors.push('city');
+      if (validateTextMax('state', 120, 'State')) errors.push('state');
+      if (validateTextMax('country', 120, 'Country')) errors.push('country');
+      if (validatePin()) errors.push('pin_code');
+      if (validateJoiningDate()) errors.push('joining_date');
+      if (validateSelectIn('employment_type', ['Full-Time','Part-Time','intern','trainee','contract'], false, 'Employment type')) errors.push('employment_type');
+      if (validateSelectIn('status', ['active','inactive','terminated'], false, 'Status')) errors.push('status');
+      if (validateNumberNonNegative('leave_balance', 'Leave balance')) errors.push('leave_balance');
+      if (validateFile('resume', ['pdf','doc','docx'], 5, 'Resume')) errors.push('resume');
+      if (validateFile('aadhar_card', ['pdf','jpg','jpeg','png'], 5, 'Aadhar card')) errors.push('aadhar_card');
+      if (validateFile('pan_card', ['pdf','jpg','jpeg','png'], 5, 'PAN card')) errors.push('pan_card');
+      if (validateRoles()) errors.push('roles');
 
-            if (genderSelect) genderSelect.addEventListener('change', validateGender);
-            if (dobInput) { dobInput.addEventListener('change', validateDOB); dobInput.addEventListener('blur', validateDOB); }
-            if (contactInput) { contactInput.addEventListener('input', validateContact); contactInput.addEventListener('blur', validateContact); }
-            if (addressInput) { addressInput.addEventListener('input', validateAddress); addressInput.addEventListener('blur', validateAddress); }
-            if (cityInput) { cityInput.addEventListener('input', validateCity); cityInput.addEventListener('blur', validateCity); }
-            if (stateInput) { stateInput.addEventListener('input', validateState); stateInput.addEventListener('blur', validateState); }
-            if (countryInput) { countryInput.addEventListener('input', validateCountry); countryInput.addEventListener('blur', validateCountry); }
-            if (pinCodeInput) { pinCodeInput.addEventListener('input', validatePinCode); pinCodeInput.addEventListener('blur', validatePinCode); }
-            if (joiningDateInput) { joiningDateInput.addEventListener('change', validateJoiningDate); joiningDateInput.addEventListener('blur', validateJoiningDate); }
-            if (employmentTypeSelect) employmentTypeSelect.addEventListener('change', validateEmploymentType);
-            if (statusSelect) statusSelect.addEventListener('change', validateStatus);
-            if (resumeInput) resumeInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
-            if (aadharInput) aadharInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
-            if (panInput) panInput.addEventListener('change', () => { validateUploads(); checkForChanges(); });
-
-            if (leaveBalanceInput) {
-                leaveBalanceInput.addEventListener('input', validateLeaveBalance);
-                leaveBalanceInput.addEventListener('blur', validateLeaveBalance);
-            }
-
-
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (isSubmitting) return;
-
-                // Validate all fields before submit
-                // ... existing name/email/roles validations ...
-                validateName();
-                validateEmail();
-                validateRoles();
-
-                validateGender();
-                validateDOB();
-                validateContact();
-                validateAddress();
-                validateCity();
-                validateState();
-                validateCountry();
-                validatePinCode();
-                validateJoiningDate();
-                validateEmploymentType();
-                validateStatus();
-                validateUploads();
-                validateLeaveBalance();
-
-                const allValid = Object.entries(validation).every(([k, v]) => k === 'hasChanges' ? true : v === true);
-
-                if (!allValid) {
-                    scrollToFirstError();
-                    return;
-                }
-                if (!validation.hasChanges) {
-                    return;
-                }
-
-                isSubmitting = true;
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-75');
-                buttonText.innerHTML = `
-                    <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Updating User...
-                `;
-
-                setTimeout(() => {
-                    form.submit();
-                }, 500);
-            });
-
-            validateGender();
-            validateDOB();
-            validateContact();
-            validateAddress();
-            validateCity();
-            validateState();
-            validateCountry();
-            validatePinCode();
-            validateJoiningDate();
-            validateEmploymentType();
-            validateStatus();
-            validateUploads();
-            validateLeaveBalance();
-            checkForChanges();
-            updateSubmitButton();
-        });
-    </script>
+      if (errors.length > 0) {
+        e.preventDefault();
+        // Scroll to first visible error
+        const firstError = form.querySelector('[id$="-error"]:not(.hidden)');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Try focusing the associated input
+          const id = firstError.id.replace('-error','');
+          const input = form.elements[id];
+          if (input && typeof input.focus === 'function') input.focus();
+        }
+        setSubmittingState(false);
+      } else {
+        setSubmittingState(true);
+      }
+    });
+  });
+</script>
 
     <style>
         /* Loading spinner animation */

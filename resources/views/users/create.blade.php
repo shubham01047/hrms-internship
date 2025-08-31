@@ -324,7 +324,7 @@
                                 {{-- Contact Number --}}
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Contact Number</label>
-                                    <input type="number" name="contact_number" value="{{ old('contact_number') }}"
+                                    <input type="number" name="contact_number" id="contact_number" value="{{ old('contact_number') }}"
                                         class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
                                 </div>
 
