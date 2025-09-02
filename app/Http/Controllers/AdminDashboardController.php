@@ -65,7 +65,16 @@ class AdminDashboardController extends Controller implements HasMiddleware
         ])
             ->orderBy('date', 'asc')
             ->get();
-        return view('default_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek'));
+        $officeStart = Carbon::createFromTime(9, 40, 0);
+        $latePunches = Attendance::with('user')
+            ->whereDate('date', Carbon::today())
+            ->whereNotNull('punch_in')
+            ->get()
+            ->filter(function ($attendance) use ($officeStart) {
+                return Carbon::parse($attendance->punch_in)->gt($officeStart);
+            });
+        $lateCount = $latePunches->count();
+        return view('default_dashboard', compact('employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects', 'topPerformer', 'projectsThisWeek', 'holidaysThisWeek', 'lateCount'));
     }
     public function showAttendanceReport(Request $request)
     {
@@ -163,7 +172,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
                 'Total Working Hours',
                 'Punch-In-Again',
                 'Punch-Out-Again',
-                'Total Overtime Working Hours', 
+                'Total Overtime Working Hours',
                 'Location'
             ];
             $callback = function () use ($attendance, $columns) {
@@ -213,7 +222,7 @@ class AdminDashboardController extends Controller implements HasMiddleware
         $monthlyAttendance = [];
         for ($i = 1; $i <= 12; $i++) {
             $present = $monthlyData[$i] ?? 0;
-            $workingDays = 22; 
+            $workingDays = 22;
             $percentage = ($workingDays > 0) ? round(($present / $workingDays) * 100, 2) : 0;
             $monthlyAttendance[] = $percentage;
         }
@@ -242,8 +251,8 @@ class AdminDashboardController extends Controller implements HasMiddleware
         $projects = Project::with(['tasks.assignedUsers'])->get();
 
 
-    // Step 5: Send to Blade view
-    return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear','employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees','attendancePercentage','projects'));
-}
+        // Step 5: Send to Blade view
+        return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear', 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects'));
+    }
 
 }

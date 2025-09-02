@@ -29,14 +29,21 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Superadmin') ? true : null;
         });
-        // Optional: Prevent error if table doesn't exist during migration
-        if (Schema::hasTable('company_profile')) {
-            $company = Company::first();
-            View::share('company', $company);
+
+        try {
+            if (Schema::hasTable('company_profile')) { 
+                $company = Company::first();
+                if ($company) {
+                    View::share('company', $company);
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::warning('Company profile sharing skipped: ' . $e->getMessage());
         }
 
-        if (\Schema::hasTable('users')) {
+        if (Schema::hasTable('users')) {
             User::observe(UserObserver::class);
         }
     }
+    //done
 }

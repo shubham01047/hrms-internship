@@ -731,7 +731,7 @@
                                 <div
                                     class="p-3 sm:p-4 bg-yellow-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                                     <h3 class="text-gray-700 text-xs sm:text-sm">Late Comers</h3>
-                                    <p class="text-xl sm:text-2xl font-bold text-yellow-600">12</p>
+                                    <p class="text-xl sm:text-2xl font-bold text-yellow-600">{{ $lateCount }}</p>
                                 </div>
                                 <div
                                     class="p-3 sm:p-4 bg-red-100 rounded-lg text-center hover:shadow-md transition-all duration-200 hover:scale-[1.01]">

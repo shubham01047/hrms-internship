@@ -169,7 +169,17 @@ class UserController extends Controller implements HasMiddleware
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
-
+    public function viewFile($type, $filename)
+    {
+        $path = storage_path("app/public/uploads/{$type}/{$filename}");
+        if (!file_exists($path)) {
+            abort(404, "File not found: $path");
+        }
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized');
+        }
+        return response()->file($path);
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -180,7 +190,7 @@ class UserController extends Controller implements HasMiddleware
             session()->flash('error', 'User not found');
             return response()->json(['status' => false]);
         }
-        $user->delete(); 
+        $user->delete();
         session()->flash('success', 'User moved to trash.');
         return response()->json(['status' => true]);
     }
