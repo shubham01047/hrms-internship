@@ -1,13 +1,17 @@
 <x-app-layout>
-    <div class="container mx-auto p-4 sm:p-5 lg:p-6">
-        <div class="theme-app">
-            <h2 class="">
-                All Reports of Attendance ,Holiday, Leave, Task, Projects
+    <x-slot name="header">
+        <div class="theme-app flex items-center justify-between p-4 sm:p-6 rounded-lg shadow-sm mb-6" style="background: linear-gradient(to right, var(--secondary-bg), var(--primary-bg));">
+            <h2 class="font-bold text-2xl sm:text-3xl leading-tight" style="color: var(--primary-text);">
+                All Reports of Attendance, Holiday, Leave, Task, Projects
             </h2>
+        </div>
+    </x-slot>
+    <div class="container mx-auto p-4 sm:p-5 lg:p-6">
+        <div class="theme-app bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
             <!-- Added professional GUI styling to chart grid sections -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <!-- Attendance Chart -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="theme-app bg-white rounded-xl shadow-sm border-2 border-blue-300 p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,7 +29,7 @@
                 </div>
 
                 <!-- Holiday Chart -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="theme-app bg-white rounded-xl shadow-sm border-2 border-purple-300 p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor"
@@ -46,7 +50,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <!-- Leave Chart -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="theme-app bg-white rounded-xl shadow-sm border-2 border-orange-300 p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor"
@@ -64,7 +68,7 @@
                 </div>
 
                 <!-- Task Chart -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="theme-app bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +87,7 @@
             </div>
 
             <!-- Added professional GUI styling to projects chart section -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="theme-app bg-white rounded-xl shadow-sm border-2 border-indigo-300 p-6 mb-6">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +103,7 @@
                     <canvas id="projectChart"></canvas>
                 </div>
             </div>
-            <div class="rounded-xl bg-secondary-gradient border border-primary p-4 sm:p-5 mb-4 sm:mb-6 shadow-sm">
+        <div class="theme-app rounded-xl bg-secondary-gradient border border-primary p-4 sm:p-5 mb-4 sm:mb-6 shadow-sm">
                 <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-primary">
                         Monthly Attendance Percentage - {{ $selectedYear }}
@@ -131,21 +135,20 @@
         </div>
 
         <!-- Improved chart container for mobile -->
-        <div class="rounded-xl bg-white border border-gray-200 p-3 sm:p-4 lg:p-5 mb-4 sm:mb-5 lg:mb-6 shadow-sm">
+    <div class="theme-app rounded-xl bg-white border-2 border-blue-300 p-3 sm:p-4 lg:p-5 mb-4 sm:mb-5 lg:mb-6 shadow-sm">
             <div class="w-full overflow-hidden">
                 <canvas id="attendanceChartyear" class="max-w-full h-auto" height="80"></canvas>
             </div>
         </div>
 
         <div class="theme-app">
-            <div
-                class="rounded-lg bg-secondary-gradient border border-primary px-3 py-2 sm:px-4 sm:py-2.5 mb-3 sm:mb-4 shadow-sm">
+            <div class="theme-app rounded-lg bg-secondary-gradient border border-primary px-3 py-2 sm:px-4 sm:py-2.5 mb-3 sm:mb-4 shadow-sm">
                 <h3 class="text-sm sm:text-base font-semibold text-primary">Today’s Summary</h3>
             </div>
         </div>
 
         <!-- Better mobile grid with improved spacing -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+    <div class="theme-app grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
             <a href="{{ route('users.index') }}"
                 class="min-w-0 rounded-xl bg-white border border-gray-200 hover:shadow-sm transition-shadow p-4 sm:p-5 flex items-start gap-3">
                 <div
@@ -215,7 +218,7 @@
         </div>
 
         <!-- Better mobile layout for compliance cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-5 lg:mb-6">
+    <div class="theme-app grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-5 lg:mb-6">
             <div class="rounded-xl bg-white border border-rose-200 p-4 sm:p-5">
                 <p class="text-xs text-rose-600 mb-1.5">Absent</p>
                 <p class="text-2xl sm:text-3xl font-semibold text-rose-700">{{ $absentees }}</p>
@@ -234,14 +237,13 @@
         </div>
 
         <div class="theme-app">
-            <div
-                class="rounded-lg bg-secondary-gradient border border-primary px-3 py-2 sm:px-4 sm:py-2.5 mb-3 sm:mb-4 shadow-sm">
+            <div class="theme-app rounded-lg bg-secondary-gradient border border-primary px-3 py-2 sm:px-4 sm:py-2.5 mb-3 sm:mb-4 shadow-sm">
                 <h3 class="text-sm sm:text-base font-semibold text-primary">Reports</h3>
             </div>
         </div>
 
         <!-- Enhanced mobile table with better responsive design -->
-        <div class="overflow-x-auto rounded-xl bg-white border border-gray-200 p-3 sm:p-4 lg:p-5 shadow-sm">
+    <div class="theme-app overflow-x-auto rounded-xl bg-white border border-gray-200 p-3 sm:p-4 lg:p-5 shadow-sm">
             <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 mb-3">Project Timeline</h2>
             <div class="min-w-[800px]">
                 <table class="w-full border-collapse text-xs sm:text-sm">

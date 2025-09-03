@@ -214,9 +214,11 @@
         }
     </style>
     <link rel="stylesheet" href="{{ asset('css/cal-heatmap.css') }}">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <div class="theme-app main-dashboard-container py-3 sm:py-4 lg:py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-3 sm:gap-4">
+    <div class="w-full px-2 sm:px-6 lg:px-12 grid grid-cols-1 gap-3 sm:gap-4">
 
             <div class="bg-secondary-gradient text-primary p-3 sm:p-4 lg:p-5 rounded-lg shadow-lg animate-fade-in">
                 <div class="text-center mb-3 sm:mb-4">
@@ -264,7 +266,7 @@
             <div class="corporate-card rounded-lg shadow-lg p-3 sm:p-4 animate-fade-in animate-delay-100">
                 <div class="theme-app bg-primary-light p-2 sm:p-3 rounded-t-lg mb-3">
                     <h2 class="text-base sm:text-lg font-semibold text-primary flex items-center gap-2">
-                        <span class="text-lg">⏰</span> Work Status
+                        <i class="fas fa-user-clock text-primary mr-1"></i> Work Status
                     </h2>
                 </div>
 
@@ -325,15 +327,15 @@
                         <!-- Enhanced remarks and location selection GUI -->
                         <div class="bg-gray-50 p-4 rounded-lg border space-y-4">
                             <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <span class="text-blue-500">📝</span> Punch In Details
+                                <i class="fas fa-sign-in-alt text-blue-500 mr-1"></i> Punch In Details
                             </h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- Remarks Section -->
                                 <div class="space-y-2">
                                     <label for="punch_in_remarks"
-                                        class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                        <span class="text-orange-500">💬</span> Remarks (Optional)
+                                        class="flex text-sm font-medium text-gray-700 items-center gap-2">
+                                        <i class="fas fa-comment-dots text-orange-500 mr-1"></i> Remarks (Optional)
                                     </label>
                                     <textarea name="punch_in_remarks" id="punch_in_remarks" rows="3"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
@@ -343,8 +345,8 @@
                                 <!-- Location Selection -->
                                 <div class="space-y-2">
                                     <label for="location_type"
-                                        class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                        <span class="text-green-500">📍</span> Work Location <span
+                                        class="flex text-sm font-medium text-gray-700 items-center gap-2">
+                                        <i class="fas fa-map-marker-alt text-green-500 mr-1"></i> Work Location <span
                                             class="text-red-500">*</span>
                                     </label>
                                     <select name="location_type" id="location_type" required
@@ -356,7 +358,7 @@
 
                                     <!-- GPS Status Indicator -->
                                     <div class="flex items-center gap-2 text-xs text-gray-500">
-                                        <span class="text-blue-500">🌐</span>
+                                        <i class="fas fa-globe text-blue-500 mr-1"></i>
                                         <span id="gps-status">GPS location will be captured automatically</span>
                                     </div>
                                 </div>
@@ -366,7 +368,7 @@
                         <div class="flex justify-center">
                             <button type="button" id="punchInBtn"
                                 class="punch-button px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300">
-                                <span class="text-lg">🚀</span> Punch In
+                                <i class="fas fa-sign-in-alt text-green-600 mr-1"></i> Punch In
                             </button>
                         </div>
 
@@ -380,13 +382,13 @@
                         <!-- Enhanced punch out remarks GUI -->
                         <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
                             <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <span class="text-red-500">🏁</span> Punch Out Details
+                                <i class="fas fa-sign-out-alt text-red-500 mr-1"></i> Punch Out Details
                             </h3>
 
                             <div class="space-y-2">
                                 <label for="punch_out_remarks"
-                                    class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                    class="flex text-sm font-medium text-gray-700 items-center gap-2">
+                                    <i class="fas fa-comment-dots text-orange-500 mr-1"></i> Remarks (Optional)
                                 </label>
                                 <textarea name="punch_out_remarks" id="punch_out_remarks" rows="3"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
@@ -397,7 +399,7 @@
                         <div class="flex justify-center">
                             <button type="submit"
                                 class="punch-button px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300">
-                                <span class="text-lg">🏁</span> Punch Out
+                                <i class="fas fa-sign-out-alt text-red-600 mr-1"></i> Punch Out
                             </button>
                         </div>
                     </form>
@@ -409,13 +411,13 @@
                         <!-- Enhanced punch out again remarks GUI -->
                         <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
                             <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <span class="text-red-500">🏁</span> End Extra Work Details
+                                <i class="fas fa-hourglass-end text-red-500 mr-1"></i> End Extra Work Details
                             </h3>
 
                             <div class="space-y-2">
                                 <label for="punch_out_again_remarks"
-                                    class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                    class="flex text-sm font-medium text-gray-700 items-center gap-2">
+                                    <i class="fas fa-comment-dots text-orange-500 mr-1"></i> Remarks (Optional)
                                 </label>
                                 <textarea name="punch_out_again_remarks" id="punch_out_again_remarks" rows="3"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
@@ -427,7 +429,7 @@
                             <button type="submit"
                                 class="punch-button px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300"
                                 id="btnPunchOutAgain">
-                                <span class="text-lg">🏁</span> Punch Out Again
+                                <i class="fas fa-sign-out-alt text-red-600 mr-1"></i> Punch Out Again
                             </button>
                         </div>
                     </form>
@@ -439,13 +441,13 @@
                         <!-- Enhanced punch in again remarks GUI -->
                         <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
                             <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                <span class="text-green-500">🚀</span> Extra Work Details
+                                <i class="fas fa-hourglass-start text-green-500 mr-1"></i> Extra Work Details
                             </h3>
 
                             <div class="space-y-2">
                                 <label for="punch_in_again_remarks"
-                                    class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                    <span class="text-orange-500">💬</span> Remarks (Optional)
+                                    class="flex text-sm font-medium text-gray-700 items-center gap-2">
+                                    <i class="fas fa-comment-dots text-orange-500 mr-1"></i> Remarks (Optional)
                                 </label>
                                 <textarea name="punch_in_again_remarks" id="punch_in_again_remarks" rows="3"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
@@ -457,7 +459,7 @@
                             <button type="submit"
                                 class="punch-button px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300"
                                 id="btnPunchInAgain">
-                                <span class="text-lg">🚀</span> Punch In Again
+                                <i class="fas fa-sign-in-alt text-green-600 mr-1"></i> Punch In Again
                             </button>
                         </div>
                     </form>
@@ -468,7 +470,7 @@
                 <div class="corporate-card rounded-lg shadow-lg p-3 sm:p-4 animate-fade-in animate-delay-200">
                     <div class="theme-app bg-primary-light p-2 sm:p-3 rounded-t-lg mb-3">
                         <h2 class="text-base sm:text-lg font-semibold text-primary flex items-center gap-2">
-                            <span class="text-lg">☕</span> Manage Breaks
+                            <i class="fas fa-coffee text-primary mr-1"></i> Manage Breaks
                         </h2>
                     </div>
 
@@ -501,14 +503,14 @@
                     @else
                         <div class="theme-app bg-secondary-gradient text-primary p-4 rounded-lg text-center mb-4">
                             <div class="text-lg font-bold mb-3 text-primary">
-                                🔄 On {{ $activeBreak->break_type }} break since
+                                <i class="fas fa-coffee text-primary mr-1"></i> On {{ $activeBreak->break_type }} break since
                                 {{ \Carbon\Carbon::parse($activeBreak->break_start)->format('h:i A') }}
                             </div>
                             <form method="POST" action="{{ route('attendance.endBreak') }}">
                                 @csrf
                                 <button type="submit"
                                     class="punch-button px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg">
-                                    ⏹️ End Break
+                                    <i class="fas fa-stop-circle text-red-600 mr-1"></i> End Break
                                 </button>
                             </form>
                         </div>
