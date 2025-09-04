@@ -1371,4 +1371,72 @@
             </div>
         </div>
     </div>
+
+    <!-- Sticky Chatbot Button -->
+    <button id="chatbotButton" class="theme-app fixed bottom-6 right-6 z-50 rounded-full shadow-lg p-4 flex items-center justify-center hover:scale-110 transition-all duration-300" style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text); box-shadow: 0 4px 16px rgba(0,0,0,0.15);"
+        onmouseover="this.style.background='var(--hover-bg)'"
+        onmouseout="this.style.background='linear-gradient(135deg, var(--primary-bg), var(--secondary-bg))'">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9m-9 0a8 8 0 100-16 8 8 0 000 16zm0 0v-4m0 0H8m4 0h4" />
+        </svg>
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbotModal" class="fixed inset-0 z-50 flex items-end justify-end pointer-events-none">
+        <div class="w-full max-w-xs m-6 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 flex flex-col space-y-3 chatbot-modal pointer-events-auto" style="display:none;">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="font-bold text-lg text-blue-600">HR Chatbot</h3>
+                <button id="closeChatbot" class="text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+            </div>
+            <div id="chatbotMessages" class="flex-1 overflow-y-auto max-h-64 text-sm space-y-2">
+                <div class="text-gray-500 text-xs text-center">How can I help you today?</div>
+            </div>
+            <form id="chatbotForm" class="flex items-center gap-2">
+                <input type="text" id="chatbotInput" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Type your question..." autocomplete="off" />
+                <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded-lg font-semibold hover:bg-blue-600 transition">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot button and modal logic
+        const chatbotButton = document.getElementById('chatbotButton');
+        const chatbotModal = document.getElementById('chatbotModal');
+        const chatbotForm = document.getElementById('chatbotForm');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const closeChatbot = document.getElementById('closeChatbot');
+
+        chatbotButton.addEventListener('click', function() {
+            chatbotModal.querySelector('.chatbot-modal').style.display = 'flex';
+            chatbotModal.style.pointerEvents = 'auto';
+            chatbotInput.focus();
+        });
+
+        closeChatbot.addEventListener('click', function() {
+            chatbotModal.querySelector('.chatbot-modal').style.display = 'none';
+            chatbotModal.style.pointerEvents = 'none';
+        });
+
+        chatbotForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userMsg = chatbotInput.value.trim();
+            if (!userMsg) return;
+            // Add user message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'bg-blue-50 text-blue-800 rounded-lg px-3 py-2 self-end text-right';
+            userDiv.textContent = userMsg;
+            chatbotMessages.appendChild(userDiv);
+            chatbotInput.value = '';
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            // Simulate bot response
+            setTimeout(() => {
+                const botDiv = document.createElement('div');
+                botDiv.className = 'bg-gray-100 text-gray-700 rounded-lg px-3 py-2 self-start';
+                botDiv.textContent = 'Sorry, I am a demo bot. Please contact HR for further assistance.';
+                chatbotMessages.appendChild(botDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }, 700);
+        });
+    </script>
 </x-app-layout>
