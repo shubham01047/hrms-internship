@@ -475,6 +475,128 @@
                                         <span class="text-xs sm:text-sm text-red-600 font-medium"></span>
                                     </div>
                                 </div>
+                                <h3>Face Capture</h3>
+                                @if (!empty($users->face_image))
+                                    <img src="{{ asset('storage/' . $users->face_image) }}" alt="Face Image"
+                                        width="320" height="240" />
+                                @endif
+
+
+
+
+                                <!-- Buttons -->
+                                <button type="button" id="startCamera">Open Camera</button>
+                                <button type="button" id="capture" style="display:none;">Capture New Face</button>
+
+                                <!-- Video + Overlay -->
+                                <div style="position:relative; width:320px; height:240px; margin-top:10px;">
+                                    <video id="video" width="320" height="240" autoplay muted
+                                        style="display:none;"></video>
+                                    <canvas id="overlay" width="320" height="240"
+                                        style="position:absolute; top:0; left:0;"></canvas>
+                                </div>
+
+                                <!-- Canvas for captured snapshot -->
+                                <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+                                <!-- Hidden input (sends to Laravel) -->
+                                <input type="hidden" name="face_image" id="faceImageInput">
+
+                                <!-- Preview for new capture -->
+                                <div id="previewBox" style="margin-top:15px; display:none;">
+                                    <h4>New Captured Preview:</h4>
+                                    <img id="previewImg" src="" width="320" height="240"
+                                        style="border:2px solid #333; border-radius:12px;" />
+                                </div>
+
+                                <script>
+                                    const startBtn = document.getElementById('startCamera');
+                                    const captureBtn = document.getElementById('capture');
+                                    const video = document.getElementById('video');
+                                    const canvas = document.getElementById('canvas');
+                                    const overlay = document.getElementById('overlay');
+                                    const faceInput = document.getElementById('faceImageInput');
+                                    const context = canvas.getContext('2d');
+                                    const overlayCtx = overlay.getContext('2d');
+                                    const previewBox = document.getElementById('previewBox');
+                                    const previewImg = document.getElementById('previewImg');
+
+                                    let stream;
+
+                                    // Open Camera
+                                    startBtn.addEventListener('click', async () => {
+                                        try {
+                                            stream = await navigator.mediaDevices.getUserMedia({
+                                                video: true
+                                            });
+                                            video.srcObject = stream;
+                                            video.style.display = "block";
+                                            captureBtn.style.display = "inline-block";
+                                            drawOvalMask();
+                                        } catch (err) {
+                                            alert("Camera access failed: " + err.message);
+                                            console.error(err);
+                                        }
+                                    });
+
+                                    // Draw oval mask
+                                    function drawOvalMask() {
+                                        overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+                                        overlayCtx.fillStyle = "rgba(255,255,255,0.7)";
+                                        overlayCtx.fillRect(0, 0, overlay.width, overlay.height);
+
+                                        overlayCtx.globalCompositeOperation = "destination-out";
+                                        overlayCtx.beginPath();
+                                        overlayCtx.ellipse(
+                                            overlay.width / 2,
+                                            overlay.height / 2,
+                                            100, 130, // rx, ry
+                                            0, 0, Math.PI * 2
+                                        );
+                                        overlayCtx.fill();
+                                        overlayCtx.globalCompositeOperation = "source-over";
+                                    }
+
+                                    // Capture face snapshot
+                                    captureBtn.addEventListener('click', () => {
+                                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                                        const data = imageData.data;
+
+                                        const cx = canvas.width / 2;
+                                        const cy = canvas.height / 2;
+                                        const rx = 100;
+                                        const ry = 130;
+
+                                        for (let y = 0; y < canvas.height; y++) {
+                                            for (let x = 0; x < canvas.width; x++) {
+                                                const dx = (x - cx) / rx;
+                                                const dy = (y - cy) / ry;
+                                                const i = (y * canvas.width + x) * 4;
+
+                                                if (dx * dx + dy * dy > 1) {
+                                                    data[i] = 255; // R
+                                                    data[i + 1] = 255; // G
+                                                    data[i + 2] = 255; // B
+                                                }
+                                            }
+                                        }
+
+                                        context.putImageData(imageData, 0, 0);
+
+                                        const dataUrl = canvas.toDataURL('image/png');
+                                        faceInput.value = dataUrl;
+
+                                        previewImg.src = dataUrl;
+                                        previewBox.style.display = "block";
+
+                                        // Hide old face preview (if exists) since new one captured
+                                        const currentFace = document.getElementById('currentFace');
+                                        if (currentFace) currentFace.style.display = "none";
+                                    });
+                                </script>
+
+
                             </div>
                         </div>
 

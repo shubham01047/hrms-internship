@@ -78,6 +78,11 @@
                     <i class="fas fa-key"></i> Permissions
                 </a>
             @endcan
+            @can('view user')
+                <a href="{{ route('users.index') }}" class="{{ $isActive('users.index') }}">
+                    <i class="fas fa-user-friends w-4 h-4 mr-3"></i> Users
+                </a>
+            @endcan
         </div>
 
         <!-- Attendance -->
@@ -116,12 +121,12 @@
             @can('approve leave')
                 <a href="{{ route('leaves.manage') }}" class="{{ $isActive('leaves.manage') }}">
                     <i class="fas fa-tasks"></i>
-                    Manage Leave
+                    Manage Leaves
                 </a>
             @endcan
             @can('view leave type')
                 <a href="{{ route('leave-types.index') }}" class="{{ $isActive('leave-types.index') }}"><i
-                        class="fas fa-calendar-check"></i> Add Leave Type</a>
+                        class="fas fa-calendar-check"></i> Manage Leave Type</a>
             @endcan
         </div>
 
@@ -163,7 +168,15 @@
                 <i class="fas fa-file-invoice-dollar"></i> Payrolls
             </a>
         </div>
-
+        {{-- Install PWA --}}
+        <div class="border-b border-primary pb-2 mb-2">
+            <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
+               <i class="fa-brands fa-google-play"></i> Progressive Web App
+            </div>
+            <a href="javascript:void(0)" id="installPWA" class="{{ $isActive('pwa.install') }}">
+                <i class="fas fa-download mr-1"></i> Install HRMS App
+            </a>
+        </div>
         <!-- Notifications -->
         {{-- <div class="border-b border-primary pb-2 mb-2">
             <div class="font-semibold uppercase tracking-wide text-xs mb-2 text-primary/70">
@@ -191,46 +204,86 @@
         </div>
     </nav>
 </aside>
+<script>
+    let deferredPrompt;
+    const installBtn = document.getElementById("installPWA");
+
+    // Listen for the "beforeinstallprompt" event
+    window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = "block"; // Show button
+    });
+
+    // Handle button click
+    installBtn.addEventListener("click", async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt(); // Show install prompt
+            const {
+                outcome
+            } = await deferredPrompt.userChoice;
+            console.log("User response:", outcome);
+            deferredPrompt = null;
+        }
+    });
+
+    // Optional: detect if already installed
+    window.addEventListener("appinstalled", () => {
+        console.log("PWA was installed");
+        installBtn.style.display = "none";
+    });
+</script>
 
 <script>
-(() => {
-  const KEY = 'sidebar-scroll-top';
-  function getSidebar() {
-    return document.getElementById('app-sidebar');
-  }
+    (() => {
+        const KEY = 'sidebar-scroll-top';
 
-  function restoreScroll() {
-    const el = getSidebar();
-    if (!el) return;
-    const saved = sessionStorage.getItem(KEY);
-    if (saved !== null) {
-      const y = parseInt(saved, 10);
-      if (!Number.isNaN(y)) {
-        // Defer to ensure layout/transitions are applied
-        requestAnimationFrame(() => { el.scrollTop = y; });
-      }
-    }
-    // Save on scroll (passive for perf)
-    el.addEventListener('scroll', () => {
-      try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
-    }, { passive: true });
+        function getSidebar() {
+            return document.getElementById('app-sidebar');
+        }
 
-    // Also save right before navigating away via sidebar links
-    const links = el.querySelectorAll('a[href]');
-    links.forEach((a) => {
-      a.addEventListener('click', () => {
-        try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
-      });
-    });
-  }
+        function restoreScroll() {
+            const el = getSidebar();
+            if (!el) return;
+            const saved = sessionStorage.getItem(KEY);
+            if (saved !== null) {
+                const y = parseInt(saved, 10);
+                if (!Number.isNaN(y)) {
+                    // Defer to ensure layout/transitions are applied
+                    requestAnimationFrame(() => {
+                        el.scrollTop = y;
+                    });
+                }
+            }
+            // Save on scroll (passive for perf)
+            el.addEventListener('scroll', () => {
+                try {
+                    sessionStorage.setItem(KEY, String(el.scrollTop));
+                } catch (_) {}
+            }, {
+                passive: true
+            });
 
-  window.addEventListener('DOMContentLoaded', restoreScroll);
+            // Also save right before navigating away via sidebar links
+            const links = el.querySelectorAll('a[href]');
+            links.forEach((a) => {
+                a.addEventListener('click', () => {
+                    try {
+                        sessionStorage.setItem(KEY, String(el.scrollTop));
+                    } catch (_) {}
+                });
+            });
+        }
 
-  // Fallback: ensure we persist on page unload too
-  window.addEventListener('beforeunload', () => {
-    const el = getSidebar();
-    if (!el) return;
-    try { sessionStorage.setItem(KEY, String(el.scrollTop)); } catch (_) {}
-  });
-})();
+        window.addEventListener('DOMContentLoaded', restoreScroll);
+
+        // Fallback: ensure we persist on page unload too
+        window.addEventListener('beforeunload', () => {
+            const el = getSidebar();
+            if (!el) return;
+            try {
+                sessionStorage.setItem(KEY, String(el.scrollTop));
+            } catch (_) {}
+        });
+    })();
 </script>

@@ -38,7 +38,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--primary-bg);">Email sAddress</label>
+                    <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--primary-bg);">Email Address</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                            class="w-full px-4 py-3 border rounded-xl outline-none transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white focus:bg-white text-sm"
                            style="border-color: var(--primary-border); color: var(--primary-bg);"
@@ -101,17 +101,7 @@
                 @endif --}}
 
                 <!-- Register -->
-                @if (Route::has('register'))
-                    <p class="text-center text-xs sm:text-sm" style="color: var(--secondary-text);">
-                        Don't have an account?
-                        <a href="{{ route('register') }}" class="hover:underline transition-colors duration-200"
-                           style="color: var(--hover-bg);"
-                           onmouseover="this.style.color='var(--primary-bg)'"
-                           onmouseout="this.style.color='var(--hover-bg)'">
-                            Register
-                        </a>
-                    </p>
-                @endif
+                
             </form>
         </div>
     </div>

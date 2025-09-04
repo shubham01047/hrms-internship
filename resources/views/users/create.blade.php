@@ -324,7 +324,8 @@
                                 {{-- Contact Number --}}
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">Contact Number</label>
-                                    <input type="number" name="contact_number" id="contact_number" value="{{ old('contact_number') }}"
+                                    <input type="number" name="contact_number" id="contact_number"
+                                        value="{{ old('contact_number') }}"
                                         class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
                                 </div>
 
@@ -424,6 +425,91 @@
                                     <input type="number" name="leave_balance" value="{{ old('leave_balance') }}"
                                         class="w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white text-sm">
                                 </div>
+                                <h3>Face Capture</h3>
+                                <button type="button" id="startCamera">Open Camera</button>
+                                <button type="button" id="capture" style="display:none;">Capture Face</button>
+                                <div style="position:relative; width:320px; height:240px;">
+                                    <video id="video" width="320" height="240" autoplay muted
+                                        style="display:none;"></video>
+                                    <canvas id="overlay" width="320" height="240"
+                                        style="position:absolute; top:0; left:0;"></canvas>
+                                </div>
+                                <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                                <input type="hidden" name="face_image" id="faceImageInput">
+                                <div id="previewBox" style="margin-top:15px; display:none;">
+                                    <h4>Captured Preview:</h4>
+                                    <img id="previewImg" src="" width="320" height="240"
+                                        style="border:2px solid #333; border-radius:12px;" />
+                                </div>
+                                <script>
+                                    const startBtn = document.getElementById('startCamera');
+                                    const captureBtn = document.getElementById('capture');
+                                    const video = document.getElementById('video');
+                                    const canvas = document.getElementById('canvas');
+                                    const overlay = document.getElementById('overlay');
+                                    const faceInput = document.getElementById('faceImageInput');
+                                    const context = canvas.getContext('2d');
+                                    const overlayCtx = overlay.getContext('2d');
+                                    const previewBox = document.getElementById('previewBox');
+                                    const previewImg = document.getElementById('previewImg');
+                                    let stream;
+                                    startBtn.addEventListener('click', async () => {
+                                        try {
+                                            stream = await navigator.mediaDevices.getUserMedia({
+                                                video: true
+                                            });
+                                            video.srcObject = stream;
+                                            video.style.display = "block";
+                                            captureBtn.style.display = "inline-block";
+                                            drawOvalMask();
+                                        } catch (err) {
+                                            alert("Camera access failed: " + err.message);
+                                            console.error(err);
+                                        }
+                                    });
+
+                                    function drawOvalMask() {
+                                        overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+                                        overlayCtx.fillStyle = "rgba(255,255,255,0.7)";
+                                        overlayCtx.fillRect(0, 0, overlay.width, overlay.height);
+                                        overlayCtx.globalCompositeOperation = "destination-out";
+                                        overlayCtx.beginPath();
+                                        overlayCtx.ellipse(
+                                            overlay.width / 2,
+                                            overlay.height / 2,
+                                            100, 130,
+                                            0, 0, Math.PI * 2
+                                        );
+                                        overlayCtx.fill();
+                                        overlayCtx.globalCompositeOperation = "source-over";
+                                    }
+                                    captureBtn.addEventListener('click', () => {
+                                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                                        const data = imageData.data;
+                                        const cx = canvas.width / 2;
+                                        const cy = canvas.height / 2;
+                                        const rx = 100;
+                                        const ry = 130;
+                                        for (let y = 0; y < canvas.height; y++) {
+                                            for (let x = 0; x < canvas.width; x++) {
+                                                const dx = (x - cx) / rx;
+                                                const dy = (y - cy) / ry;
+                                                const i = (y * canvas.width + x) * 4;
+                                                if (dx * dx + dy * dy > 1) {
+                                                    data[i] = 255;
+                                                    data[i + 1] = 255;
+                                                    data[i + 2] = 255;
+                                                }
+                                            }
+                                        }
+                                        context.putImageData(imageData, 0, 0);
+                                        const dataUrl = canvas.toDataURL('image/png');
+                                        faceInput.value = dataUrl;
+                                        previewImg.src = dataUrl;
+                                        previewBox.style.display = "block";
+                                    });
+                                </script>
                             </div>
                         </div>
 
@@ -546,7 +632,6 @@
             </div>
         </div>
     </div>
-
     <!-- JavaScript Validation -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -594,22 +679,22 @@
             const leaveBalanceInput = form.querySelector('input[name="leave_balance"]');
 
             Object.assign(validation, {
-              gender: false,
-              dob: false,
-              contact: false,
-              address: false,
-              city: false,
-              state: false,
-              country: false,
-              pin: false,
-              joiningDate: false,
-              employmentType: false,
-              status: false,
-              // optional fields: start as valid, only fail if incorrect when provided
-              resumeValid: true,
-              aadharValid: true,
-              panValid: true,
-              leaveBalanceValid: true,
+                gender: false,
+                dob: false,
+                contact: false,
+                address: false,
+                city: false,
+                state: false,
+                country: false,
+                pin: false,
+                joiningDate: false,
+                employmentType: false,
+                status: false,
+                // optional fields: start as valid, only fail if incorrect when provided
+                resumeValid: true,
+                aadharValid: true,
+                panValid: true,
+                leaveBalanceValid: true,
             });
 
             // Password visibility toggle
@@ -741,9 +826,9 @@
                     validation.password = false;
                 } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
                     showError(
-                      passwordInput,
-                      passwordError,
-                      'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
+                        passwordInput,
+                        passwordError,
+                        'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
                     );
                     validation.password = false;
                 } else {
@@ -844,7 +929,8 @@
                 if (!err) {
                     err = document.createElement('div');
                     err.id = id;
-                    err.className = 'hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg';
+                    err.className =
+                        'hidden flex items-center space-x-2 mt-2 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg';
                     err.innerHTML = `
                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -881,7 +967,8 @@
                     const d = new Date(val);
                     const today = new Date();
                     // Strip time
-                    d.setHours(0,0,0,0); today.setHours(0,0,0,0);
+                    d.setHours(0, 0, 0, 0);
+                    today.setHours(0, 0, 0, 0);
                     if (isNaN(d.getTime())) {
                         showError(dobInput, err, 'Please enter a valid date.');
                         validation.dob = false;
@@ -915,7 +1002,10 @@
             }
 
             function validateRequiredText(inputEl, key, label, minLen = 1) {
-                if (!inputEl) { validation[key] = true; return; }
+                if (!inputEl) {
+                    validation[key] = true;
+                    return;
+                }
                 const err = ensureErrorBox(inputEl, key + '-error-dyn');
                 const val = (inputEl.value || '').trim();
                 if (!val || val.length < minLen) {
@@ -988,7 +1078,10 @@
 
             // Optional fields: validate only if provided
             function validateFile(inputEl, key, label, exts, maxMB) {
-                if (!inputEl) { validation[key] = true; return; }
+                if (!inputEl) {
+                    validation[key] = true;
+                    return;
+                }
                 const err = ensureErrorBox(inputEl, key + '-error-dyn');
                 const f = inputEl.files && inputEl.files[0];
                 if (!f) {
@@ -1013,7 +1106,10 @@
             }
 
             function validateLeaveBalance() {
-                if (!leaveBalanceInput) { validation.leaveBalanceValid = true; return; }
+                if (!leaveBalanceInput) {
+                    validation.leaveBalanceValid = true;
+                    return;
+                }
                 const err = ensureErrorBox(leaveBalanceInput, 'leave-balance-error-dyn');
                 const raw = String(leaveBalanceInput.value || '').trim();
                 if (!raw) {
@@ -1048,21 +1144,56 @@
             });
 
             if (genderSelect) genderSelect.addEventListener('change', validateGender);
-            if (dobInput) { dobInput.addEventListener('input', validateDOB); dobInput.addEventListener('blur', validateDOB); }
-            if (contactInput) { contactInput.addEventListener('input', validateContact); contactInput.addEventListener('blur', validateContact); }
-            if (addressInput) { addressInput.addEventListener('input', () => validateRequiredText(addressInput, 'address', 'Address')); addressInput.addEventListener('blur', () => validateRequiredText(addressInput, 'address', 'Address')); }
-            if (cityInput) { cityInput.addEventListener('input', () => validateRequiredText(cityInput, 'city', 'City')); cityInput.addEventListener('blur', () => validateRequiredText(cityInput, 'city', 'City')); }
-            if (stateInput) { stateInput.addEventListener('input', () => validateRequiredText(stateInput, 'state', 'State')); stateInput.addEventListener('blur', () => validateRequiredText(stateInput, 'state', 'State')); }
-            if (countryInput) { countryInput.addEventListener('input', () => validateRequiredText(countryInput, 'country', 'Country')); countryInput.addEventListener('blur', () => validateRequiredText(countryInput, 'country', 'Country')); }
-            if (pinInput) { pinInput.addEventListener('input', validatePin); pinInput.addEventListener('blur', validatePin); }
-            if (joiningInput) { joiningInput.addEventListener('input', validateJoiningDate); joiningInput.addEventListener('blur', validateJoiningDate); }
+            if (dobInput) {
+                dobInput.addEventListener('input', validateDOB);
+                dobInput.addEventListener('blur', validateDOB);
+            }
+            if (contactInput) {
+                contactInput.addEventListener('input', validateContact);
+                contactInput.addEventListener('blur', validateContact);
+            }
+            if (addressInput) {
+                addressInput.addEventListener('input', () => validateRequiredText(addressInput, 'address',
+                    'Address'));
+                addressInput.addEventListener('blur', () => validateRequiredText(addressInput, 'address',
+                    'Address'));
+            }
+            if (cityInput) {
+                cityInput.addEventListener('input', () => validateRequiredText(cityInput, 'city', 'City'));
+                cityInput.addEventListener('blur', () => validateRequiredText(cityInput, 'city', 'City'));
+            }
+            if (stateInput) {
+                stateInput.addEventListener('input', () => validateRequiredText(stateInput, 'state', 'State'));
+                stateInput.addEventListener('blur', () => validateRequiredText(stateInput, 'state', 'State'));
+            }
+            if (countryInput) {
+                countryInput.addEventListener('input', () => validateRequiredText(countryInput, 'country',
+                    'Country'));
+                countryInput.addEventListener('blur', () => validateRequiredText(countryInput, 'country',
+                    'Country'));
+            }
+            if (pinInput) {
+                pinInput.addEventListener('input', validatePin);
+                pinInput.addEventListener('blur', validatePin);
+            }
+            if (joiningInput) {
+                joiningInput.addEventListener('input', validateJoiningDate);
+                joiningInput.addEventListener('blur', validateJoiningDate);
+            }
             if (employmentSelect) employmentSelect.addEventListener('change', validateEmploymentType);
             if (statusSelect) statusSelect.addEventListener('change', validateStatus);
 
-            if (resumeInput) resumeInput.addEventListener('change', () => validateFile(resumeInput, 'resumeValid', 'Resume', ['pdf', 'doc', 'docx'], 5));
-            if (aadharInput) aadharInput.addEventListener('change', () => validateFile(aadharInput, 'aadharValid', 'Aadhar card', ['pdf', 'jpg', 'jpeg', 'png'], 5));
-            if (panInput) panInput.addEventListener('change', () => validateFile(panInput, 'panValid', 'PAN card', ['pdf', 'jpg', 'jpeg', 'png'], 5));
-            if (leaveBalanceInput) { leaveBalanceInput.addEventListener('input', validateLeaveBalance); leaveBalanceInput.addEventListener('blur', validateLeaveBalance); }
+            if (resumeInput) resumeInput.addEventListener('change', () => validateFile(resumeInput, 'resumeValid',
+                'Resume', ['pdf', 'doc', 'docx'], 5));
+            if (aadharInput) aadharInput.addEventListener('change', () => validateFile(aadharInput, 'aadharValid',
+                'Aadhar card', ['pdf', 'jpg', 'jpeg', 'png'], 5));
+            if (panInput) panInput.addEventListener('change', () => validateFile(panInput, 'panValid', 'PAN card', [
+                'pdf', 'jpg', 'jpeg', 'png'
+            ], 5));
+            if (leaveBalanceInput) {
+                leaveBalanceInput.addEventListener('input', validateLeaveBalance);
+                leaveBalanceInput.addEventListener('blur', validateLeaveBalance);
+            }
 
             // Form submission
             form.addEventListener('submit', function(e) {
@@ -1119,12 +1250,17 @@
                 }, 500);
             });
 
-            validateGender(); validateDOB(); validateContact();
+            validateGender();
+            validateDOB();
+            validateContact();
             validateRequiredText(addressInput, 'address', 'Address');
             validateRequiredText(cityInput, 'city', 'City');
             validateRequiredText(stateInput, 'state', 'State');
             validateRequiredText(countryInput, 'country', 'Country');
-            validatePin(); validateJoiningDate(); validateEmploymentType(); validateStatus();
+            validatePin();
+            validateJoiningDate();
+            validateEmploymentType();
+            validateStatus();
             // optional fields start valid; no need to trigger now
 
             // Initial validation

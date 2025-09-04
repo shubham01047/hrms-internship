@@ -839,157 +839,145 @@
                 .catch(err => console.error('Holiday fetch error:', err));
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
 
-            function formatTime(datetime) {
-                if (!datetime) return '-';
-                const d = new Date(datetime);
-                if (isNaN(d)) return '-';
-                let h = d.getHours();
-                const m = d.getMinutes().toString().padStart(2, '0');
-                const ampm = h >= 12 ? 'PM' : 'AM';
-                h = h % 12;
-                if (h === 0) h = 12;
-                return `${h}:${m} ${ampm}`;
-            }
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function formatTime(datetime) {
+        if (!datetime) return '-';
+        const d = new Date(datetime);
+        if (isNaN(d)) return '-';
+        let h = d.getHours();
+        const m = d.getMinutes().toString().padStart(2, '0');
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12;
+        if (h === 0) h = 12;
+        return `${h}:${m} ${ampm}`;
+    }
 
-            const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const monday = new Date();
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-            const dateKeys = [];
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(monday);
-                d.setDate(monday.getDate() + i);
-                dateKeys.push(d.toISOString().slice(0, 10));
-            }
+    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const monday = new Date();
+    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+    const dateKeys = [];
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        dateKeys.push(d.toISOString().slice(0, 10));
+    }
 
-            fetch("/attendance-calendar")
-                .then(res => res.json())
-                .then(data => {
-                    const barColors = [];
-                    const barValues = [];
-                    const MAX_HOURS = 12;
-                    const today = new Date();
+    fetch("/attendance-calendar")
+        .then(res => res.json())
+        .then(data => {
+            const barColors = [];
+            const barValues = [];
+            const MAX_HOURS = 12;
+            const today = new Date();
 
-                    dateKeys.forEach(ds => {
-                        const dayInfo = data[ds] || {
-                            status: 0,
-                            punch: null,
-                            hours: 0
-                        };
-                        const isFuture = new Date(ds) > today;
-                        let color = 'green';
-                        let hours = Math.min(dayInfo.hours, MAX_HOURS);
+            dateKeys.forEach(ds => {
+                const dayInfo = data[ds] || { status: 0, punch: null, hours: 0 };
+                const isFuture = new Date(ds) > today;
+                let color = 'green';
+                let hours = Math.min(dayInfo.hours, MAX_HOURS);
 
-                        if (dayInfo.status === 0 && !isFuture) {
-                            color = 'red';
-                            hours = MAX_HOURS;
-                        } else if (dayInfo.status === 1 && dayInfo.punch && dayInfo.punch.in) {
-                            const punchIn = new Date(dayInfo.punch.in);
-                            const nineThirty = new Date(punchIn);
-                            nineThirty.setHours(9, 30, 0, 0);
-                            if (punchIn > nineThirty) color = '#FF8C00';
+                if (dayInfo.status === 0 && !isFuture) {
+                    // Absent
+                    color = 'red';
+                    hours = MAX_HOURS;
+                } else if ((dayInfo.status === 1 || dayInfo.status === 2) && dayInfo.punch && dayInfo.punch.in) {
+                    const punchIn = new Date(dayInfo.punch.in);
+                    const nineThirty = new Date(punchIn);
+                    nineThirty.setHours(9, 30, 0, 0);
+
+                    // Late check
+                    color = punchIn > nineThirty ? '#FF8C00' : 'green';
+
+                    // Show at least a small bar if only punch-in (hours = 0)
+                    if (hours === 0) {
+                        hours = 0.5;
+                    }
+                }
+
+                if (isFuture) {
+                    color = 'transparent';
+                    hours = 0;
+                }
+
+                barColors.push(color);
+                barValues.push(hours);
+            });
+
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: weekdays,
+                    datasets: [{
+                        data: barValues,
+                        backgroundColor: barColors,
+                        borderColor: "transparent",
+                        borderWidth: 1,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: MAX_HOURS,
+                            title: {
+                                display: true,
+                                text: 'Hours Worked'
+                            },
+                            ticks: {
+                                stepSize: 2,
+                                callback: v => v + " hr"
+                            }
                         }
-
-                        if (isFuture) {
-                            color = 'transparent';
-                            hours = 0;
-                        }
-
-                        barColors.push(color);
-                        barValues.push(hours);
-                    });
-
-                    const ctx = document.getElementById('attendanceChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: weekdays,
-                            datasets: [{
-                                data: barValues,
-                                backgroundColor: barColors,
-                                borderColor: "transparent",
-                                borderWidth: 1,
-                                barPercentage: 0.7,
-                                categoryPercentage: 0.7
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: MAX_HOURS,
-                                    title: {
-                                        display: true,
-                                        text: 'Hours Worked'
-                                    },
-                                    ticks: {
-                                        stepSize: 2, // <-- 2 hours per box
-                                        callback: v => v + " hr"
-                                    }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                generateLabels: function () {
+                                    return [
+                                        { text: 'Present', fillStyle: 'green', strokeStyle: 'transparent' },
+                                        { text: 'Late Punch-In', fillStyle: '#FF8C00', strokeStyle: 'transparent' },
+                                        { text: 'Absent', fillStyle: 'red', strokeStyle: 'transparent' }
+                                    ];
                                 }
                             },
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    labels: {
-                                        generateLabels: function(chart) {
-                                            return [{
-                                                    text: 'Present',
-                                                    fillStyle: 'green',
-                                                    strokeStyle: 'transparent'
-                                                },
-                                                {
-                                                    text: 'Late Punch-In',
-                                                    fillStyle: '#FF8C00',
-                                                    strokeStyle: 'transparent'
-                                                },
-                                                {
-                                                    text: 'Absent',
-                                                    fillStyle: 'red',
-                                                    strokeStyle: 'transparent'
-                                                }
-                                            ];
-                                        }
-                                    },
-                                    position: 'top'
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const idx = context.dataIndex;
-                                            const ds = dateKeys[idx];
-                                            const dayInfo = data[ds] || {
-                                                status: 0,
-                                                punch: null,
-                                                hours: 0
-                                            };
-                                            let status = dayInfo.status === 1 ? 'Present' :
-                                                'Absent';
-                                            if (dayInfo.status === 1 && dayInfo.punch &&
-                                                new Date(dayInfo.punch.in) > new Date(new Date(
-                                                    dayInfo.punch.in).setHours(9, 30, 0, 0))) {
-                                                status = 'Late Punch-In';
-                                            }
-                                            let punchText = '';
-                                            if (dayInfo.punch) {
-                                                punchText =
-                                                    ` | In: ${formatTime(dayInfo.punch.in)}${dayInfo.punch.in_again ? ' / ' + formatTime(dayInfo.punch.in_again) : ''} Out: ${formatTime(dayInfo.punch.out)}${dayInfo.punch.out_again ? ' / ' + formatTime(dayInfo.punch.out_again) : ''}`;
-                                            }
-                                            return `${status}${punchText} | Hours: ${dayInfo.hours}`;
-                                        }
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const idx = context.dataIndex;
+                                    const ds = dateKeys[idx];
+                                    const dayInfo = data[ds] || { status: 0, punch: null, hours: 0 };
+
+                                    let status = 'Absent';
+                                    if (dayInfo.status === 1) status = 'Present';
+                                    if (dayInfo.status === 2) status = 'Late Punch-In';
+
+                                    let punchText = '';
+                                    if (dayInfo.punch) {
+                                        punchText = ` | In: ${formatTime(dayInfo.punch.in)}`
+                                            + (dayInfo.punch.in_again ? ' / ' + formatTime(dayInfo.punch.in_again) : '')
+                                            + ` Out: ${formatTime(dayInfo.punch.out)}`
+                                            + (dayInfo.punch.out_again ? ' / ' + formatTime(dayInfo.punch.out_again) : '');
                                     }
+                                    return `${status}${punchText} | Hours: ${dayInfo.hours}`;
                                 }
                             }
                         }
-                    });
-
-                })
-                .catch(err => console.error(err));
-        });
+                    }
+                }
+            });
+        })
+        .catch(err => console.error(err));
+});
     </script>
     <script>
         const ctx = document.getElementById('attendanceChartyear').getContext('2d');

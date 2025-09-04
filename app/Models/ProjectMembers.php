@@ -12,10 +12,9 @@ class ProjectMembers extends Model
     {
         return $this->belongsTo(\App\Models\Project::class);
     }
-
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
 }

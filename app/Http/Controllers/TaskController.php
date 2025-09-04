@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TaskAssignedMail;
+use App\Mail\TaskCompletedMail;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -25,6 +28,7 @@ class TaskController extends Controller implements HasMiddleware
         return view('tasks.create', compact('project'));
     }
 
+
     public function store(Request $request, $projectId)
     {
         $validated = $request->validate([
@@ -37,7 +41,6 @@ class TaskController extends Controller implements HasMiddleware
             'assigned_user_ids' => 'nullable|array',
             'assigned_user_ids.*' => 'exists:users,id',
         ]);
-
         $task = new Task();
         $task->project_id = $projectId;
         $task->title = $validated['title'];
@@ -45,13 +48,16 @@ class TaskController extends Controller implements HasMiddleware
         $task->priority = $validated['priority'];
         $task->status = $validated['status'];
         $task->due_date = $validated['due_date'] ?? null;
-        $task->hours_assigned = $validated['hours_assigned'] ?? null; // <-- store hours
+        $task->hours_assigned = $validated['hours_assigned'] ?? null;
         $task->save();
-
         if (!empty($validated['assigned_user_ids'])) {
             $task->assignedUsers()->sync($validated['assigned_user_ids']);
+            foreach ($task->assignedUsers as $user) {
+                if ($user->email) {
+                    Mail::to($user->email)->send(new TaskAssignedMail($task, $user));
+                }
+            }
         }
-
         return redirect()->route('projects.show', $projectId)
             ->with('success', 'Task created successfully.');
     }
@@ -78,16 +84,33 @@ class TaskController extends Controller implements HasMiddleware
             'hours_assigned' => 'nullable|numeric|min:0',
             'assigned_user_ids' => 'nullable|array',
         ]);
-        $task->title = $validated['title'];
-        $task->description = $validated['description'] ?? null;
-        $task->priority = $validated['priority'];
-        $task->status = $validated['status'];
-        $task->due_date = $validated['due_date'] ?? null;
-        $task->hours_assigned = $validated['hours_assigned'] ?? null;
+        $oldStatus = $task->status;
+        $task->fill([
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'priority' => $validated['priority'],
+            'status' => $validated['status'],
+            'due_date' => $validated['due_date'] ?? null,
+            'hours_assigned' => $validated['hours_assigned'] ?? null,
+        ]);
         $task->save();
         $task->assignedUsers()->sync($validated['assigned_user_ids'] ?? []);
-        return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');
+        if ($oldStatus !== 'Done' && $task->status === 'Done') {
+            foreach ($task->assignedUsers as $user) {
+                if ($user->email) {
+                    Mail::to($user->email)->send(new TaskCompletedMail($task));
+                }
+            }
+            $admin = User::role('Superadmin')->first();
+            if ($admin && $admin->email) {
+                Mail::to($admin->email)->send(new TaskCompletedMail($task));
+            }
+        }
+
+        return redirect()->route('projects.show', $projectId)
+            ->with('success', 'Task updated successfully & mail sent.');
     }
+
     public function destroy($projectId, Task $task)
     {
         $task->assignedUsers()->detach();

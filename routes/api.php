@@ -1,23 +1,23 @@
 <?php
 
-use App\Http\Controllers\Api\AdminDashboardApiController;
+use App\Http\Controllers\API\AdminDashboardApiController;
 use App\Http\Controllers\API\HolidayApiController;
 use App\Http\Controllers\API\LeaveApiController;
-use App\Http\Controllers\Api\LeaveTypesApiController;
-use App\Http\Controllers\Api\PayrollApiController;
-use App\Http\Controllers\Api\PermissionApiController;
-use App\Http\Controllers\Api\ProfileApiController;
-use App\Http\Controllers\Api\ProjectApiController;
-use App\Http\Controllers\Api\SalaryStructureApiController;
-use App\Http\Controllers\Api\TaskApiController;
-use App\Http\Controllers\Api\TaskCommentApiController;
-use App\Http\Controllers\Api\TimesheetApiController;
-use App\Http\Controllers\Api\TimesheetReportController;
+use App\Http\Controllers\API\LeaveTypesApiController;
+use App\Http\Controllers\API\PayrollApiController;
+use App\Http\Controllers\API\PermissionApiController;
+use App\Http\Controllers\API\ProfileApiController;
+use App\Http\Controllers\API\ProjectApiController;
+use App\Http\Controllers\API\SalaryStructureApiController;
+use App\Http\Controllers\API\TaskApiController;
+use App\Http\Controllers\API\TaskCommentApiController;
+use App\Http\Controllers\API\TimesheetApiController;
+use App\Http\Controllers\API\TimesheetReportController;
 use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\RoleApiController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AttendanceApiController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
@@ -126,5 +126,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payrolls/generate-all/{month}', [PayrollApiController::class, 'generateAll']);
     Route::delete('/payrolls/{payrollId}', [PayrollApiController::class, 'destroy']);
 
-
+    //Reports
+    Route::get('/attendance', [AttendanceApiController::class, 'attendance']);
+    Route::get('/holidays/monthly', [AttendanceApiController::class, 'monthlyHolidays']);
+    Route::get('/leaves/weekly', [AttendanceApiController::class, 'weeklyLeaves']);
+    Route::get('/projects-six-months', [AttendanceApiController::class, 'projectsSixMonths']);
+    Route::get('/tasks/monthly', [AttendanceApiController::class, 'tasksMonth']);
 });

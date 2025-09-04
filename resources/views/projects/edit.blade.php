@@ -57,7 +57,8 @@
                 </div>
 
                 <div class="p-4 sm:p-6">
-                    <form method="POST" action="{{ route('projects.update', $project->id) }}" class="space-y-6" id="projectEditForm">
+                    <form method="POST" action="{{ route('projects.update', $project->id) }}" class="space-y-6"
+                        id="projectEditForm">
                         @csrf
                         @method('PUT')
 
@@ -75,12 +76,14 @@
                                 </div>
                             </label>
                             <input type="text" name="title" id="title" value="{{ $project->title }}" required
-                                minlength="2" maxlength="200"
-                                placeholder="Enter project title..."
+                                minlength="2" maxlength="200" placeholder="Enter project title..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                            <div id="titleError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <div id="titleError"
+                                class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm text-red-600 font-medium" id="titleErrorText"></span>
                             </div>
@@ -110,11 +113,15 @@
                                 </div>
                             </label>
                             <input type="text" name="client_name" id="client_name"
-                                value="{{ $project->client_name }}" maxlength="100" placeholder="Enter client name..."
+                                value="{{ $project->client_name }}" maxlength="100"
+                                placeholder="Enter client name..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                            <div id="clientError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <div id="clientError"
+                                class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm text-red-600 font-medium" id="clientErrorText"></span>
                             </div>
@@ -133,11 +140,15 @@
                                 </div>
                             </label>
                             <input type="number" name="budget" id="budget" value="{{ $project->budget }}"
-                                step="0.01" min="0" max="999999999.99" placeholder="Enter project budget..."
+                                step="0.01" min="0" max="999999999.99"
+                                placeholder="Enter project budget..."
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                            <div id="budgetError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <div id="budgetError"
+                                class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm text-red-600 font-medium" id="budgetErrorText"></span>
                             </div>
@@ -158,14 +169,35 @@
                             <input type="date" name="deadline" id="deadline"
                                 value="{{ $project->deadline ? \Carbon\Carbon::parse($project->deadline)->format('Y-m-d') : '' }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
-                            <div id="deadlineError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <div id="deadlineError"
+                                class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm text-red-600 font-medium" id="deadlineErrorText"></span>
                             </div>
                         </div>
-                        
+                        <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Status</span>
+                                <span class="text-red-500">*</span>
+                            </div>
+                        </label>
+                        <select name="status" id="status" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white">
+                            <option value="">---Select Project Status---</option>
+                            @foreach (['To-Do', 'In Progress', 'On Hold', 'Done'] as $status)
+                                <option value="{{ $status }}" {{ $project->status === $status ? 'selected' : '' }}>
+                                    {{ $status }}</option>
+                            @endforeach
+                        </select>
                         <div class="space-y-2">
                             <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
                                 <div class="flex items-center space-x-2">
@@ -178,15 +210,19 @@
                                 </div>
                             </label>
                             <div class="relative">
-                                <textarea name="description" id="description" rows="5" maxlength="1000" placeholder="Enter project description..."
+                                <textarea name="description" id="description" rows="5" maxlength="1000"
+                                    placeholder="Enter project description..."
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-gray-400 bg-gray-50 focus:bg-white resize-none">{{ $project->description }}</textarea>
                                 <div class="absolute bottom-2 right-2 text-xs text-gray-500">
                                     <span id="descriptionCount">{{ strlen($project->description ?? '') }}</span>/1000
                                 </div>
                             </div>
-                            <div id="descriptionError" class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <div id="descriptionError"
+                                class="hidden flex items-center space-x-2 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm text-red-600 font-medium" id="descriptionErrorText"></span>
                             </div>
@@ -271,15 +307,17 @@
                 const value = titleInput.value.trim();
                 const titleError = document.getElementById('titleError');
                 const titleErrorText = document.getElementById('titleErrorText');
-                
+
                 if (!value) {
                     showError(titleInput, titleError, titleErrorText, 'Project title is required');
                     return false;
                 } else if (value.length < 2) {
-                    showError(titleInput, titleError, titleErrorText, 'Project title must be at least 2 characters');
+                    showError(titleInput, titleError, titleErrorText,
+                    'Project title must be at least 2 characters');
                     return false;
                 } else if (value.length > 200) {
-                    showError(titleInput, titleError, titleErrorText, 'Project title must not exceed 200 characters');
+                    showError(titleInput, titleError, titleErrorText,
+                        'Project title must not exceed 200 characters');
                     return false;
                 } else if (!/^[a-zA-Z0-9\s\-_.,!?()&]+$/.test(value)) {
                     showError(titleInput, titleError, titleErrorText, 'Project title contains invalid characters');
@@ -294,9 +332,10 @@
                 const value = clientInput.value.trim();
                 const clientError = document.getElementById('clientError');
                 const clientErrorText = document.getElementById('clientErrorText');
-                
+
                 if (value && value.length > 100) {
-                    showError(clientInput, clientError, clientErrorText, 'Client name must not exceed 100 characters');
+                    showError(clientInput, clientError, clientErrorText,
+                        'Client name must not exceed 100 characters');
                     return false;
                 } else if (value && !/^[a-zA-Z0-9\s\-_.,!?()&]+$/.test(value)) {
                     showError(clientInput, clientError, clientErrorText, 'Client name contains invalid characters');
@@ -311,7 +350,7 @@
                 const value = budgetInput.value;
                 const budgetError = document.getElementById('budgetError');
                 const budgetErrorText = document.getElementById('budgetErrorText');
-                
+
                 if (value && (isNaN(value) || parseFloat(value) < 0)) {
                     showError(budgetInput, budgetError, budgetErrorText, 'Budget must be a positive number');
                     return false;
@@ -328,14 +367,15 @@
                 const value = deadlineInput.value;
                 const deadlineError = document.getElementById('deadlineError');
                 const deadlineErrorText = document.getElementById('deadlineErrorText');
-                
+
                 if (value) {
                     const selectedDate = new Date(value);
                     const today = new Date();
                     today.setHours(0, 0, 0, 0);
-                    
+
                     if (selectedDate < today) {
-                        showError(deadlineInput, deadlineError, deadlineErrorText, 'Deadline cannot be in the past');
+                        showError(deadlineInput, deadlineError, deadlineErrorText,
+                        'Deadline cannot be in the past');
                         return false;
                     } else {
                         hideError(deadlineInput, deadlineError);
@@ -351,11 +391,12 @@
                 const value = descriptionInput.value;
                 const descriptionError = document.getElementById('descriptionError');
                 const descriptionErrorText = document.getElementById('descriptionErrorText');
-                
+
                 descriptionCount.textContent = value.length;
-                
+
                 if (value.length > 1000) {
-                    showError(descriptionInput, descriptionError, descriptionErrorText, 'Description must not exceed 1000 characters');
+                    showError(descriptionInput, descriptionError, descriptionErrorText,
+                        'Description must not exceed 1000 characters');
                     return false;
                 } else {
                     hideError(descriptionInput, descriptionError);
@@ -379,16 +420,16 @@
             // Real-time validation
             titleInput.addEventListener('input', validateTitle);
             titleInput.addEventListener('blur', validateTitle);
-            
+
             clientInput.addEventListener('input', validateClient);
             clientInput.addEventListener('blur', validateClient);
-            
+
             budgetInput.addEventListener('input', validateBudget);
             budgetInput.addEventListener('blur', validateBudget);
-            
+
             deadlineInput.addEventListener('change', validateDeadline);
             deadlineInput.addEventListener('blur', validateDeadline);
-            
+
             descriptionInput.addEventListener('input', validateDescription);
             descriptionInput.addEventListener('blur', validateDescription);
 
@@ -400,13 +441,17 @@
                 const isDeadlineValid = validateDeadline();
                 const isDescriptionValid = validateDescription();
 
-                if (!isTitleValid || !isClientValid || !isBudgetValid || !isDeadlineValid || !isDescriptionValid) {
+                if (!isTitleValid || !isClientValid || !isBudgetValid || !isDeadlineValid || !
+                    isDescriptionValid) {
                     e.preventDefault();
-                    
+
                     // Scroll to first error
                     const firstError = form.querySelector('.border-red-500');
                     if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
                         firstError.focus();
                     }
                 }

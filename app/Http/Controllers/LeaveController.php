@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LeaveAppliedMail;
 use App\Mail\LeaveApprovedMail;
 use App\Mail\LeaveRejectedMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Leave;
 use App\Models\LeaveType;
@@ -42,29 +44,26 @@ class LeaveController extends Controller implements HasMiddleware
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string',
-            'proof_sick' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // default optional
+            'proof_sick' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Calculate leave days
         $days = Carbon::parse($request->start_date)
             ->diffInDays(Carbon::parse($request->end_date)) + 1;
 
-        // Check if leave type is sick and days > 3
         $leaveType = LeaveType::find($request->leave_type_id);
+
         if (strtolower($leaveType->name) === 'sick' && $days > 3) {
             $request->validate([
                 'proof_sick' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             ]);
         }
 
-        // Handle file upload if exists
         $proofPath = null;
         if ($request->hasFile('proof_sick')) {
             $proofPath = $request->file('proof_sick')->store('sick_proofs', 'public');
         }
 
-        // Store leave request
-        Leave::create([
+        $leave = Leave::create([
             'user_id' => auth()->id(),
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
@@ -72,11 +71,17 @@ class LeaveController extends Controller implements HasMiddleware
             'reason' => $request->reason,
             'status' => 'pending',
             'applied_on' => now(),
-            'proof_sick' => $proofPath,   // store path in DB
+            'proof_sick' => $proofPath,
         ]);
-
+        $admin = User::role('Superadmin')->first();
+        if ($admin) {
+            Mail::to($admin->email)
+                ->cc($leave->user->teamLead->email ?? null)
+                ->send(new LeaveAppliedMail($leave));
+        }
         return redirect()->route('leaves.index')->with('success', 'Leave request submitted.');
     }
+
 
     public function manage()
     {

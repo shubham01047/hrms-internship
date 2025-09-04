@@ -36,6 +36,8 @@ class User extends Authenticatable
     'resume',
     'aadharcard',
     'pancard',
+    'leave_balance',
+    'face_image',
 ];
 
 
