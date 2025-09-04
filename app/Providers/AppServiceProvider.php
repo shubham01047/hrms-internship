@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Gate;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;        // ✅ Required to use View::share
-use App\Models\Company;                     // ✅ Required to access Company model
-use Illuminate\Support\Facades\Schema;      // ✅ (Optional) to safely check DB table
+use Illuminate\Support\Facades\View;       
+use App\Models\Company;                     
+use Illuminate\Support\Facades\Schema;      
 
 use App\Models\User;
 use App\Observers\UserObserver;
@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
     /**
      * Bootstrap any application services.
      */
@@ -31,19 +30,20 @@ class AppServiceProvider extends ServiceProvider
         });
 
         try {
-            if (Schema::hasTable('company_profile')) { 
-                $company = Company::first();
-                if ($company) {
-                    View::share('company', $company);
+            View::composer('*', function ($view) {
+                if (Schema::hasTable('company_profile')) {
+                    $view->with('company', Company::first());
                 }
-            }
+            });
         } catch (\Exception $e) {
             \Log::warning('Company profile sharing skipped: ' . $e->getMessage());
         }
-
-        if (Schema::hasTable('users')) {
-            User::observe(UserObserver::class);
+        try {
+            if (Schema::hasTable('users')) {
+                User::observe(UserObserver::class);
+            }
+        } catch (\Exception $e) {
+            // Prevent crash during artisan commands/migrations
         }
     }
-    //done
 }

@@ -163,6 +163,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/files/leave/{filename}', [LeaveController::class, 'viewLeave'])
     ->name('files.leave.view');
+
+    Route::get('/test-mail', function () {
+    $sent = Mail::raw('Test email from HRMS system', function ($m) {
+        $m->to('964645001@smtp-brevo.com')->subject('Test Email Brevo');
+    });
+
+    return $sent ? '✅ Email sent!' : '❌ Email failed!';
+});
 });
 
 require __DIR__ . '/auth.php';

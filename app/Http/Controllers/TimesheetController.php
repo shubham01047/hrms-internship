@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TimesheetApprovedMail;
+use App\Mail\TimesheetRejectedMail;
+use App\Mail\TimesheetSubmittedMail;
 use App\Models\Attendance;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\Timesheet;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -13,6 +17,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TimesheetReportExport;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+
 class TimesheetController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
@@ -43,24 +49,38 @@ class TimesheetController extends Controller implements HasMiddleware
         $timesheets = Timesheet::where('task_id', $task->id)->with('user')->get();
         return view('timesheets.index', compact('task', 'projectId', 'timesheets'));
     }
+
     public function store(Request $request, $projectId, Task $task)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'date' => 'required|date',
             'hours_worked' => 'required|numeric|min:0|max:24',
             'description' => 'nullable|string',
             'status' => 'nullable|in:Submitted,Approved,Rejected',
         ]);
-        $validated['user_id'] = Auth::id();
-        $validated['task_id'] = $task->id;
-        $validated['status'] = $validated['status'] ?? 'Submitted';
-        try {
-            Timesheet::create($validated);
-            return redirect()->route('tasks.timesheets.index', [$projectId, $task->id])
-                ->with('success', 'Timesheet submitted successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to submit timesheet: ' . $e->getMessage());
+        $timesheet = Timesheet::create([
+            'user_id' => Auth::id(),
+            'task_id' => $task->id,
+            'date' => $data['date'],
+            'hours_worked' => $data['hours_worked'],
+            'description' => $data['description'] ?? null,
+            'status' => $data['status'] ?? 'Submitted',
+        ]);
+        $timesheet->load(['user', 'task.project']);
+        $admin = User::role('Superadmin')->first();
+        $user = Auth::user();
+        $ccEmail = optional($user->teamLead)->email ?? null;
+
+        if ($admin) {
+            $mailer = Mail::to($admin->email);
+            if (!empty($ccEmail)) {
+                $mailer->cc($ccEmail);
+            }
+            $mailer->send(new TimesheetSubmittedMail($timesheet, $admin));
         }
+        return redirect()
+            ->route('tasks.timesheets.index', [$projectId, $task->id])
+            ->with('success', 'Timesheet submitted successfully.');
     }
     public function edit($projectId, Task $task, Timesheet $timesheet)
     {
@@ -97,13 +117,18 @@ class TimesheetController extends Controller implements HasMiddleware
         if ($task->hours_assigned !== null) {
             $task->hours_assigned -= $timesheet->hours_worked;
             if ($task->hours_assigned < 0) {
-                $task->hours_assigned = 0; 
+                $task->hours_assigned = 0;
             }
             $task->save();
         }
+        $employee = $timesheet->user;
+        if ($employee && $employee->email) {
+            \Mail::to($employee->email)
+                ->send(new TimesheetApprovedMail($timesheet));
+        }
         return redirect()->route('tasks.timesheets.index', [
             'project' => $task->project_id,
-            'task' => $task->id
+            'task' => $task->id,
         ])->with('success', 'Timesheet approved and task hours updated.');
     }
     public function reject(Timesheet $timesheet)
@@ -117,6 +142,11 @@ class TimesheetController extends Controller implements HasMiddleware
             }
         }
         $timesheet->update(['status' => 'Rejected']);
+        $employee = $timesheet->user;
+        if ($employee && $employee->email) {
+            \Mail::to($employee->email)
+                ->send(new TimesheetRejectedMail($timesheet));
+        }
         return redirect()->route('tasks.timesheets.index', [
             'project' => $timesheet->task->project_id,
             'task' => $timesheet->task_id

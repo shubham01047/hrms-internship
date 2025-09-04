@@ -180,15 +180,15 @@ class AdminDashboardController extends Controller implements HasMiddleware
                 fputcsv($file, $columns);
                 foreach ($attendance as $sheet) {
                     fputcsv($file, [
-                        $sheet->date ? $sheet->date->format('Y-m-d') : '',
-                        $sheet->user->name ? $sheet->user->name : 'N/A',
-                        $sheet->punch_in ? $sheet->punch_in->format('H:i:s') : '',
-                        $sheet->punch_out ? $sheet->punch_out->format('H:i:s') : '',
-                        $sheet->total_working_hours ? $sheet->total_working_hours : 'N/A',
-                        $sheet->punch_in_again ? $sheet->punch_in_again->format('H:i:s') : 'N/A',
-                        $sheet->punch_out_again ? $sheet->punch_out_again->format('H:i:s') : 'N/a',
-                        $sheet->overtime_working_hours ? $sheet->overtime_working_hours : 'N/A',
-                        $sheet->location_type ? $sheet->location_type : 'N/A',
+                        $sheet->date ? Carbon::parse($sheet->date)->format('Y-m-d') : '',
+                        optional($sheet->user)->name ?? 'N/A',
+                        $sheet->punch_in ? Carbon::parse($sheet->punch_in)->format('H:i:s') : '',
+                        $sheet->punch_out ? Carbon::parse($sheet->punch_out)->format('H:i:s') : '',
+                        $sheet->total_working_hours ?? 'N/A',
+                        $sheet->punch_in_again ? Carbon::parse($sheet->punch_in_again)->format('H:i:s') : 'N/A',
+                        $sheet->punch_out_again ? Carbon::parse($sheet->punch_out_again)->format('H:i:s') : 'N/A',
+                        $sheet->overtime_working_hours ?? 'N/A',
+                        $sheet->location_type ?? 'N/A',
                     ]);
                 }
                 fclose($file);
@@ -201,10 +201,12 @@ class AdminDashboardController extends Controller implements HasMiddleware
                 'from' => $request->from,
                 'to' => $request->to,
             ]);
+
             return $pdf->download('attendance_report.pdf');
         }
         return back()->with('error', 'Invalid export type');
     }
+
 
     public function attendanceChart(Request $request)
     {
@@ -249,9 +251,6 @@ class AdminDashboardController extends Controller implements HasMiddleware
             $attendancePercentage = round(($todayPunchInCount / $employeeCount) * 100, 2);
         }
         $projects = Project::with(['tasks.assignedUsers'])->get();
-
-
-        // Step 5: Send to Blade view
         return view('reports.report', compact('monthlyAttendance', 'years', 'selectedYear', 'employees', 'employeesWithBirthdayTomorrow', 'pendingLeaves', 'todayPunchInCount', 'projectCount', 'absentees', 'attendancePercentage', 'projects'));
     }
 

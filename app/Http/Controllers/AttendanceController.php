@@ -185,136 +185,122 @@ class AttendanceController extends Controller
         ]);
         return redirect()->back()->with('success', 'Punched out again successfully.');
     }
-    public function attendance()
-    {
-        $user = auth()->user();
-        if (!$user) {
-            return response()->json(['error' => 'Unauthenticated'], 401);
-        }
-
-        // Current week Mon → Sun
-        $start = now()->startOfWeek(Carbon::MONDAY);
-        $end = now()->endOfWeek(Carbon::SUNDAY);
-
-        // Get attendance for current week
-        $attendance = Attendance::where('user_id', $user->id)
-            ->whereBetween('date', [$start, $end])
-            ->get()
-            ->keyBy(fn($att) => Carbon::parse($att->date)->toDateString());
-
-        $data = [];
-        $period = new CarbonPeriod($start, $end);
-
-        foreach ($period as $date) {
-            $dateStr = $date->toDateString();
-
-            if (isset($attendance[$dateStr]) && $attendance[$dateStr]->total_working_hours > 0) {
-                $att = $attendance[$dateStr];
-                $status = 1; // Present
-                $punch = [
-                    'in' => $att->punch_in,
-                    'out' => $att->punch_out,
-                    'in_again' => $att->punch_in_again ?? null,
-                    'out_again' => $att->punch_out_again ?? null,
-                ];
-                $hours = floatval($att->total_working_hours); // For bar height
-            } else {
-                $status = 0; // Absent
-                $punch = null;
-                $hours = 0;
-            }
-
-            $data[$dateStr] = [
-                'status' => $status,
-                'punch' => $punch,
-                'hours' => $hours
-            ];
-        }
-
-        return response()->json($data);
+public function attendance()
+{
+    $user = auth()->user();
+    if (!$user) {
+        return response()->json(['error' => 'Unauthenticated'], 401);
     }
 
-    public function monthlyHolidays()
-{
-    $start = \Carbon\Carbon::now()->startOfMonth();
-    $end = \Carbon\Carbon::now()->endOfMonth();
+    $start = now()->startOfWeek(Carbon::MONDAY);
+    $end = now()->endOfWeek(Carbon::SUNDAY);
 
-    $holidays = Holiday::whereBetween('date', [$start, $end])
+    $attendance = Attendance::where('user_id', $user->id)
+        ->whereBetween('date', [$start, $end])
         ->get()
-        ->mapWithKeys(function ($h) {
-            return [
-                \Carbon\Carbon::parse($h->date)->format('Y-m-d') => [
-                    'title' => $h->title ?? 'Holiday'
-                ]
-            ];
-        });
+        ->keyBy(fn($att) => Carbon::parse($att->date)->toDateString());
 
-    return response()->json($holidays);
+    $data = [];
+    $period = new CarbonPeriod($start, $end);
+
+    foreach ($period as $date) {
+        $dateStr = $date->toDateString();
+
+        $status = 0; // default absent
+        $hours = 0;
+        $punch = null;
+
+        if (isset($attendance[$dateStr])) {
+            $att = $attendance[$dateStr];
+            $hours = floatval($att->total_working_hours ?? 0);
+
+            $punchIn = $att->punch_in ? Carbon::parse($att->punch_in) : null;
+            $officeStart = Carbon::createFromTime(9, 30, 0);
+
+            if ($punchIn) {
+                $status = $punchIn->greaterThan($officeStart) ? 2 : 1; // 2 = late, 1 = present
+            }
+
+            $punch = [
+                'in' => $att->punch_in,
+                'out' => $att->punch_out,
+                'in_again' => $att->punch_in_again ?? null,
+                'out_again' => $att->punch_out_again ?? null,
+            ];
+        }
+
+        $data[$dateStr] = [
+            'status' => $status, // 0 = absent, 1 = present, 2 = late
+            'punch' => $punch,
+            'hours' => $hours,
+        ];
+    }
+
+    return response()->json($data);
 }
 
+    public function monthlyHolidays()
+    {
+        $start = \Carbon\Carbon::now()->startOfMonth();
+        $end = \Carbon\Carbon::now()->endOfMonth();
+        $holidays = Holiday::whereBetween('date', [$start, $end])
+            ->get()
+            ->mapWithKeys(function ($h) {
+                return [
+                    \Carbon\Carbon::parse($h->date)->format('Y-m-d') => [
+                        'title' => $h->title ?? 'Holiday'
+                    ]
+                ];
+            });
+        return response()->json($holidays);
+    }
     public function weeklyLeaves()
     {
         $user = auth()->user();
         if (!$user) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
-
         $start = now()->startOfWeek(Carbon::MONDAY);
         $end = now()->endOfWeek(Carbon::SUNDAY);
-
-        $leaves = Leave::where('user_id', $user->id) // only current employee
-            ->where('status', 'approved')             // only approved leaves
+        $leaves = Leave::where('user_id', $user->id)
+            ->where('status', 'approved')
             ->where(function ($q) use ($start, $end) {
                 $q->whereBetween('start_date', [$start, $end])
                     ->orWhereBetween('end_date', [$start, $end]);
             })
-            ->with('leaveType') // assuming relation leaveType gives type name
+            ->with('leaveType')
             ->get();
-
         $data = [];
         $period = new CarbonPeriod($start, $end);
-
         foreach ($period as $date) {
             $dateStr = $date->toDateString();
-
-            // Check if any leave of this employee covers this date
             $onLeave = $leaves->first(function ($leave) use ($dateStr) {
                 $startDate = Carbon::parse($leave->start_date)->toDateString();
                 $endDate = Carbon::parse($leave->end_date)->toDateString();
                 return $dateStr >= $startDate && $dateStr <= $endDate;
             });
-
             if ($onLeave) {
                 $data[$dateStr] = [
-                    'type' => $onLeave->leaveType->name ?? 'Leave', // use relation
+                    'type' => $onLeave->leaveType->name ?? 'Leave',
                     'reason' => $onLeave->reason,
                 ];
             }
         }
-
         return response()->json($data);
     }
-
-
-
     public function projectsSixMonths()
     {
         $user = Auth::user();
         if (!$user) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
-
-        // 6 months range
         $start = Carbon::now()->startOfMonth();
         $end = Carbon::now()->addMonths(6)->endOfMonth();
-
-        // Projects where user is assigned
         $projects = Project::whereHas('members', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })
             ->whereBetween('deadline', [$start, $end])
             ->get(['id', 'title', 'client_name', 'deadline']);
-
         $data = [];
         foreach ($projects as $project) {
             $dateStr = Carbon::parse($project->deadline)->toDateString();
@@ -323,10 +309,8 @@ class AttendanceController extends Controller
                 'client_name' => $project->client_name ?? '',
             ];
         }
-
         return response()->json($data);
     }
-
     public function tasksMonth()
     {
         $user = Auth::user();
@@ -335,17 +319,14 @@ class AttendanceController extends Controller
         }
         $start = Carbon::now()->startOfMonth();
         $end = Carbon::now()->endOfMonth();
-        // Fetch tasks assigned to the user within current month
         $tasks = Task::whereHas('assignedUsers', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })
             ->whereBetween('due_date', [$start, $end])
             ->get();
-
         $data = [];
-
         foreach ($tasks as $task) {
-            $dueDate = Carbon::parse($task->due_date)->toDateString(); // YYYY-MM-DD
+            $dueDate = Carbon::parse($task->due_date)->toDateString();
             if (!isset($data[$dueDate])) {
                 $data[$dueDate] = [];
             }
@@ -354,10 +335,9 @@ class AttendanceController extends Controller
                 'project' => $task->project->title ?? 'N/A',
                 'priority' => $task->priority,
                 'status' => $task->status,
-                'hours_assigned' => $task->hours_assigned, // <- fixed
+                'hours_assigned' => $task->hours_assigned,
             ];
         }
-
         return response()->json($data);
     }
 }

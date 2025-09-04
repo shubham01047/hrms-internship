@@ -38,26 +38,20 @@ class PayrollController extends Controller implements HasMiddleware
     public function generate($user_id, $month)
 {
     $user = User::findOrFail($user_id);
-
-    // Check permission
     if (!auth()->user()->can('generate payroll')) {
-        // Optionally, allow employee to generate payroll for themselves only
         if (auth()->id() !== $user->id) {
             return back()->with('error', 'You do not have permission to generate payroll for this employee.');
         }
     }
-
     $structure = SalaryStructure::where('user_id', $user_id)->first();
     if (!$structure) {
         return back()->with('error', "Salary structure not found for {$user->name}");
     }
-
     $taxAmount = $structure->basic * ($structure->tax / 100);
     $pfAmount = $structure->basic * ($structure->pf / 100);
     $esiAmount = $structure->basic * ($structure->esi / 100);
     $gross = $structure->basic + $structure->hra + $structure->allowances;
     $net = $gross - ($taxAmount + $pfAmount + $esiAmount);
-
     Payroll::updateOrCreate(
         ['user_id' => $user_id, 'month' => $month],
         [
@@ -71,10 +65,8 @@ class PayrollController extends Controller implements HasMiddleware
             'net_salary' => $net,
         ]
     );
-
     return back()->with('success', "Payroll generated for {$user->name} ({$month})");
 }
-
     public function payslip($id)
     {
         $payroll = Payroll::with('user')->findOrFail($id);
@@ -123,5 +115,4 @@ class PayrollController extends Controller implements HasMiddleware
         Payroll::query()->delete();
         return back()->with('success', 'All payrolls deleted successfully.');
     }
-
 }
