@@ -80,6 +80,7 @@
                     @endif
                 </div>
 
+
                 <!-- Login Button -->
                 <button type="submit"
                         class="w-full py-3 rounded-xl text-sm font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
@@ -87,6 +88,21 @@
                         onmouseover="this.style.background='var(--hover-bg)'"
                         onmouseout="this.style.background='linear-gradient(135deg, var(--primary-bg), var(--secondary-bg))'">
                     Login
+                </button>
+
+                <!-- Facial Recognition Button -->
+                <button type="button" id="faceLoginBtn"
+                        class="theme-app w-full py-3 mt-3 rounded-xl text-sm font-semibold shadow-lg flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                        style="background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg)); color: var(--primary-text);"
+                        onmouseover="this.style.background='var(--hover-bg)'"
+                        onmouseout="this.style.background='linear-gradient(135deg, var(--primary-bg), var(--secondary-bg))'"
+                        onclick="startFacialRecognition()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 15c1.333-1 2.667-1 4 0" />
+                    </svg>
+                    Login with Face Recognition
                 </button>
 
                 <!-- Google Login -->
@@ -141,4 +157,11 @@
     .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
     .shadow-3xl { box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25); }
 </style>
+
+<script>
+    function startFacialRecognition() {
+        alert('Facial recognition login is a demo. Integrate with your face recognition API here.');
+        // You can replace this alert with actual logic to open a webcam modal or redirect to a face auth route.
+    }
+</script>
 </x-guest-layout>
